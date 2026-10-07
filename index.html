@@ -18,7 +18,7 @@
 <title>Halloween в замке</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alice&family=Kurale&family=Neucha&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alice&family=Kurale&family=Neucha&family=IM+Fell+English+SC&display=swap">
 <style>
 /* Layout: книга-сказка — обложка с вписанной датой, главы на кремовой бумаге, неровные рамки, день темнеет полосами от солнца к луне */
 :root{
@@ -91,8 +91,10 @@ h2 .acc{font:400 1.5em/.8 "Neucha",var(--f-display);font-style:normal;text-trans
 .cv-frame svg:nth-child(3){left:0;bottom:0;transform:translate(-50%,50%) translate(-.55cqw,.55cqw)}
 .cv-frame svg:nth-child(4){right:0;bottom:0;transform:translate(50%,50%) translate(.55cqw,.55cqw)}
 .cover{background-image:var(--stars);background-size:420px}
-.ov{position:absolute;left:50%;top:47.8%;transform:translate(-50%,-50%);width:46%;display:grid;justify-items:center;gap:1.3cqw;text-align:center}
-.ov-t{margin:0;font:400 5.3cqw/1 var(--f-display);text-transform:uppercase;letter-spacing:.07em;color:#F1E3C8;filter:url(#ink)}
+.ov{position:absolute;left:51%;top:47.6%;transform:translate(-50%,-50%);width:42.8%;display:grid;justify-items:center;text-align:center}
+.ov-t{margin:0;font:400 5.37cqw/1 "IM Fell English SC",var(--f-display);text-transform:uppercase;letter-spacing:.04em;color:#F1E3C8;white-space:nowrap}
+.ov-t .H{font-size:1.3em;line-height:.8;color:var(--vermilion);-webkit-text-stroke:.012em #CF9F68;paint-order:stroke fill}
+.ov-curl{display:block;width:30cqw;height:auto;margin:.9cqw 0 .9cqw;overflow:visible}
 .ov-s{display:flex;align-items:center;gap:1.1cqw;font:400 1.35cqw/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.3em;color:var(--gold);white-space:nowrap}
 @media (max-width:700px){
   /* телефон: обложка на весь экран, картинка заполняет его целиком */
@@ -107,8 +109,9 @@ h2 .acc{font:400 1.5em/.8 "Neucha",var(--f-display);font-style:normal;text-trans
   .cv-frame svg:nth-child(2){transform:translate(50%,-50%)}
   .cv-frame svg:nth-child(3){transform:translate(-50%,50%)}
   .cv-frame svg:nth-child(4){transform:translate(50%,50%)}
-  .ov{left:50%;top:31%;width:calc(100% - 64px);gap:3.6vw}
-  .ov-t{font-size:min(11vw,64px);letter-spacing:.05em}
+  .ov{left:50%;top:31%;width:calc(100% - 64px)}
+  .ov-t{font-size:min(calc((100vw - 64px) / 7.9),70px)}
+  .ov-curl{width:min(66vw,420px);margin:2.2vw 0 2.6vw}
   .ov-s{font-size:min(3.1vw,18px);letter-spacing:.2em;white-space:normal}
 }
 
@@ -265,7 +268,7 @@ footer small{font-size:15px;opacity:.7}
         <img src="art/cover-clean.jpg" alt="Обложка: скелет коня в лентах, коронованные летучие мыши, чёрный заяц с фонарём и тыквы" width="2200" height="1228">
       </picture>
       <div class="cv-frame" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg></div>
-      <div class="ov"><h1 class="ov-t" id="t">Halloween</h1><p class="ov-s">в замке посреди джунглей</p></div>
+      <div class="ov"><h1 class="ov-t" id="t"><span class="H">H</span>alloween</h1><svg class="ov-curl" viewBox="0 -4 600 58" aria-hidden="true"><g fill="none" stroke="#D18376" stroke-width="9" stroke-linecap="round"><path d="M268,28 C200,40 120,46 70,30 C40,20 44,-2 66,2 C84,6 82,26 64,26"/><path d="M332,28 C400,40 480,46 530,30 C560,20 556,-2 534,2 C516,6 518,26 536,26"/></g><image href="art/star.png" x="276" y="4" width="48" height="48"/></svg><p class="ov-s">в замке посреди джунглей</p></div>
     </div>
   </section>
 
