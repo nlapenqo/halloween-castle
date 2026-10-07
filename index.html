@@ -95,12 +95,21 @@ h2 .acc{font:400 1.5em/.8 "Neucha",var(--f-display);font-style:normal;text-trans
 .ov-t{margin:0;font:400 5.3cqw/1 var(--f-display);text-transform:uppercase;letter-spacing:.07em;color:#F1E3C8;filter:url(#ink)}
 .ov-s{display:flex;align-items:center;gap:1.1cqw;font:400 1.35cqw/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.3em;color:var(--gold);white-space:nowrap}
 @media (max-width:700px){
-  .cover{min-height:0;padding:18px 14px}
-  .stage{width:100%}
-  .cv-frame{--cf-band:2.2cqw;--cf-star:5cqw}
-  .ov{left:50%;top:30%;width:90%;gap:2.6cqw}
-  .ov-t{font-size:10.4cqw}
-  .ov-s{font-size:3cqw;letter-spacing:.2em;gap:2cqw}
+  /* телефон: обложка на весь экран, картинка заполняет его целиком */
+  .cover{display:block;position:relative;height:100svh;min-height:520px;padding:0;overflow:hidden}
+  .stage{position:absolute;inset:0;width:auto;container-type:normal}
+  .stage picture,.stage img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+  .cv-frame{inset:12px;border:0}
+  .cv-frame::before{inset:0}
+  .cv-frame::after{inset:6px}
+  .cv-frame svg{width:22px}
+  .cv-frame svg:nth-child(1){transform:translate(-50%,-50%)}
+  .cv-frame svg:nth-child(2){transform:translate(50%,-50%)}
+  .cv-frame svg:nth-child(3){transform:translate(-50%,50%)}
+  .cv-frame svg:nth-child(4){transform:translate(50%,50%)}
+  .ov{left:50%;top:31%;width:calc(100% - 64px);gap:3.6vw}
+  .ov-t{font-size:min(11vw,64px);letter-spacing:.05em}
+  .ov-s{font-size:min(3.1vw,18px);letter-spacing:.2em;white-space:normal}
 }
 
 /* ── о ночи ── */
