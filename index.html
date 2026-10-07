@@ -78,24 +78,22 @@ h3{font-size:clamp(22px,2vw,28px);line-height:1.15}
 .cover{background:var(--night);color:var(--paper)}
 .stage{position:relative;max-width:1600px;margin-inline:auto;container-type:inline-size}
 .stage img{width:100%}
-.ov{position:absolute;left:50.9%;top:51.6%;transform:translateX(-50%);width:42%;display:grid;justify-items:center;text-align:center;gap:.35cqw}
-.ov-sub{display:flex;align-items:center;gap:1.1cqw;font:400 1.15cqw/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.3em;color:var(--rose);white-space:nowrap}
-.ov-sub::before,.ov-sub::after{content:"";width:3.2cqw;height:1px;background:var(--gold);opacity:.8}
-.ov-date{font:400 2.7cqw/1 var(--f-display);color:var(--paper);margin-top:.3cqw;font-variant-numeric:lining-nums;filter:url(#ink)}
-.ov-line{font:400 1.25cqw/1.3 var(--f-body);color:#E8D6B8;font-variant-numeric:lining-nums;white-space:nowrap}
-.ov-place{color:var(--gold)}
+.ov{position:absolute;left:52.8%;top:46.4%;transform:translateX(-50%);width:16%;margin:0;text-align:center;font:400 1.5cqw/1.12 var(--f-display);letter-spacing:.04em;color:#E8D6B8}
+.ov span{display:block}
 @media (max-width:700px){
-  .ov{left:50%;top:35.2%;width:72%;gap:.5cqw}
-  .ov-sub{font-size:2.7cqw;letter-spacing:.2em;gap:2cqw}
-  .ov-sub::before,.ov-sub::after{width:5cqw}
-  .ov-date{font-size:5.8cqw;margin-top:.8cqw}
-  .ov-line{font-size:3cqw}
-  .d-only{display:none}
+  .ov{left:50%;top:37.4%;width:80%;font-size:3.5cqw;letter-spacing:.14em;text-transform:uppercase}
+  .ov span{display:inline}
 }
 
 /* ── о ночи ── */
 .night-intro{padding-block:clamp(72px,10vw,120px) 0}
 .night-intro .grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:start}
+.facts{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px}
+.chip{position:relative;isolation:isolate;display:inline-flex;align-items:center;padding:15px 24px;font:400 18px/1 var(--f-display);color:var(--ink);font-variant-numeric:lining-nums;white-space:nowrap}
+.chip::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:40px 28px 44px 30px/30px 44px 28px 40px;filter:url(#rough)}
+.chip:nth-child(2)::before{border-radius:30px 44px 28px 40px/44px 30px 40px 28px}
+.chip:nth-child(3)::before{border-radius:44px 30px 40px 28px/28px 40px 30px 44px}
+@media (max-width:520px){.chip{padding:13px 18px;font-size:16px}}
 .night-intro .text{display:grid;gap:22px}
 @media (max-width:880px){.night-intro .grid{grid-template-columns:minmax(0,1fr)}}
 .drop::first-letter{float:left;font:400 4.4em/.82 var(--f-display);color:var(--vermilion);padding:.08em .1em 0 0}
@@ -126,7 +124,7 @@ h3{font-size:clamp(22px,2vw,28px);line-height:1.15}
 .note{margin:clamp(40px,5vw,60px) auto 0;max-width:620px;text-align:center;--pl-bg:var(--paper);display:grid;gap:6px;justify-items:center}
 
 /* ── замок и места ── */
-.castle-sec{padding-bottom:clamp(24px,3vw,40px)}
+.castle-sec{padding-bottom:clamp(48px,6vw,80px)}
 .castle{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:center}
 .castle .text{display:grid;gap:20px;justify-items:start}
 @media (max-width:880px){.castle{grid-template-columns:minmax(0,1fr)}}
@@ -156,8 +154,8 @@ h3{font-size:clamp(22px,2vw,28px);line-height:1.15}
 .feast p{max-width:52ch;color:#E8D6B8}
 
 /* ── ход дня ── */
-.day-sec{padding-top:clamp(16px,2vw,24px)}
-.ornament{width:min(100%,1100px);margin:0 auto clamp(28px,3vw,44px)}
+.day-sec{padding-top:clamp(32px,4vw,48px)}
+.ornament{width:min(100%,1100px);margin:0 auto clamp(56px,6vw,88px)}
 .sky{list-style:none;margin:0;padding:0}
 .sky li{position:relative;isolation:isolate;padding-block:clamp(28px,3.6vw,42px)}
 .sky li::before{content:"";position:absolute;inset:-14px -30px 0 -30px;z-index:-1;background:var(--band);filter:url(#rough)}
@@ -199,8 +197,7 @@ footer .star{width:40px}
 footer p{font:400 20px/1.3 var(--f-display)}
 footer small{font-size:15px;opacity:.7}
 </style>
-</head>
-<body>
+
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <filter id="rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G"/></filter>
   <filter id="rough-sm" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter>
@@ -215,12 +212,7 @@ footer small{font-size:15px;opacity:.7}
         <source media="(max-width:700px)" srcset="art/cover-m.jpg" width="1200" height="1490">
         <img src="art/cover.jpg" alt="Обложка: надпись Halloween в окружении скелета коня в лентах, коронованных летучих мышей, чёрного зайца с фонарём и тыкв" width="2200" height="1228">
       </picture>
-      <div class="ov" aria-hidden="true">
-        <p class="ov-sub">в замке посреди джунглей</p>
-        <p class="ov-date">31 октября</p>
-        <p class="ov-line"><span class="d-only">суббота · </span>14:00 — 00:00</p>
-        <p class="ov-line ov-place">Bale Tudor · <span class="d-only">Бонгкаса, </span>Убуд</p>
-      </div>
+      <p class="ov" aria-hidden="true"><span>в замке</span> <span>посреди джунглей</span></p>
     </div>
   </section>
 
@@ -229,6 +221,7 @@ footer small{font-size:15px;opacity:.7}
       <div class="text">
         <h2>О чём эта ночь</h2>
         <p class="lead drop">В ночь на первое ноября граница между мирами истончается. Мы открываем ворота замка на десять часов, от дневного солнца до полуночи, и превращаем его в одну большую игру. Каждый, кто войдёт, становится жителем замка: получает сословие, союзников и общее дело. Формат уже проверен: так мы играли в старой усадьбе под Москвой.</p>
+        <p class="facts"><span class="chip">31 октября</span><span class="chip">14:00 — 00:00</span><span class="chip">Bale Tudor · Убуд</span></p>
       </div>
       <ul class="rules">
         <li class="plate"><span class="label">Сословия</span><p class="small">Две-три большие группы. У каждой своё главное задание на весь день.</p></li>
@@ -368,5 +361,6 @@ footer small{font-size:15px;opacity:.7}
   <p>31 октября · 14:00 — 00:00</p>
   <small>Bale Tudor, Jl. Dewi Tilotama, Bongkasa Pertiwi, Bali · <a href="https://maps.app.goo.gl/QkY5Y5VHLDEFLeCC8" target="_blank" rel="noopener">карта</a></small>
 </footer>
+
 </body>
 </html>
