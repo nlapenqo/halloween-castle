@@ -79,17 +79,15 @@ h2 .acc{font-style:normal;color:var(--vermilion);font-size:1.14em;letter-spacing
 /* ── обложка: на весь экран, заголовок набран шрифтом заголовков ── */
 .cover{--cv-pad:clamp(20px,6svh,72px);background:#1E111B;color:var(--paper);min-height:100svh;display:grid;place-items:center;padding-block:var(--cv-pad)}
 .stage{position:relative;width:min(100%,2200px,calc((100svh - 2 * var(--cv-pad)) * 2200 / 1228));container-type:inline-size}
-.stage img{width:100%;-webkit-mask:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent),linear-gradient(transparent,#000 4%,#000 96%,transparent);-webkit-mask-composite:source-in;mask:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent),linear-gradient(transparent,#000 4%,#000 96%,transparent);mask-composite:intersect}
-.ov{position:absolute;left:51%;top:40.5%;transform:translate(-50%,-50%);width:46%;display:grid;justify-items:center;gap:1.3cqw;text-align:center}
+.stage img{width:100%}
+.ov{position:absolute;left:51.4%;top:47.8%;transform:translate(-50%,-50%);width:46%;display:grid;justify-items:center;gap:1.3cqw;text-align:center}
 .ov-t{margin:0;font:400 5.3cqw/1 var(--f-display);text-transform:uppercase;letter-spacing:.07em;color:#F1E3C8;filter:url(#ink)}
 .ov-s{display:flex;align-items:center;gap:1.1cqw;font:400 1.35cqw/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.3em;color:var(--gold);white-space:nowrap}
-.ov-s::before,.ov-s::after{content:"";width:3cqw;height:1px;background:var(--gold);opacity:.7}
 @media (max-width:700px){
   .stage{width:min(100%,calc((100svh - 2 * var(--cv-pad)) * 1200 / 1490))}
-  .ov{left:50%;top:26.5%;width:90%;gap:2.6cqw}
+  .ov{left:50%;top:30%;width:90%;gap:2.6cqw}
   .ov-t{font-size:10.4cqw}
   .ov-s{font-size:3cqw;letter-spacing:.2em;gap:2cqw}
-  .ov-s::before,.ov-s::after{width:4.5cqw}
 }
 
 /* ── о ночи ── */
@@ -128,6 +126,13 @@ h2 .acc{font-style:normal;color:var(--vermilion);font-size:1.14em;letter-spacing
 .estates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(32px,4.4vw,72px);align-items:start}
 .estate{display:grid;gap:14px;justify-items:center;text-align:center;min-width:0}
 .estate .frame{width:100%;margin-bottom:8px}
+/* карточки сословий наклоняются за курсором */
+.tilt3d{transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) rotate(var(--rz,0deg)) scale(var(--sc,1));transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.8,.2,1);will-change:transform}
+.tilt3d.on{transition:transform .12s ease-out}
+.tilt3d img{transform:translateZ(28px)}
+.tilt3d::after{content:"";position:absolute;inset:clamp(8px,1vw,14px);border-radius:20px 28px 16px 30px/28px 16px 30px 20px;background:radial-gradient(circle at var(--mx,50%) var(--my,30%),rgba(255,244,220,.45),transparent 58%);mix-blend-mode:soft-light;opacity:0;transition:opacity .5s;pointer-events:none;transform:translateZ(29px)}
+.tilt3d.on::after{opacity:1}
+@media (prefers-reduced-motion:reduce){.tilt3d,.tilt3d.on{transition:none}}
 .estate p{max-width:34ch}
 .estate .task{display:grid;gap:4px;justify-items:center;margin-top:4px}
 @media (max-width:900px){.estates{grid-template-columns:minmax(0,1fr);max-width:460px;margin-inline:auto}}
@@ -167,8 +172,8 @@ h2 .acc{font-style:normal;color:var(--vermilion);font-size:1.14em;letter-spacing
 @media (max-width:880px){.vgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.vgrid{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){.vig img{transition:none}.vig:hover img{transform:none}}
-.feast{position:relative;background:#20141D;color:var(--paper);margin-block:clamp(60px,8vw,110px);padding-block:clamp(48px,6vw,80px)}
-.feast::before,.feast::after{content:"";position:absolute;left:-20px;right:-20px;height:30px;background:#20141D;filter:url(#rough)}
+.feast{position:relative;background:#21151E;color:var(--paper);margin-block:clamp(60px,8vw,110px);padding-block:clamp(48px,6vw,80px)}
+.feast::before,.feast::after{content:"";position:absolute;left:-20px;right:-20px;height:30px;background:#21151E;filter:url(#rough)}
 .feast::before{top:-14px}.feast::after{bottom:-14px}
 .feast{display:grid;gap:clamp(20px,3vw,36px)}
 .feast .inner{display:grid;justify-items:center;text-align:center}
@@ -256,7 +261,7 @@ footer small{font-size:15px;opacity:.7}
       </ul>
     </div>
     <div class="parade" aria-label="Процессия жителей замка: конь-скелет, дама-мотылёк, ворон-бард, ребёнок с головой-репой, скелет-жонглёр, заяц-барабанщик, соломенное чучело">
-      <div class="track"><img src="art/procession.webp" alt=""><img src="art/procession.webp" alt=""></div>
+      <div class="track"><img src="art/procession.webp" alt=""><img src="art/procession.webp" alt=""><img src="art/procession.webp" alt=""><img src="art/procession.webp" alt=""></div>
     </div>
   </section>
 
@@ -268,19 +273,19 @@ footer small{font-size:15px;opacity:.7}
       </div>
       <div class="estates">
         <article class="estate">
-          <figure class="frame tilt-l"><img src="art/nobles.jpg" alt="Скелет-дворянка в красной мантии с брыжами и короной ведёт мотылька на ленте, рядом лебедь в маске" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/nobles.jpg" alt="Скелет-дворянка в красной мантии с брыжами и короной ведёт мотылька на ленте, рядом лебедь в маске" width="900" height="1205" loading="lazy"></figure>
           <h3>Дворяне</h3>
           <p class="small">Гербы, союзы и браки по расчёту. Влияние здесь копят шёпотом и тратят за один вечер.</p>
           <div class="task"><span class="label">Главное дело</span><p class="small">Удержать власть над замком до полуночи</p></div>
         </article>
         <article class="estate">
-          <figure class="frame tilt-r"><img src="art/commoners.jpg" alt="Крестьянин с головой-тыквой с серпом и корзиной и куст-человек с фонарём" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame tilt3d" style="--rz:1deg"><img src="art/commoners.jpg" alt="Крестьянин с головой-тыквой с серпом и корзиной и куст-человек с фонарём" width="900" height="1205" loading="lazy"></figure>
           <h3>Простолюдины</h3>
           <p class="small">Ремесло, торговля, слухи с кухни. Без них не горит ни один очаг и не начинается ни один бунт.</p>
           <div class="task"><span class="label">Главное дело</span><p class="small">Собрать урожай или забрать своё силой</p></div>
         </article>
         <article class="estate">
-          <figure class="frame tilt-l"><img src="art/crown.jpg" alt="Канцлер с черепом коня в полосатой мантии с печатью и свитком, у ног чёрный кот-писарь" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/crown.jpg" alt="Канцлер с черепом коня в полосатой мантии с печатью и свитком, у ног чёрный кот-писарь" width="900" height="1205" loading="lazy"></figure>
           <h3>Корона</h3>
           <p class="small">Закон, печати и подати. Корона следит за порядком, судит споры и знает о каждом больше, чем стоило бы.</p>
           <div class="task"><span class="label">Главное дело</span><p class="small">Сохранить порядок, когда граница миров тоньше всего</p></div>
@@ -390,6 +395,15 @@ const open=z=>{im.src=z.src;im.alt=z.alt;cap.textContent=z.closest('figure')?.qu
 document.querySelectorAll('.zoom').forEach(z=>{z.addEventListener('click',()=>open(z));z.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(z)}})});
 d.querySelector('.lb-x').addEventListener('click',()=>d.close());
 d.addEventListener('click',e=>{if(e.target===d)d.close()});})();
+
+(()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches||!matchMedia('(hover: hover) and (pointer: fine)').matches)return;
+document.querySelectorAll('.tilt3d').forEach(c=>{let raf=0,ev=null;
+const set=()=>{raf=0;const p=c.parentElement.getBoundingClientRect(),x=Math.min(1,Math.max(0,(ev.clientX-p.left)/c.offsetWidth)),y=Math.min(1,Math.max(0,(ev.clientY-p.top)/c.offsetHeight));
+c.style.setProperty('--ry',((x-.5)*16).toFixed(2)+'deg');c.style.setProperty('--rx',((.5-y)*14).toFixed(2)+'deg');
+c.style.setProperty('--mx',(x*100).toFixed(1)+'%');c.style.setProperty('--my',(y*100).toFixed(1)+'%')};
+c.addEventListener('pointerenter',()=>{c.classList.add('on');c.style.setProperty('--sc','1.03')});
+c.addEventListener('pointermove',e=>{ev=e;if(!raf)raf=requestAnimationFrame(set)});
+c.addEventListener('pointerleave',()=>{c.classList.remove('on');['--rx','--ry','--sc'].forEach(p=>c.style.removeProperty(p))});});})();
 </script>
 
 </body>
