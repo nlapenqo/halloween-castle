@@ -158,6 +158,10 @@ h2 .acc{font:400 1.5em/.8 "Neucha",var(--f-display);font-style:normal;text-trans
 .tilt3d::after{content:"";position:absolute;inset:clamp(8px,1vw,14px);border-radius:20px 28px 16px 30px/28px 16px 30px 20px;background:radial-gradient(circle at var(--mx,50%) var(--my,30%),rgba(255,244,220,.45),transparent 58%);mix-blend-mode:soft-light;opacity:0;transition:opacity .5s;pointer-events:none;transform:translateZ(29px)}
 .tilt3d.on::after{opacity:1}
 @media (prefers-reduced-motion:reduce){.tilt3d,.tilt3d.on{transition:none}}
+.draft{max-width:680px;margin:clamp(56px,7vw,84px) auto 0;--pl-bg:var(--paper);display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:start}
+.draft p{font-size:17px;line-height:1.55}
+.draft .fn-star{width:34px;height:auto;margin-top:-2px;transform:rotate(-8deg)}
+h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-left:.08em;transform:translateY(-.08em) rotate(10deg)}
 .estate p{max-width:34ch}
 .estate .task{display:grid;gap:4px;justify-items:center;margin-top:4px}
 @media (max-width:900px){.estates{grid-template-columns:minmax(0,1fr);max-width:460px;margin-inline:auto}}
@@ -294,7 +298,7 @@ footer small{font-size:15px;opacity:.7}
   <section class="estates-sec" id="estates">
     <div class="wrap">
       <div class="head">
-        <h2>Три <em class="acc">сословия</em></h2>
+        <h2>Три <em class="acc">сословия</em><img class="fn" src="art/star.png" alt="*"></h2>
         <p class="lead">Кем ты войдёшь в ворота</p>
       </div>
       <div class="estates">
@@ -317,6 +321,7 @@ footer small{font-size:15px;opacity:.7}
           <div class="task"><span class="label">Главное дело</span><p class="small">Сохранить порядок, когда граница миров тоньше всего</p></div>
         </article>
       </div>
+      <div class="plate draft"><img class="fn-star" src="art/star.png" alt="*"><p>Проработка финальной концепции сословий идёт прямо сейчас. Названия, главные задания и образы уточняем вместе с командой и покажем совсем скоро.</p></div>
     </div>
   </section>
 
