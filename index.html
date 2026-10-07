@@ -77,15 +77,27 @@ h2 .acc{font:400 1.5em/.8 "Neucha",var(--f-display);font-style:normal;text-trans
 @media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
 
 /* ── обложка: на весь экран, заголовок набран шрифтом заголовков ── */
-.cover{--cv-pad:clamp(20px,6svh,72px);background:#1E111B;color:var(--paper);min-height:100svh;display:grid;place-items:center;padding-block:var(--cv-pad)}
+.cover{--cv-pad:clamp(20px,6svh,72px);background:#1E111B;color:var(--paper);min-height:100svh;display:grid;place-items:center;padding:var(--cv-pad) clamp(24px,3vw,56px)}
 .stage{position:relative;width:min(100%,2200px,calc((100svh - 2 * var(--cv-pad)) * 2200 / 1228));container-type:inline-size}
 .stage img{width:100%}
-.ov{position:absolute;left:51.4%;top:47.8%;transform:translate(-50%,-50%);width:46%;display:grid;justify-items:center;gap:1.3cqw;text-align:center}
+/* рамка обложки: тёмный кант прячет срез картинки, по нему двойная золотая линия, в углах звёзды */
+.cv-frame{position:absolute;inset:0;pointer-events:none;border:var(--cf-band,1.3cqw) solid #1E111B}
+.cv-frame::before,.cv-frame::after{content:"";position:absolute;border:2px solid var(--gold);border-radius:6px 10px 5px 9px/9px 5px 10px 6px;filter:url(#rough)}
+.cv-frame::before{inset:-.55cqw}
+.cv-frame::after{inset:.35cqw;border-width:1px;opacity:.6}
+.cv-frame svg{position:absolute;width:var(--cf-star,3.2cqw);height:auto;fill:var(--gold);filter:url(#rough-sm)}
+.cv-frame svg:nth-child(1){left:0;top:0;transform:translate(-50%,-50%) translate(-.55cqw,-.55cqw)}
+.cv-frame svg:nth-child(2){right:0;top:0;transform:translate(50%,-50%) translate(.55cqw,-.55cqw)}
+.cv-frame svg:nth-child(3){left:0;bottom:0;transform:translate(-50%,50%) translate(-.55cqw,.55cqw)}
+.cv-frame svg:nth-child(4){right:0;bottom:0;transform:translate(50%,50%) translate(.55cqw,.55cqw)}
+.cover{background-image:var(--stars);background-size:420px}
+.ov{position:absolute;left:50%;top:47.8%;transform:translate(-50%,-50%);width:46%;display:grid;justify-items:center;gap:1.3cqw;text-align:center}
 .ov-t{margin:0;font:400 5.3cqw/1 var(--f-display);text-transform:uppercase;letter-spacing:.07em;color:#F1E3C8;filter:url(#ink)}
 .ov-s{display:flex;align-items:center;gap:1.1cqw;font:400 1.35cqw/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.3em;color:var(--gold);white-space:nowrap}
 @media (max-width:700px){
-  .cover{min-height:0;padding-block:14px}
+  .cover{min-height:0;padding:18px 14px}
   .stage{width:100%}
+  .cv-frame{--cf-band:2.2cqw;--cf-star:5cqw}
   .ov{left:50%;top:30%;width:90%;gap:2.6cqw}
   .ov-t{font-size:10.4cqw}
   .ov-s{font-size:3cqw;letter-spacing:.2em;gap:2cqw}
@@ -214,7 +226,7 @@ h2 .acc{font:400 1.5em/.8 "Neucha",var(--f-display);font-style:normal;text-trans
 .ways .plate{--pl-bg:var(--paper);--pl-line:var(--gold);color:var(--ink);display:grid;gap:8px;align-content:start}
 .ways .plate:first-child{transform:rotate(-.8deg)}.ways .plate:last-child{transform:rotate(.7deg)}
 @media (max-width:620px){.ways{grid-template-columns:minmax(0,1fr)}}
-.keepers-title{text-align:center;color:var(--gold);margin-bottom:22px}
+.keepers-title{text-align:center;color:var(--gold);margin-bottom:28px;font:400 clamp(24px,2.6vw,34px)/1.15 var(--f-display);text-transform:uppercase;letter-spacing:.14em}
 .keepers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
 .keeper{--pl-bg:#2A1B26;--pl-line:rgba(217,174,82,.55);display:grid;gap:6px;align-content:start;padding:20px 22px}
 .keeper .who{display:flex;flex-wrap:wrap;gap:4px 14px}
@@ -243,6 +255,7 @@ footer small{font-size:15px;opacity:.7}
         <source media="(max-width:700px)" srcset="art/cover-m-clean.jpg" width="1200" height="1490">
         <img src="art/cover-clean.jpg" alt="Обложка: скелет коня в лентах, коронованные летучие мыши, чёрный заяц с фонарём и тыквы" width="2200" height="1228">
       </picture>
+      <div class="cv-frame" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg></div>
       <div class="ov"><h1 class="ov-t" id="t">Halloween</h1><p class="ov-s">в замке посреди джунглей</p></div>
     </div>
   </section>
@@ -371,7 +384,7 @@ footer small{font-size:15px;opacity:.7}
         <div class="plate"><span class="label">Своя локация</span><h3>Придумайте свой уголок замка</h3><p class="small">Квест, ритуал, инсталляция, персонаж с тайной или свой звук у костра. Расскажите идею, и мы найдём для неё место.</p></div>
         <div class="plate"><span class="label">Команда хранителя</span><h3>Помогите собрать одну из зон</h3><p class="small">Чайная, бар, декор, программа или пир. Напишите хранителю зоны, которая вам ближе.</p></div>
       </div>
-      <p class="label keepers-title">Хранители замка</p>
+      <h3 class="keepers-title">Хранители замка</h3>
       <div class="keepers">
         <div class="plate keeper"><h3>Чайная и костёр</h3><div class="who"><a href="https://t.me/nlapenko" target="_blank" rel="noopener">@nlapenko</a><a href="https://t.me/Iakov_garuda" target="_blank" rel="noopener">@Iakov_garuda</a></div></div>
         <div class="plate keeper"><h3>Квесты и программа</h3><div class="who"><a href="https://t.me/dariagaity" target="_blank" rel="noopener">@dariagaity</a><a href="https://t.me/pobedeen" target="_blank" rel="noopener">@pobedeen</a></div></div>
