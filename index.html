@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="31 октября, 14:00–00:00. Halloween в замке Bale Tudor рядом с Убудом: сословия, квесты, пир за длинным столом, костёр и танцы до полуночи.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Halloween в замке посреди джунглей">
+<meta property="og:description" content="31 октября, 14:00–00:00. Halloween в замке Bale Tudor рядом с Убудом: сословия, квесты, пир за длинным столом, костёр и танцы до полуночи.">
+<meta property="og:image" content="https://nlapenqo.github.io/halloween-castle/art/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://nlapenqo.github.io/halloween-castle/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1C111B">
+<link rel="icon" href="art/s-pumpkin1.webp" type="image/webp">
+<style>body{margin:0}[hidden]{display:none!important}</style>
+<title>Halloween в замке</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alice&family=Kurale&display=swap">
+<style>
+/* Layout: книга-сказка — обложка с вписанной датой, главы на кремовой бумаге, неровные рамки, день темнеет полосами от солнца к луне */
+:root{
+  --paper:#F2E0C0;
+  --paper-deep:#E9D1A6;
+  --ink:#26171D;
+  --night:#1C111B;      /* фон обложки и финала */
+  --cobalt:#3D63B0;
+  --cobalt-deep:#2C4A8E;
+  --navy:#22305C;
+  --vermilion:#DC5530;
+  --rose:#DA9391;
+  --mauve:#9A8593;
+  --ochre:#CD9236;
+  --gold:#D9AE52;
+  --f-display:"Alice","Kurale",Georgia,serif;
+  --f-body:"Kurale","Alice",Georgia,serif;
+  --gutter:clamp(16px,5vw,64px);
+  --stars:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="520" height="520"%3E%3Cfilter id="r"%3E%3CfeTurbulence type="fractalNoise" baseFrequency=".09" numOctaves="1" seed="3"/%3E%3CfeDisplacementMap in="SourceGraphic" scale="2"/%3E%3C/filter%3E%3Cg fill="%23D9AE52" fill-opacity=".55" filter="url(%23r)"%3E%3Cpolygon points="60.0,61.0 61.0,67.6 66.4,63.6 62.4,69.0 69.0,70.0 62.4,71.0 66.4,76.4 61.0,72.4 60.0,79.0 59.0,72.4 53.6,76.4 57.6,71.0 51.0,70.0 57.6,69.0 53.6,63.6 59.0,67.6"/%3E%3Cpolygon points="330.0,35.0 330.6,38.6 333.5,36.5 331.4,39.4 335.0,40.0 331.4,40.6 333.5,43.5 330.6,41.4 330.0,45.0 329.4,41.4 326.5,43.5 328.6,40.6 325.0,40.0 328.6,39.4 326.5,36.5 329.4,38.6"/%3E%3Cpolygon points="250.0,203.0 250.8,208.2 254.9,205.1 251.8,209.2 257.0,210.0 251.8,210.8 254.9,214.9 250.8,211.8 250.0,217.0 249.2,211.8 245.1,214.9 248.2,210.8 243.0,210.0 248.2,209.2 245.1,205.1 249.2,208.2"/%3E%3Cpolygon points="90.0,325.5 90.5,328.8 93.2,326.8 91.2,329.5 94.5,330.0 91.2,330.5 93.2,333.2 90.5,331.2 90.0,334.5 89.5,331.2 86.8,333.2 88.8,330.5 85.5,330.0 88.8,329.5 86.8,326.8 89.5,328.8"/%3E%3Cpolygon points="400.0,292.0 400.9,297.9 405.7,294.3 402.1,299.1 408.0,300.0 402.1,300.9 405.7,305.7 400.9,302.1 400.0,308.0 399.1,302.1 394.3,305.7 397.9,300.9 392.0,300.0 397.9,299.1 394.3,294.3 399.1,297.9"/%3E%3Cpolygon points="180.0,435.0 180.6,438.6 183.5,436.5 181.4,439.4 185.0,440.0 181.4,440.6 183.5,443.5 180.6,441.4 180.0,445.0 179.4,441.4 176.5,443.5 178.6,440.6 175.0,440.0 178.6,439.4 176.5,436.5 179.4,438.6"/%3E%3Cpolygon points="470.0,464.0 470.7,468.3 474.2,465.8 471.7,469.3 476.0,470.0 471.7,470.7 474.2,474.2 470.7,471.7 470.0,476.0 469.3,471.7 465.8,474.2 468.3,470.7 464.0,470.0 468.3,469.3 465.8,465.8 469.3,468.3"/%3E%3C/g%3E%3C/svg%3E');
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--paper);color:var(--ink);font:400 18px/1.55 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+a:focus-visible{outline:2px dashed var(--vermilion);outline-offset:4px;border-radius:6px}
+p{margin:0}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1240px;margin-inline:auto;padding-inline:var(--gutter)}
+section{position:relative;overflow-x:clip}
+
+/* ── типографика: два шрифта, один стиль заголовков ── */
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance;font-family:var(--f-display)}
+h2{font-size:clamp(34px,4.6vw,60px);line-height:1.05;text-transform:uppercase;letter-spacing:.04em;filter:url(#ink)}
+h3{font-size:clamp(22px,2vw,28px);line-height:1.15}
+.label{font:400 13px/1.3 var(--f-display);text-transform:uppercase;letter-spacing:.18em;color:var(--vermilion)}
+.lead{font-size:clamp(19px,1.5vw,21px);max-width:58ch}
+.small{font-size:16px;line-height:1.5}
+.head{display:grid;gap:16px;justify-items:center;text-align:center;margin-bottom:clamp(36px,5vw,60px)}
+.head .lead{opacity:.85}
+
+/* ── неровные плашки ── */
+.plate{position:relative;isolation:isolate;padding:clamp(20px,2.4vw,28px)}
+.plate::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pl-bg,var(--paper-deep));border:2.5px solid var(--pl-line,var(--ink));border-radius:26px 34px 22px 38px/34px 22px 38px 26px;filter:url(#rough)}
+.frame{position:relative;isolation:isolate;padding:clamp(8px,1vw,14px);margin:0}
+.frame::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--fr,var(--night));border-radius:30px 40px 26px 44px/40px 26px 44px 30px;filter:url(#rough)}
+.frame img{width:100%;border-radius:20px 28px 16px 30px/28px 16px 30px 20px;filter:url(#rough-sm)}
+.tilt-l{transform:rotate(-1.2deg)}.tilt-r{transform:rotate(1deg)}
+.btn{position:relative;isolation:isolate;display:inline-flex;align-items:center;padding:15px 24px;text-decoration:none;font:400 18px/1 var(--f-display);color:var(--ink);transition:transform .25s}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:40px 28px 44px 30px/30px 44px 28px 40px;filter:url(#rough)}
+.btn:hover{transform:rotate(-2deg) scale(1.04)}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
+
+/* ── обложка: дата и место вписаны в иллюстрацию ── */
+.cover{background:var(--night);color:var(--paper)}
+.stage{position:relative;max-width:1600px;margin-inline:auto;container-type:inline-size}
+.stage img{width:100%}
+.ov{position:absolute;left:50.9%;top:51.6%;transform:translateX(-50%);width:42%;display:grid;justify-items:center;text-align:center;gap:.35cqw}
+.ov-sub{display:flex;align-items:center;gap:1.1cqw;font:400 1.15cqw/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.3em;color:var(--rose);white-space:nowrap}
+.ov-sub::before,.ov-sub::after{content:"";width:3.2cqw;height:1px;background:var(--gold);opacity:.8}
+.ov-date{font:400 2.7cqw/1 var(--f-display);color:var(--paper);margin-top:.3cqw;font-variant-numeric:lining-nums;filter:url(#ink)}
+.ov-line{font:400 1.25cqw/1.3 var(--f-body);color:#E8D6B8;font-variant-numeric:lining-nums;white-space:nowrap}
+.ov-place{color:var(--gold)}
+@media (max-width:700px){
+  .ov{left:50%;top:35.2%;width:72%;gap:.5cqw}
+  .ov-sub{font-size:2.7cqw;letter-spacing:.2em;gap:2cqw}
+  .ov-sub::before,.ov-sub::after{width:5cqw}
+  .ov-date{font-size:5.8cqw;margin-top:.8cqw}
+  .ov-line{font-size:3cqw}
+  .d-only{display:none}
+}
+
+/* ── о ночи ── */
+.night-intro{padding-block:clamp(72px,10vw,120px) 0}
+.night-intro .grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:start}
+.night-intro .text{display:grid;gap:22px}
+@media (max-width:880px){.night-intro .grid{grid-template-columns:minmax(0,1fr)}}
+.drop::first-letter{float:left;font:400 4.4em/.82 var(--f-display);color:var(--vermilion);padding:.08em .1em 0 0}
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;list-style:none;margin:0;padding:0}
+.rules li{display:grid;gap:8px;align-content:start}
+.rules li:nth-child(1){--pl-bg:var(--rose)}
+.rules li:nth-child(2){--pl-bg:var(--ochre)}
+.rules li:nth-child(3){--pl-bg:var(--cobalt);color:var(--paper)}
+.rules li:nth-child(3) .label{color:var(--paper)}
+.rules li:nth-child(4){--pl-bg:var(--paper-deep)}
+.rules li .label{color:var(--ink)}
+.rules li:nth-child(odd){transform:rotate(-.8deg)}.rules li:nth-child(even){transform:rotate(.9deg) translateY(10px)}
+@media (max-width:480px){.rules{grid-template-columns:minmax(0,1fr)}.rules li:nth-child(even){transform:rotate(.6deg)}}
+.parade{margin-top:clamp(56px,8vw,100px);height:clamp(150px,22vw,300px);overflow:hidden;position:relative}
+.parade .track{display:flex;height:100%;width:max-content;animation:march 70s linear infinite}
+.parade img{height:100%;width:auto;max-width:none;padding-right:clamp(30px,5vw,80px)}
+@keyframes march{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@media (prefers-reduced-motion:reduce){.parade .track{animation:none;transform:translateX(-12%)}}
+
+/* ── сословия ── */
+.estates-sec{padding-block:clamp(80px,11vw,140px)}
+.estates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(32px,4.4vw,72px);align-items:start}
+.estate{display:grid;gap:14px;justify-items:center;text-align:center;min-width:0}
+.estate .frame{width:100%;margin-bottom:8px}
+.estate p{max-width:34ch}
+.estate .task{display:grid;gap:4px;justify-items:center;margin-top:4px}
+@media (max-width:900px){.estates{grid-template-columns:minmax(0,1fr);max-width:460px;margin-inline:auto}}
+.note{margin:clamp(40px,5vw,60px) auto 0;max-width:620px;text-align:center;--pl-bg:var(--paper);display:grid;gap:6px;justify-items:center}
+
+/* ── замок и места ── */
+.castle-sec{padding-bottom:clamp(24px,3vw,40px)}
+.castle{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:center}
+.castle .text{display:grid;gap:20px;justify-items:start}
+@media (max-width:880px){.castle{grid-template-columns:minmax(0,1fr)}}
+.links{display:flex;flex-wrap:wrap;gap:14px}
+.real-head{text-align:center;margin-top:clamp(64px,8vw,100px)}
+.real{display:grid;grid-template-columns:1.3fr .8fr 1.3fr;gap:clamp(14px,2vw,26px);margin-top:24px;align-items:end}
+.real figure{margin:0;display:grid;gap:10px;justify-items:center}
+.real .frame{--fr:var(--paper-deep);width:100%}
+.real figcaption{font-size:15px;opacity:.75}
+@media (max-width:640px){.real{grid-template-columns:1fr 1fr}.real figure:first-child{grid-column:1/-1}}
+.places{margin-top:clamp(90px,12vw,150px)}
+.vgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,60px) clamp(20px,3vw,48px)}
+.vig{display:grid;gap:10px;justify-items:center;text-align:center;align-content:start;min-width:0}
+.vig img{width:min(100%,340px);aspect-ratio:1;object-fit:contain;transition:transform .5s cubic-bezier(.3,1.6,.5,1);margin-bottom:6px}
+.vig:hover img{transform:rotate(-2.5deg) scale(1.03)}
+.vig p{max-width:32ch}
+@media (max-width:880px){.vgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.vgrid{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){.vig img{transition:none}.vig:hover img{transform:none}}
+.feast{position:relative;background:#20141D;color:var(--paper);margin-block:clamp(60px,8vw,110px);padding-block:clamp(48px,6vw,80px)}
+.feast::before,.feast::after{content:"";position:absolute;left:-20px;right:-20px;height:30px;background:#20141D;filter:url(#rough)}
+.feast::before{top:-14px}.feast::after{bottom:-14px}
+.feast .inner{display:grid;gap:22px;justify-items:center;text-align:center}
+.feast .pan{width:100%;overflow-x:auto;scrollbar-width:none}
+.feast .pan::-webkit-scrollbar{display:none}
+.feast img{width:100%;max-width:1400px;margin-inline:auto;min-width:720px}
+.feast p{max-width:52ch;color:#E8D6B8}
+
+/* ── ход дня ── */
+.day-sec{padding-top:clamp(16px,2vw,24px)}
+.ornament{width:min(100%,1100px);margin:0 auto clamp(28px,3vw,44px)}
+.sky{list-style:none;margin:0;padding:0}
+.sky li{position:relative;isolation:isolate;padding-block:clamp(28px,3.6vw,42px)}
+.sky li::before{content:"";position:absolute;inset:-14px -30px 0 -30px;z-index:-1;background:var(--band);filter:url(#rough)}
+.sky li:first-child::before{top:0}
+.sky li:last-child::before{bottom:-40px}
+.sky .row{display:grid;grid-template-columns:150px 64px minmax(0,1fr);gap:clamp(14px,3vw,40px);align-items:center;max-width:980px}
+.sky time{font:400 clamp(32px,3.6vw,46px)/1 var(--f-display);font-variant-numeric:lining-nums tabular-nums}
+.sky img{width:60px;height:60px;object-fit:contain}
+.sky h3{margin-bottom:4px}
+.sky p{font-size:17px;max-width:56ch}
+.sky .day{--band:var(--paper);color:var(--ink)}
+.sky .day2{--band:var(--paper-deep);color:var(--ink)}
+.sky .dusk{--band:var(--rose);color:var(--ink)}
+.sky .dusk2{--band:var(--mauve);color:var(--ink)}
+.sky .eve{--band:var(--cobalt-deep);color:var(--paper)}
+.sky .late{--band:var(--navy);color:var(--paper)}
+.sky .mid{--band:var(--night);color:var(--paper)}
+@media (max-width:620px){.sky .row{grid-template-columns:auto minmax(0,1fr);gap:10px 16px}.sky .row>div{grid-column:1/-1}.sky img{width:46px;height:46px}}
+
+/* ── соавторы и хранители ── */
+.coauthors{background:var(--night) var(--stars);color:var(--paper);padding-block:clamp(90px,11vw,140px) clamp(80px,10vw,120px);z-index:1}
+.coauthors h2{color:var(--paper)}
+.coauthors .head .lead{color:#E8D6B8;opacity:1}
+.ways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.4vw,30px);max-width:900px;margin:0 auto clamp(64px,8vw,96px)}
+.ways .plate{--pl-bg:var(--paper);--pl-line:var(--gold);color:var(--ink);display:grid;gap:8px;align-content:start}
+.ways .plate:first-child{transform:rotate(-.8deg)}.ways .plate:last-child{transform:rotate(.7deg)}
+@media (max-width:620px){.ways{grid-template-columns:minmax(0,1fr)}}
+.keepers-title{text-align:center;color:var(--gold);margin-bottom:22px}
+.keepers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
+.keeper{--pl-bg:#2A1B26;--pl-line:rgba(217,174,82,.55);display:grid;gap:6px;align-content:start;padding:20px 22px}
+.keeper .who{display:flex;flex-wrap:wrap;gap:4px 14px}
+.keeper .who a{font-size:17px;text-decoration:none;color:var(--gold);border-bottom:1px dashed rgba(217,174,82,.6)}
+.keeper .who a:hover{color:var(--paper);border-color:var(--paper)}
+@media (max-width:880px){.keepers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:540px){.keepers{grid-template-columns:minmax(0,1fr)}}
+
+footer{padding-block:clamp(48px,6vw,72px);text-align:center;display:grid;gap:10px;justify-items:center}
+footer .star{width:40px}
+footer p{font:400 20px/1.3 var(--f-display)}
+footer small{font-size:15px;opacity:.7}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="rough-sm" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="1" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/></filter>
+</svg>
+
+<main>
+  <section class="cover" aria-labelledby="t">
+    <h1 class="sr-only" id="t">Halloween в замке посреди джунглей. 31 октября, 14:00–00:00, Bale Tudor, Убуд</h1>
+    <div class="stage">
+      <picture>
+        <source media="(max-width:700px)" srcset="art/cover-m.jpg" width="1200" height="1490">
+        <img src="art/cover.jpg" alt="Обложка: надпись Halloween в окружении скелета коня в лентах, коронованных летучих мышей, чёрного зайца с фонарём и тыкв" width="2200" height="1228">
+      </picture>
+      <div class="ov" aria-hidden="true">
+        <p class="ov-sub">в замке посреди джунглей</p>
+        <p class="ov-date">31 октября</p>
+        <p class="ov-line"><span class="d-only">суббота · </span>14:00 — 00:00</p>
+        <p class="ov-line ov-place">Bale Tudor · <span class="d-only">Бонгкаса, </span>Убуд</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="night-intro">
+    <div class="wrap grid">
+      <div class="text">
+        <h2>О чём эта ночь</h2>
+        <p class="lead drop">В ночь на первое ноября граница между мирами истончается. Мы открываем ворота замка на десять часов, от дневного солнца до полуночи, и превращаем его в одну большую игру. Каждый, кто войдёт, становится жителем замка: получает сословие, союзников и общее дело. Формат уже проверен: так мы играли в старой усадьбе под Москвой.</p>
+      </div>
+      <ul class="rules">
+        <li class="plate"><span class="label">Сословия</span><p class="small">Две-три большие группы. У каждой своё главное задание на весь день.</p></li>
+        <li class="plate"><span class="label">Квесты</span><p class="small">Личные истории по желанию. Можно плести интриги, а можно просто пить чай и смотреть.</p></li>
+        <li class="plate"><span class="label">Персонажи</span><p class="small">Барды и актёры ведут игру: раздают задания, хранят тайны, подливают масла в огонь.</p></li>
+        <li class="plate"><span class="label">Образ</span><p class="small">Приходите в образе своего сословия. Подробности после распределения.</p></li>
+      </ul>
+    </div>
+    <div class="parade" aria-label="Процессия жителей замка: конь-скелет, дама-мотылёк, ворон-бард, ребёнок с головой-репой, скелет-жонглёр, заяц-барабанщик, соломенное чучело">
+      <div class="track"><img src="art/procession.webp" alt=""><img src="art/procession.webp" alt=""></div>
+    </div>
+  </section>
+
+  <section class="estates-sec" id="estates">
+    <div class="wrap">
+      <div class="head">
+        <h2>Три сословия</h2>
+        <p class="lead">Кем ты войдёшь в ворота</p>
+      </div>
+      <div class="estates">
+        <article class="estate">
+          <figure class="frame tilt-l"><img src="art/nobles.jpg" alt="Скелет-дворянка в красной мантии с брыжами и короной ведёт мотылька на ленте, рядом лебедь в маске" width="900" height="1205" loading="lazy"></figure>
+          <h3>Дворяне</h3>
+          <p class="small">Гербы, союзы и браки по расчёту. Влияние здесь копят шёпотом и тратят за один вечер.</p>
+          <div class="task"><span class="label">Главное дело</span><p class="small">Удержать власть над замком до полуночи</p></div>
+        </article>
+        <article class="estate">
+          <figure class="frame tilt-r"><img src="art/commoners.jpg" alt="Крестьянин с головой-тыквой с серпом и корзиной и куст-человек с фонарём" width="900" height="1205" loading="lazy"></figure>
+          <h3>Простолюдины</h3>
+          <p class="small">Ремесло, торговля, слухи с кухни. Без них не горит ни один очаг и не начинается ни один бунт.</p>
+          <div class="task"><span class="label">Главное дело</span><p class="small">Собрать урожай или забрать своё силой</p></div>
+        </article>
+        <article class="estate">
+          <figure class="frame tilt-l"><img src="art/crown.jpg" alt="Канцлер с черепом коня в полосатой мантии с печатью и свитком, у ног чёрный кот-писарь" width="900" height="1205" loading="lazy"></figure>
+          <h3>Корона</h3>
+          <p class="small">Закон, печати и подати. Корона следит за порядком, судит споры и знает о каждом больше, чем стоило бы.</p>
+          <div class="task"><span class="label">Главное дело</span><p class="small">Сохранить порядок, когда граница миров тоньше всего</p></div>
+        </article>
+      </div>
+      <div class="plate note"><span class="label">Черновик</span><p class="small">Названия сословий и их задания дорабатываем вместе со всеми, кто присоединится к подготовке.</p></div>
+    </div>
+  </section>
+
+  <section class="castle-sec">
+    <div class="wrap">
+      <div class="castle">
+        <figure class="frame tilt-r"><img src="art/castle.jpg" alt="Иллюстрация замка Bale Tudor: фахверковый дом с крутыми крышами на склоне в джунглях, тыквы вдоль тропы, летучие мыши" width="1200" height="1490" loading="lazy"></figure>
+        <div class="text">
+          <h2>Замок в джунглях</h2>
+          <p class="lead">Bale Tudor — фэнтезийный парк над рекой Аюнг в Бонгкасе, рядом с Убудом. Фахверковые дома с крутыми крышами, резные залы, каменные лестницы, качели над рекой и домик на дереве.</p>
+          <p class="lead">На один день всё это станет нашим замком.</p>
+          <div class="links">
+            <a class="btn" href="https://maps.app.goo.gl/QkY5Y5VHLDEFLeCC8" target="_blank" rel="noopener">Замок на карте</a>
+            <a class="btn" href="https://www.instagram.com/baletudor/" target="_blank" rel="noopener">Instagram замка</a>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="real-head">Так он выглядит наяву</h3>
+      <div class="real">
+        <figure><div class="frame tilt-l"><img src="art/real-castle.jpg" alt="Фото: фахверковый дом на склоне" width="820" height="461" loading="lazy"></div><figcaption>Главный дом</figcaption></figure>
+        <figure><div class="frame tilt-r"><img src="art/real-tree.jpg" alt="Фото: домик на дереве" width="820" height="1093" loading="lazy"></div><figcaption>Домик на дереве</figcaption></figure>
+        <figure><div class="frame tilt-l"><img src="art/real-hall.jpg" alt="Фото: зал с резным панно" width="820" height="461" loading="lazy"></div><figcaption>Резной зал</figcaption></figure>
+      </div>
+
+      <div class="places">
+        <div class="head"><h2>Семь мест, где&nbsp;что&#8209;то случится</h2></div>
+        <div class="vgrid">
+          <article class="vig"><img src="art/v-tea.webp" alt="Дама-мотылёк разливает чай из чайника с крыльями летучей мыши" loading="lazy"><h3>Чайная</h3><p class="small">Тихое сердце замка. Здесь заваривают чай, слушают сплетни и заключают перемирия.</p></article>
+          <article class="vig"><img src="art/v-archery.webp" alt="Ворон-бард стреляет из лука в тыкву-мишень" loading="lazy"><h3>Ристалище</h3><p class="small">Стрельба из лука и испытания. Здесь выясняют, кто меткий, а кто просто громкий.</p></article>
+          <article class="vig"><img src="art/v-bar.webp" alt="Чёрный заяц-бармен наливает тыквенный арак" loading="lazy"><h3>Бар</h3><p class="small">Тыквенный арак и другие зелья, о составе которых лучше не спрашивать после заката.</p></article>
+        </div>
+      </div>
+    </div>
+
+    <div class="feast">
+      <div class="wrap inner">
+        <h3>Длинный стол</h3>
+        <div class="pan"><img src="art/feast.jpg" alt="Пир: все жители замка за одним длинным столом с тыквами, свечами и кубками" width="2200" height="933" loading="lazy"></div>
+        <p class="small">Большой тематический ужин на всех. Одна скатерть, все сословия, никаких отдельных столиков. Здесь развязываются интриги дня.</p>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="vgrid">
+        <article class="vig"><img src="art/v-hideouts.webp" alt="Кривой домик на дереве с глазами в окнах, свиток и ключ в дупле" loading="lazy"><h3>Тайники</h3><p class="small">Башни, мостики, укромные углы. Барды и актёры прячут здесь задания и чужие секреты.</p></article>
+        <article class="vig"><img src="art/v-dance.webp" alt="Скелет-арлекин и ребёнок с головой-репой танцуют под луной-диско-шаром" loading="lazy"><h3>Танцпол</h3><p class="small">Когда стемнеет, начинаются диджей и живой звук. Игра заканчивается, ночь только начинается.</p></article>
+        <article class="vig"><img src="art/v-bonfire.webp" alt="Соломенное чучело горит в костре, вокруг хоровод жителей замка" loading="lazy"><h3>Костёр</h3><p class="small">Сожжение чучела уходящего лета. Всё, что не хочется брать с собой дальше, отправляется в огонь.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="day-sec">
+    <div class="wrap">
+      <img class="ornament" src="art/ornament.webp" alt="" loading="lazy">
+      <div class="head">
+        <h2>От солнца до луны</h2>
+        <p class="lead">Время ориентировочное. Начинаем при свете, проходим через закат и заканчиваем в полной темноте.</p>
+      </div>
+    </div>
+    <ol class="sky">
+      <li class="day"><div class="wrap row"><time>14:00</time><img src="art/s-frangipani.webp" alt=""><div><h3>Ворота открываются</h3><p>Встреча гостей, распределение по сословиям, первые знакомства и первые подозрения.</p></div></div></li>
+      <li class="day2"><div class="wrap row"><time>14:30</time><img src="art/s-crow.webp" alt=""><div><h3>Игра</h3><p>Задания сословий, стрельба из лука, чайная, барды с поручениями. Замок живёт сам по себе.</p></div></div></li>
+      <li class="dusk"><div class="wrap row"><time>18:00</time><img src="art/s-pumpkin1.webp" alt=""><div><h3>Закат</h3><p>Солнце уходит за джунгли. Сословия подводят итоги дня, у кого-то они неожиданные.</p></div></div></li>
+      <li class="dusk2"><div class="wrap row"><time>18:30</time><img src="art/s-candle.webp" alt=""><div><h3>Пир</h3><p>Все за одним длинным столом. Тосты, развязки интриг, тыквенный арак.</p></div></div></li>
+      <li class="eve"><div class="wrap row"><time>20:30</time><img src="art/s-turnip.webp" alt=""><div><h3>Сожжение</h3><p>Большой костёр под открытым небом. Отпускаем лето и всё, что с ним не ушло.</p></div></div></li>
+      <li class="late"><div class="wrap row"><time>21:00</time><img src="art/s-bat2.webp" alt=""><div><h3>Танцы</h3><p>Диджей и музыка до полуночи. Маски можно оставить, роли уже нет.</p></div></div></li>
+      <li class="mid"><div class="wrap row"><time>00:00</time><img src="art/s-moon.webp" alt=""><div><h3>Ворота закрываются</h3><p>Граница миров снова на месте. До следующего года.</p></div></div></li>
+    </ol>
+  </section>
+
+  <section class="coauthors" id="join">
+    <div class="wrap">
+      <div class="head">
+        <h2>Станьте соавторами</h2>
+        <p class="lead">Мы зовём не только в гости. Замок большой, и в нём хватит места для ваших идей.</p>
+      </div>
+      <div class="ways">
+        <div class="plate"><span class="label">Своя локация</span><h3>Придумайте свой уголок замка</h3><p class="small">Квест, ритуал, инсталляция, персонаж с тайной или свой звук у костра. Расскажите идею, и мы найдём для неё место.</p></div>
+        <div class="plate"><span class="label">Команда хранителя</span><h3>Помогите собрать одну из зон</h3><p class="small">Чайная, бар, декор, программа или пир. Напишите хранителю зоны, которая вам ближе.</p></div>
+      </div>
+      <p class="label keepers-title">Хранители замка</p>
+      <div class="keepers">
+        <div class="plate keeper"><h3>Чайная и костёр</h3><div class="who"><a href="https://t.me/nlapenko" target="_blank" rel="noopener">@nlapenko</a><a href="https://t.me/Iakov_garuda" target="_blank" rel="noopener">@Iakov_garuda</a></div></div>
+        <div class="plate keeper"><h3>Квесты и программа</h3><div class="who"><a href="https://t.me/dariagaity" target="_blank" rel="noopener">@dariagaity</a><a href="https://t.me/pobedeen" target="_blank" rel="noopener">@pobedeen</a></div></div>
+        <div class="plate keeper"><h3>Танцпол, музыка и пир</h3><div class="who"><a href="https://t.me/ksunderr" target="_blank" rel="noopener">@ksunderr</a></div></div>
+        <div class="plate keeper"><h3>Площадка</h3><div class="who"><a href="https://t.me/ksunderr" target="_blank" rel="noopener">@ksunderr</a></div></div>
+        <div class="plate keeper"><h3>Бар и приглашения</h3><div class="who"><a href="https://t.me/maxrokach" target="_blank" rel="noopener">@maxrokach</a></div></div>
+        <div class="plate keeper"><h3>Декор</h3><div class="who"><a href="https://t.me/okovalskaya" target="_blank" rel="noopener">@okovalskaya</a><a href="https://t.me/Ellina_lee" target="_blank" rel="noopener">@Ellina_lee</a></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <img class="star" src="art/s-star.webp" alt="">
+  <p>31 октября · 14:00 — 00:00</p>
+  <small>Bale Tudor, Jl. Dewi Tilotama, Bongkasa Pertiwi, Bali · <a href="https://maps.app.goo.gl/QkY5Y5VHLDEFLeCC8" target="_blank" rel="noopener">карта</a></small>
+</footer>
+</body>
+</html>
