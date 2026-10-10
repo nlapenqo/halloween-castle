@@ -630,10 +630,18 @@ h1 .acc,h2 .acc{font:inherit;line-height:inherit;text-transform:inherit;letter-s
 .dn-note li::before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--ink)}
 .dn-knife{position:absolute;width:118px;height:118px;left:calc(58% - 25px);top:-64px;filter:url(#rough-sm);pointer-events:none}
 @media (min-width:1280px){
-  .dn-slot{position:absolute;left:calc(100% + 26px);top:-8px;width:236px;display:block}
+  .dn-slot{position:absolute;left:calc(100% + 26px);top:50%;width:236px;display:block;transform:translateY(calc(-50% - 20px))}
   .dn-slot-in{overflow:visible;padding:0}
   .dn-note{width:auto;margin:40px 0 0;rotate:3deg}
 }
+/* лёгкий подъём записки при наведении */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .dn-note{transition:opacity .3s,visibility .3s,translate .4s cubic-bezier(.2,.8,.2,1),rotate .4s cubic-bezier(.2,.8,.2,1)}
+  .dn-note::before{transition:box-shadow .4s}
+  .dn-slot.on .dn-note:hover{translate:0 -8px;rotate:-1deg}
+  .dn-slot.on .dn-note:hover::before{box-shadow:0 18px 26px -12px rgba(38,23,29,.5)}
+}
+@media (hover:hover) and (prefers-reduced-motion:no-preference) and (min-width:1280px){.dn-slot.on .dn-note:hover{rotate:1.2deg}}
 </style>
 </head>
 <body>
