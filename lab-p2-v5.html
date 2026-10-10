@@ -1038,7 +1038,7 @@ function mockApi(){
   return {stats:async()=>{await wait(150);return JSON.parse(JSON.stringify(stats()))},
     apply:async p=>{await wait(650);if(netFail){netFail=false;throw new TypeError('Failed to fetch')}return JSON.parse(JSON.stringify(apply(p)))}};
 }
-if(MOCK&&qs.get('fresh')==='1'){['hc_clan','hc_applied','hc_req','hc_seen','hc_mock_db'].forEach(LS.del);qs.delete('fresh');history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:'')+location.hash)}
+if((MOCK||LOCAL)&&qs.get('fresh')==='1'){['hc_clan','hc_applied','hc_req','hc_seen','hc_mock_db'].forEach(LS.del);qs.delete('fresh');history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:'')+location.hash)}
 const fromPromo=(qs.get('clan')||'').toUpperCase();
 if(CLANS[fromPromo]&&!LS.get('hc_applied')){LS.set('hc_clan',fromPromo);LS.set('hc_seen','1')}
 if(qs.has('clan')){qs.delete('clan');history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:'')+location.hash)}
