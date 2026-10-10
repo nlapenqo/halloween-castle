@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Lost Castle · варианты на выбор</title>
+<link rel="icon" href="art/s-pumpkin1.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alice&family=Kurale&family=Neucha&display=swap">
+<style>
+/* Рабочая страница выбора: обложки, варианты страницы участия, эльфы, замок, финал */
+:root{--paper:#F2E0C0;--paper-deep:#E9D1A6;--ink:#26171D;--night:#1C111B;--night2:#2A1B26;--vermilion:#DC5530;--gold:#D9AE52;--muted:#B9A58C;--gutter:clamp(16px,4vw,48px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--night);color:var(--paper);font:400 17px/1.55 "Kurale",Georgia,serif}
+a{color:var(--gold)}
+.wrap{max-width:1400px;margin:0 auto;padding:0 var(--gutter)}
+header{padding:48px 0 12px}
+h1,h2,h3{font-family:"Alice",Georgia,serif;font-weight:400;margin:0}
+h1{font-size:clamp(30px,4vw,48px);text-transform:uppercase;letter-spacing:.04em}
+h2{font-size:clamp(24px,2.8vw,34px);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.acc{font-family:"Neucha",cursive;font-style:normal;color:var(--gold);text-transform:none}
+.lead{color:var(--muted);max-width:70ch;margin:8px 0 0}
+nav{position:sticky;top:0;z-index:5;background:rgba(28,17,27,.92);backdrop-filter:blur(6px);border-bottom:1px solid rgba(217,174,82,.25)}
+nav .wrap{display:flex;gap:18px;overflow-x:auto;padding-block:12px;scrollbar-width:none}
+nav a{white-space:nowrap;text-decoration:none;font-family:"Alice",serif}
+section{padding:48px 0 24px;border-bottom:1px solid rgba(217,174,82,.15)}
+.grid{display:grid;gap:18px;margin-top:22px}
+.g-covers{grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr))}
+.g-p2{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.g-tall{grid-template-columns:repeat(auto-fill,minmax(min(46%,190px),1fr))}
+.card{background:var(--night2);border:1px solid rgba(217,174,82,.22);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.card img{display:block;width:100%;height:auto;cursor:zoom-in}
+.card .meta{padding:10px 14px 14px;display:grid;gap:4px}
+.num{font:400 22px/1 "Alice",serif;color:var(--gold)}
+.tag{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(185,165,140,.4);border-radius:20px;padding:2px 9px;margin-right:6px}
+.tag.top{color:var(--night);background:var(--gold);border-color:var(--gold)}
+.small{font-size:15px;color:var(--muted)}
+.p2 .meta{gap:8px;padding:16px}
+.p2 h3{font-size:22px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.btn{display:inline-block;text-decoration:none;font-family:"Alice",serif;padding:9px 14px;border-radius:24px;background:var(--gold);color:var(--ink)}
+.btn.ghost{background:none;color:var(--gold);border:1px solid var(--gold)}
+.score{font-size:15px;color:var(--paper)}
+.idea{background:var(--night2);border:1px solid rgba(217,174,82,.22);border-radius:14px;padding:16px 18px}
+.idea h3{font-size:20px;color:var(--gold);margin-bottom:4px}
+dialog{border:0;padding:0;background:transparent;max-width:96vw;max-height:94vh}
+dialog::backdrop{background:rgba(10,6,10,.9)}
+dialog img{display:block;max-width:96vw;max-height:90vh;width:auto;height:auto;border-radius:8px}
+dialog p{margin:8px 0 0;text-align:center;color:var(--paper)}
+footer{padding:40px 0 60px;color:var(--muted);font-size:15px}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <h1>Варианты на&nbsp;<em class="acc">выбор</em></h1>
+  <p class="lead">Все обложки, пять вариантов страницы участия, эльфы, замок и&nbsp;идеи финала промо. Нажми на&nbsp;картинку, чтобы открыть крупно. Ответь номерами: например, «обложка 14, страница V4, эльфы m, замок v2, финал&nbsp;1».</p>
+</header>
+<nav><div class="wrap"><a href="#covers">Обложки</a><a href="#p2">Страница участия</a><a href="#elves">Эльфы</a><a href="#castle">Замок</a><a href="#finale">Финал промо</a></div></nav>
+
+<section id="covers"><div class="wrap">
+  <h2>Обложки <em class="acc">с&nbsp;лого</em></h2>
+  <p class="lead">Лого стоит туда, где на картинке больше всего пустого места (подбирал скрипт). 00&nbsp;— текущая обложка. 01–10: первый раунд (02 и&nbsp;03 сделаны в&nbsp;Krea, остальные в&nbsp;Codex), 11–16: плоская гуашь, 17–24: красная луна, тыквы, плакатный стиль.</p>
+  <div class="grid g-covers" id="cov"></div>
+</div></section>
+
+<section id="p2"><div class="wrap">
+  <h2>Страница <em class="acc">участия</em></h2>
+  <p class="lead">Пять раскладок: шкала сбора и&nbsp;тарифы в&nbsp;одном блоке, трапеза на&nbsp;весь экран. Ссылка «Сразу к&nbsp;выбору» пропускает пролог, «С&nbsp;пролога» показывает путь гостя целиком. Везде демо-режим, заявки не&nbsp;сохраняются.</p>
+  <div class="grid g-p2" id="p2grid"></div>
+  <p class="small" id="p2note" style="margin-top:18px"></p>
+</div></section>
+
+<section id="elves"><div class="wrap">
+  <h2>Тёмные <em class="acc">эльфы</em></h2>
+  <p class="lead">b&nbsp;— сейчас на&nbsp;сайте. m, n, o&nbsp;— та&nbsp;же сцена с&nbsp;хитрыми лицами. i, j, k, l&nbsp;— новые сюжеты. f, g, h&nbsp;— сцена b с&nbsp;обычными лицами, c, d, e&nbsp;— первая альтернативная серия.</p>
+  <div class="grid g-tall" id="elfgrid"></div>
+</div></section>
+
+<section id="castle"><div class="wrap">
+  <h2>Замок <em class="acc">в&nbsp;джунглях</em></h2>
+  <p class="lead">Постер для блока «Замок в&nbsp;джунглях» на&nbsp;промо. Текущий и&nbsp;пять новых в&nbsp;нашем стиле.</p>
+  <div class="grid g-tall" id="castlegrid"></div>
+</div></section>
+
+<section id="finale"><div class="wrap">
+  <h2>Финал <em class="acc">промо</em></h2>
+  <p class="lead">Чем заменить блок «Замок ждёт» внизу промо. Пока только идеи, соберу выбранную.</p>
+  <div class="grid g-p2">
+    <div class="idea"><h3>1. Врата открываются</h3><p class="small">Две створки ворот закрывают блок и&nbsp;расходятся по&nbsp;скроллу, за&nbsp;ними светится двор и&nbsp;кнопка «Вступить в&nbsp;игру». Нужны новые картинки.</p></div>
+    <div class="idea"><h3>2. Пропуск в&nbsp;замок</h3><p class="small">Старинный билет «Lost Castle · 31&nbsp;октября · вход для одного странника», наклоняется за&nbsp;курсором, отрывной корешок&nbsp;— кнопка.</p></div>
+    <div class="idea"><h3>3. Сургучная печать</h3><p class="small">Печать с&nbsp;монограммой трескается по&nbsp;скроллу, из-под неё разворачивается свиток-приглашение.</p></div>
+    <div class="idea"><h3>4. Процессия уходит в&nbsp;замок</h3><p class="small">Наша процессия персонажей идёт по&nbsp;тропе к&nbsp;светящемуся замку: «Процессия уже собирается. Займи место в&nbsp;строю».</p></div>
+    <div class="idea"><h3>5. Путь странника</h3><p class="small">Тропа из&nbsp;трёх шагов: выбрать клан&nbsp;→ внести вклад&nbsp;→ прийти в&nbsp;образе. Шаги проявляются по&nbsp;скроллу, в&nbsp;конце кнопка.</p></div>
+  </div>
+</div></section>
+
+<footer class="wrap">Рабочая страница, не&nbsp;индексируется. Промо: <a href="./">главная</a> · текущая страница участия: <a href="participate.html">participate.html</a></footer>
+
+<dialog id="lb"><img src="" alt=""><p></p></dialog>
+<script>
+const covers={
+  '00':['Текущая обложка',''],
+  '01':['Симметричная рамка: вампиры, оборотни, эльфы внизу, замок сверху','Codex'],'02':['Замок наверху, процессия по тыквенной тропе','Krea'],
+  '03':['Народная рамка с медальонами кланов','Krea · мягче'],'04':['Открытая книга','Codex'],'05':['Рваная бумага, окно в ночь','Codex'],
+  '06':['Театральная сцена','Codex'],'07':['Арка из джунглей, замок под лого','Codex'],'08':['Процессия по овалу','Codex'],
+  '09':['Гирлянда пира, кланы чокаются','Codex'],'10':['Гобелен: всадники, мотыльки, луна','Codex'],
+  '11':['Плоская версия 01','Codex'],'12':['Плоская процессия по овалу','Codex'],'13':['Плоская арка из джунглей','Codex'],
+  '14':['Как текущая: вампиры, оборотень, эльфы на мотыльках','Codex · фаворит'],'15':['Огромный полумесяц, лого внутри','Codex'],'16':['Книжный разворот в красной рамке','Codex'],
+  '17':['Кровавая луна за замком, ряд тыкв','Codex · фаворит'],'18':['Тыквенное поле','Codex'],'19':['Плакат-шелкография, 4 краски','Codex'],
+  '20':['Триптих-таро, замок под красной луной','Codex · фаворит'],'21':['Лестница к воротам, тыквы, процессия','Codex'],'22':['Река Аюнг, отражение красной луны','Codex'],
+  '23':['Народный орнамент, медальон-луна','Codex'],'24':['Красное кольцо-луна вокруг лого','Codex']};
+const cov=document.getElementById('cov');
+for(const k of Object.keys(covers).sort()){const [t,tag]=covers[k];const top=tag.includes('фаворит');
+  cov.insertAdjacentHTML('beforeend',`<figure class="card" style="margin:0"><img loading="lazy" src="lab/covers/c${k}.jpg" data-full="${k==='00'?'art/cover-clean.jpg':'art/cover2-'+k+'.jpg'}" alt="Обложка ${k}"><figcaption class="meta"><span class="num">${k}</span><span>${t}</span><span>${tag?`<span class="tag${top?' top':''}">${tag}</span>`:''}</span></figcaption></figure>`)}
+const p2=[
+  ['V1','Три шага','«Ты в игре, странник». Шаги клан → путь → вклад, шкала шапкой над тремя компактными тарифами, превью вклада при наведении.'],
+  ['V2','Казна-дорожка','Большая шкала с сундуком, тарифы — монеты под ней. Gold — ползунок до 2 000 000, шкала заполняется при перетягивании.'],
+  ['V3','Две маленьких и одна большая','Bronze и Silver компактно слева, Gold справа: баффы значками 2×2, суммы кнопками. Трапеза — разделённый экран.'],
+  ['V4','Один пропуск','Одна карточка-билет: переключатель Bronze | Silver | Gold, трапеза, итог и шкала внутри. Самый компактный, под телефон.'],
+  ['V5','Свиток вклада','Тарифы списком, справа чек-свиток со шкалой, итогом и кнопкой. Трапеза — экран с медленным наездом камеры.']];
+const g=document.getElementById('p2grid');
+for(const [k,t,d] of p2){const n=k.slice(1);
+  g.insertAdjacentHTML('beforeend',`<div class="card p2"><div class="meta"><span class="num">${k}</span><h3>${t}</h3><p class="small">${d}</p><p class="score" data-score="${k}"></p><div class="btns"><a class="btn" href="lab-p2-v${n}.html?mock=1&demo=main" target="_blank">Сразу к выбору</a><a class="btn ghost" href="lab-p2-v${n}.html?mock=1&fresh=1" target="_blank">С пролога</a></div></div></div>`)}
+const tall=(id,list)=>{const el=document.getElementById(id);for(const [src,cap] of list)el.insertAdjacentHTML('beforeend',`<figure class="card" style="margin:0"><img loading="lazy" src="${src}" data-full="${src}" alt="${cap}"><figcaption class="meta"><span class="num">${cap}</span></figcaption></figure>`)};
+tall('elfgrid',['b','m','n','o','i','j','k','l','f','g','h','c','d','e'].map(x=>[`art/clan-darkelf-${x}.jpg`,x+(x==='b'?' · сейчас':'')]));
+tall('castlegrid',[['art/castle.jpg','текущий'],...[1,2,3,4,5].map(i=>[`art/castle-v${i}.jpg`,'v'+i])]);
+const lb=document.getElementById('lb');
+document.addEventListener('click',e=>{const im=e.target.closest('img[data-full]');if(im){lb.querySelector('img').src=im.dataset.full;lb.querySelector('p').textContent=im.alt;lb.showModal();return}if(e.target.closest('dialog'))lb.close()});
+</script>
+</body>
+</html>
