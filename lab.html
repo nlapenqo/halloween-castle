@@ -123,6 +123,9 @@ const p2=[
 const g=document.getElementById('p2grid');
 for(const [k,t,d] of p2){const n=k.slice(1);
   g.insertAdjacentHTML('beforeend',`<div class="card p2"><div class="meta"><span class="num">${k}</span><h3>${t}</h3><p class="small">${d}</p><p class="score" data-score="${k}"></p><div class="btns"><a class="btn" href="lab-p2-v${n}.html?mock=1&demo=main" target="_blank">Сразу к выбору</a><a class="btn ghost" href="lab-p2-v${n}.html?mock=1&fresh=1" target="_blank">С пролога</a></div></div></div>`)}
+const scores={V1:'Ревью: 6/10 до правок. Самый ясный сценарий шагов.',V2:'Ревью: 6,5/10. Лучшая трапеза на весь экран, ползунок Gold.',V3:'Ревью: 5/10. Сильнее всего подталкивает к Gold, но длинный на телефоне (после правок ужат).',V4:'Ревью: 8/10 — рекомендован. Выбор пути на первом экране телефона, всё в одном билете, «лупа» вехи под шкалой.',V5:'Ревью: 6,5/10. Лучший на компьютере: чек со шкалой прилипает рядом с выбором.'};
+document.querySelectorAll('[data-score]').forEach(e=>{e.textContent=scores[e.dataset.score]||'';if(e.dataset.score==='V4')e.innerHTML='<span class="tag top">рекомендован</span> '+e.textContent});
+document.getElementById('p2note').textContent='Оценки — до правок; все правки ревьюера уже внесены во все пять вариантов: пролог без «врат», «Казна ждёт первую монету» при нуле, единое округление процентов, итог на странице и форма без повторных вопросов.';
 const tall=(id,list)=>{const el=document.getElementById(id);for(const [src,cap] of list)el.insertAdjacentHTML('beforeend',`<figure class="card" style="margin:0"><img loading="lazy" src="${src}" data-full="${src}" alt="${cap}"><figcaption class="meta"><span class="num">${cap}</span></figcaption></figure>`)};
 tall('elfgrid',['b','m','n','o','i','j','k','l','f','g','h','c','d','e'].map(x=>[`art/clan-darkelf-${x}.jpg`,x+(x==='b'?' · сейчас':'')]));
 tall('castlegrid',[['art/castle.jpg','текущий'],...[1,2,3,4,5].map(i=>[`art/castle-v${i}.jpg`,'v'+i])]);

@@ -42,6 +42,8 @@
 }
 @property --p{syntax:"<number>";inherits:true;initial-value:0}
 @property --q{syntax:"<number>";inherits:true;initial-value:0}
+@property --lf{syntax:"<number>";inherits:true;initial-value:0}
+@property --lg{syntax:"<number>";inherits:true;initial-value:0}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -165,16 +167,29 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 .tp-gold::before{border-width:3px}
 .tp-gold .price{color:var(--gold)}
 .buffs,.gold-amt{grid-column:1/-1}
-.buffs{list-style:none;padding:0;margin:2px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 18px}
-.buffs li{position:relative;padding-left:28px;font-size:16px;line-height:1.35}
-.buffs li::before{content:"";position:absolute;left:0;top:.06em;width:20px;height:20px;background:url(art/star.png) center/contain no-repeat}
-.gold-amt{display:grid;gap:8px;padding-top:12px;border-top:1.5px dashed rgba(217,174,82,.5)}
+/* значки усилений: вырезаны из иллюстраций сайта */
+.bi{display:block;width:32px;height:32px;flex:none;background:center/contain no-repeat}
+.bi-coin{background-image:url(art/treasury.webp)}
+.bi-arrow{background:url(art/v-archery.webp) 86% 60%/250% auto no-repeat;border-radius:50%}
+.bi-vote{background-image:url(art/s-pumpkin1.webp)}
+.bi-cipher{background-image:url(art/s-candle.webp)}
+.gteaser{position:relative;isolation:isolate;display:grid;gap:6px;width:100%;padding:12px 16px;border:0;background:none;cursor:pointer;text-align:left;font:400 15px/1.4 var(--f-body);color:var(--ink)}
+.gteaser::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2px dashed var(--ochre);border-radius:var(--r-plate);filter:url(#rough-sm);transition:background .2s}
+.gteaser:hover::before{background:var(--paper-deep)}
+.gteaser:focus-visible{outline:2px dashed var(--vermilion);outline-offset:3px;border-radius:24px}
+.gt-h{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
+.gt-h b{font:400 17px/1.2 var(--f-display);color:var(--vermilion)}
+.bi-row{display:flex;gap:3px}
+.bi-row .bi{width:28px;height:28px}
+.gt-d{opacity:.85}
+.buffs{list-style:none;padding:0;margin:2px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.buffs li{position:relative;isolation:isolate;display:grid;gap:6px;align-content:start;padding:10px 10px 12px;font-size:14.5px;line-height:1.3}
+.buffs li::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--night-2);border:1.5px solid rgba(217,174,82,.55);border-radius:14px 18px 12px 20px/18px 12px 20px 14px;filter:url(#rough-sm)}
+.buffs .bi{width:34px;height:34px}
+.gold-amt{display:grid;gap:8px;min-width:0;padding-top:12px;border-top:1.5px dashed rgba(217,174,82,.5)}
+.gold-amt .inp{min-width:0}
 .flabel{font:400 14px/1.3 var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-.stepper{display:grid;grid-template-columns:52px minmax(0,1fr) 52px;gap:10px;align-items:center}
-.stp{position:relative;isolation:isolate;width:52px;height:52px;display:grid;place-items:center;border:0;background:none;cursor:pointer;font:400 30px/1 var(--f-display);color:var(--ink)}
-.stp::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--gold);border:2.5px solid var(--ink);border-radius:52% 48% 50% 46%/48% 52% 46% 50%;filter:url(#rough-sm)}
-.stp:disabled{opacity:.4;cursor:not-allowed}
-.stepper .inp input{text-align:center;font:400 22px/1.2 var(--f-display);padding-inline:8px}
+.gold-amt .inp input{font:400 22px/1.2 var(--f-display)}
 .presets{display:flex;flex-wrap:wrap;gap:8px}
 .presets button{position:relative;isolation:isolate;min-height:42px;padding:9px 14px;border:0;background:none;cursor:pointer;font:400 15px/1 var(--f-display);color:var(--ink);font-variant-numeric:lining-nums;white-space:nowrap}
 .presets button::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2px solid var(--ink);border-radius:var(--r-pill);filter:url(#rough-sm)}
@@ -183,7 +198,6 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 .tp-gold .hint{opacity:.8}
 .tp-gold .err{color:var(--vermilion-soft)}
 .tp-gold .inp::before{border-color:var(--gold)}
-@media (max-width:480px){.stepper{grid-template-columns:46px minmax(0,1fr) 46px;gap:8px}.stp{width:46px;height:46px}}
 
 /* путь и казна */
 .pt{display:grid;gap:18px;min-width:0;padding:clamp(18px,2.4vw,26px) var(--px)}
@@ -195,12 +209,17 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 @container pass (min-width:700px){
   .pt{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:30px;align-items:start}
   .seg-f{grid-column:1/-1}
+  /* на широком пропуске тизер Gold уходит под карточку пути, казна справа на всю высоту */
+  .tps{grid-column:1;grid-row:2}
+  .gteaser{grid-column:1;grid-row:3}
+  .tre{grid-column:2;grid-row:2/span 3}
   .tre{padding:4px 0 0 28px;border-top:0;border-left:2px solid rgba(38,23,29,.16)}
   .pass.is-applied .tre{grid-column:1/-1;padding-left:0;border-left:0}
   .tp{grid-template-columns:58px minmax(0,1fr);gap:10px 14px;padding:18px}
   .tp .price{font-size:28px}
   .fin{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:30px;align-items:end}
   .dtg-more{margin-left:74px}
+  .pv-up{font-size:14.5px;padding-inline:14px;white-space:nowrap}
 }
 .tre-top{display:flex;align-items:center;gap:12px}
 .tre-top img{width:46px;flex:none}
@@ -218,11 +237,25 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 .ghost{min-width:10px}
 .bar.no-pv .ghost,.bar.no-pv .bar-tag{display:none}
 .bar.no-pv{margin-top:8px}
+.tk{position:absolute;top:9px;bottom:9px;width:0;border-left:2px dotted rgba(38,23,29,.38);left:calc(6px + (100% - 12px) * var(--t) / 100)}
+/* лупа: тонкая шкала текущей четверти, связанная с большой шкалой двумя линиями */
+.lens{--lf:0;--lg:0;display:grid;gap:5px;margin-top:-12px;transition:--lf 1.4s cubic-bezier(.2,.8,.2,1),--lg .55s cubic-bezier(.2,.8,.2,1)}
+.lens-z{display:block;width:calc(100% - 12px);height:24px;margin-inline:6px;overflow:visible}
+.lens-z polygon{fill:rgba(220,85,48,.09)}
+.lens-z path{fill:none;stroke:var(--ink);stroke-width:1.3;stroke-dasharray:4 3;vector-effect:non-scaling-stroke;opacity:.6}
+.lens-t{position:relative;height:20px;margin-inline:6px;isolation:isolate}
+.lens-t::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2px solid var(--ink);border-radius:12px 9px 13px 8px/9px 13px 8px 12px;filter:url(#rough-sm)}
+.lens-f{position:absolute;left:4px;top:4px;bottom:4px;width:calc((100% - 8px) * var(--lf) / 100);background:var(--vermilion);border-radius:7px 5px 8px 4px}
+.lens-g{position:absolute;top:4px;bottom:4px;left:calc(4px + (100% - 8px) * var(--lf) / 100);width:calc((100% - 8px) * (var(--lg) - var(--lf)) / 100);background:repeating-linear-gradient(-45deg,rgba(220,85,48,.62) 0 5px,rgba(220,85,48,.2) 5px 10px);border-radius:0 5px 4px 0}
+.lens-l{display:flex;justify-content:space-between;gap:10px;margin-inline:6px;font:400 13px/1.3 var(--f-display);letter-spacing:.03em;opacity:.8;font-variant-numeric:lining-nums}
+.lens-c{font-size:15.5px;line-height:1.45;margin-top:2px}
+.lens-c b{font:400 16px/1 var(--f-display);color:var(--vermilion)}
+@media (prefers-reduced-motion:reduce){.lens{transition:none}}
 .bar-star{position:absolute;top:50%;left:clamp(20px,calc(6px + (100% - 12px) * var(--q) / 100),calc(100% - 20px));width:38px;height:38px;margin:-19px 0 0 -19px;pointer-events:none}
 @media (prefers-reduced-motion:reduce){.bar,.bar.ready{transition:none}}
 .pv{font-size:17px;line-height:1.45}
 .pv b{display:inline-block;font:400 24px/1 var(--f-display);color:var(--vermilion);font-variant-numeric:lining-nums}
-.pv-up{justify-self:start;min-height:40px;margin-top:-6px;padding:0;font-size:16px;color:var(--cobalt-deep)}
+.pv-up{--btn-bg:var(--paper-deep);justify-self:start;margin-top:-2px;text-align:left;line-height:1.3}
 .m-over{font:400 18px/1.3 var(--f-display);color:var(--cobalt-deep)}
 .m-mood{font:400 clamp(24px,2.4vw,28px)/1.1 var(--f-hand);color:var(--cobalt-deep)}
 .m-meta{font-size:15px;line-height:1.45;opacity:.8}
@@ -249,6 +282,7 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 .tot b{font:400 clamp(28px,3.2vw,38px)/1 var(--f-display);color:var(--vermilion);font-variant-numeric:lining-nums;white-space:nowrap}
 .tot-br{opacity:.8;margin-top:-8px}
 .join-btn{width:100%;min-height:62px;font-size:21px}
+.cta-note{font-size:15px;line-height:1.4;opacity:.75;text-align:center;margin-top:-4px}
 .ap-sum{font-size:17px}
 .ap-t{font:400 clamp(26px,3vw,32px)/1.1 var(--f-display)}
 
@@ -256,9 +290,15 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 .side{display:grid;gap:clamp(16px,2vw,22px);min-width:0}
 @media (min-width:881px){.side{position:sticky;top:24px}}
 @media (max-width:880px) and (min-width:641px){.side{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
-.ledger{--pl-bg:var(--paper);color:var(--ink);display:grid;gap:14px;transform:rotate(-.6deg)}
-.ledger-h{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.ledger-h img{width:62px;flex:none}
+.ledger{--pl-bg:var(--paper);color:var(--ink);display:block;transform:rotate(-.6deg)}
+.ledger-s{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:30px;list-style:none;cursor:pointer}
+.ledger-s::-webkit-details-marker{display:none}
+.ledger-s:focus-visible{outline:2px dashed var(--vermilion);outline-offset:4px;border-radius:6px}
+.chev{font-size:18px;line-height:1;color:var(--vermilion);transition:transform .25s}
+.ledger[open] .chev{transform:rotate(180deg)}
+@media (min-width:641px){.ledger-s{cursor:default}.chev{display:none}}
+@media (prefers-reduced-motion:reduce){.chev{transition:none}}
+.ledger-b{display:grid;gap:14px;padding-top:12px}
 .lines{margin:0;display:grid;gap:10px}
 .lines>div{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:10px}
 .lines dt{font-size:16px;line-height:1.3}
@@ -565,8 +605,8 @@ footer small{font-size:15px;opacity:.75}
       <div class="top"><a class="back" href="./">← К&nbsp;истории замка</a></div>
       <div class="g-head">
         <img class="g-logo" src="art/logo.svg" alt="" width="602" height="171" data-rv>
-        <h1 id="gate-t" data-rv>Твой <em class="acc">пропуск</em> в&nbsp;Lost Castle</h1>
-        <p class="lead" data-rv>Клан&nbsp;— твоя сторона в&nbsp;игре. Вклад&nbsp;— твой ключ от&nbsp;ворот.</p>
+        <h1 id="gate-t" data-rv>Твой <em class="acc">пропуск</em> в&nbsp;замок</h1>
+        <p class="lead" data-rv>Клан выбран. Выбери путь&nbsp;— и&nbsp;пропуск готов.</p>
       </div>
 
       <div class="pass-grid">
@@ -605,6 +645,11 @@ footer small{font-size:15px;opacity:.75}
               </div>
             </fieldset>
 
+            <button class="gteaser" type="button" id="gteaser" data-act="up">
+              <span class="gt-h"><span class="bi-row" aria-hidden="true"><i class="bi bi-coin"></i><i class="bi bi-arrow"></i><i class="bi bi-vote"></i><i class="bi bi-cipher"></i></span><b>Gold&nbsp;— все 4&nbsp;усиления&nbsp;→</b></span>
+              <span class="gt-d">Монета клану, 5&nbsp;стрел, двойной голос, подсказка к&nbsp;шифру</span>
+            </button>
+
             <div class="tps" data-when="pick">
             <div class="plate tp" data-panel="BRONZE" hidden>
               <img class="tp-vig" src="art/t-bronze.webp" alt="" width="600" height="581" loading="lazy" onerror="this.remove()">
@@ -624,28 +669,24 @@ footer small{font-size:15px;opacity:.75}
               <img class="tp-vig" src="art/t-gold.webp" alt="" width="600" height="564" loading="lazy" onerror="this.remove()">
               <div class="tp-b">
                 <p class="price">от&nbsp;<span data-price="gold">500&nbsp;000</span>&nbsp;<small>IDR</small></p>
-                <p class="small">Помоги пробудить замок сильнее&nbsp;— и&nbsp;получи все игровые усиления</p>
+                <p class="small">В&nbsp;благодарность&nbsp;— все игровые усиления</p>
               </div>
               <ul class="buffs" aria-label="Усиления Gold">
-                <li>+1&nbsp;стартовая монета для&nbsp;клана</li>
-                <li>Дополнительная серия из&nbsp;5&nbsp;стрел на&nbsp;стрельбище</li>
-                <li>Двойной голос за&nbsp;лучший костюм и&nbsp;лучшую тыкву</li>
-                <li>Секретная подсказка к&nbsp;шифру</li>
+                <li><i class="bi bi-coin" aria-hidden="true"></i>+1&nbsp;стартовая монета для&nbsp;клана</li>
+                <li><i class="bi bi-arrow" aria-hidden="true"></i>Дополнительная серия из&nbsp;5&nbsp;стрел на&nbsp;стрельбище</li>
+                <li><i class="bi bi-vote" aria-hidden="true"></i>Двойной голос за&nbsp;лучший костюм и&nbsp;лучшую тыкву</li>
+                <li><i class="bi bi-cipher" aria-hidden="true"></i>Секретная подсказка к&nbsp;шифру</li>
               </ul>
               <div class="gold-amt">
                 <label class="flabel" for="gold-amt">Твой вклад</label>
-                <div class="stepper">
-                  <button class="stp" type="button" id="gold-minus" data-inc="-1" aria-label="Меньше на 50 000 IDR">−</button>
-                  <div class="inp" id="gold-inp"><input id="gold-amt" inputmode="numeric" autocomplete="off" value="500 000" aria-describedby="gold-h gold-e"><span class="suf">IDR</span></div>
-                  <button class="stp" type="button" data-inc="1" aria-label="Больше на 50 000 IDR">+</button>
-                </div>
-                <p class="hint" id="gold-h">Минимальный взнос&nbsp;— 500&nbsp;000&nbsp;IDR. Больше&nbsp;— на&nbsp;твоё усмотрение</p>
+                <div class="inp" id="gold-inp"><input id="gold-amt" inputmode="numeric" autocomplete="off" value="500 000" aria-describedby="gold-h gold-e"><span class="suf">IDR</span></div>
                 <p class="err" id="gold-e" aria-live="polite"></p>
                 <div class="presets" role="group" aria-label="Быстрый выбор суммы">
                   <button type="button" data-preset="500000" aria-pressed="false">500&nbsp;000</button>
                   <button type="button" data-preset="750000" aria-pressed="false">750&nbsp;000</button>
                   <button type="button" data-preset="1000000" aria-pressed="false">1&nbsp;000&nbsp;000</button>
                 </div>
+                <p class="hint" id="gold-h">Минимальный взнос&nbsp;— 500&nbsp;000&nbsp;IDR. Больше&nbsp;— на&nbsp;твоё усмотрение</p>
               </div>
             </div>
             </div>
@@ -657,11 +698,19 @@ footer small{font-size:15px;opacity:.75}
             <div class="bar" id="bar" role="progressbar" aria-label="Заявлено в казну" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
               <div class="fill"></div>
               <div class="ghost"></div>
+              <i class="tk" style="--t:25"></i><i class="tk" style="--t:50"></i><i class="tk" style="--t:75"></i>
               <span class="bar-tag" id="bar-tag" aria-hidden="true"></span>
               <img class="bar-star" src="art/star.png" alt="">
             </div>
+            <!-- лупа ближайшей вехи: увеличенный отрезок большой шкалы до следующей четверти цели -->
+            <div class="lens" id="lens" hidden>
+              <svg class="lens-z" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><polygon id="lens-poly" points="0,0 25,0 100,10 0,10"/><path id="lens-sides" d="M0 0L0 10M25 0L100 10"/></svg>
+              <div class="lens-t" aria-hidden="true"><div class="lens-f"></div><div class="lens-g"></div></div>
+              <div class="lens-l" aria-hidden="true"><span id="lens-a"></span><span id="lens-b"></span></div>
+              <p class="lens-c" id="lens-c" aria-live="polite"></p>
+            </div>
             <p class="pv" id="pv" aria-live="polite"></p>
-            <button class="linkbtn pv-up" type="button" id="pv-up" data-act="up" hidden></button>
+            <button class="btn btn-sm pv-up" type="button" id="pv-up" data-act="up" hidden></button>
             <p class="m-over" data-k="over" hidden></p>
             <p class="m-mood" data-k="mood"></p>
             <p class="m-meta" data-k="meta"></p>
@@ -685,6 +734,7 @@ footer small{font-size:15px;opacity:.75}
             <div class="tot" aria-live="polite"><span class="label">Итого к&nbsp;оплате</span><b id="pass-total">—</b></div>
             <p class="small tot-br" id="pass-break"></p>
             <button class="btn btn-main join-btn" type="button" id="join-btn" data-act="join">Вступить в&nbsp;игру</button>
+            <p class="cta-note">Дальше&nbsp;— имя, Telegram и&nbsp;реквизиты для&nbsp;перевода</p>
             <p class="err" id="pass-err" role="alert"></p>
             </div>
           </div>
@@ -696,15 +746,17 @@ footer small{font-size:15px;opacity:.75}
         </article>
 
         <aside class="side" aria-label="Бюджет и гарантия">
-          <div class="plate ledger" data-rv>
-            <div class="ledger-h"><span class="label">Во&nbsp;что обходится ночь</span></div>
+          <details class="plate ledger" id="ledger" open data-rv>
+            <summary class="ledger-s"><span class="label">Куда идут монеты</span><span class="chev" aria-hidden="true">▾</span></summary>
+            <div class="ledger-b">
             <dl class="lines">
               <div><dt>Площадка</dt><dd data-k="venue">8&nbsp;600&nbsp;000&nbsp;IDR</dd></div>
               <div><dt>Операционные расходы</dt><dd data-k="ops">3&nbsp;500&nbsp;000&nbsp;IDR</dd></div>
               <div class="sum"><dt>Цель казны</dt><dd data-k="target">12&nbsp;100&nbsp;000&nbsp;IDR</dd></div>
             </dl>
             <p class="small">Срок сбора&nbsp;— до&nbsp;20&nbsp;октября. Бюджет открыт: видно, сколько стоит ночь и&nbsp;сколько уже заявлено.</p>
-          </div>
+            </div>
+          </details>
           <div class="plate guarantee" data-rv>
             <img src="art/star.png" alt="">
             <p>Не&nbsp;соберём необходимую сумму до&nbsp;20&nbsp;октября&nbsp;— отменим праздник и&nbsp;вернём каждому 100%&nbsp;его взноса</p>
@@ -772,11 +824,11 @@ footer small{font-size:15px;opacity:.75}
           <div class="book-fr" aria-hidden="true"><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg></div>
           <div class="pg pg-l">
             <img class="orn" src="art/ornament.webp" alt="">
-            <h2 id="pro-t">Странник, врата замка <em class="acc">открыты</em></h2>
+            <h2 id="pro-t">Странник, замок зовёт тебя в&nbsp;<em class="acc">игру</em></h2>
           </div>
           <div class="pg pg-r">
             <p class="lead drop">Впереди ночь испытаний, тайн и&nbsp;великих союзов. Но&nbsp;прежде, чем переступить порог, выбери тех, с&nbsp;кем разделишь судьбу королевства</p>
-            <button class="btn btn-main" type="button" data-act="pro-next">Продолжить</button>
+            <button class="btn btn-main" type="button" data-act="pro-next">Вступить в&nbsp;игру</button>
           </div>
         </div>
       </div>
@@ -899,10 +951,12 @@ footer small{font-size:15px;opacity:.75}
 <script>
 (()=>{'use strict';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-const NB=' ';
+const NB='\u00a0';
 /* неразрывные пробелы в динамических строках: после коротких слов, перед тире, в числах */
-const SHORT=/(^|[\s«( ])(в|к|с|и|а|о|у|я|на|по|до|за|из|от|не|ни|но|мы|ты|вы|во|со|об|для|без|при) /gi;
-const ty=s=>String(s).replace(SHORT,'$1$2'+NB).replace(SHORT,'$1$2'+NB).replace(/ —/g,NB+'—').replace(/(\d) (?=\d{3}\b)/g,'$1'+NB).replace(/(\d) IDR/g,'$1'+NB+'IDR').replace(/(\d%?) (?=[а-яё])/gi,'$1'+NB);
+/* короткое слово в начале строки, после пробела, «, (, > (конец тега); дальше может быть что угодно: кириллица, латиница, цифра, тег */
+const SHORT=/(^|[\s«(>])(в|к|с|и|а|о|у|я|на|по|до|за|из|от|не|ни|но|мы|ты|вы|во|со|об|ко|для|без|при|про|под|над) +(?=\S)/gi;
+const nbShort=s=>{let r=String(s),p;do{p=r;r=r.replace(SHORT,'$1$2'+NB)}while(r!==p);return r};
+const ty=s=>nbShort(s).replace(/ +—/g,NB+'—').replace(/ +→/g,NB+'→').replace(/(\d) (?=\d{3}\b)/g,'$1'+NB).replace(/(\d) IDR/g,'$1'+NB+'IDR').replace(/(\d%?) (?=[а-яё])/gi,'$1'+NB);
 const fmt=n=>String(Math.round(Number(n)||0)).replace(/\B(?=(\d{3})+(?!\d))/g,NB);
 const idr=n=>fmt(n)+NB+'IDR';
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -937,7 +991,7 @@ const uuid=()=>{try{if(crypto.randomUUID)return crypto.randomUUID()}catch{}retur
 const visitorId=()=>{let v=LS.get('hc_visitor');if(!v){v=uuid();LS.set('hc_visitor',v)}return v};
 const requestId=()=>{let v=LS.get('hc_req');if(!v){v=uuid();LS.set('hc_req',v)}return v};
 const normTg=v=>{let s=String(v||'').trim().replace(/^https?:\/\//i,'').replace(/^(www\.)?(t\.me|telegram\.me)\//i,'');s=s.split(/[?#/]/)[0].replace(/^@/,'');return /^[A-Za-z0-9_]{5,32}$/.test(s)?s:null};
-const parseAmount=v=>{const s=String(v||'').replace(/[\s  ]/g,'');if(!/^\d{1,15}$/.test(s))return null;const n=Number(s);return Number.isSafeInteger(n)?n:null};
+const parseAmount=v=>{const s=String(v||'').replace(/[\s\u00a0\u202f]/g,'');if(!/^\d{1,15}$/.test(s))return null;const n=Number(s);return Number.isSafeInteger(n)?n:null};
 
 /* ── API ── */
 const qs=new URLSearchParams(location.search);
@@ -982,7 +1036,7 @@ function mockApi(){
     const name=String(p.display_name||'').trim();if(!name||[...name].length>60)return fail('VALIDATION',{field:'display_name',message:'Укажите имя'});
     const tg=normTg(p.telegram_username);if(!tg)return fail('VALIDATION',{field:'telegram_username',message:'Укажите Telegram в виде @username (5–32 символа: латиница, цифры, _)'});
     if(!CLANS[p.clan_code])return fail('VALIDATION',{field:'clan_code',message:'Выберите клан'});
-    if(!TARIFF_NAME[p.tariff_code])return fail('VALIDATION',{field:'tariff_code',message:'Выберите тариф'});
+    if(!TARIFF_NAME[p.tariff_code])return fail('VALIDATION',{field:'tariff_code',message:'Выберите путь'});
     const t=p.tariff_code==='BRONZE'?P.bronze:p.tariff_code==='SILVER'?P.silver:p.gold_amount_idr;
     if(p.tariff_code==='GOLD'&&(!Number.isSafeInteger(t)||t<P.gold))return fail('VALIDATION',{field:'gold_amount_idr',message:'Укажите целую сумму не меньше 500 000 IDR'});
     const r=reason(counts(),p.clan_code);if(r)return fail({FULL:'CLAN_FULL',IMBALANCED:'CLAN_IMBALANCED',GUESTS_FULL:'GUESTS_FULL'}[r],{message:reasonText(r)});
@@ -1073,14 +1127,14 @@ function renderClans(){
     const more=f('more');more.hidden=mem.length<=lim;more.textContent=all?'свернуть':`показать всех (${mem.length})`;more.setAttribute('aria-expanded',String(all));
     f('empty').hidden=!(d&&!mem.length);
     const join=f('join'),why=f('reason');
-    f('mine').hidden=!mine;f('mine-t').textContent=applied&&mine?'Ты в этом клане':'Твой клан';
+    f('mine').hidden=!mine;f('mine-t').textContent=applied&&mine?ty('Ты в этом клане'):'Твой клан';
     join.hidden=mine||!!applied;
     const blocked=!!(d&&!d.available);
     join.disabled=blocked;
     why.hidden=!(blocked&&!applied&&!mine);why.textContent=blocked?reasonText(d.reason):'';
     if(blocked)join.setAttribute('aria-describedby',why.id||(why.id='why-'+(inPro?'p':'m')+code));else join.removeAttribute('aria-describedby');
   });
-  const pa=$('#pro-applied');pa.hidden=!applied;if(applied)pa.innerHTML=`Ты уже в клане <b>${esc(CLANS[applied.clan_code].name)}</b>`;
+  const pa=$('#pro-applied');pa.hidden=!applied;if(applied)pa.innerHTML=ty(`Ты уже в клане <b>${esc(CLANS[applied.clan_code].name)}</b>`);
 }
 
 /* корешок пропуска: клан */
@@ -1089,7 +1143,7 @@ stubImg.addEventListener('error',()=>{const c=stubImg.dataset.code;if(c&&!stubIm
 function renderStub(){
   const code=applied?applied.clan_code:myClan,c=code?CLANS[code]:null;
   $('#stub-k').textContent=applied?'Ты в клане':'Твой клан';
-  $('#stub-name').textContent=c?c.name:'Клан не выбран';
+  $('#stub-name').textContent=c?c.name:ty('Клан не выбран');
   if(c){if(stubImg.dataset.code!==code){stubImg.dataset.code=code;stubImg.dataset.fb='';stubImg.src=CLAN_ART[code]}stubImg.parentElement.hidden=false}else stubImg.parentElement.hidden=true;
   const ch=$('#stub-change');ch.hidden=!!applied;ch.textContent=myClan?'сменить клан':'выбрать клан';
   const d=myClan&&!applied?clanData(myClan):null,w=$('#stub-warn');
@@ -1109,8 +1163,11 @@ function renderPrices(){
 }
 
 /* ── казна ── */
-const MOODS=[[100,'Казна наполнена!'],[75,'Ещё немного — врата откроются'],[50,'Мы прошли половину пути'],[25,'В замке зажглись первые огни'],[0,'Первые монеты уже в казне']];
-const pctTxt=x=>x>=100?'100':x>0&&x<1?'<1':String(Math.floor(x));
+const MOODS=[[100,'Казна наполнена!'],[75,'Ещё немного — и замок проснётся'],[50,'Мы прошли половину пути'],[25,'В замке зажглись первые огни'],[0,'Первые монеты уже в казне']];
+const MILES=['Первые огни','Половина пути','Замок просыпается','Казна полна'];
+/* один формат процентов на всю страницу: обычное округление до десятой; 100% — только когда цель реально достигнута */
+const pct1v=x=>x>=100?100:x>0?Math.min(99.9,Math.round(x*10)/10):0;
+const pct1=x=>{const v=pct1v(x);return x>0&&v===0?'<0,1':String(v).replace('.',',')};
 function renderTreasury(){
   const s=S(),k=n=>$(`[data-k="${n}"]`);
   k('venue').textContent=idr(s.venue_cost_idr);k('ops').textContent=idr(s.operations_cost_idr);
@@ -1120,10 +1177,10 @@ function renderTreasury(){
   const remain=s.remaining_to_target_idr??Math.max(0,tgt-d),over=s.over_target_idr??Math.max(0,d-tgt);
   countTo(k('declared'),d);
   const bar=$('#bar');bar.style.setProperty('--p',pct.toFixed(2));
-  bar.setAttribute('aria-valuenow',String(Math.round(pct)));bar.setAttribute('aria-valuetext',`${idr(d)} из ${idr(tgt)}`);
-  k('pct').textContent=pctTxt(raw)+'%';
+  bar.setAttribute('aria-valuenow',String(pct1v(pct)));bar.setAttribute('aria-valuetext',`${pct1(raw)}% · ${idr(d)} из ${idr(tgt)}`);
+  k('pct').textContent=pct1(raw)+'%';
   k('over').hidden=!(over>0);k('over').textContent=over>0?`Сверх цели: +${idr(over)}`:'';
-  k('mood').textContent=ty(MOODS.find(([m])=>raw>=m)[1]);
+  k('mood').textContent=ty(d>0?MOODS.find(([m])=>raw>=m)[1]:'Казна ждёт первую монету');
   const meta=[remain>0?`Осталось собрать: ${idr(remain)}`:'Цель достигнута',`гостей в замке: ${s.registered_count??0} из ${s.max_guests}`];
   if(s.dinner_count)meta.push(`на трапезе: ${s.dinner_count}`);
   k('meta').textContent=ty(meta.join(' · '));
@@ -1141,17 +1198,34 @@ function renderPreview(){
   else if(tk==null)pv.textContent=ty(`Укажи сумму от ${idr(s.tariffs.gold_min_idr)} — и увидишь, как сдвинется казна`);
   else if(cur>=100)pv.textContent=ty('Казна уже полна — твой вклад сделает ночь ещё щедрее');
   else{
-    const nq=(d+tk)/tgt*100,txt=pctTxt(nq);q=Math.min(100,nq);tag='+'+fmt(tk);
-    pv.innerHTML=esc(ty('С твоим вкладом казна будет заполнена на '))+`<b>${txt}%</b>`;
-    if(pick.tariff==='SILVER'){up.hidden=false;up.textContent=ty(`а с Gold — на ${pctTxt((d+s.tariffs.gold_min_idr)/tgt*100)}%`)}
+    const nq=(d+tk)/tgt*100,txt=pct1(nq);q=Math.min(100,nq);tag='+'+fmt(tk);
+    pv.innerHTML=ty(esc('С твоим вкладом казна будет заполнена на ')+`<b>${txt}%</b>`);
+    if(pick.tariff==='SILVER'){up.hidden=false;up.textContent=ty(`С Gold — на ${pct1((d+s.tariffs.gold_min_idr)/tgt*100)}% и все усиления →`)}
     if(pv.dataset.last!==txt){if(G&&pv.dataset.last)G.fromTo('#pv b',{scale:1.4},{scale:1,duration:.45,ease:'back.out(2)'});pv.dataset.last=txt}
   }
   bar.style.setProperty('--q',q.toFixed(2));
   $('#bar-tag').textContent=tag;bar.classList.toggle('no-pv',!tag);
+  renderLens(live,d,tk);
+}
+/* лупа ближайшей вехи: вехи каждые 25% цели; показывает текущий отрезок крупно и долю, которую закроет твой вклад */
+function renderLens(live,d,tk){
+  const s=S(),tgt=s.target_idr,lens=$('#lens');
+  if(!live||!(tgt>0)||d>=tgt){lens.hidden=true;return}
+  const step=tgt/4,i=Math.min(3,Math.floor(d/step)),a=i*step,b=a+step,name=MILES[i],add=!applied&&tk!=null?tk:0;
+  const lf=(d-a)/step*100,lg=Math.min(100,(d+add-a)/step*100),sp=a/tgt*100,ep=b/tgt*100;
+  lens.hidden=false;lens.style.setProperty('--lf',lf.toFixed(2));lens.style.setProperty('--lg',Math.max(lf,lg).toFixed(2));
+  $('#lens-poly').setAttribute('points',`${sp},0 ${ep},0 100,10 0,10`);
+  $('#lens-sides').setAttribute('d',`M${sp} 0L0 10M${ep} 0L100 10`);
+  $('#lens-a').textContent=i?ty(`${MILES[i-1]} · ${pct1(sp)}%`):'0%';
+  $('#lens-b').textContent=ty(`«${name}» · ${pct1(ep)}%`);
+  const nm=`<b>«${esc(name)}»</b>`;let html;
+  if(add&&d+add>=b)html=esc('Твой вклад откроет веху ')+nm+'!';
+  else html=esc('Ближайшая веха — ')+nm+esc(`. До неё ${idr(b-d)}`+(add?`, твой ${TARIFF_NAME[pick.tariff]} закроет ${pct1(add/step*100)}% отрезка.`:'.'));
+  $('#lens-c').innerHTML=ty(html);
 }
 
 /* ── выбор пути и трапезы ── */
-function goldState(raw,min){const g=parseAmount(raw);if(!String(raw||'').trim())return {g:null,err:ty(`Укажи сумму вклада — от ${idr(min)}`)};if(g===null)return {g:null,err:'Только целое число, без букв и копеек'};if(g<min)return {g,err:ty(`Минимальный взнос — ${idr(min)}. Сейчас указано ${idr(g)}`)};return {g,err:''}}
+function goldState(raw,min){const g=parseAmount(raw);if(!String(raw||'').trim())return {g:null,err:ty(`Укажи сумму вклада — от ${idr(min)}`)};if(g===null)return {g:null,err:ty('Только целое число, без букв и копеек')};if(g<min)return {g,err:ty(`Минимальный взнос — ${idr(min)}. Сейчас указано ${idr(g)}`)};return {g,err:''}}
 const goldNow=()=>goldState(pick.goldRaw,S().tariffs.gold_min_idr);
 function ticketNow(){const t=S().tariffs;switch(pick.tariff){case 'BRONZE':return t.bronze_idr;case 'SILVER':return t.silver_idr;case 'GOLD':{const g=goldNow();return g.err?null:g.g}}return null}
 function renderPass(stampIt){
@@ -1159,9 +1233,9 @@ function renderPass(stampIt){
   $$('[data-when]').forEach(e=>e.hidden=e.dataset.when!==mode);$('#pass').classList.toggle('is-applied',!!applied);
   $$('input[name="path"]').forEach(r=>r.checked=r.value===tf);
   $$('.tp').forEach(p=>p.hidden=p.dataset.panel!==tf);
+  $('#gteaser').hidden=!!applied||tf==='GOLD';
   const gs=goldNow(),gErr=goldTouched?gs.err:'';
   $('#gold-e').textContent=gErr;$('#gold-inp').classList.toggle('bad',!!gErr);ga.setAttribute('aria-invalid',String(!!gErr));
-  $('#gold-minus').disabled=!(gs.g!=null&&gs.g>t.gold_min_idr);
   $$('[data-preset]').forEach(b=>b.setAttribute('aria-pressed',String(gs.g!=null&&Number(b.dataset.preset)===gs.g)));
   $('#pass-dinner').checked=pick.dinner;
   const tk=ticketNow(),din=pick.dinner?t.dinner_idr:0,total=tk!=null?tk+din:null;
@@ -1175,7 +1249,7 @@ function renderPass(stampIt){
   if(stampIt&&G)G.fromTo('#stamp',{scale:1.5,rotation:-2,autoAlpha:0},{scale:1,rotation:-12,autoAlpha:.9,duration:.5,ease:'back.out(2.2)'});
   /* большая кнопка в трапезе синхронна с переключателем в пропуске */
   const db=$('#dn-btn');db.hidden=!!applied;db.setAttribute('aria-pressed',String(pick.dinner));db.classList.toggle('on',pick.dinner);
-  $('#dn-state').textContent=applied?(applied.dinner_amount_idr?'Трапеза уже в твоём пропуске':ty('Чтобы добавить трапезу, напиши организатору')):
+  $('#dn-state').textContent=applied?ty(applied.dinner_amount_idr?'Трапеза уже в твоём пропуске':'Чтобы добавить трапезу, напиши организатору'):
     pick.dinner?ty(`Трапеза в твоём пропуске. Итого: ${total!=null?idr(total):'—'}`):ty('Отметь — и ужин добавится в твой пропуск');
   fillSummary(tk,din);
   renderPreview();
@@ -1260,7 +1334,7 @@ const ERR_INPUT={name:'f-name',tg:'f-tg'};
 function setErr(k,msg){const p=$(`[data-err="${k}"]`,form);if(!p)return;p.textContent=msg||'';const id=ERR_INPUT[k];if(id){const i=$('#'+id);i.setAttribute('aria-invalid',String(!!msg));i.closest('.inp').classList.toggle('bad',!!msg)}if(k==='clan')$('#co-clan-fix').hidden=!msg}
 function validate(){
   const e={},name=el.f_name.value.trim(),tgRaw=el.f_tg.value.trim();
-  if(!name)e.name=ty('Укажи имя — так тебя увидят в списке клана');else if([...name].length>60)e.name='Имя не длиннее 60 символов';
+  if(!name)e.name=ty('Укажи имя — так тебя увидят в списке клана');else if([...name].length>60)e.name=ty('Имя не длиннее 60 символов');
   if(!tgRaw)e.tg=ty('Укажи Telegram — по нему организатор найдёт тебя');else if(!normTg(tgRaw))e.tg=ty('Ник в Telegram: латиница, цифры и _, от 5 до 32 символов');
   const clan=myClan;if(!clan)e.clan='Выбери клан';else{const d=clanData(clan);if(d&&!d.available)e.clan=reasonText(d.reason)}
   const tf=pick.tariff;if(!TARIFF_NAME[tf])e.tariff='Выбери путь';
@@ -1331,7 +1405,7 @@ async function submitApp(){
 }
 function showDone(){
   const a=applied;
-  $('#done-t').innerHTML=`Ты вступил в клан <em class="acc">${esc(CLANS[a.clan_code].name)}</em>`;
+  $('#done-t').innerHTML=ty(`Ты вступил в клан <em class="acc">${esc(CLANS[a.clan_code].name)}</em>`);
   $('#done-sum').textContent=ty(`${TARIFF_NAME[a.tariff_code]}: ${idr(a.ticket_amount_idr)}`+(a.dinner_amount_idr?` + ${idr(a.dinner_amount_idr)} — ужин`:'')+`. Итого: ${idr(a.total_due_idr)}.`);
   showStep('done');$('#done-t').focus();
   if(G)G.fromTo('.done img',{rotation:-140,scale:.3},{rotation:0,scale:1,duration:1.1,ease:'elastic.out(1,.6)'});
@@ -1356,7 +1430,7 @@ ga.addEventListener('keydown',e=>{if(e.key==='ArrowUp'||e.key==='ArrowDown'){e.p
 async function copyText(text,btn){
   let ok=false;try{await navigator.clipboard.writeText(text);ok=true}catch{}
   if(!ok){const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;opacity:0;top:0;left:0';(btn.closest('dialog')||document.body).append(ta);ta.select();try{ok=document.execCommand('copy')}catch{}ta.remove()}
-  const o=btn.dataset.label||(btn.dataset.label=btn.textContent);btn.textContent=ok?'Скопировано':'Не вышло, выдели вручную';setTimeout(()=>btn.textContent=o,1800);
+  const o=btn.dataset.label||(btn.dataset.label=btn.textContent);btn.textContent=ok?'Скопировано':ty('Не вышло, выдели вручную');setTimeout(()=>btn.textContent=o,1800);
 }
 
 /* ── клики ── */
@@ -1364,7 +1438,6 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('button,[data-act]');if(!t)return;
   if(t.dataset.join){chooseClan(t.dataset.join,!!t.closest('.pro'));return}
   if(t.classList.contains('more')){const card=t.closest('[data-clan]');card.dataset.all=card.dataset.all==='1'?'0':'1';renderClans();return}
-  if(t.dataset.inc){bumpGold(Number(t.dataset.inc));return}
   if(t.dataset.preset){setGold(Number(t.dataset.preset));return}
   if('close' in t.dataset){dlg.close();return}
   if('back' in t.dataset){showStep('form');$('#co-t').focus();return}
@@ -1410,6 +1483,11 @@ function initMotion(){
   G.fromTo('.feast-bg img',{scale:1.1},{scale:1,ease:'none',scrollTrigger:{trigger:'.feast',start:'top bottom',end:'bottom top',scrub:true}});
   requestAnimationFrame(()=>ST.refresh());
 }
+
+/* бюджет: на телефоне свёрнут под «Куда идут монеты», на компьютере всегда раскрыт; гарантия видна всегда */
+const PHONE=matchMedia('(max-width:640px)'),ledger=$('#ledger');
+const syncLedger=()=>{ledger.open=!PHONE.matches};syncLedger();PHONE.addEventListener?.('change',syncLedger);
+$('.ledger-s').addEventListener('click',e=>{if(!PHONE.matches)e.preventDefault()});
 
 /* ── запуск ── */
 renderAll();initTilt();

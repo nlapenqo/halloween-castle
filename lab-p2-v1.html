@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alice&family=Kurale&family=Neucha&display=swap">
 <style>
-/* Layout V1 «Три шага»: статус «Ты в игре» со степпером → блок «Выбери путь» (шкала казны + компактные тарифы) → трапеза на весь экран → полоса кланов */
+/* Layout V1 «Три шага»: статус «Клан выбран» со степпером в строку → блок «Выбери путь» (шкала казны + карточки-переключатели + итог и «Вступить в игру») → трапеза на весь экран → полоса кланов */
 :root{
   --paper:#F2E0C0;
   --paper-deep:#E9D1A6;
@@ -105,49 +105,49 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 .back{font:400 17px/1.2 var(--f-display);text-decoration:none;border-bottom:1px dashed currentColor;padding-block:6px}
 @media (max-width:520px){.top{justify-content:center}}
 
-/* ── статус «Ты в игре»: три шага ── */
-.status{padding-block:clamp(0px,.8vw,10px) clamp(30px,4vw,52px)}
-.status .wrap{position:relative;z-index:1;display:grid;gap:clamp(12px,1.4vw,16px);justify-items:center;text-align:center}
-.status h1{font-size:clamp(36px,4.4vw,58px)}
+/* ── статус «Клан выбран»: три шага одной строкой ── */
+.status{padding-block:clamp(0px,.8vw,10px) clamp(26px,3.4vw,44px)}
+.status .wrap{position:relative;z-index:1;display:grid;gap:clamp(10px,1.2vw,14px);justify-items:center;text-align:center}
+.status h1{font-size:clamp(34px,4.4vw,58px)}
 .status .lead{max-width:44ch;opacity:.88}
 .deco{position:absolute;pointer-events:none;z-index:0;width:clamp(56px,7vw,96px)}
-.status .d1{left:max(8px,calc(50% - 610px));top:22%}
-.status .d2{right:max(8px,calc(50% - 600px));top:4%;width:clamp(58px,7vw,100px)}
+.status .d1{left:max(8px,calc(50% - 610px));top:10%}
+.status .d2{right:max(8px,calc(50% - 600px));top:0;width:clamp(58px,7vw,100px)}
 @media (max-width:700px){.status .deco{display:none}}
-.stepper{--gap:clamp(18px,3vw,44px);--pl-bg:var(--paper-deep);list-style:none;margin:clamp(4px,.8vw,10px) 0 0;width:min(100%,940px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);padding:clamp(16px,1.8vw,22px) clamp(16px,2.6vw,34px)}
-.stp{position:relative;display:flex;justify-content:center;align-items:center;gap:14px;text-align:left;min-width:0}
-.stp:not(:last-child)::after{content:"";position:absolute;top:50%;right:calc(-.5 * var(--gap) - 10px);width:20px;height:20px;margin-top:-10px;background:url(art/star.png) center/contain no-repeat;opacity:.9}
-.stp-ico{position:relative;isolation:isolate;flex:none;width:60px;height:60px;display:grid;place-items:center;font:400 26px/1 var(--f-display);color:var(--ink);font-variant-numeric:lining-nums}
-.stp-ico::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:52% 48% 50% 46%/48% 52% 46% 50%;filter:url(#rough-sm)}
-.stp-ico img{position:absolute;inset:4px;width:calc(100% - 8px);height:calc(100% - 8px);max-width:none;border-radius:50%;object-fit:cover;object-position:50% 16%}
-.stp-ph{position:absolute;inset:4px;border-radius:50%;overflow:hidden}
-.stp-ph img{inset:0;width:100%;height:100%;border-radius:0;object-position:50% 0;transform:scale(2.1)}
-.stp-ico img.is-t{inset:7px;width:calc(100% - 14px);height:calc(100% - 14px);border-radius:0;object-fit:contain}
-.stp-ok{position:absolute;right:-7px;bottom:-5px;width:26px;height:26px;display:none;place-items:center;font:400 15px/1 var(--f-body);color:var(--ink);background:var(--gold);border:2px solid var(--ink);border-radius:50% 46% 52% 48%/48% 52% 46% 50%}
+.stepper{--pl-bg:var(--paper-deep);list-style:none;margin:2px 0 0;padding:9px 22px;max-width:100%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 0}
+.stp{display:flex;align-items:center;gap:8px;min-width:0}
+.stp+.stp::before{content:"·";margin:0 14px;font:400 26px/1 var(--f-display);color:var(--ink);opacity:.45}
+.stp-link{display:flex;align-items:center;gap:8px;color:inherit;text-decoration:none}
+.stp-ico{position:relative;isolation:isolate;flex:none;width:36px;height:36px;display:grid;place-items:center;font:400 17px/1 var(--f-display);color:var(--ink);font-variant-numeric:lining-nums}
+.stp-ico::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2px solid var(--ink);border-radius:52% 48% 50% 46%/48% 52% 46% 50%;filter:url(#rough-sm)}
+.stp-ph{position:absolute;inset:3px;border-radius:50%;overflow:hidden}
+.stp-ph img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;object-position:50% 0;transform:scale(2.1)}
+.stp-ico img.is-t{position:absolute;inset:5px;width:calc(100% - 10px);height:calc(100% - 10px);max-width:none;object-fit:contain}
+.stp-ok{position:absolute;right:-6px;bottom:-5px;width:18px;height:18px;display:none;place-items:center;font:400 11px/1 var(--f-body);color:var(--ink);background:var(--gold);border:1.5px solid var(--ink);border-radius:50%}
 .stp.is-done .stp-ok{display:grid}
 .stp.is-cur .stp-ico{color:var(--paper)}
 .stp.is-cur .stp-ico::before{background:var(--vermilion)}
-.stp.is-cur .stp-ico::after{content:"";position:absolute;inset:-8px;border:2px dashed var(--vermilion);border-radius:50%;animation:stp-spin 18s linear infinite}
+.stp.is-cur .stp-ico::after{content:"";position:absolute;inset:-5px;border:1.5px dashed var(--vermilion);border-radius:50%;animation:stp-spin 18s linear infinite}
 @keyframes stp-spin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.stp.is-cur .stp-ico::after{animation:none}}
-.stp-txt{display:grid;gap:2px;justify-items:start;min-width:0}
-.stp-t{font:400 13px/1.3 var(--f-display);letter-spacing:.16em;text-transform:uppercase;color:var(--vermilion)}
-.stp-v{font:400 19px/1.2 var(--f-display);overflow-wrap:anywhere;font-variant-numeric:lining-nums}
-.stp:not(.is-done):not(.is-cur) .stp-v{opacity:.72}
-.stp-a{display:inline-flex;align-items:center;background:none;border:0;padding:2px 0;min-height:32px;font:400 16px/1.2 var(--f-body);color:var(--cobalt-deep);text-decoration:underline dashed;text-underline-offset:4px;cursor:pointer}
+.stp-t{font:400 13px/1.2 var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:var(--vermilion)}
+.stp:not(.is-done):not(.is-cur) .stp-t{color:var(--ink);opacity:.62}
+.stp-v{font:400 17px/1.2 var(--f-display);font-variant-numeric:lining-nums;white-space:nowrap}
+.stp-v:empty{display:none}
+.stp-a{display:inline-flex;align-items:center;background:none;border:0;padding:0 2px;min-height:36px;font:400 15px/1.2 var(--f-body);color:var(--cobalt-deep);text-decoration:underline dashed;text-underline-offset:4px;cursor:pointer}
 .me-warn{font-size:15px;color:var(--vermilion);max-width:52ch}
 @media (max-width:700px){
-  .stepper{padding:16px 10px 10px}
-  .stp{flex-direction:column;justify-content:flex-start;text-align:center;gap:8px}
-  .stp:not(:last-child)::after{top:26px;right:auto;left:calc(50% + 36px);width:calc(100% - 72px + var(--gap));height:0;margin:0;background:none;border-top:2.5px dashed rgba(38,23,29,.42)}
-  .stp-ico{width:52px;height:52px;font-size:22px}
-  .stp-txt{justify-items:center}
-  .stp-v{font-size:16px}
-  .stp-a{min-height:40px;font-size:15px}
+  .stepper{padding:6px 0;--pl-bg:transparent}
+  .stepper::before{display:none}
+  .stp,.stp-link{gap:5px}
+  .stp+.stp::before{margin:0 5px;font-size:22px}
+  .stp-v{display:none}
+  .stp-ico{width:30px;height:30px;font-size:15px}
+  .stp-t{font-size:12px;letter-spacing:.06em}
+  .stp-a{font-size:14px;padding:0}
 }
-@media (max-width:480px){.stp-t{font-size:12px;letter-spacing:.12em}.stp-v{font-size:15px}}
 
-/* ── путь: казна и тарифы в одном блоке ── */
+/* ── путь: казна и пути в одном блоке ── */
 .path-sec{position:relative;isolation:isolate;color:var(--paper);padding-block:clamp(46px,6vw,84px) clamp(54px,7vw,96px)}
 .path-sec::before{content:"";position:absolute;inset:0 -24px;z-index:-1;background:var(--navy) var(--stars);background-size:420px;filter:url(#rough)}
 .path-head{display:grid;gap:12px;justify-items:center;text-align:center;margin-bottom:clamp(22px,3vw,34px)}
@@ -207,8 +207,8 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 .guarantee p{font:400 clamp(15px,1.25vw,17px)/1.45 var(--f-display);text-transform:uppercase;letter-spacing:.06em}
 .guarantee img{width:30px}
 
-/* тарифы: компактные, одной высоты */
-.tariffs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.8vw,24px);align-items:stretch}
+/* пути: карточки-переключатели одной высоты */
+.tariffs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,1.8vw,24px);align-items:stretch;border:0;margin:0;padding:0;min-width:0}
 .tcard{color:var(--ink);display:flex;flex-direction:column;gap:12px;padding:clamp(18px,2vw,24px) clamp(16px,2vw,24px) clamp(18px,2vw,22px);cursor:pointer;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
 .tcard:hover,.tcard:focus-within{transform:translateY(-5px) rotate(-.5deg)}
 @media (prefers-reduced-motion:reduce){.tcard{transition:none}.tcard:hover,.tcard:focus-within{transform:none}}
@@ -230,15 +230,24 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 .t-line{font-size:16px;line-height:1.45}
 .t-imp{margin-top:auto;display:flex;align-items:center;gap:8px;font:400 15px/1.3 var(--f-display);color:var(--cobalt-deep);font-variant-numeric:lining-nums}
 .t-gold .t-imp{color:var(--gold)}
-.tcard .btn{align-self:stretch}
-.buffs-wrap{position:relative}
-.buffs-btn{display:inline-flex;align-items:center;gap:8px;background:none;border:0;padding:4px 0;min-height:32px;vertical-align:baseline;font:400 16px/1.2 var(--f-body);color:var(--gold);text-decoration:underline dashed;text-underline-offset:5px;cursor:pointer}
-.buffs-btn::after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg)}
-.buffs-btn[aria-expanded="true"]::after{transform:translateY(2px) rotate(-135deg)}
-.buffs-btn:focus-visible{outline:2px dashed var(--gold)}
-.buffs{--pl-bg:var(--paper);--pl-line:var(--gold);position:absolute;left:-10px;right:-10px;top:calc(100% + 4px);z-index:6;color:var(--ink);list-style:none;margin:0;padding:16px 18px;display:grid;gap:9px;box-shadow:0 14px 30px rgba(20,10,18,.35)}
-.buffs li{position:relative;padding-left:30px;font-size:16px;line-height:1.4}
-.buffs li::before{content:"";position:absolute;left:0;top:.05em;width:20px;height:20px;background:url(art/star.png) center/contain no-repeat}
+/* кнопка-переключатель: настоящая радиокнопка внутри */
+.t-pick{align-self:stretch}
+.t-pick input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.t-pick:has(input:focus-visible){outline:2px dashed var(--vermilion);outline-offset:4px;border-radius:30px}
+.t-gold .t-pick:has(input:focus-visible){outline-color:var(--gold)}
+.t-pick .t-on{display:none}
+.t-pick:has(input:checked){--btn-bg:var(--ink);color:var(--paper)}
+.t-gold .t-pick:has(input:checked){--btn-bg:var(--paper);color:var(--ink)}
+.t-pick:has(input:checked) .t-on{display:inline}
+.t-pick:has(input:checked) .t-off{display:none}
+.t-pick:has(input:disabled){cursor:default}
+.buffs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}
+.buffs li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;align-items:center;font-size:14px;line-height:1.3}
+.bi{width:34px;height:34px;background:center/contain no-repeat}
+.bi-coin{background-image:url(art/t-bronze.webp)}
+.bi-arrows{background-image:url(art/v-archery.webp);background-size:250%;background-position:100% 68%;border-radius:50%}
+.bi-vote{background-image:url(art/s-pumpkin1.webp)}
+.bi-hint{background-image:url(art/s-candle.webp)}
 .gchips{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:7px;min-width:0}
 .gchip{position:relative;isolation:isolate;display:inline-flex;align-items:center;min-height:42px;padding:8px 12px;font:400 15px/1 var(--f-display);color:var(--paper);cursor:pointer;font-variant-numeric:lining-nums;white-space:nowrap}
 .gchip input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
@@ -246,10 +255,50 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 .gchip:has(input:checked){color:var(--ink)}
 .gchip:has(input:checked)::before{background:var(--gold)}
 .gchip:has(input:focus-visible){outline:2px dashed var(--gold);outline-offset:3px;border-radius:24px}
+.gchip:has(input:disabled){opacity:.6;cursor:default}
 .gold-own{display:grid;gap:6px}
 .gold-own .hint{opacity:.85}
+@media (min-width:881px){
+  /* Gold шире: усиления и суммы помещаются компактно; у Bronze и Silver свободное место занимает иллюстрация */
+  .tariffs{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.45fr)}
+  .t-gold{gap:10px}
+  .t-bronze .t-head,.t-silver .t-head{display:contents}
+  .t-bronze .t-hd,.t-silver .t-hd{order:-1}
+  .t-line{order:1}
+  .t-bronze .t-ico,.t-silver .t-ico{order:2;flex:1 1 0;width:100%;height:auto;min-height:72px;max-height:180px;object-fit:contain;align-self:center}
+  .buffs{order:3}.gchips{order:4}.gold-own{order:5}.t-imp{order:6}.t-pick{order:7}
+}
 @media (max-width:880px){.tariffs{grid-template-columns:minmax(0,1fr);max-width:560px;margin-inline:auto;width:100%}}
-@media (max-width:480px){.t-head{grid-template-columns:58px minmax(0,1fr);gap:12px}.t-ico{width:58px;height:58px}.gchip{padding-inline:11px;font-size:15px}}
+@media (max-width:480px){.t-head{grid-template-columns:58px minmax(0,1fr);gap:12px}.t-ico{width:58px;height:58px}.gchip{padding-inline:11px}}
+
+/* итог на странице и одна кнопка «Вступить в игру» */
+.pass-dn{display:flex;justify-content:center;color:var(--paper)}
+.pass-dn .check{max-width:620px;font-size:17px}
+.pass-dn .check b{color:var(--gold)}
+.pass-dn .check small{display:block;font-size:14px;opacity:.75}
+.pass-bar{--pl-bg:var(--paper);color:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding:16px clamp(18px,2.6vw,30px);max-width:820px;width:100%;margin-inline:auto}
+.pass-sum{display:grid;gap:2px;min-width:0}
+.pass-l{font-size:16px;opacity:.85}
+.pass-k{font:400 14px/1.2 var(--f-display);letter-spacing:.14em;text-transform:uppercase;margin-right:8px}
+.pass-t{font:400 clamp(24px,2.6vw,32px)/1.1 var(--f-display);color:var(--vermilion);font-variant-numeric:lining-nums;white-space:nowrap}
+.pass-bar .btn{flex:none}
+.pass-bar.flash::before{animation:pass-flash 1.2s ease-out}
+@keyframes pass-flash{0%,40%{background:var(--gold)}}
+.pass-err{text-align:center;color:var(--vermilion-soft)}
+@media (max-width:700px){
+  /* на телефоне итог и кнопка прилипают к низу экрана, пока блок путей на экране */
+  .pass-bar{position:sticky;bottom:0;z-index:8;max-width:none;width:auto;margin-inline:calc(-1 * var(--gutter));padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom));color:var(--paper);flex-wrap:nowrap;gap:12px}
+  .pass-bar::before{background:var(--night);border:0;border-top:2.5px solid var(--gold);border-radius:0;filter:none}
+  .pass-l{font-size:13px;line-height:1.3;opacity:.8}
+  .pass-k{display:none}
+  .pass-t{font-size:22px;color:var(--gold)}
+  .pass-bar .btn{min-height:48px;padding:12px 18px;font-size:17px}
+  .path-head h2{font-size:30px}
+}
+@media (max-width:520px){.path-head .lead{display:none}.path-sec{padding-top:30px}.path-head{margin-bottom:18px}}
+
+.co-edit{margin-top:-8px}
+.co-edit .linkbtn{min-height:40px;font-size:16px}
 
 /* ── кланы ── */
 .clans-sec{padding-block:clamp(56px,8vw,110px) clamp(24px,4vw,48px)}
@@ -532,33 +581,21 @@ footer small{font-size:15px;opacity:.75}
     <img class="deco d1 float" src="art/s-crow.webp" alt="">
     <img class="deco d2 float" src="art/s-moon.webp" alt="">
     <div class="wrap">
-      <p class="label" data-rv>31&nbsp;октября · с&nbsp;14:00 · Bale Tudor, Бали</p>
-      <h1 id="st-t" data-rv>Ты&nbsp;в&nbsp;игре, <em class="acc">странник</em></h1>
-      <p class="lead" id="st-lead" data-rv>Клан выбран. Осталось выбрать путь и&nbsp;внести вклад в&nbsp;казну замка.</p>
-      <ol class="plate stepper" aria-label="Три шага до&nbsp;ночи в&nbsp;замке" data-rv>
+      <h1 id="st-t" data-rv>Клан выбран, <em class="acc">странник</em></h1>
+      <p class="lead" id="st-lead" data-rv>Осталось выбрать путь и&nbsp;внести вклад&nbsp;— и&nbsp;ты&nbsp;в&nbsp;игре.</p>
+      <ol class="plate stepper" aria-label="Три шага" data-rv>
         <li class="stp" id="stp-1">
           <span class="stp-ico" aria-hidden="true"><span class="stp-ph" hidden><img id="stp-1-img" alt=""></span><span class="stp-n">1</span><span class="stp-ok">✓</span></span>
-          <span class="stp-txt">
-            <span class="stp-t">Клан</span>
-            <span class="stp-v" id="stp-1-v">не&nbsp;выбран</span>
-            <button class="stp-a" type="button" id="me-btn" data-act="change">выбрать</button>
-          </span>
+          <span class="stp-t">Клан</span><span class="stp-v" id="stp-1-v"></span>
+          <button class="stp-a" type="button" id="me-btn" data-act="change">сменить</button>
         </li>
         <li class="stp" id="stp-2">
-          <span class="stp-ico" aria-hidden="true"><img id="stp-2-img" class="is-t" alt="" hidden><span class="stp-n">2</span><span class="stp-ok">✓</span></span>
-          <span class="stp-txt">
-            <span class="stp-t">Путь</span>
-            <span class="stp-v" id="stp-2-v">Bronze, Silver или&nbsp;Gold</span>
-            <a class="stp-a" href="#tariffs" id="stp-2-a">выбрать</a>
-          </span>
+          <a class="stp-link" href="#tariffs"><span class="stp-ico" aria-hidden="true"><img id="stp-2-img" class="is-t" alt="" hidden><span class="stp-n">2</span><span class="stp-ok">✓</span></span><span class="stp-t">Путь</span><span class="stp-v" id="stp-2-v"></span></a>
         </li>
         <li class="stp" id="stp-3">
           <span class="stp-ico" aria-hidden="true"><img id="stp-3-img" class="is-t" src="art/treasury.webp" alt="" hidden><span class="stp-n">3</span><span class="stp-ok">✓</span></span>
-          <span class="stp-txt">
-            <span class="stp-t">Вклад</span>
-            <span class="stp-v" id="stp-3-v">в&nbsp;казну замка</span>
-            <button class="stp-a" type="button" id="stp-3-a" data-act="go-pay" hidden>внести</button>
-          </span>
+          <span class="stp-t">Вклад</span><span class="stp-v" id="stp-3-v"></span>
+          <button class="stp-a" type="button" id="stp-3-a" data-act="show-pay" hidden>реквизиты</button>
         </li>
       </ol>
       <p class="me-warn" id="me-warn" hidden></p>
@@ -610,48 +647,46 @@ footer small{font-size:15px;opacity:.75}
           </div>
         </div>
 
-        <div class="tariffs">
-          <article class="plate tcard t-bronze" data-t="BRONZE" aria-labelledby="t-b" data-rv>
+        <div class="tariffs" role="radiogroup" aria-label="Путь">
+          <article class="plate tcard t-bronze" data-t="BRONZE" data-rv>
             <div class="t-head">
               <img class="t-ico" src="art/t-bronze.webp" alt="" width="600" height="581" loading="lazy" onerror="this.remove()">
-              <div>
+              <div class="t-hd">
                 <div class="t-nm"><h3 class="t-name" id="t-b">Bronze</h3></div>
                 <p class="price"><span data-price="bronze">150&nbsp;000</span>&nbsp;<small>IDR</small></p>
               </div>
             </div>
             <p class="t-line">Даже одна монета помогает замку. Этот путь&nbsp;— для&nbsp;друзей, которым сейчас нужен самый доступный формат участия (ограниченный бюджет)</p>
             <p class="t-imp" data-imp="BRONZE"></p>
-            <button class="btn" type="button" data-tariff="BRONZE">Выбрать Bronze</button>
+            <label class="btn t-pick"><input type="radio" name="path" value="BRONZE"><span class="t-off">Выбрать Bronze</span><span class="t-on">✓ Bronze выбран</span></label>
           </article>
-          <article class="plate tcard t-silver" data-t="SILVER" aria-labelledby="t-s" data-rv>
+          <article class="plate tcard t-silver" data-t="SILVER" data-rv>
             <div class="t-head">
               <img class="t-ico" src="art/t-silver.webp" alt="" width="600" height="530" loading="lazy" onerror="this.remove()">
-              <div>
+              <div class="t-hd">
                 <div class="t-nm"><h3 class="t-name" id="t-s">Silver</h3></div>
                 <p class="price"><span data-price="silver">300&nbsp;000</span>&nbsp;<small>IDR</small></p>
               </div>
             </div>
             <p class="t-line">Врата открыты: все события, испытания и&nbsp;приключения</p>
             <p class="t-imp" data-imp="SILVER"></p>
-            <button class="btn" type="button" data-tariff="SILVER">Выбрать Silver</button>
+            <label class="btn t-pick"><input type="radio" name="path" value="SILVER"><span class="t-off">Выбрать Silver</span><span class="t-on">✓ Silver выбран</span></label>
           </article>
-          <article class="plate tcard t-gold" data-t="GOLD" aria-labelledby="t-g" data-rv>
+          <article class="plate tcard t-gold" data-t="GOLD" data-rv>
             <div class="t-head">
               <img class="t-ico" src="art/t-gold.webp" alt="" width="600" height="564" loading="lazy" onerror="this.remove()">
-              <div>
+              <div class="t-hd">
                 <div class="t-nm"><h3 class="t-name" id="t-g">Gold</h3><span class="t-flag">все усиления</span></div>
                 <p class="price">от&nbsp;<span data-price="gold">500&nbsp;000</span>&nbsp;<small>IDR</small></p>
               </div>
             </div>
-            <div class="buffs-wrap">
-              <p class="t-line">Помоги пробудить замок сильнее&nbsp;— и&nbsp;получи все игровые усиления. <button class="buffs-btn" type="button" data-act="buffs" aria-expanded="false" aria-controls="buffs">Что даёт Gold</button></p>
-              <ul class="plate buffs" id="buffs" hidden>
-                <li>+1&nbsp;стартовая монета для&nbsp;клана</li>
-                <li>Дополнительная серия из&nbsp;5&nbsp;стрел на&nbsp;стрельбище</li>
-                <li>Двойной голос за&nbsp;лучший костюм и&nbsp;лучшую тыкву</li>
-                <li>Секретная подсказка к&nbsp;шифру</li>
-              </ul>
-            </div>
+            <p class="t-line">Помоги пробудить замок сильнее&nbsp;— и&nbsp;получи все игровые усиления:</p>
+            <ul class="buffs" aria-label="Усиления Gold">
+              <li><span class="bi bi-coin" aria-hidden="true"></span><span>+1&nbsp;стартовая монета для&nbsp;клана</span></li>
+              <li><span class="bi bi-arrows" aria-hidden="true"></span><span>Дополнительная серия из&nbsp;5&nbsp;стрел на&nbsp;стрельбище</span></li>
+              <li><span class="bi bi-vote" aria-hidden="true"></span><span>Двойной голос за&nbsp;лучший костюм и&nbsp;лучшую тыкву</span></li>
+              <li><span class="bi bi-hint" aria-hidden="true"></span><span>Секретная подсказка к&nbsp;шифру</span></li>
+            </ul>
             <fieldset class="gchips" id="gchips">
               <legend class="sr-only">Сумма вклада Gold</legend>
               <label class="gchip"><input type="radio" name="gpre" value="500000" checked><span data-gchip="0">500&nbsp;000</span></label>
@@ -666,9 +701,18 @@ footer small{font-size:15px;opacity:.75}
               <p class="err" id="gold-card-e"></p>
             </div>
             <p class="t-imp" data-imp="GOLD"></p>
-            <button class="btn btn-main" type="button" data-tariff="GOLD">Выбрать Gold</button>
+            <label class="btn btn-main t-pick"><input type="radio" name="path" value="GOLD"><span class="t-off">Выбрать Gold</span><span class="t-on">✓ Gold выбран</span></label>
           </article>
         </div>
+
+        <div class="pass-dn">
+          <label class="check"><input type="checkbox" id="p-dinner"><span>Добавить королевскую трапезу <b>+<span data-price="dinner">250&nbsp;000</span>&nbsp;IDR</b><small>По&nbsp;желанию, к&nbsp;любому пути. Подробнее&nbsp;— ниже</small></span></label>
+        </div>
+        <div class="plate pass-bar" id="pass">
+          <div class="pass-sum" aria-live="polite"><span class="pass-l" id="pass-l">Выбери путь выше</span><p><span class="pass-k">Итого</span><b class="pass-t" id="pass-t">—</b></p></div>
+          <button class="btn btn-main" type="button" id="join-btn" data-act="join">Вступить в&nbsp;игру</button>
+        </div>
+        <p class="err pass-err" id="pass-err" role="alert"></p>
       </div>
     </div>
   </section>
@@ -680,14 +724,14 @@ footer small{font-size:15px;opacity:.75}
     <div class="dn-band">
       <div class="wrap dn-in">
         <div class="dn-txt" data-rv>
-          <span class="label">18:00 · двор замка · по&nbsp;желанию</span>
+          <span class="label">18:00 · двор замка</span>
           <h2 id="dn-t">Королевская <em class="acc">трапеза</em></h2>
           <p class="lead">Игра окончена, монеты пересчитаны. Все&nbsp;кланы садятся за&nbsp;один длинный стол во&nbsp;дворе замка: свечи, фонари в&nbsp;ветвях, тосты за&nbsp;победителей и&nbsp;за&nbsp;тех, кто почти победил.<span class="dn-more"> Здесь вручают грамоты и&nbsp;открывают игристое.</span></p>
         </div>
         <div class="dn-act" data-rv>
           <p class="price">+<span data-price="dinner">250&nbsp;000</span>&nbsp;<small>IDR</small></p>
-          <p class="small">К&nbsp;любому пути. В&nbsp;итоге оплаты ужин всегда отдельной строкой.</p>
-          <button class="btn btn-main" type="button" data-act="want-dinner">Добавить трапезу</button>
+          <p class="small">По&nbsp;желанию, к&nbsp;любому пути.</p>
+          <button class="btn btn-main" type="button" data-act="want-dinner" aria-pressed="false">Добавить трапезу</button>
         </div>
       </div>
     </div>
@@ -776,6 +820,16 @@ footer small{font-size:15px;opacity:.75}
   <div class="sheet-in">
     <form class="step" data-step="form" id="co-form" novalidate>
       <h2 class="sheet-t" id="co-t" tabindex="-1">Вступить в&nbsp;<em class="acc">игру</em></h2>
+      <div class="plate total" aria-live="polite">
+        <div class="tl"><span>Клан</span><span id="sm-clan">—</span></div>
+        <div class="tl"><span>Путь</span><span id="sm-path">—</span></div>
+        <div class="tl"><span>Трапеза</span><span id="sm-dinner">—</span></div>
+        <div class="tl sum"><span>Итог</span><b id="tl-total">—</b></div>
+      </div>
+      <p class="co-edit"><button class="linkbtn" type="button" data-act="edit-path">Изменить путь или&nbsp;трапезу</button></p>
+      <p class="err" data-err="clan" role="alert"></p>
+      <p class="co-edit"><button class="linkbtn" type="button" data-act="co-clan" id="co-clan" hidden>Сменить клан</button></p>
+      <p class="err" data-err="path" role="alert"></p>
       <div class="field">
         <label for="f-name">Имя</label>
         <div class="inp"><input id="f-name" name="f_name" autocomplete="name" maxlength="60" required aria-describedby="f-name-h f-name-e"></div>
@@ -788,29 +842,7 @@ footer small{font-size:15px;opacity:.75}
         <p class="hint" id="f-tg-h">Можно вставить @username или ссылку t.me</p>
         <p class="err" id="f-tg-e" data-err="tg"></p>
       </div>
-      <fieldset class="field" aria-describedby="f-clan-e">
-        <legend>Клан</legend>
-        <div class="opts" id="opts-clan"></div>
-        <p class="err" id="f-clan-e" data-err="clan" role="alert"></p>
-      </fieldset>
-      <fieldset class="field" aria-describedby="f-tariff-e">
-        <legend>Тариф</legend>
-        <div class="opts" id="opts-tariff"></div>
-        <p class="err" id="f-tariff-e" data-err="tariff"></p>
-      </fieldset>
-      <div class="field" id="f-gold-wrap" hidden>
-        <label for="f-gold">Сумма вклада</label>
-        <div class="inp"><input id="f-gold" name="f_gold" inputmode="numeric" autocomplete="off" aria-describedby="f-gold-h f-gold-e"><span class="suf">IDR</span></div>
-        <p class="hint" id="f-gold-h">Минимальный взнос&nbsp;— 500&nbsp;000&nbsp;IDR. Больше&nbsp;— на&nbsp;твоё усмотрение</p>
-        <p class="err" id="f-gold-e" data-err="gold"></p>
-      </div>
-      <label class="check"><input type="checkbox" name="f_dinner" id="f-dinner"><span>Королевская трапеза&nbsp;— совместный ужин во&nbsp;дворе замка <b>+<span data-price="dinner">250&nbsp;000</span>&nbsp;IDR</b></span></label>
       <label class="check"><input type="checkbox" name="f_news" id="f-news"><span>Сообщать о&nbsp;следующих праздниках замка (по&nbsp;желанию)</span></label>
-      <div class="plate total" aria-live="polite">
-        <div class="tl"><span id="tl-ticket-l">Билет</span><span id="tl-ticket">—</span></div>
-        <div class="tl" id="tl-dinner" hidden><span>+<span data-price="dinner">250&nbsp;000</span>&nbsp;IDR&nbsp;— ужин</span></div>
-        <div class="tl sum"><span>Итого к&nbsp;оплате</span><b id="tl-total">—</b></div>
-      </div>
       <p class="err" data-err="form" role="alert"></p>
       <div class="form-actions"><button class="btn btn-main" type="submit">Перейти к&nbsp;оплате</button></div>
     </form>
@@ -869,7 +901,8 @@ footer small{font-size:15px;opacity:.75}
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const NB=' ';
 /* неразрывные пробелы в динамических строках: после коротких слов, перед тире, в числах */
-const SHORT=/(^|[\s«( ])(в|к|с|и|а|о|у|я|на|по|до|за|из|от|не|ни|но|мы|ты|вы|во|со|об|для|без|при) /gi;
+/* короткие слова: в начале строки, после пробела, кавычки, скобки или тега; дальше может идти что угодно — кириллица, латиница, тег */
+const SHORT=/(^|[\s«(>"„“ ])(в|к|с|и|а|о|у|я|на|по|до|за|из|от|не|ни|но|мы|ты|вы|во|со|об|для|без|при) /gi;
 const ty=s=>String(s).replace(SHORT,'$1$2'+NB).replace(SHORT,'$1$2'+NB).replace(/ —/g,NB+'—').replace(/(\d) (?=\d{3}\b)/g,'$1'+NB).replace(/(\d) IDR/g,'$1'+NB+'IDR').replace(/(\d%?) (?=[а-яё])/gi,'$1'+NB);
 const fmt=n=>String(Math.round(Number(n)||0)).replace(/\B(?=(\d{3})+(?!\d))/g,NB);
 const idr=n=>fmt(n)+NB+'IDR';
@@ -947,7 +980,7 @@ function mockApi(){
     const name=String(p.display_name||'').trim();if(!name||[...name].length>60)return fail('VALIDATION',{field:'display_name',message:'Укажите имя'});
     const tg=normTg(p.telegram_username);if(!tg)return fail('VALIDATION',{field:'telegram_username',message:'Укажите Telegram в виде @username (5–32 символа: латиница, цифры, _)'});
     if(!CLANS[p.clan_code])return fail('VALIDATION',{field:'clan_code',message:'Выберите клан'});
-    if(!TARIFF_NAME[p.tariff_code])return fail('VALIDATION',{field:'tariff_code',message:'Выберите тариф'});
+    if(!TARIFF_NAME[p.tariff_code])return fail('VALIDATION',{field:'tariff_code',message:'Выберите путь'});
     const t=p.tariff_code==='BRONZE'?P.bronze:p.tariff_code==='SILVER'?P.silver:p.gold_amount_idr;
     if(p.tariff_code==='GOLD'&&(!Number.isSafeInteger(t)||t<P.gold))return fail('VALIDATION',{field:'gold_amount_idr',message:'Укажите целую сумму не меньше 500 000 IDR'});
     const r=reason(counts(),p.clan_code);if(r)return fail({FULL:'CLAN_FULL',IMBALANCED:'CLAN_IMBALANCED',GUESTS_FULL:'GUESTS_FULL'}[r],{message:reasonText(r)});
@@ -1021,23 +1054,36 @@ function renderClans(){
     const more=f('more');more.hidden=mem.length<=lim;more.textContent=all?'свернуть':`показать всех (${mem.length})`;more.setAttribute('aria-expanded',String(all));
     f('empty').hidden=!(d&&!mem.length);
     const join=f('join'),why=f('reason');
-    f('mine').hidden=!mine;f('mine-t').textContent=applied&&mine?'Ты в этом клане':'Твой клан';
+    f('mine').hidden=!mine;f('mine-t').textContent=applied&&mine?ty('Ты в этом клане'):'Твой клан';
     join.hidden=mine||!!applied;
     const blocked=!!(d&&!d.available);
     join.disabled=blocked;
     why.hidden=!(blocked&&!applied&&!mine);why.textContent=blocked?reasonText(d.reason):'';
     if(blocked)join.setAttribute('aria-describedby',why.id||(why.id='why-'+(inPro?'p':'m')+code));else join.removeAttribute('aria-describedby');
   });
-  const pa=$('#pro-applied');pa.hidden=!applied;if(applied)pa.innerHTML=`Ты уже в клане <b>${esc(CLANS[applied.clan_code].name)}</b>`;
+  const pa=$('#pro-applied');pa.hidden=!applied;if(applied)pa.innerHTML=`${ty('Ты уже в клане')} <b>${esc(CLANS[applied.clan_code].name)}</b>`;
 }
 
-/* ── статус: три шага ── */
-let picked=null,hoverT=null,ghostReady=false,ghostT=0;
+/* ── выбор пути: состояние страницы ── */
+let sel=null,hoverT=null,ghostReady=false,ghostT=0;
+/* один способ округлять проценты на всей странице: до десятых, по обычным правилам */
+const pct1=x=>String(Math.round((Number(x)||0)*10)/10).replace('.',',');
 function tariffAmount(tf){
   const t=S().tariffs;
   if(tf==='BRONZE')return t.bronze_idr;if(tf==='SILVER')return t.silver_idr;
   const g=parseAmount($('#gold-card').value);return g!=null&&g>=t.gold_min_idr?g:t.gold_min_idr;
 }
+/* итог: путь + трапеза; источник правды для страницы, окна оформления и заявки */
+function calc(){
+  const t=S().tariffs;
+  if(applied)return {tf:applied.tariff_code,ticket:applied.ticket_amount_idr,dinner:applied.dinner_amount_idr||0,dn:(applied.dinner_amount_idr||0)>0,goldErr:'',total:applied.total_due_idr};
+  const tf=sel,dn=$('#p-dinner').checked,dinner=dn?t.dinner_idr:0;let ticket=null,goldErr='';
+  if(tf==='BRONZE')ticket=t.bronze_idr;else if(tf==='SILVER')ticket=t.silver_idr;
+  else if(tf==='GOLD'){const gs=goldState($('#gold-card').value,t.gold_min_idr);if(gs.err)goldErr=gs.err;else ticket=gs.g}
+  return {tf,ticket,dinner,dn,goldErr,total:ticket!=null?ticket+dinner:null};
+}
+
+/* ── статус: три шага одной строкой ── */
 const CLAN_FOCUS={VAMPIRE:'42% 24%',WEREWOLF:'60% 20%',DARK_ELF:'51% 30%'};
 function setStepImg(n,src){const li=$('#stp-'+n),img=$('img',li),box=img.closest('.stp-ph')||img;
   if(src){if(img.getAttribute('src')!==src)img.src=src;box.hidden=false}else box.hidden=true;
@@ -1045,45 +1091,56 @@ function setStepImg(n,src){const li=$('#stp-'+n),img=$('img',li),box=img.closest
 function setStep(n,done,cur){const li=$('#stp-'+n);li.classList.toggle('is-done',done);li.classList.toggle('is-cur',cur);
   if(cur)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current')}
 function renderSteps(){
-  const clan=applied?applied.clan_code:myClan,tf=applied?applied.tariff_code:picked;
-  const amt=applied?applied.ticket_amount_idr:tf?tariffAmount(tf):0;
-  const din=!applied&&el.f_dinner.checked?S().tariffs.dinner_idr:0;
-  /* шаг 1: клан */
+  const clan=applied?applied.clan_code:myClan,c=calc(),tf=c.tf;
   setStepImg(1,clan?CLAN_ART[clan]:'');if(clan)$('#stp-1-img').style.transformOrigin=CLAN_FOCUS[clan];
-  $('#stp-1-v').textContent=clan?CLANS[clan].name:ty('не выбран');
+  $('#stp-1-v').textContent=clan?CLANS[clan].name:'';
   const b=$('#me-btn');b.hidden=!!applied;b.dataset.act='change';b.textContent=clan?'сменить':'выбрать';
-  b.setAttribute('aria-label',clan?'Сменить клан':'Выбрать клан');
+  b.setAttribute('aria-label',clan?ty(`Сменить клан (сейчас: ${CLANS[clan].name})`):'Выбрать клан');
   setStep(1,!!clan,!clan);
-  /* шаг 2: путь */
   setStepImg(2,tf?TARIFF_ICON[tf]:'');
-  $('#stp-2-v').textContent=tf?`${TARIFF_NAME[tf]} · ${fmt(amt)}`:ty('Bronze, Silver или Gold');
-  const a2=$('#stp-2-a');a2.hidden=!!applied;a2.textContent=tf?'сменить':'выбрать';
+  $('#stp-2-v').textContent=tf?TARIFF_NAME[tf]:'';
   setStep(2,!!tf,!!clan&&!tf);
-  /* шаг 3: вклад */
   setStepImg(3,applied?'art/treasury.webp':'');
-  const a3=$('#stp-3-a');
-  if(applied){$('#stp-3-v').textContent=ty(`заявлено ${idr(applied.total_due_idr)}`);a3.hidden=false;a3.textContent='реквизиты';a3.dataset.act='show-pay'}
-  else if(tf){$('#stp-3-v').textContent=idr(amt+din)+(din?ty(' с ужином'):'');a3.hidden=false;a3.textContent='внести';a3.dataset.act='go-pay'}
-  else{$('#stp-3-v').textContent=ty('в казну замка');a3.hidden=true}
+  $('#stp-3-v').textContent=c.total!=null?idr(c.total):'';
+  $('#stp-3-a').hidden=!applied;
   setStep(3,!!applied,!!clan&&!!tf&&!applied);
-  $('.stp-badge').textContent=applied?'Твой путь выбран':ty('Шаг 2 из 3');
+  $('#st-t').innerHTML=(applied?ty('Ты в игре,'):clan?'Клан выбран,':'Выбери клан,')+' <em class="acc">странник</em>';
   $('#st-lead').textContent=ty(applied?`Ты в клане ${CLANS[applied.clan_code].name}, вклад заявлен. Если ещё не оплатил — реквизиты под рукой.`
-    :clan?(tf?`Путь выбран: ${TARIFF_NAME[tf]}. Остался последний шаг — внести вклад в казну замка.`:'Клан выбран. Осталось выбрать путь и внести вклад в казну замка.')
-    :'Три шага до ночи в замке: выбери клан, путь и внеси вклад в казну.');
+    :clan?(tf?`Путь выбран: ${TARIFF_NAME[tf]}. Осталось внести вклад — и ты в игре.`:'Осталось выбрать путь и внести вклад — и ты в игре.')
+    :'Выбери клан и путь, внеси вклад — и ты в игре.');
+  $('.stp-badge').hidden=!!applied;
   const d=myClan&&!applied?clanData(myClan):null,warn=$('#me-warn');
   warn.hidden=!(d&&!d.available);warn.textContent=d&&!d.available?reasonText(d.reason):'';
 }
 
+/* ── итог на странице ── */
+function renderPass(){
+  const c=calc(),t=S().tariffs,l=$('#pass-l'),tt=$('#pass-t'),b=$('#join-btn');
+  if(applied){
+    l.textContent=ty(`Ты в игре: путь ${TARIFF_NAME[c.tf]}`+(c.dinner?' + трапеза':''));tt.textContent=idr(c.total);
+    b.textContent='Реквизиты для оплаты';b.dataset.act='show-pay';b.classList.remove('is-blocked');
+  }else{
+    b.textContent='Вступить в'+NB+'игру';b.dataset.act='join';
+    if(!c.tf){l.textContent=ty('Выбери путь выше')+(c.dn?ty(` · трапеза ${fmt(c.dinner)}`):'');tt.textContent='—'}
+    else if(c.ticket==null){l.textContent=ty(`Gold: укажи сумму от ${idr(t.gold_min_idr)}`);tt.textContent='—'}
+    else{l.textContent=ty(`Путь ${TARIFF_NAME[c.tf]} ${fmt(c.ticket)}`+(c.dinner?` + трапеза ${fmt(c.dinner)}`:''));tt.textContent=idr(c.total)}
+    b.classList.toggle('is-blocked',c.ticket==null);
+  }
+  const db=$('[data-act="want-dinner"]');
+  db.hidden=!!applied;db.setAttribute('aria-pressed',String(c.dn));db.textContent=c.dn?'Трапеза добавлена ✓':'Добавить трапезу';
+  $$('input[name="path"],input[name="gpre"],#gold-card,#p-dinner').forEach(i=>i.disabled=!!applied);
+  if(applied)$('#p-dinner').checked=c.dn;
+}
+
 /* ── шкала: призрачный отрезок «сколько добавит твой путь» ── */
-const pctTxt=x=>String(Math.round(x*10)/10).replace('.',',');
 function renderImpacts(){
   const s=S(),tgt=s.target_idr,d=s.declared_ticket_total_idr||0;
   $$('[data-imp]').forEach(p=>{const tf=p.dataset.imp,amt=tariffAmount(tf),np=(d+amt)/tgt*100;
-    let t=`+${pctTxt(amt/tgt*100)}% к казне`;
-    if(stats&&!applied)t+=np>=100?' → цель собрана':` → станет ${Math.floor(np)}%`;
+    let t=`+${pct1(amt/tgt*100)}% к казне`;
+    if(stats&&!applied)t+=np>=100?' → цель собрана':` → станет ${pct1(np)}%`;
     p.innerHTML=`<span class="star-i" aria-hidden="true"></span><span>${esc(ty(t))}</span>`});
 }
-const previewT=()=>hoverT||picked||'SILVER';
+const previewT=()=>hoverT||sel||'SILVER';
 let gp=0,gg=0;
 function renderGhost(){
   renderImpacts();
@@ -1092,7 +1149,7 @@ function renderGhost(){
   const s=S(),tgt=s.target_idr,d=s.declared_ticket_total_idr||0,tf=previewT(),amt=tariffAmount(tf),np=(d+amt)/tgt*100;
   gp=Math.min(100,d/tgt*100);gg=Math.max(0,Math.min(100-gp,amt/tgt*100));
   bar.style.setProperty('--g',gg.toFixed(2));bar.classList.toggle('has-g',gg>0);
-  tag.innerHTML=`${TARIFF_NAME[tf]}: +${fmt(amt)} → <b>${np>=100?'цель!':Math.floor(np)+'%'}</b>`;
+  tag.innerHTML=`${TARIFF_NAME[tf]}: +${fmt(amt)} → <b>${np>=100?'цель!':pct1(np)+'%'}</b>`;
   tag.hidden=false;placeTag();
 }
 function placeTag(){
@@ -1101,10 +1158,12 @@ function placeTag(){
   tag.style.left=x+'px';tag.style.setProperty('--ax',Math.max(14,Math.min(tw-14,cx-x+tw/2))+'px');
 }
 addEventListener('resize',placeTag);
-function markSel(){const cur=applied?applied.tariff_code:picked;$$('.tcard').forEach(c=>c.classList.toggle('is-sel',cur===c.dataset.t))}
-function pick(tf){picked=tf;markSel();renderGhost();renderSteps()}
+function markSel(){const cur=applied?applied.tariff_code:sel;
+  $$('.tcard').forEach(c=>c.classList.toggle('is-sel',cur===c.dataset.t));
+  $$('input[name="path"]').forEach(r=>r.checked=r.value===cur)}
+function onPathChange(){$('#pass-err').textContent='';markSel();renderGhost();renderSteps();renderPass()}
+function selectPath(tf){if(applied)return;sel=tf;onPathChange()}
 function setGoldChip(v){const r=$$('input[name="gpre"]').find(x=>x.value===String(v));if(r)r.checked=true;$('#gold-own').hidden=String(v)!=='custom'}
-function setBuffs(open){$('.buffs-btn').setAttribute('aria-expanded',String(open));$('#buffs').hidden=!open}
 
 function renderPrices(){
   const t=S().tariffs;
@@ -1113,12 +1172,11 @@ function renderPrices(){
   $$('[data-price="gold"]').forEach(e=>e.textContent=fmt(t.gold_min_idr));
   $$('[data-price="dinner"]').forEach(e=>e.textContent=fmt(t.dinner_idr));
   $('#gold-card-h').textContent=ty(`Минимальный взнос — ${fmt(t.gold_min_idr)} IDR. Больше — на твоё усмотрение`);
-  $('#f-gold-h').textContent=$('#gold-card-h').textContent;
   const c0=$('input[name="gpre"]');
   if(c0&&c0.value!==String(t.gold_min_idr)){c0.value=String(t.gold_min_idr);$('[data-gchip="0"]').textContent=fmt(t.gold_min_idr);if(c0.checked)$('#gold-card').value=fmt(t.gold_min_idr)}
 }
 
-const MOODS=[[100,'Казна наполнена!'],[75,'Ещё немного — врата откроются'],[50,'Мы прошли половину пути'],[25,'В замке зажглись первые огни'],[0,'Первые монеты уже в казне']];
+const MOODS=[[100,'Казна наполнена!'],[75,'Ещё немного — и замок проснётся'],[50,'Мы прошли половину пути'],[25,'В замке зажглись первые огни'],[0,'Первые монеты уже в казне']];
 function renderTreasury(){
   const s=S(),k=n=>$(`[data-k="${n}"]`);
   k('venue').textContent=idr(s.venue_cost_idr);k('ops').textContent=idr(s.operations_cost_idr);
@@ -1130,10 +1188,10 @@ function renderTreasury(){
   const bar=$('#bar');bar.style.setProperty('--p',pct.toFixed(2));
   if(!ghostReady&&!ghostT)ghostT=setTimeout(()=>{ghostReady=true;renderGhost()},G?1500:0);
   bar.setAttribute('aria-valuenow',String(Math.round(pct)));bar.setAttribute('aria-valuetext',`${idr(d)} из ${idr(tgt)}`);
-  k('pct').textContent=(d>0&&pct<1?'<1':Math.floor(pct))+'%';
+  k('pct').textContent=pct1(pct)+'%';
   k('remain').textContent=remain>0?ty(`Осталось собрать: ${idr(remain)}`):'Цель достигнута';
   k('over').hidden=!(over>0);k('over').textContent=over>0?`Сверх цели: +${idr(over)}`:'';
-  k('mood').textContent=ty(MOODS.find(([m])=>raw>=m)[1]);
+  k('mood').textContent=ty(d>0?MOODS.find(([m])=>raw>=m)[1]:'Казна ждёт первую монету');
   const meta=[`Гостей в замке: ${s.registered_count??0} из ${s.max_guests}`];
   if(s.dinner_count)meta.push(`на трапезе: ${s.dinner_count}`);
   k('meta').textContent=ty(meta.join(' · '));
@@ -1141,7 +1199,7 @@ function renderTreasury(){
 
 function setStale(v){$$('[data-stale]').forEach(e=>e.hidden=!v)}
 function applyStats(s){if(!s||typeof s!=='object'||!s.clans)return;stats=s;renderAll()}
-function renderAll(){renderPrices();renderTreasury();renderClans();renderSteps();markSel();updateOpts();updateTotal();checkCardGold();renderGhost()}
+function renderAll(){renderPrices();renderTreasury();renderClans();markSel();renderSteps();renderPass();checkCardGold();renderGhost();if(dlg.open&&co.step==='form')renderSummary()}
 
 async function refresh(){
   try{const s=await api.stats();if(!s||!s.clans)throw new Error('bad stats');applyStats(s);setStale(false)}
@@ -1198,65 +1256,48 @@ function chooseClan(code,inPro){
 let toastT=0;
 function toast(html){const t=$('#toast');t.innerHTML=html;t.hidden=false;if(G)G.fromTo(t,{y:30,autoAlpha:0},{y:0,autoAlpha:1,duration:.5,ease:'back.out(1.4)'});clearTimeout(toastT);toastT=setTimeout(()=>{if(G)G.to(t,{autoAlpha:0,y:20,duration:.4,onComplete:()=>{t.hidden=true;G.set(t,{clearProps:'all'})}});else t.hidden=true},5200)}
 
-/* ── оформление ── */
+/* ── оформление: окно не переспрашивает клан, путь и трапезу — только сводка, имя и Telegram ── */
 const dlg=$('#checkout'),form=$('#co-form'),el=form.elements;
-let co={step:'form',data:null,busy:false,payOnly:false},wantDinner=false;
-$('#opts-clan').innerHTML=CLAN_ORDER.map(c=>`<label class="opt"><input type="radio" name="clan" value="${c}"><span>${CLANS[c].name}</span><small data-o="${c}"></small></label>`).join('');
-$('#opts-tariff').innerHTML=['BRONZE','SILVER','GOLD'].map(t=>`<label class="opt"><input type="radio" name="tariff" value="${t}"><span>${TARIFF_NAME[t]}</span><small data-o="${t}"></small></label>`).join('');
-const radio=(n,v)=>{const r=$$(`input[name="${n}"]`,form).find(x=>x.value===v);if(r&&!r.disabled)r.checked=true};
-const val=n=>$(`input[name="${n}"]:checked`,form)?.value||'';
-function updateOpts(){
-  const s=S(),max=s.max_per_clan;
-  CLAN_ORDER.forEach(c=>{const d=clanData(c),inp=$(`input[name="clan"][value="${c}"]`,form),sm=$(`[data-o="${c}"]`,form);
-    const off=!!(d&&!d.available);inp.disabled=off;if(off&&inp.checked)inp.checked=false;
-    sm.textContent=d?(off?{FULL:'мест нет',IMBALANCED:'ждёт равновесия'}[d.reason]||'закрыт':`${d.count} / ${max}`):''});
-  const t=s.tariffs;
-  $('[data-o="BRONZE"]',form).textContent=idr(t.bronze_idr);$('[data-o="SILVER"]',form).textContent=idr(t.silver_idr);$('[data-o="GOLD"]',form).textContent='от'+NB+idr(t.gold_min_idr);
-}
-function goldState(raw,min){const g=parseAmount(raw);if(!String(raw||'').trim())return {g:null,err:ty(`Укажи сумму вклада — от ${idr(min)}`)};if(g===null)return {g:null,err:'Только целое число, без букв и копеек'};if(g<min)return {g,err:ty(`Минимальный взнос — ${idr(min)}. Сейчас указано ${idr(g)}`)};return {g,err:''}}
+let co={step:'form',data:null,busy:false,payOnly:false};
+function goldState(raw,min){const g=parseAmount(raw);if(!String(raw||'').trim())return {g:null,err:ty(`Укажи сумму вклада — от ${idr(min)}`)};if(g===null)return {g:null,err:ty('Только целое число, без букв и копеек')};if(g<min)return {g,err:ty(`Минимальный взнос — ${idr(min)}. Сейчас указано ${idr(g)}`)};return {g,err:''}}
 function checkCardGold(){const inp=$('#gold-card'),{err}=goldState(inp.value,S().tariffs.gold_min_idr),show=inp.dataset.touched==='1'?err:'';$('#gold-card-e').textContent=show;$('#gold-card-inp').classList.toggle('bad',!!show);inp.setAttribute('aria-invalid',String(!!show))}
-function updateTotal(){
-  const t=S().tariffs,tf=val('tariff'),din=el.f_dinner.checked;
-  $('#f-gold-wrap').hidden=tf!=='GOLD';
-  let ticket=null;
-  if(tf==='BRONZE')ticket=t.bronze_idr;else if(tf==='SILVER')ticket=t.silver_idr;
-  else if(tf==='GOLD'){const gs=goldState(el.f_gold.value,t.gold_min_idr);if(!gs.err)ticket=gs.g;if(el.f_gold.dataset.touched==='1')setErr('gold',gs.err)}
-  $('#tl-ticket-l').textContent=tf?`Билет · ${TARIFF_NAME[tf]}`:'Билет';
-  $('#tl-ticket').textContent=ticket!=null?idr(ticket):'—';
-  $('#tl-dinner').hidden=!din;
-  $('#tl-total').textContent=ticket!=null?idr(ticket+(din?t.dinner_idr:0)):'—';
-  $('#co-form .form-actions .btn').classList.toggle('is-blocked',tf==='GOLD'&&ticket==null);
-  return ticket;
+function renderSummary(){
+  const c=calc(),clan=applied?applied.clan_code:myClan;
+  $('#sm-clan').textContent=clan?CLANS[clan].name:'—';
+  $('#sm-path').textContent=c.tf?(c.ticket!=null?`${TARIFF_NAME[c.tf]} · ${idr(c.ticket)}`:TARIFF_NAME[c.tf]):'—';
+  $('#sm-dinner').textContent=c.dn?'+'+idr(c.dinner):ty('без трапезы');
+  $('#tl-total').textContent=c.total!=null?idr(c.total):'—';
 }
-const ERR_INPUT={name:'f-name',tg:'f-tg',gold:'f-gold'};
-function setErr(k,msg){const p=$(`[data-err="${k}"]`,form);if(!p)return;p.textContent=msg||'';const id=ERR_INPUT[k];if(id){const i=$('#'+id);i.setAttribute('aria-invalid',String(!!msg));i.closest('.inp').classList.toggle('bad',!!msg)}}
+const ERR_INPUT={name:'f-name',tg:'f-tg'};
+const ERR_ORDER=['clan','path','name','tg','form'];
+function setErr(k,msg){const p=$(`[data-err="${k}"]`,form);if(!p)return;p.textContent=msg||'';const id=ERR_INPUT[k];if(id){const i=$('#'+id);i.setAttribute('aria-invalid',String(!!msg));i.closest('.inp').classList.toggle('bad',!!msg)}
+  if(k==='clan')$('#co-clan').hidden=!msg}
 function validate(){
-  const s=S(),e={},name=el.f_name.value.trim(),tgRaw=el.f_tg.value.trim();
+  const e={},name=el.f_name.value.trim(),tgRaw=el.f_tg.value.trim(),c=calc(),clan=myClan;
   if(!name)e.name=ty('Укажи имя — так тебя увидят в списке клана');else if([...name].length>60)e.name='Имя не длиннее 60 символов';
   if(!tgRaw)e.tg=ty('Укажи Telegram — по нему организатор найдёт тебя');else if(!normTg(tgRaw))e.tg=ty('Ник в Telegram: латиница, цифры и _, от 5 до 32 символов');
-  const clan=val('clan');if(!clan)e.clan='Выбери клан';else{const d=clanData(clan);if(d&&!d.available)e.clan=reasonText(d.reason)}
-  const tf=val('tariff');if(!tf)e.tariff='Выбери тариф';
-  let gold=null;if(tf==='GOLD'){const gs=goldState(el.f_gold.value,s.tariffs.gold_min_idr);if(gs.err)e.gold=gs.err;else gold=gs.g}
-  ['name','tg','clan','tariff','gold','form'].forEach(k=>setErr(k,e[k]));
-  return {e,data:{name,tg:normTg(tgRaw),clan,tariff:tf,gold,dinner:el.f_dinner.checked,news:el.f_news.checked}};
+  if(!clan)e.clan='Выбери клан';else{const d=clanData(clan);if(d&&!d.available)e.clan=reasonText(d.reason)}
+  if(!c.tf)e.path='Выбери путь';else if(c.goldErr)e.path=c.goldErr;
+  ERR_ORDER.forEach(k=>setErr(k,e[k]));
+  return {e,data:{name,tg:normTg(tgRaw),clan,tariff:c.tf,gold:c.tf==='GOLD'?c.ticket:null,dinner:c.dn,news:el.f_news.checked}};
 }
-function focusFirstErr(){const k=['name','tg','clan','tariff','gold','form'].find(k=>$(`[data-err="${k}"]`,form).textContent);if(!k)return;
-  const t=k==='clan'?($('input[name="clan"]:checked',form)||$$('input[name="clan"]',form).find(i=>!i.disabled)):k==='tariff'?$('input[name="tariff"]',form):ERR_INPUT[k]?$('#'+ERR_INPUT[k]):null;
+function focusFirstErr(){const k=ERR_ORDER.find(k=>$(`[data-err="${k}"]`,form).textContent);if(!k)return;
+  const t=k==='clan'?$('#co-clan'):k==='path'?$('[data-act="edit-path"]',form):ERR_INPUT[k]?$('#'+ERR_INPUT[k]):null;
   (t||$(`[data-err="${k}"]`,form)).focus?.();t?.scrollIntoView({block:'center',behavior:RM?'auto':'smooth'})}
 
 function showStep(step){co.step=step;$$('.step',dlg).forEach(s=>s.hidden=s.dataset.step!==step);$('.sheet-in',dlg).scrollTop=0}
-function openCheckout(tariff){
+const scrollToCards=()=>$('.tariffs').scrollIntoView({behavior:RM?'auto':'smooth',block:'center'});
+/* «Вступить в игру»: подтверждение после итога на странице */
+function join(){
   if(applied){openPayOnly();return}
-  co.payOnly=false;updateOpts();
-  if(tariff)radio('tariff',tariff);
-  if(tariff==='GOLD'){const v=parseAmount($('#gold-card').value);el.f_gold.value=v!=null?fmt(v):''}
-  if(myClan&&!val('clan'))radio('clan',myClan);
-  if(myClan&&val('clan')!==myClan&&!co.data)radio('clan',myClan);
-  if(wantDinner){el.f_dinner.checked=true;wantDinner=false}
-  showStep('form');updateTotal();renderSteps();setErr('form','');
+  const c=calc(),pe=$('#pass-err');
+  if(!c.tf){pe.textContent=ty('Сначала выбери путь — Bronze, Silver или Gold');scrollToCards();setTimeout(()=>$('input[name="path"]')?.focus({preventScroll:true}),RM?0:500);return}
+  if(c.goldErr){const inp=$('#gold-card');setGoldChip('custom');inp.dataset.touched='1';checkCardGold();inp.scrollIntoView({block:'center',behavior:RM?'auto':'smooth'});inp.focus({preventScroll:true});return}
+  pe.textContent='';co.payOnly=false;renderSummary();showStep('form');['clan','path','form'].forEach(k=>setErr(k,''));
   if(!dlg.open)dlg.showModal();
-  requestAnimationFrame(()=>{const t=!el.f_name.value.trim()?el.f_name:!el.f_tg.value.trim()?el.f_tg:tariff==='GOLD'?el.f_gold:$('#co-t');t.focus()});
+  requestAnimationFrame(()=>{const t=!el.f_name.value.trim()?el.f_name:!el.f_tg.value.trim()?el.f_tg:$('#co-t');t.focus()});
 }
+function editPath(){dlg.close();scrollToCards();setTimeout(()=>($('input[name="path"]:checked')||$('input[name="path"]'))?.focus({preventScroll:true}),RM?0:500)}
 function openPayOnly(){co.payOnly=true;renderPay();showStep('pay');if(!dlg.open)dlg.showModal();requestAnimationFrame(()=>$('#pay-t').focus())}
 function renderPay(){
   const s=S(),p=s.payment||{},a=co.payOnly?applied:null,d=co.data;
@@ -1264,13 +1305,14 @@ function renderPay(){
   if(a){ticket=a.ticket_amount_idr;dinner=a.dinner_amount_idr;total=a.total_due_idr}
   else{ticket=d.tariff==='GOLD'?d.gold:d.tariff==='BRONZE'?s.tariffs.bronze_idr:s.tariffs.silver_idr;dinner=d.dinner?s.tariffs.dinner_idr:0;total=ticket+dinner}
   co.total=total;
+  const tn=TARIFF_NAME[a?a.tariff_code:d.tariff];
   $('#pay-due').textContent=idr(total);
-  $('#pay-break').textContent=dinner?ty(`Билет ${idr(ticket)} + ${idr(dinner)} — ужин`):ty(`Билет ${TARIFF_NAME[a?a.tariff_code:d.tariff]}`);
+  $('#pay-break').textContent=ty(`Путь ${tn} ${idr(ticket)}`+(dinner?` + трапеза ${idr(dinner)}`:''));
   const sub=$('#pay-sub');sub.hidden=!a;if(a)sub.textContent=ty(`Ты уже в клане ${CLANS[a.clan_code].name}. Повторная заявка не нужна — реквизиты ниже, если они ещё пригодятся.`);
   const qr=String(p.qr_url||'').trim();$('#qr-frame').hidden=!qr;$('#qr-ph').hidden=!!qr;$('#qr-cap').hidden=!qr;if(qr&&$('#qr-img').getAttribute('src')!==qr)$('#qr-img').src=qr;
   const bank=String(p.bank_details||'').trim();$('#bank-txt').textContent=bank||ty('Реквизиты появятся здесь совсем скоро. Пока можно написать организатору.');$('#bank-copy').hidden=!bank;
   const org=String(p.organizer_telegram_url||'').trim(),ol=$('#org-link');
-  if(/^https:\/\//i.test(org))ol.innerHTML=`<a href="${esc(org)}" target="_blank" rel="noopener">Telegram</a>`;else ol.textContent='Telegram (ссылка появится здесь совсем скоро)';
+  if(/^https:\/\//i.test(org))ol.innerHTML=`<a href="${esc(org)}" target="_blank" rel="noopener">Telegram</a>`;else ol.textContent=ty('Telegram (ссылка появится здесь совсем скоро)');
   const note=String(p.note||'').trim();$('#pay-note').hidden=!note;$('#pay-note').textContent=note;
   $('#pay-btn').hidden=!!a;$('#pay-back').hidden=!!a;$('.steps li:last-child',dlg).hidden=!!a;
   if(!co.busy)setPayState('IDLE');
@@ -1297,49 +1339,45 @@ async function submitApp(){
     renderAll();setPayState('IDLE');showDone();return;
   }
   const r=res&&ERR2REASON[res.error];
-  if(r){showStep('form');updateOpts();setErr('clan',ty(reasonText(r)+'. Выбери другой клан — остальные данные формы сохранены.'));focusFirstErr();setPayState('IDLE');return}
+  if(r){showStep('form');renderSummary();setErr('clan',ty(reasonText(r)+'. Выбери другой клан — имя и Telegram сохранены.'));focusFirstErr();setPayState('IDLE');return}
   if(res&&res.error==='VALIDATION'){
-    const k={display_name:'name',telegram_username:'tg',clan_code:'clan',tariff_code:'tariff',gold_amount_idr:'gold'}[res.field];
-    if(k){showStep('form');setErr(k,ty(res.message||'Проверь это поле'));focusFirstErr();setPayState('IDLE');return}
+    const k={display_name:'name',telegram_username:'tg',clan_code:'clan',tariff_code:'path',gold_amount_idr:'path'}[res.field];
+    if(k){showStep('form');renderSummary();setErr(k,ty(res.message||'Проверь это поле'));focusFirstErr();setPayState('IDLE');return}
   }
   setPayState('ERROR',ty((res&&res.message)||'Замок не принял заявку. Попробуй ещё раз чуть позже — данные сохранены.'));
 }
 function showDone(){
   const a=applied;
-  $('#done-t').innerHTML=`Ты вступил в клан <em class="acc">${esc(CLANS[a.clan_code].name)}</em>`;
-  $('#done-sum').textContent=ty(`${TARIFF_NAME[a.tariff_code]}: ${idr(a.ticket_amount_idr)}`+(a.dinner_amount_idr?` + ${idr(a.dinner_amount_idr)} — ужин`:'')+`. Итого: ${idr(a.total_due_idr)}.`);
+  $('#done-t').innerHTML=`${ty('Ты вступил в клан')} <em class="acc">${esc(CLANS[a.clan_code].name)}</em>`;
+  $('#done-sum').textContent=ty(`Путь ${TARIFF_NAME[a.tariff_code]}: ${idr(a.ticket_amount_idr)}`+(a.dinner_amount_idr?` + трапеза ${idr(a.dinner_amount_idr)}`:'')+`. Итого: ${idr(a.total_due_idr)}.`);
   showStep('done');$('#done-t').focus();
   if(G)G.fromTo('.done img',{rotation:-140,scale:.3},{rotation:0,scale:1,duration:1.1,ease:'elastic.out(1,.6)'});
 }
 
-form.addEventListener('submit',e=>{e.preventDefault();$$('input',form).forEach(i=>i.dataset.touched='1');const {e:errs,data}=validate();updateTotal();
+form.addEventListener('submit',e=>{e.preventDefault();$$('input',form).forEach(i=>i.dataset.touched='1');renderSummary();const {e:errs,data}=validate();
   if(Object.keys(errs).length){focusFirstErr();return}
   co.data=data;showStep('pay');renderPay();$('#pay-t').focus()});
-form.addEventListener('input',e=>{const t=e.target;if(t.id==='f-name'&&t.dataset.touched)setErr('name','');if(t.id==='f-tg'&&t.dataset.touched)setErr('tg','');if(t.name==='clan')setErr('clan','');if(t.name==='tariff')setErr('tariff','');updateTotal()});
-form.addEventListener('change',e=>{if(e.target.name==='tariff'){picked=e.target.value;markSel();renderGhost()}if(e.target.name==='tariff'||e.target.name==='clan')updateTotal();renderSteps()});
-form.addEventListener('focusout',e=>{const t=e.target;if(!['f-name','f-tg','f-gold'].includes(t.id)||!t.value.trim())return;t.dataset.touched='1';
-  if(t.id==='f-tg'){const n=normTg(t.value);if(n)t.value=n;setErr('tg',n?'':ty('Ник в Telegram: латиница, цифры и _, от 5 до 32 символов'))}
-  if(t.id==='f-gold'){const g=parseAmount(t.value);if(g!=null)t.value=fmt(g);updateTotal()}});
-$('#gold-card').addEventListener('input',e=>{e.target.dataset.touched='1';checkCardGold();pick('GOLD')});
+form.addEventListener('input',e=>{const t=e.target;if(t.id==='f-name'&&t.dataset.touched)setErr('name','');if(t.id==='f-tg'&&t.dataset.touched)setErr('tg','')});
+form.addEventListener('focusout',e=>{const t=e.target;if(!['f-name','f-tg'].includes(t.id)||!t.value.trim())return;t.dataset.touched='1';
+  if(t.id==='f-tg'){const n=normTg(t.value);if(n)t.value=n;setErr('tg',n?'':ty('Ник в Telegram: латиница, цифры и _, от 5 до 32 символов'))}});
+/* выбор на странице */
+$('.tariffs').addEventListener('change',e=>{if(e.target.name==='path')selectPath(e.target.value)});
+$('#p-dinner').addEventListener('change',()=>{renderPass();renderSteps()});
+$('#gold-card').addEventListener('input',e=>{e.target.dataset.touched='1';checkCardGold();selectPath('GOLD')});
+$('#gold-card').addEventListener('blur',e=>{const g=parseAmount(e.target.value);if(g!=null)e.target.value=fmt(g)});
 $('#gchips').addEventListener('change',e=>{const v=e.target.value,inp=$('#gold-card');
   $('#gold-own').hidden=v!=='custom';
   if(v!=='custom'){inp.value=fmt(+v);inp.dataset.touched='';checkCardGold()}
   else requestAnimationFrame(()=>{inp.focus();inp.select()});
-  pick('GOLD')});
-/* карточка пути: наведение, фокус или касание показывают на шкале, сколько она добавит */
+  selectPath('GOLD')});
+/* карточка пути: наведение и фокус показывают на шкале, сколько она добавит; касание выбирает путь */
 $$('.tcard').forEach(c=>{const tf=c.dataset.t;
   c.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){hoverT=tf;renderGhost()}});
   c.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'&&hoverT===tf){hoverT=null;renderGhost()}});
   c.addEventListener('focusin',()=>{hoverT=tf;renderGhost()});
   c.addEventListener('focusout',e=>{if(!c.contains(e.relatedTarget)&&hoverT===tf){hoverT=null;renderGhost()}});
-  c.addEventListener('click',e=>{if(e.target.closest('button,input,label,a,.buffs'))return;pick(tf)});
+  c.addEventListener('click',e=>{if(e.target.closest('button,input,label,a'))return;selectPath(tf)});
 });
-function startTariff(tf){
-  if(tf==='GOLD'&&!applied){const inp=$('#gold-card');
-    if(goldState(inp.value,S().tariffs.gold_min_idr).err){setGoldChip('custom');inp.dataset.touched='1';checkCardGold();inp.focus();return}}
-  pick(tf);openCheckout(tf);
-}
-$('#gold-card').addEventListener('blur',e=>{const g=parseAmount(e.target.value);if(g!=null)e.target.value=fmt(g)});
 dlg.addEventListener('close',()=>{if(co.step==='done'||co.payOnly)showStep('form')});
 dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
 
@@ -1351,24 +1389,27 @@ async function copyText(text,btn){
 
 /* ── клики ── */
 document.addEventListener('click',e=>{
-  if(!$('#buffs').hidden&&!e.target.closest('.buffs-wrap'))setBuffs(false);
   const t=e.target.closest('button,[data-act]');if(!t)return;
-  if(t.dataset.act==='buffs'){setBuffs($('#buffs').hidden);return}
   if(t.dataset.join){chooseClan(t.dataset.join,!!t.closest('.pro'));return}
   if(t.classList.contains('more')){const card=t.closest('.clan');card.dataset.all=card.dataset.all==='1'?'0':'1';renderClans();return}
-  if(t.dataset.tariff){startTariff(t.dataset.tariff);return}
   if('close' in t.dataset){dlg.close();return}
   if('back' in t.dataset){showStep('form');$('#co-t').focus();return}
   if('paid' in t.dataset){submitApp();return}
   if(t.dataset.copy==='amount'){copyText(String(co.total||''),t);return}
   if(t.dataset.copy==='bank'){copyText($('#bank-txt').textContent,t);return}
-  if(t.dataset.act==='want-dinner'){wantDinner=true;const ok=picked&&!(picked==='GOLD'&&goldState($('#gold-card').value,S().tariffs.gold_min_idr).err);openCheckout(ok?picked:null);return}
   switch(t.dataset.act){
+    case 'join':join();break;
+    case 'edit-path':editPath();break;
+    case 'co-clan':dlg.close();openPro('clans',true);break;
+    case 'want-dinner':{
+      if(applied){openPayOnly();break}
+      const cb=$('#p-dinner');cb.checked=!cb.checked;renderPass();renderSteps();
+      if(cb.checked){const p=$('#pass');p.scrollIntoView({behavior:RM?'auto':'smooth',block:'center'});p.classList.remove('flash');void p.offsetWidth;if(!RM)p.classList.add('flash')}
+      break}
     case 'pro-next':turnToClans();break;
     case 'pro-close':case 'pro-enter':closePro();break;
     case 'change':openPro('clans',!!myClan);break;
     case 'show-pay':openPayOnly();break;
-    case 'go-pay':if(picked)startTariff(picked);else $('#tariffs').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});break;
   }
 });
 
@@ -1404,7 +1445,6 @@ function initMotion(){
 
 /* ── запуск ── */
 if(matchMedia('(max-width:700px)').matches)$('#ledger').open=false;
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#buffs').hidden){setBuffs(false);$('.buffs-btn').focus()}});
 renderAll();initTilt();
 if(applied||myClan){initMotion()}
 else openPro(LS.get('hc_seen')?'clans':'intro',false);
