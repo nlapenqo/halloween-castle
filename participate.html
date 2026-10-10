@@ -457,7 +457,7 @@ footer small{font-size:15px;opacity:.75}
     <div class="wrap head">
       <h1 data-rv>Врата замка <em class="acc">открыты</em></h1>
       <p class="lead" data-rv>Закрытый праздник для&nbsp;друзей и&nbsp;друзей друзей. Бюджет мы&nbsp;показываем открыто: видно, сколько стоит ночь в&nbsp;замке и&nbsp;сколько уже заявлено в&nbsp;казну. Выбери клан и&nbsp;тариф&nbsp;— и&nbsp;замок проснётся.</p>
-      <p class="facts" data-rv><span class="chip">31&nbsp;октября</span><span class="chip">с&nbsp;14:00</span><span class="chip">Bale Tudor · Бали</span></p>
+      <p class="facts" data-rv><span class="chip">31&nbsp;октября</span><span class="chip">с&nbsp;14:00</span><span class="chip">Bale Tudor, Бали</span></p>
     </div>
   </section>
 
@@ -563,7 +563,7 @@ footer small{font-size:15px;opacity:.75}
       <article class="plate dinner" data-rv>
         <figure class="dn-img"><picture><source media="(max-width:880px)" srcset="art/dinner-b-m.jpg" width="1000" height="1000"><img src="art/dinner-b.jpg" alt="Королевская трапеза: жители замка из&nbsp;всех кланов за&nbsp;одним длинным столом во&nbsp;дворе, свечи и&nbsp;фонари на&nbsp;деревьях" width="2000" height="1116" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='art/feast.jpg'}"></picture></figure>
         <div class="dn-body">
-          <span class="label">18:00 · двор замка</span>
+          <span class="label">18:00, двор замка</span>
           <h2 id="dn-t">Королевская <em class="acc">трапеза</em></h2>
           <p class="lead">Игра окончена, монеты пересчитаны. Все&nbsp;кланы садятся за&nbsp;один длинный стол во&nbsp;дворе замка: свечи, фонари в&nbsp;ветвях, тосты за&nbsp;победителей и&nbsp;за&nbsp;тех, кто почти победил. Здесь вручают грамоты и&nbsp;открывают игристое.</p>
           <ul class="dn-menu" id="dn-menu" hidden></ul>
@@ -580,8 +580,8 @@ footer small{font-size:15px;opacity:.75}
 
 <footer>
   <img class="star" src="art/s-star.webp" alt="">
-  <p>31&nbsp;октября · с&nbsp;14:00</p>
-  <small>Bale Tudor, Bongkasa Pertiwi, Bali · <a href="./">к&nbsp;истории замка</a></small>
+  <p>31&nbsp;октября, с&nbsp;14:00</p>
+  <small>Bale Tudor, Bongkasa Pertiwi, Bali, <a href="./">к&nbsp;истории замка</a></small>
 </footer>
 
 <!-- пролог и выбор клана -->
@@ -936,7 +936,7 @@ function renderTreasury(){
   k('mood').textContent=ty(MOODS.find(([m])=>raw>=m)[1]);
   const meta=[`Гостей в замке: ${s.registered_count??0} из ${s.max_guests}`];
   if(s.dinner_count)meta.push(`на трапезе: ${s.dinner_count}`);
-  k('meta').textContent=ty(meta.join(' · '));
+  k('meta').textContent=ty(meta.join(', '));
 }
 
 function setStale(v){$$('[data-stale]').forEach(e=>e.hidden=!v)}
@@ -1021,7 +1021,7 @@ function updateTotal(){
   let ticket=null;
   if(tf==='BRONZE')ticket=t.bronze_idr;else if(tf==='SILVER')ticket=t.silver_idr;
   else if(tf==='GOLD'){const gs=goldState(el.f_gold.value,t.gold_min_idr);if(!gs.err)ticket=gs.g;if(el.f_gold.dataset.touched==='1')setErr('gold',gs.err)}
-  $('#tl-ticket-l').textContent=tf?`Билет · ${TARIFF_NAME[tf]}`:'Билет';
+  $('#tl-ticket-l').textContent=tf?`Билет ${TARIFF_NAME[tf]}`:'Билет';
   $('#tl-ticket').textContent=ticket!=null?idr(ticket):'—';
   $('#tl-dinner').hidden=!din;
   $('#tl-total').textContent=ticket!=null?idr(ticket+(din?t.dinner_idr:0)):'—';
