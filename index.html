@@ -290,6 +290,39 @@ footer small{font-size:15px;opacity:.7}
   .cv-frame svg:nth-child(3){animation-delay:-2.1s}
   .cv-frame svg:nth-child(4){animation-delay:-1.4s}
 }
+/* «Три клана» → «Выбери свой клан»: ночь раскрывается кругом от клика, карточки становятся плашками с кнопкой */
+.estates-sec{position:relative;isolation:isolate}
+.est-night{position:absolute;inset:0;z-index:-1;background:var(--night);clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition:clip-path .85s cubic-bezier(.5,.05,.2,1);pointer-events:none}
+.est-night::before,.est-night::after{content:"";position:absolute;left:-20px;right:-20px;height:30px;background:var(--night);filter:url(#rough)}
+.est-night::before{top:-14px}.est-night::after{bottom:-14px}
+.sky-cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+.estates-sec.night .est-night{clip-path:circle(var(--cr,3000px) at var(--cx,50%) var(--cy,50%))}
+.swap{display:grid}
+.swap>span{grid-area:1/1;transition:opacity .45s,visibility .45s,translate .45s}
+.swap .sw-night{opacity:0;visibility:hidden;translate:0 10px}
+.night .swap .sw-day{opacity:0;visibility:hidden;translate:0 -10px}
+.night .swap .sw-night{opacity:1;visibility:visible;translate:0 0;transition-delay:.4s}
+.head h2,.head .lead{transition:color .6s}
+.night .head h2{color:var(--paper);transition-delay:.3s}.night .head h2 .acc{color:var(--gold)}
+.night .head .lead{color:#E8D6B8;opacity:1}
+.estate{position:relative;isolation:isolate;padding:14px 14px 22px;cursor:pointer;transition:color .5s}
+.estate::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pl,var(--rose));border:2.5px solid var(--ink);border-radius:26px 18px 30px 16px/18px 30px 16px 26px;filter:url(#rough);opacity:0;scale:.92;transition:opacity .35s,scale .7s cubic-bezier(.2,.9,.25,1.25)}
+.est-WEREWOLF{--pl:var(--ochre);--i:1}.est-DARK_ELF{--pl:var(--cobalt);--i:2}
+.night .estate{cursor:default}
+.night .estate::before{opacity:1;scale:1;transition-delay:calc(.3s + var(--i,0) * .1s)}
+.night .est-DARK_ELF{color:var(--paper);transition-delay:.35s}
+.est-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.2,.8,.2,1)}
+.est-more>div{min-height:0;overflow:hidden;display:flex;justify-content:center}
+.est-join{margin-top:14px;opacity:0;translate:0 12px;transition:opacity .4s,translate .5s cubic-bezier(.2,.9,.25,1.3)}
+.night .est-more{grid-template-rows:1fr;transition-delay:calc(.4s + var(--i,0) * .1s)}
+.night .est-more>div{overflow:visible;padding-bottom:4px}
+.night .est-join{opacity:1;translate:0 0;transition-delay:calc(.55s + var(--i,0) * .1s)}
+.estate::after{content:"";position:absolute;inset:-8px;z-index:-2;border-radius:34px 24px 38px 22px/24px 38px 22px 34px;box-shadow:0 0 0 2px var(--gold),0 0 46px 6px rgba(217,174,82,.5);opacity:0;transition:opacity .6s .6s;pointer-events:none}
+.night .estate.picked::after{opacity:1}
+.est-back{background:none;border:0;padding:6px 2px;font:400 18px/1.3 var(--f-display);color:var(--paper);text-decoration:underline dashed;text-underline-offset:7px;cursor:pointer}
+.night .clan-cta .est-open{display:none}
+.night .clan-cta .small{color:#E8D6B8;opacity:1}
+@media (prefers-reduced-motion:reduce){.est-night,.swap>span,.estate,.estate::before,.est-more,.est-join,.estate.picked::after{transition:none!important}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -331,29 +364,33 @@ footer small{font-size:15px;opacity:.7}
   </section>
 
   <section class="estates-sec" id="clans">
+    <div class="est-night" aria-hidden="true"><canvas class="sky-cv"></canvas></div>
     <div class="wrap">
       <div class="head">
-        <h2>Три <em class="acc">клана</em></h2>
-        <p class="lead">С кем ты войдёшь в ворота</p>
+        <h2 class="swap"><span class="sw-day">Три <em class="acc">клана</em></span><span class="sw-night" aria-hidden="true">Выбери свой <em class="acc">клан</em></span></h2>
+        <p class="lead swap"><span class="sw-day">С кем ты войдёшь в ворота</span><span class="sw-night" aria-hidden="true">С ними ты пройдёшь всю ночь: от первых испытаний до последнего уголька в костре</span></p>
       </div>
       <div class="estates">
-        <article class="estate">
+        <article class="estate est-VAMPIRE" data-clan="VAMPIRE">
           <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-vampire-b.jpg" alt="Вампиры с черепами летучих мышей: кавалер в полосатом плаще с кубком и дама в чёрном платье с брыжами среди роз" width="900" height="1205" loading="lazy"></figure>
           <h3>Вампиры</h3>
           <p class="small">Древняя кровь, бархат и безупречные манеры. Вампиры не спешат: у них впереди вечность и целая ночь.</p>
+          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=VAMPIRE" tabindex="-1">Присоединиться</a></div></div>
         </article>
-        <article class="estate">
+        <article class="estate est-WEREWOLF" data-clan="WEREWOLF">
           <figure class="frame tilt3d" style="--rz:1deg"><img src="art/clan-werewolf-c.jpg" alt="Оборотни в разгар превращения: он пригнулся перед прыжком, она на камне воет на полную луну" width="900" height="1205" loading="lazy"></figure>
           <h3>Оборотни</h3>
           <p class="small">Сила, чутьё и стая за спиной. Оборотни берут азартом, особенно когда взойдёт луна.</p>
+          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=WEREWOLF" tabindex="-1">Присоединиться</a></div></div>
         </article>
-        <article class="estate">
+        <article class="estate est-DARK_ELF" data-clan="DARK_ELF">
           <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-darkelf-k.jpg" alt="Тёмные эльфы играют в карты за столом-мухомором при свече и луне" width="900" height="1205" loading="lazy"></figure>
           <h3>Тёмные эльфы</h3>
           <p class="small">Тайные знаки, древняя магия и холодный расчёт. Тёмные эльфы видят то, что другие пропускают.</p>
+          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=DARK_ELF" tabindex="-1">Присоединиться</a></div></div>
         </article>
       </div>
-      <div class="clan-cta"><a class="btn btn-main btn-lg" href="lab-p2-v5.html">Вступить в клан</a><p class="small">В каждом клане до 20 мест. Кланы держим в равновесии, чтобы игра была честной.</p></div>
+      <div class="clan-cta"><a class="btn btn-main btn-lg est-open" href="lab-p2-v5.html">Вступить в клан</a><button class="est-back" type="button" hidden>Вернуться к истории</button><p class="small">В каждом клане до 20 мест. Кланы держим в равновесии, чтобы игра была честной.</p></div>
     </div>
   </section>
 
@@ -464,6 +501,54 @@ c.style.setProperty('--mx',(x*100).toFixed(1)+'%');c.style.setProperty('--my',(y
 c.addEventListener('pointerenter',()=>{c.classList.add('on');c.style.setProperty('--sc','1.03')});
 c.addEventListener('pointermove',e=>{ev=e;if(!raf)raf=requestAnimationFrame(set)});
 c.addEventListener('pointerleave',()=>{c.classList.remove('on');['--rx','--ry','--sc'].forEach(p=>c.style.removeProperty(p))});});})();
+
+
+/* Звёздное небо на canvas: золотые восьмиконечные звёзды и кремовые точки мерцают, ~30 кадров в секунду, только пока видно */
+function starSky(cv,{density=6500,max=240}={}){
+  const ctx=cv.getContext('2d'),RMS=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W=0,H=0,stars=[],raf=0,last=0,run=false;
+  const GOLD='217,174,82',CREAM='242,224,192';
+  function size(){const dpr=Math.min(2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;if(!W||!H)return;
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.min(max,Math.round(W*H/density));
+    stars=Array.from({length:n},()=>{const big=Math.random()<.18;return{x:Math.random()*W,y:Math.random()*H,r:big?5+Math.random()*7:.9+Math.random()*1.5,big,ph:Math.random()*6.283,sp:.5+Math.random()*1.4,c:big||Math.random()<.35?GOLD:CREAM}});
+    draw(performance.now())}
+  function spark(x,y,r){ctx.beginPath();for(let i=0;i<16;i++){const a=i*Math.PI/8,rr=i%4===0?r:i%2===0?r*.55:r*.2;ctx.lineTo(x+Math.sin(a)*rr,y-Math.cos(a)*rr)}ctx.closePath();ctx.fill()}
+  function draw(t){ctx.clearRect(0,0,W,H);const s=t/1000;
+    for(const p of stars){const k=.5+.5*Math.sin(s*p.sp+p.ph),a=p.big?.35+.65*k:.2+.8*k;ctx.fillStyle=`rgba(${p.c},${a.toFixed(3)})`;
+      if(p.big)spark(p.x,p.y,p.r*(.75+.25*k));else{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill()}}}
+  function loop(t){raf=requestAnimationFrame(loop);if(t-last<33)return;last=t;draw(t)}
+  if('ResizeObserver' in window)new ResizeObserver(size).observe(cv);else addEventListener('resize',size);
+  size();
+  return{start(){if(RMS){draw(0);return}if(run)return;run=true;raf=requestAnimationFrame(loop)},stop(){run=false;cancelAnimationFrame(raf)}};
+}
+
+/* «Три клана»: клик по карточке или «Вступить в клан» превращает блок в выбор клана на ночном небе */
+(()=>{const sec=document.getElementById('clans');if(!sec)return;
+  const night=sec.querySelector('.est-night'),sky=starSky(sec.querySelector('.sky-cv')),cards=[...sec.querySelectorAll('.estate')],
+    open=sec.querySelector('.est-open'),back=sec.querySelector('.est-back'),swaps=[...sec.querySelectorAll('.swap')];
+  let isNight=false,inView=false;
+  const tick=()=>{isNight&&inView?sky.start():sky.stop()};
+  if('IntersectionObserver' in window)new IntersectionObserver(es=>{inView=es[0].isIntersecting;tick()}).observe(sec);else inView=true;
+  function setNight(on,x,y,picked){
+    const r=sec.getBoundingClientRect();
+    if(x!=null){const cx=x-r.left,cy=y-r.top;sec.style.setProperty('--cx',cx+'px');sec.style.setProperty('--cy',cy+'px');
+      sec.style.setProperty('--cr',Math.ceil(Math.hypot(Math.max(cx,r.width-cx),Math.max(cy,r.height-cy))+40)+'px')}
+    isNight=on;sec.classList.toggle('night',on);back.hidden=!on;
+    swaps.forEach(w=>{w.querySelector('.sw-day').setAttribute('aria-hidden',String(on));w.querySelector('.sw-night').setAttribute('aria-hidden',String(!on))});
+    cards.forEach(c=>{c.classList.toggle('picked',on&&c===picked);c.querySelector('.est-join').tabIndex=on?0:-1;
+      if(on){c.removeAttribute('role');c.removeAttribute('tabindex')}else{c.setAttribute('role','button');c.tabIndex=0}});
+    tick();
+    if(on&&picked)setTimeout(()=>{const b=picked.getBoundingClientRect();if(b.top<0||b.bottom>innerHeight)picked.scrollIntoView({behavior:'smooth',block:'center'});picked.querySelector('.est-join').focus({preventScroll:true})},950);
+    if(!on)setTimeout(()=>open.focus({preventScroll:true}),50);
+  }
+  cards.forEach(c=>{c.setAttribute('role','button');c.tabIndex=0;c.setAttribute('aria-label','Выбрать клан «'+c.querySelector('h3').textContent+'»');
+    c.addEventListener('click',e=>{if(isNight)return;e.preventDefault();setNight(true,e.clientX,e.clientY,c)});
+    c.addEventListener('keydown',e=>{if(isNight||(e.key!=='Enter'&&e.key!==' '))return;e.preventDefault();const b=c.getBoundingClientRect();setNight(true,b.left+b.width/2,b.top+b.height/2,c)})});
+  open.addEventListener('click',e=>{e.preventDefault();const b=open.getBoundingClientRect();setNight(true,b.left+b.width/2,b.top+b.height/2,null);setTimeout(()=>cards[0].querySelector('.est-join').focus({preventScroll:true}),950)});
+  back.addEventListener('click',()=>{const b=back.getBoundingClientRect();setNight(false,b.left+b.width/2,b.top+b.height/2)});
+  sec.addEventListener('keydown',e=>{if(e.key==='Escape'&&isNight)setNight(false)});
+})();
 
 
 /* Костёр: видео играет только на экране; при reduced-motion — стоп-кадр */
