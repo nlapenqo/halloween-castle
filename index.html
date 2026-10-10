@@ -206,7 +206,11 @@ h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-le
 @media (prefers-reduced-motion:reduce){.vig img{transition:none}.vig:hover img{transform:none}}
 .clan-cta{display:grid;gap:14px;justify-items:center;text-align:center;margin-top:clamp(44px,6vw,72px)}
 .clan-cta .small{max-width:46ch;opacity:.85}
-.vig-solo{max-width:420px;margin:0 auto}
+.bonfire{display:grid;justify-items:center;text-align:center;gap:clamp(18px,2.4vw,28px);margin-top:clamp(20px,3vw,40px)}
+.bonfire .head{margin-bottom:0}
+.bf-frame{width:min(100%,1100px)}
+.bf-v{display:block;width:100%;height:auto;aspect-ratio:1280/712;object-fit:cover;border-radius:20px 28px 16px 30px/28px 16px 30px 20px;background:#1E1A2A}
+.bf-t{max-width:52ch}
 /* Motion: светлячки на обложке и покачивание карточек на тач-экранах; включается JS-ом, без JS всё видно сразу */
 .ff{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
 .feast{position:relative;background:#21151E;color:var(--paper);margin-block:clamp(60px,8vw,110px);padding-block:clamp(48px,6vw,80px)}
@@ -377,8 +381,10 @@ footer small{font-size:15px;opacity:.7}
       <div class="wrap inner"><p class="small">Совместный ужин во дворе замка, когда игра закончится. Одна скатерть, все кланы, итоги дня и тосты. Трапеза по желанию: её отмечают при вступлении в клан.</p></div>
     </div>
 
-    <div class="wrap">
-      <article class="vig vig-solo"><img src="art/v-bonfire.webp" alt="Костёр, вокруг хоровод жителей замка" loading="lazy"><h3>Костёр</h3><p class="small">После заката разводим большой костёр и жарим маршмеллоу. Игра закончилась, начинается тёплый вечер, как в старых американских фильмах.</p></article>
+    <div class="wrap bonfire">
+      <div class="head"><h2>Вечер у <em class="acc">костра</em></h2></div>
+      <figure class="frame bf-frame"><video class="bf-v" autoplay muted loop playsinline preload="metadata" poster="art/bonfire.jpg" width="1280" height="712" aria-label="Костёр в джунглях: вампиры, тёмные эльфы, оборотни и чёрный заяц с гитарой жарят маршмеллоу"><source src="art/bonfire.webm" type="video/webm"><source src="art/bonfire.mp4" type="video/mp4"></video></figure>
+      <p class="small bf-t">После заката разводим большой костёр и жарим маршмеллоу. Игра закончилась, начинается тёплый вечер, как в старых американских фильмах.</p>
     </div>
   </section>
 
@@ -447,6 +453,11 @@ c.style.setProperty('--mx',(x*100).toFixed(1)+'%');c.style.setProperty('--my',(y
 c.addEventListener('pointerenter',()=>{c.classList.add('on');c.style.setProperty('--sc','1.03')});
 c.addEventListener('pointermove',e=>{ev=e;if(!raf)raf=requestAnimationFrame(set)});
 c.addEventListener('pointerleave',()=>{c.classList.remove('on');['--rx','--ry','--sc'].forEach(p=>c.style.removeProperty(p))});});})();
+/* Костёр: видео играет только на экране; при reduced-motion — стоп-кадр */
+(()=>{const v=document.querySelector('.bf-v');if(!v)return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause();v.poster='art/bonfire-still.jpg';return}
+  if('IntersectionObserver' in window)new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?v.play().catch(()=>{}):v.pause()),{threshold:.15}).observe(v);})();
+
 /* Motion: появление блоков по скроллу, покачивание карточек на телефоне, светлячки на обложке */
 addEventListener('DOMContentLoaded',()=>{
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
