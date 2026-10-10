@@ -469,7 +469,8 @@ addEventListener('DOMContentLoaded',()=>{
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce||!window.gsap||!window.ScrollTrigger)return;
   gsap.registerPlugin(ScrollTrigger);
-  const groups=['.night-intro .text>*','.rules li','.head','.estate','.clan-cta','.castle>*','.real figure','.vig','.feast .inner','.sky li','.gate-c','  groups.forEach(sel=>{const els=gsap.utils.toArray(sel);if(!els.length)return;
+  const groups=['.night-intro .text>*','.rules li','.head','.estate','.clan-cta','.castle>*','.real figure','.vig','.feast .inner','.sky li','.gate-c','.gate-btn'];
+  groups.forEach(sel=>{const els=gsap.utils.toArray(sel);if(!els.length)return;
     gsap.set(els,{autoAlpha:0,y:34});
     ScrollTrigger.batch(els,{start:'top 88%',once:true,onEnter:b=>gsap.to(b,{autoAlpha:1,y:0,duration:.8,ease:'power3.out',stagger:.12,overwrite:true,clearProps:'transform'})});
   });
