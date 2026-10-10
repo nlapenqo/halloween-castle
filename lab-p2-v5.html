@@ -593,6 +593,34 @@ footer{padding-block:clamp(40px,6vw,64px);text-align:center;display:grid;gap:10p
 footer .star{width:40px}
 footer p{font:400 20px/1.3 var(--f-display)}
 footer small{font-size:15px;opacity:.75}
+
+/* ── шапка: крупная карточка клана + одна фраза ── */
+.hero-clan{padding-block:clamp(20px,3.4vw,48px) clamp(28px,3.6vw,48px)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:clamp(24px,4.4vw,72px);align-items:center}
+.hero-grid:has(#seal[hidden]){grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}
+.hero-art{--fr:var(--rose);width:100%;transform:rotate(-1.4deg)}
+.hero-art.c-WEREWOLF{--fr:var(--ochre)}.hero-art.c-DARK_ELF{--fr:var(--cobalt)}
+.hero-art img{display:block;aspect-ratio:900/1205;object-fit:cover}
+.hero-txt{display:grid;gap:18px;justify-items:start}
+.hero-grid:has(#seal[hidden]) .hero-txt{justify-items:center}
+.hero-txt h1{font-size:clamp(38px,5.4vw,76px);line-height:1.04;max-width:14ch}
+.hero-txt .lead{max-width:44ch;opacity:.85}
+@media (max-width:700px){
+  .hero-grid{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center;gap:22px}
+  .hero-art{width:min(62vw,250px)}
+  .hero-txt{justify-items:center}
+  .hero-txt h1{font-size:clamp(34px,9.6vw,46px)}
+}
+/* клан и кнопка смены теперь в шапке страницы — в верхней строке не дублируем */
+.top .me-txt,.top #me-btn{display:none}
+/* ── типографика: только Alice и Kurale ── */
+:root{--f-hand:var(--f-display)}
+h1 .acc,h2 .acc{font:inherit;line-height:inherit;text-transform:inherit;letter-spacing:inherit;top:0;padding:0}
+.label,.gold-f>label,.rc-items .sum dt,.lines .sum dt,.members .tag,.field>label,.field legend,.flabel{font-family:var(--f-body);text-transform:none;letter-spacing:0;font-size:15px}
+.path-n{letter-spacing:0;text-transform:none;font-size:22px}
+.path-flag,.paths .path.on .path-n::after,.path-dn.on .path-n::after{font-family:var(--f-body);font-size:15px}
+.m-mood{font-family:var(--f-display);font-size:clamp(20px,1.9vw,24px)}
+.rc-cross{font-family:var(--f-body);font-size:17px}
 </style>
 </head>
 <body>
@@ -614,15 +642,14 @@ footer small{font-size:15px;opacity:.75}
 </header>
 
 <main>
-  <section class="hero" id="hero">
-    <img class="deco d1 float" src="art/s-crow.webp" alt="">
-    <img class="deco d2 float" src="art/s-pumpkin1.webp" alt="">
-    <img class="ornament ornament-wide" src="art/ornament.webp" alt="" data-rv>
-    <div class="wrap head">
-      <div class="seal" id="seal" hidden><img id="seal-img" alt="" width="900" height="1205"><span class="star-i" aria-hidden="true"></span></div>
-      <h1 id="hero-t" data-rv>Выбери клан и&nbsp;вступи в&nbsp;<em class="acc">игру</em></h1>
-      <p class="lead" id="hero-p" data-rv>Сначала клан&nbsp;— с&nbsp;ним ты&nbsp;пройдёшь всю ночь. Потом путь и&nbsp;вклад в&nbsp;казну замка: она оплачивает площадку и&nbsp;всё, что нужно для&nbsp;праздника.</p>
-      <p class="facts" data-rv><span class="chip">31&nbsp;октября</span><span class="chip">с&nbsp;14:00</span><span class="chip">Bale Tudor · Бали</span></p>
+  <section class="hero hero-clan" id="hero">
+    <div class="wrap hero-grid">
+      <figure class="frame hero-art" id="seal" hidden><img id="seal-img" alt="" width="900" height="1205"></figure>
+      <div class="hero-txt">
+        <h1 id="hero-t">Выбери клан и&nbsp;вступи в&nbsp;<em class="acc">игру</em></h1>
+        <p class="lead" id="hero-p">Сначала клан&nbsp;— с&nbsp;ним ты&nbsp;пройдёшь всю ночь. Потом путь и&nbsp;вклад в&nbsp;казну замка.</p>
+        <button class="btn btn-sm hero-change" type="button" data-act="change" id="hero-change">Выбрать клан</button>
+      </div>
     </div>
   </section>
 
@@ -1124,18 +1151,19 @@ function renderMe(){
 }
 
 function renderHero(){
-  const code=applied?applied.clan_code:myClan,h=$('#hero-t'),p=$('#hero-p'),seal=$('#seal');
-  seal.hidden=!code;seal.className='seal'+(code?' seal-'+code:'');
-  if(code){const si=$('#seal-img');if(si.getAttribute('src')!==CLAN_ART[code])si.src=CLAN_ART[code];si.alt='';}
+  const code=applied?applied.clan_code:myClan,h=$('#hero-t'),p=$('#hero-p'),seal=$('#seal'),ch=$('#hero-change');
+  seal.hidden=!code;seal.className='frame hero-art'+(code?' c-'+code:'');
+  if(code){const si=$('#seal-img');if(si.getAttribute('src')!==CLAN_ART[code])si.src=CLAN_ART[code];si.alt=ty('Иллюстрация клана «'+CLANS[code].name+'»');}
+  ch.textContent=code?'Сменить клан':'Выбрать клан';ch.hidden=!!applied;
   if(applied){
-    h.innerHTML=tyh(`<span class="h1-pre">Ты в клане <b>${esc(CLAN_GEN[code])}</b>.</span> Вклад <em class="acc">заявлен</em>`);
+    h.innerHTML=tyh(`Ты в клане ${esc(CLAN_GEN[code])}, вклад <em class="acc">заявлен</em>`);
     p.textContent=ty('Осталось перевести взнос и отправить скриншот организатору. Реквизиты — в свитке ниже.');
   }else if(code){
-    h.innerHTML=tyh(`<span class="h1-pre">Ты в клане <b>${esc(CLAN_GEN[code])}</b>.</span> Теперь — <em class="acc">вклад</em>`);
-    p.textContent=ty('Казна замка оплачивает площадку и всё, что нужно для ночи. Выбери свой путь — и посмотри, насколько твой вклад приблизит праздник.');
+    h.innerHTML=tyh(`Ты в клане ${esc(CLAN_GEN[code])}, а теперь <em class="acc">вклад</em>`);
+    p.textContent=ty('Казна замка оплачивает площадку и всё, что нужно для ночи. Выбери путь — и увидишь, насколько твой вклад приблизит праздник.');
   }else{
     h.innerHTML=tyh(`Выбери клан и вступи в <em class="acc">игру</em>`);
-    p.textContent=ty('Сначала клан — с ним ты пройдёшь всю ночь. Потом путь и вклад в казну замка: она оплачивает площадку и всё, что нужно для праздника.');
+    p.textContent=ty('Сначала клан — с ним ты пройдёшь всю ночь. Потом путь и вклад в казну замка.');
   }
 }
 
