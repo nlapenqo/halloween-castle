@@ -35,6 +35,8 @@
   --mauve:#9A8593;
   --ochre:#CD9236;
   --gold:#D9AE52;
+  --sky-sand:#E4C08A;   /* полосы таймлайна между бумагой и розовым */
+  --sky-peach:#E3A782;
   --f-display:"Alice","Kurale",Georgia,serif;
   --f-body:"Kurale","Alice",Georgia,serif;
   --gutter:clamp(16px,5vw,64px);
@@ -215,14 +217,18 @@ h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-le
 .feast h2{color:var(--paper)}
 .feast .pan{width:100%;overflow-x:auto;scrollbar-width:none;margin-block:calc(clamp(20px,3vw,36px)*-.3)}
 .feast .pan::-webkit-scrollbar{display:none}
-.feast img{width:100%;max-width:none;min-width:720px}
+.feast img{width:100%;max-width:none;min-width:720px;-webkit-mask-image:linear-gradient(to bottom,#000 86%,transparent);mask-image:linear-gradient(to bottom,#000 86%,transparent)}
 .feast p{max-width:52ch;color:#E8D6B8}
 
 /* ── ход дня ── */
 .day-sec{padding-top:clamp(32px,4vw,48px)}
 .ornament{width:min(100%,1100px);margin:0 auto clamp(56px,6vw,88px)}
 .sky{list-style:none;margin:0;padding:0}
-.sky li{position:relative;isolation:isolate;padding-block:clamp(28px,3.6vw,42px)}
+.sky li{--p:clamp(28px,3.6vw,42px);--o:14px;position:relative;isolation:isolate;padding-block:calc(var(--p) - var(--o)) calc(var(--p) + var(--o))}
+.sky li:first-child{--o:7px}
+.sky li:last-child{--o:-13px}
+/* при наведении полоса чуть вытягивается из стопки */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.sky li{transition:transform .35s cubic-bezier(.2,.8,.2,1)}.sky li:hover{transform:translateY(-6px) rotate(-.25deg);z-index:2}.sky li::before{transition:box-shadow .35s}.sky li:hover::before{box-shadow:0 12px 20px rgba(38,23,29,.22)}}
 .sky li::before{content:"";position:absolute;inset:-14px -30px 0 -30px;z-index:-1;background:var(--band);filter:url(#rough)}
 .sky li:first-child::before{top:0}
 .sky li:last-child::before{bottom:-40px}
@@ -233,6 +239,8 @@ h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-le
 .sky p{font-size:17px;max-width:56ch}
 .sky .day{--band:var(--paper);color:var(--ink)}
 .sky .day2{--band:var(--paper-deep);color:var(--ink)}
+.sky .sand{--band:var(--sky-sand);color:var(--ink)}
+.sky .peach{--band:var(--sky-peach);color:var(--ink)}
 .sky .dusk{--band:var(--rose);color:var(--ink)}
 .sky .dusk2{--band:var(--mauve);color:var(--ink)}
 .sky .eve{--band:var(--cobalt-deep);color:var(--paper)}
@@ -384,9 +392,9 @@ footer small{font-size:15px;opacity:.7}
     </div>
     <ol class="sky">
       <li class="day"><div class="wrap row"><time>14:00</time><img src="art/s-frangipani.webp" alt=""><div><h3>Ворота открываются</h3><p>Встреча гостей: ленты кланов, карточки игроков, карта замка и первые подозрения.</p></div></div></li>
-      <li class="day"><div class="wrap row"><time>15:00</time><img src="art/s-crow.webp" alt=""><div><h3>Игра</h3><p>Таверна, стрельбище, тайники и мастерская работают одновременно. Каждый выбирает свой путь к монетам.</p></div></div></li>
-      <li class="day2"><div class="wrap row"><time>16:00</time><img src="art/s-star.webp" alt=""><div><h3>Турнир</h3><p>Бойцы кланов сходятся на арене. Мягкие палки, жёсткие ставки.</p></div></div></li>
-      <li class="day2"><div class="wrap row"><time>16:30</time><img src="art/s-pumpkin1.webp" alt=""><div><h3>Яблоки</h3><p>Конкурс без рук. Полотенца выдадим.</p></div></div></li>
+      <li class="day2"><div class="wrap row"><time>15:00</time><img src="art/s-crow.webp" alt=""><div><h3>Игра</h3><p>Таверна, стрельбище, тайники и мастерская работают одновременно. Каждый выбирает свой путь к монетам.</p></div></div></li>
+      <li class="sand"><div class="wrap row"><time>16:00</time><img src="art/s-star.webp" alt=""><div><h3>Турнир</h3><p>Бойцы кланов сходятся на арене. Мягкие палки, жёсткие ставки.</p></div></div></li>
+      <li class="peach"><div class="wrap row"><time>16:30</time><img src="art/s-pumpkin1.webp" alt=""><div><h3>Яблоки</h3><p>Конкурс без рук. Полотенца выдадим.</p></div></div></li>
       <li class="dusk"><div class="wrap row"><time>17:40</time><img src="art/s-turnip.webp" alt=""><div><h3>Итоги</h3><p>Считаем монеты кланов, называем лучший костюм и лучшую тыкву. Победителям грамоты и игристое.</p></div></div></li>
       <li class="dusk2"><div class="wrap row"><time>18:00</time><img src="art/s-candle.webp" alt=""><div><h3>Трапеза</h3><p>Солнце уходит за джунгли, все садятся за один длинный стол во дворе замка.</p></div></div></li>
       <li class="eve"><div class="wrap row"><time>19:30</time><img src="art/s-moon.webp" alt=""><div><h3>Костёр</h3><p>Огонь, музыка и маршмеллоу на шампурах. Свободный вечер под звёздами.</p></div></div></li>
@@ -447,7 +455,7 @@ addEventListener('DOMContentLoaded',()=>{
   const groups=['.night-intro .text>*','.rules li','.head','.estate','.clan-cta','.castle>*','.real figure','.vig','.feast .inner','.sky li','.ways .plate','.keeper'];
   groups.forEach(sel=>{const els=gsap.utils.toArray(sel);if(!els.length)return;
     gsap.set(els,{autoAlpha:0,y:34});
-    ScrollTrigger.batch(els,{start:'top 88%',once:true,onEnter:b=>gsap.to(b,{autoAlpha:1,y:0,duration:.8,ease:'power3.out',stagger:.12,overwrite:true})});
+    ScrollTrigger.batch(els,{start:'top 88%',once:true,onEnter:b=>gsap.to(b,{autoAlpha:1,y:0,duration:.8,ease:'power3.out',stagger:.12,overwrite:true,clearProps:'transform'})});
   });
   /* виньетки покачиваются сами, пока видны */
   gsap.utils.toArray('.vig img').forEach((im,i)=>{
@@ -467,13 +475,14 @@ addEventListener('DOMContentLoaded',()=>{
     const x=c.getContext('2d'),dpr=Math.min(2,devicePixelRatio||1),N=innerWidth<700||(navigator.hardwareConcurrency||8)<=4?22:48;let W,H,ps=[],on=true,raf=0;
     const size=()=>{W=c.clientWidth;H=c.clientHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0)};
     size();addEventListener('resize',size);
-    for(let i=0;i<N;i++)ps.push({x:Math.random(),y:Math.random(),r:1+Math.random()*1.8,a:Math.random()*6.28,s:.0003+Math.random()*.0006,ph:Math.random()*6.28});
-    const tick=t=>{x.clearRect(0,0,W,H);
-      for(const p of ps){p.a+=(Math.random()-.5)*.2;p.x+=Math.cos(p.a)*p.s;p.y+=Math.sin(p.a)*p.s-.00012;
+    for(let i=0;i<N;i++)ps.push({x:Math.random(),y:Math.random(),r:1+Math.random()*1.8,a:Math.random()*6.28,s:.00005+Math.random()*.0001,ph:Math.random()*6.28});
+    let last=0;
+    const tick=t=>{const k=last?Math.min(3,(t-last)/16.7):1;last=t;x.clearRect(0,0,W,H);
+      for(const p of ps){p.a+=(Math.random()-.5)*.06*k;p.x+=Math.cos(p.a)*p.s*k;p.y+=(Math.sin(p.a)*p.s-.00002)*k;
         if(p.x<0)p.x=1;if(p.x>1)p.x=0;if(p.y<0)p.y=1;if(p.y>1)p.y=0;
-        const o=.35+.65*Math.max(0,Math.sin(t/900+p.ph));
+        const o=.3+.7*Math.max(0,Math.sin(t/2200+p.ph));
         x.beginPath();x.fillStyle=`rgba(255,214,120,${o*.9})`;x.shadowColor='rgba(255,190,90,.9)';x.shadowBlur=8;x.arc(p.x*W,p.y*H,p.r,0,6.28);x.fill()}
-      raf=on?requestAnimationFrame(tick):0};
+      raf=on?requestAnimationFrame(tick):(last=0,0)};
     ScrollTrigger.create({trigger:cv,start:'top bottom',end:'bottom top',onToggle:st=>{on=st.isActive;if(on&&!raf)raf=requestAnimationFrame(tick)}});
     document.addEventListener('visibilitychange',()=>{on=!document.hidden;if(on&&!raf)raf=requestAnimationFrame(tick)});
     raf=requestAnimationFrame(tick);}

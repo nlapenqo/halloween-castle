@@ -111,14 +111,17 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 /* ── шапка ── */
 .hero{padding-block:clamp(8px,2vw,24px) clamp(28px,4vw,48px)}
 .hero .head{margin-bottom:0;gap:18px}
-.hero .ornament{width:min(100%,640px);margin:0 auto -4px}
+.hero .ornament-wide{display:block;width:calc(100% - 2 * clamp(10px,1.6vw,28px));max-width:none;margin:0 auto clamp(10px,1.6vw,22px)}
 .deco{position:absolute;pointer-events:none;z-index:0;width:clamp(56px,7vw,96px)}
-.hero .d1{left:max(8px,calc(50% - 620px));top:22%}
-.hero .d2{right:max(8px,calc(50% - 610px));top:46%;width:clamp(64px,8vw,110px)}
+.hero .d1{left:max(8px,calc(50% - 620px));top:62%}
+.hero .d2{right:max(8px,calc(50% - 610px));top:70%;width:clamp(64px,8vw,110px)}
 @media (max-width:700px){.hero .d1{top:auto;bottom:4%;width:46px}.hero .d2{top:auto;bottom:3%;right:4%;width:46px}}
 
 /* ── казна ── */
-.treasury-sec{padding-block:clamp(40px,6vw,80px)}
+.treasury-sec{position:relative;isolation:isolate;color:var(--paper);padding-block:clamp(64px,8vw,110px);margin-block:clamp(24px,3vw,40px)}
+.treasury-sec::before{content:"";position:absolute;inset:0 -24px;z-index:-1;background:var(--navy) var(--stars);background-size:420px;filter:url(#rough)}
+.treasury-sec .head h2{color:var(--paper)}.treasury-sec .head .acc{color:var(--gold)}
+.treasury-sec .ledger,.treasury-sec .meter{color:var(--ink)}
 .treasury{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(22px,3vw,40px);align-items:stretch}
 @media (max-width:880px){.treasury{grid-template-columns:minmax(0,1fr)}}
 .ledger{--pl-bg:var(--paper);display:grid;gap:18px;align-content:start;transform:rotate(-.6deg);padding:clamp(24px,3vw,38px)}
@@ -157,7 +160,11 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 
 /* ── кланы ── */
 .clans-sec{padding-block:clamp(56px,8vw,110px) clamp(24px,4vw,48px)}
-.clans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2.6vw,36px);align-items:start}
+.clans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2.6vw,36px);align-items:stretch}
+.cw{display:grid;min-width:0}
+.clan{height:100%;grid-template-rows:auto 1fr}
+.clan-body{display:flex!important;flex-direction:column;align-items:flex-start}
+.clan-body .join{margin-top:auto}
 .cw{min-width:0}
 .clan{--pl-bg:var(--rose);color:var(--ink);display:grid;gap:16px;align-content:start;padding:clamp(12px,1.3vw,18px) clamp(12px,1.3vw,18px) clamp(22px,2.4vw,28px)}
 .clan-WEREWOLF{--pl-bg:var(--ochre)}
@@ -196,24 +203,44 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 
 /* ── тарифы ── */
 .tariffs-sec{padding-block:clamp(56px,8vw,100px) clamp(72px,9vw,120px)}
-.tariffs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);grid-template-rows:auto auto;gap:clamp(20px,2.6vw,36px);align-items:stretch;max-width:1080px;margin-inline:auto}
-.tw-gold{grid-column:2;grid-row:1/3}
+.tariffs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2.6vw,32px);align-items:stretch;max-width:1180px;margin-inline:auto;padding-top:16px}
+.tw-gold{margin-block:-16px}
 .tw,.tw>.sway{display:grid;min-width:0}
-.tcard{display:grid;gap:14px;align-content:start;grid-template-rows:auto auto 1fr auto;padding:clamp(26px,3vw,38px) clamp(22px,2.6vw,34px)}
+.tcard{display:flex;flex-direction:column;gap:14px;padding:clamp(26px,3vw,38px) clamp(22px,2.6vw,34px)}
+.t-vig{width:clamp(96px,10vw,132px);height:auto;align-self:center;margin:-6px 0 2px}
 .t-bronze{--pl-bg:var(--paper-deep)}
 .t-silver{--pl-bg:var(--paper);transform:rotate(.4deg)}
-.t-gold{--pl-bg:var(--night);--pl-line:var(--gold);color:var(--paper);grid-template-rows:auto auto auto auto 1fr auto}
+.t-gold{--pl-bg:var(--night);--pl-line:var(--gold);color:var(--paper)}
 .t-gold .label,.t-gold .price{color:var(--gold)}
 .t-gold::before{border-width:3.5px}
 .t-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .t-flag{font:400 20px/1 var(--f-hand);color:var(--gold)}
 .price{font:400 clamp(30px,3.2vw,40px)/1 var(--f-display);font-variant-numeric:lining-nums;white-space:nowrap}
 .price small{font-size:.5em;letter-spacing:.06em}
-.tcard .btn{justify-self:start;align-self:end}
+.tcard .btn{align-self:flex-start;margin-top:auto}
 .buffs{list-style:none;padding:0;margin:0;display:grid;gap:9px}
 .buffs li{position:relative;padding-left:32px;font-size:17px;line-height:1.4}
 .buffs li::before{content:"";position:absolute;left:0;top:.05em;width:22px;height:22px;background:url(art/star.png) center/contain no-repeat}
-@media (max-width:640px){.tariffs{grid-template-columns:minmax(0,1fr)}.tw-gold{grid-column:auto;grid-row:auto}}
+@media (max-width:880px){.tariffs{grid-template-columns:minmax(0,1fr);max-width:520px}.tw-gold{margin-block:0}}
+/* трапеза */
+.dinner-sec{padding-block:0 clamp(80px,10vw,130px)}
+.dinner{--pl-bg:var(--night);--pl-line:var(--gold);color:var(--paper);max-width:1180px;margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(22px,3vw,44px);align-items:center;padding:clamp(14px,1.6vw,22px) clamp(22px,3vw,44px) clamp(14px,1.6vw,22px) clamp(14px,1.6vw,22px)}
+.dinner::before{border-width:3.5px}
+.dn-img{margin:0;border-radius:18px 26px 14px 28px/26px 14px 28px 18px;overflow:hidden;border:2.5px solid var(--gold)}
+.dn-img img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
+.dn-body{display:grid;gap:16px;justify-items:start;padding-block:clamp(10px,2vw,24px)}
+.dn-body .label{color:var(--gold)}
+.dn-body h2{color:var(--paper);text-align:left}.dn-body .acc{color:var(--gold)}
+.dn-body .lead{font-size:clamp(17px,1.35vw,19px);opacity:.92}
+.dn-menu{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.dn-menu li{position:relative;padding-left:30px}
+.dn-menu li::before{content:"";position:absolute;left:0;top:.1em;width:20px;height:20px;background:url(art/star.png) center/contain no-repeat}
+.dn-foot{display:grid;gap:8px;justify-items:start;margin-top:4px}
+.dn-foot .price{color:var(--gold)}
+.dn-foot .small{opacity:.85;max-width:40ch}
+.dn-foot .btn{margin-top:8px}
+.dn-flag{text-align:center;margin:clamp(28px,3.6vw,44px) auto 0;font:400 22px/1.3 var(--f-hand);color:var(--vermilion)}
+@media (max-width:880px){.dinner{grid-template-columns:minmax(0,1fr);padding:clamp(12px,3vw,18px) clamp(12px,3vw,18px) clamp(26px,5vw,34px)}.dn-body{padding-inline:clamp(8px,2vw,16px)}.dn-img img{aspect-ratio:4/3}}
 .feast-note{--pl-bg:var(--paper);display:flex;gap:18px;align-items:center;max-width:760px;margin:clamp(34px,4.4vw,52px) auto 0;transform:rotate(-.5deg)}
 .feast-note img{width:54px;flex:none}
 .feast-note p{font-size:18px}
@@ -426,8 +453,8 @@ footer small{font-size:15px;opacity:.75}
   <section class="hero">
     <img class="deco d1 float" src="art/s-crow.webp" alt="">
     <img class="deco d2 float" src="art/s-pumpkin1.webp" alt="">
+    <img class="ornament ornament-wide" src="art/ornament.webp" alt="" data-rv>
     <div class="wrap head">
-      <img class="ornament" src="art/ornament.webp" alt="" data-rv>
       <h1 data-rv>Врата замка <em class="acc">открыты</em></h1>
       <p class="lead" data-rv>Закрытый праздник для&nbsp;друзей и&nbsp;друзей друзей. Бюджет мы&nbsp;показываем открыто: видно, сколько стоит ночь в&nbsp;замке и&nbsp;сколько уже заявлено в&nbsp;казну. Выбери клан и&nbsp;тариф&nbsp;— и&nbsp;замок проснётся.</p>
       <p class="facts" data-rv><span class="chip">31&nbsp;октября</span><span class="chip">с&nbsp;14:00</span><span class="chip">Bale Tudor · Бали</span></p>
@@ -495,18 +522,21 @@ footer small{font-size:15px;opacity:.75}
       </div>
       <div class="tariffs">
         <div class="tw" data-rv><div class="sway"><article class="plate tcard t-bronze tilt3d" aria-labelledby="t-b">
+          <img class="t-vig" src="art/t-bronze.webp" alt="" loading="lazy" onerror="this.remove()">
           <div class="t-top"><h3 class="label" id="t-b">Bronze</h3></div>
           <p class="price"><span data-price="bronze">150&nbsp;000</span>&nbsp;<small>IDR</small></p>
           <p class="small">Даже одна монета помогает замку. Этот путь&nbsp;— для&nbsp;друзей, которым сейчас нужен самый доступный формат участия (ограниченный бюджет)</p>
           <button class="btn" type="button" data-tariff="BRONZE">Выбрать Bronze</button>
         </article></div></div>
         <div class="tw" data-rv><div class="sway"><article class="plate tcard t-silver tilt3d" aria-labelledby="t-s">
+          <img class="t-vig" src="art/t-silver.webp" alt="" loading="lazy" onerror="this.remove()">
           <div class="t-top"><h3 class="label" id="t-s">Silver</h3></div>
           <p class="price"><span data-price="silver">300&nbsp;000</span>&nbsp;<small>IDR</small></p>
           <p class="small">Врата открыты: все события, испытания и&nbsp;приключения</p>
           <button class="btn" type="button" data-tariff="SILVER">Выбрать Silver</button>
         </article></div></div>
         <div class="tw tw-gold" data-rv><div class="sway"><article class="plate tcard t-gold tilt3d" aria-labelledby="t-g">
+          <img class="t-vig" src="art/t-gold.webp" alt="" loading="lazy" onerror="this.remove()">
           <div class="t-top"><h3 class="label" id="t-g">Gold</h3><span class="t-flag">все усиления</span></div>
           <p class="price">от&nbsp;<span data-price="gold">500&nbsp;000</span>&nbsp;<small>IDR</small></p>
           <p class="small">Помоги пробудить замок сильнее. Выбери свой вклад&nbsp;— от&nbsp;500&nbsp;000&nbsp;IDR. В&nbsp;благодарность ты&nbsp;получишь все игровые усиления</p>
@@ -525,10 +555,25 @@ footer small{font-size:15px;opacity:.75}
           <button class="btn btn-main" type="button" data-tariff="GOLD">Выбрать Gold</button>
         </article></div></div>
       </div>
-      <div class="plate feast-note" data-rv>
-        <img src="art/s-candle.webp" alt="">
-        <p><b>Королевская трапеза</b>&nbsp;— по&nbsp;желанию для&nbsp;любого тарифа, +<span data-price="dinner">250&nbsp;000</span>&nbsp;IDR</p>
-      </div>
+      <p class="dn-flag" id="dn-flag" hidden>Трапеза отмечена&nbsp;— осталось выбрать тариф</p>
+    </div>
+  </section>
+  <section class="dinner-sec" id="dinner" aria-labelledby="dn-t">
+    <div class="wrap">
+      <article class="plate dinner" data-rv>
+        <figure class="dn-img"><img src="art/dinner-a.jpg" alt="Королевская трапеза: жители замка из&nbsp;всех кланов за&nbsp;одним длинным столом во&nbsp;дворе, свечи и&nbsp;фонари на&nbsp;деревьях" width="2000" height="1125" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='art/feast.jpg'}"></figure>
+        <div class="dn-body">
+          <span class="label">18:00 · двор замка</span>
+          <h2 id="dn-t">Королевская <em class="acc">трапеза</em></h2>
+          <p class="lead">Игра окончена, монеты пересчитаны. Все&nbsp;кланы садятся за&nbsp;один длинный стол во&nbsp;дворе замка: свечи, фонари в&nbsp;ветвях, тосты за&nbsp;победителей и&nbsp;за&nbsp;тех, кто почти победил. Здесь вручают грамоты и&nbsp;открывают игристое.</p>
+          <ul class="dn-menu" id="dn-menu" hidden></ul>
+          <div class="dn-foot">
+            <p class="price">+<span data-price="dinner">250&nbsp;000</span>&nbsp;<small>IDR</small></p>
+            <p class="small">По&nbsp;желанию, к&nbsp;любому тарифу. Отмечается галочкой при&nbsp;вступлении в&nbsp;клан.</p>
+            <button class="btn btn-main" type="button" data-act="want-dinner">Хочу на&nbsp;трапезу</button>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 </main>
@@ -954,7 +999,7 @@ function toast(html){const t=$('#toast');t.innerHTML=html;t.hidden=false;if(G)G.
 
 /* ── оформление ── */
 const dlg=$('#checkout'),form=$('#co-form'),el=form.elements;
-let co={step:'form',data:null,busy:false,payOnly:false};
+let co={step:'form',data:null,busy:false,payOnly:false},wantDinner=false;
 $('#opts-clan').innerHTML=CLAN_ORDER.map(c=>`<label class="opt"><input type="radio" name="clan" value="${c}"><span>${CLANS[c].name}</span><small data-o="${c}"></small></label>`).join('');
 $('#opts-tariff').innerHTML=['BRONZE','SILVER','GOLD'].map(t=>`<label class="opt"><input type="radio" name="tariff" value="${t}"><span>${TARIFF_NAME[t]}</span><small data-o="${t}"></small></label>`).join('');
 const radio=(n,v)=>{const r=$$(`input[name="${n}"]`,form).find(x=>x.value===v);if(r&&!r.disabled)r.checked=true};
@@ -1006,6 +1051,7 @@ function openCheckout(tariff){
   if(tariff==='GOLD'){const v=parseAmount($('#gold-card').value);el.f_gold.value=v!=null?fmt(v):''}
   if(myClan&&!val('clan'))radio('clan',myClan);
   if(myClan&&val('clan')!==myClan&&!co.data)radio('clan',myClan);
+  if(wantDinner){el.f_dinner.checked=true;wantDinner=false;$('#dn-flag').hidden=true}
   showStep('form');updateTotal();setErr('form','');
   if(!dlg.open)dlg.showModal();
   requestAnimationFrame(()=>{const t=!el.f_name.value.trim()?el.f_name:!el.f_tg.value.trim()?el.f_tg:tariff==='GOLD'?el.f_gold:$('#co-t');t.focus()});
@@ -1095,6 +1141,7 @@ document.addEventListener('click',e=>{
   if('paid' in t.dataset){submitApp();return}
   if(t.dataset.copy==='amount'){copyText(String(co.total||''),t);return}
   if(t.dataset.copy==='bank'){copyText($('#bank-txt').textContent,t);return}
+  if(t.dataset.act==='want-dinner'){wantDinner=true;$('#dn-flag').hidden=false;$('#tariffs').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});return}
   switch(t.dataset.act){
     case 'pro-next':turnToClans();break;
     case 'pro-close':case 'pro-enter':closePro();break;
