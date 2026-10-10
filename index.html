@@ -60,7 +60,6 @@ h1,h2,h3{margin:0;font-weight:400;text-wrap:balance;font-family:var(--f-display)
 h2{font-size:clamp(34px,4.6vw,60px);line-height:1.05;text-transform:uppercase;letter-spacing:.04em;filter:url(#ink)}
 h3{font-size:clamp(22px,2vw,28px);line-height:1.15}
 h2 .acc{font:400 1.5em/.8 "Neucha",var(--f-display);font-style:normal;text-transform:none;letter-spacing:0;color:var(--vermilion);position:relative;top:.01em;padding-inline:.04em}
-.coauthors h2 .acc{color:var(--gold)}
 .label{font:400 13px/1.3 var(--f-display);text-transform:uppercase;letter-spacing:.18em;color:var(--vermilion)}
 .lead{font-size:clamp(19px,1.5vw,21px);max-width:58ch}
 .small{font-size:16px;line-height:1.5}
@@ -80,13 +79,6 @@ h2 .acc{font:400 1.5em/.8 "Neucha",var(--f-display);font-style:normal;text-trans
 .btn-main::before{background:var(--gold)}
 .btn-lg{padding:18px 30px;font-size:21px}
 .cta-row{margin-top:clamp(22px,3vw,32px)}
-.final-cta{display:grid;justify-items:center;text-align:center;gap:16px;padding-top:clamp(70px,9vw,110px)}
-.final-cta p{max-width:44ch;opacity:.85}
-/* плавающая кнопка: появляется после обложки, прячется рядом с другими кнопками и в подвале */
-.sticky-cta{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));z-index:40;transform:translate(-50%,140%);transition:transform .45s cubic-bezier(.2,.8,.2,1);box-shadow:none}
-.sticky-cta.on{transform:translate(-50%,0)}
-.sticky-cta.on:hover{transform:translate(-50%,0) rotate(-2deg) scale(1.04)}
-@media (prefers-reduced-motion:reduce){.sticky-cta{transition:none}}
 @media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
 
 /* ── обложка: на весь экран, заголовок набран шрифтом заголовков ── */
@@ -216,6 +208,32 @@ h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-le
 @media (max-width:880px){.vgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.vgrid{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){.vig img{transition:none}.vig:hover img{transform:none}}
+/* Финал: ночное небо с мерцающими звёздами, арки кланов, отсчёт до ворот */
+.gate{position:relative;isolation:isolate;overflow:hidden;background:var(--night) var(--stars);background-size:420px;color:var(--paper);padding-block:clamp(90px,11vw,150px) clamp(90px,11vw,140px);text-align:center}
+.gate::before,.gate::after{content:"";position:absolute;inset:-600px;z-index:-1;pointer-events:none;background:var(--stars)}
+.gate::before{background-size:310px;background-position:140px 90px;animation:st-drift-a 140s linear infinite,st-twinkle 3.6s ease-in-out infinite alternate}
+.gate::after{background-size:540px;background-position:260px 330px;animation:st-drift-b 190s linear infinite,st-twinkle 5.2s ease-in-out -2.1s infinite alternate}
+@keyframes st-drift-a{to{transform:translate3d(-310px,-310px,0)}}
+@keyframes st-drift-b{to{transform:translate3d(540px,-540px,0)}}
+@keyframes st-twinkle{0%{opacity:.15}55%{opacity:.85}100%{opacity:.35}}
+.gate h2{color:var(--paper)}.gate h2 .acc{color:var(--gold)}
+.gate .head .lead{color:#E8D6B8;opacity:1;max-width:46ch}
+.gate-clans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,3vw,44px);max-width:860px;margin:0 auto clamp(40px,5vw,60px)}
+.gate-c{display:grid;gap:12px;justify-items:center;text-decoration:none;color:var(--paper);animation:gate-float 6s ease-in-out var(--d) infinite alternate}
+.gate-arch{display:block;width:100%;border-radius:999px 999px 18px 18px;overflow:hidden;border:3px solid var(--gold);box-shadow:0 0 0 6px rgba(217,174,82,.14);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
+.gate-arch img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 22%}
+.gate-n{font:400 clamp(17px,1.7vw,22px)/1.2 var(--f-display)}
+.gate-c:hover .gate-arch,.gate-c:focus-visible .gate-arch{transform:translateY(-10px) scale(1.03);box-shadow:0 0 0 6px rgba(217,174,82,.32),0 18px 40px rgba(217,174,82,.25)}
+@keyframes gate-float{to{transform:translateY(-8px)}}
+.gate-count{display:grid;gap:12px;justify-items:center;margin-bottom:clamp(30px,4vw,44px)}
+.gate-count .label{color:var(--gold)}
+.cd{display:flex;gap:clamp(18px,4vw,48px)}
+.cd span{display:grid;justify-items:center;gap:4px}
+.cd b{font:400 clamp(44px,6vw,76px)/1 var(--f-display);font-variant-numeric:lining-nums tabular-nums;color:var(--paper)}
+.cd i{font-style:normal;font-size:15px;letter-spacing:.12em;text-transform:uppercase;opacity:.75}
+.gate-note{margin-top:18px;opacity:.75}
+@media (max-width:520px){.gate-n{font-size:15px}.gate-arch{border-width:2px;box-shadow:0 0 0 4px rgba(217,174,82,.14)}}
+@media (prefers-reduced-motion:reduce){.gate::before,.gate::after,.gate-c{animation:none}.gate::before,.gate::after{opacity:.4}.gate-arch{transition:none}}
 .clan-cta{display:grid;gap:14px;justify-items:center;text-align:center;margin-top:clamp(44px,6vw,72px)}
 .clan-cta .small{max-width:46ch;opacity:.85}
 .bonfire{display:grid;justify-items:center;text-align:center;gap:clamp(18px,2.4vw,28px);margin-top:clamp(20px,3vw,40px)}
@@ -265,21 +283,6 @@ h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-le
 @media (max-width:620px){.sky .row{grid-template-columns:auto minmax(0,1fr);gap:10px 16px}.sky .row>div{grid-column:1/-1}.sky img{width:46px;height:46px}}
 
 /* ── соавторы и хранители ── */
-.coauthors{background:var(--night) var(--stars);color:var(--paper);padding-block:clamp(90px,11vw,140px) clamp(80px,10vw,120px);z-index:1}
-.coauthors h2{color:var(--paper)}
-.coauthors .head .lead{color:#E8D6B8;opacity:1}
-.ways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.4vw,30px);max-width:900px;margin:0 auto clamp(64px,8vw,96px)}
-.ways .plate{--pl-bg:var(--paper);--pl-line:var(--gold);color:var(--ink);display:grid;gap:8px;align-content:start}
-.ways .plate:first-child{transform:rotate(-.8deg)}.ways .plate:last-child{transform:rotate(.7deg)}
-@media (max-width:620px){.ways{grid-template-columns:minmax(0,1fr)}}
-.keepers-title{text-align:center;color:var(--gold);margin-bottom:28px;font:400 clamp(24px,2.6vw,34px)/1.15 var(--f-display);text-transform:uppercase;letter-spacing:.14em}
-.keepers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
-.keeper{--pl-bg:#2A1B26;--pl-line:rgba(217,174,82,.55);display:grid;gap:6px;align-content:start;padding:20px 22px}
-.keeper .who{display:flex;flex-wrap:wrap;gap:4px 14px}
-.keeper .who a{font-size:17px;text-decoration:none;color:var(--gold);border-bottom:1px dashed rgba(217,174,82,.6)}
-.keeper .who a:hover{color:var(--paper);border-color:var(--paper)}
-@media (max-width:880px){.keepers{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:540px){.keepers{grid-template-columns:minmax(0,1fr)}}
 
 footer{padding-block:clamp(48px,6vw,72px);text-align:center;display:grid;gap:10px;justify-items:center}
 footer .star{width:40px}
@@ -418,32 +421,25 @@ footer small{font-size:15px;opacity:.7}
       <li class="dusk2"><div class="wrap row"><time>18:00</time><img src="art/s-candle.webp" alt=""><div><h3>Трапеза</h3><p>Солнце уходит за джунгли, все садятся за один длинный стол во дворе замка.</p></div></div></li>
       <li class="eve"><div class="wrap row"><time>19:30</time><img src="art/s-moon.webp" alt=""><div><h3>Костёр</h3><p>Огонь, музыка и маршмеллоу на шампурах. Свободный вечер под звёздами.</p></div></div></li>
     </ol>
-    <div class="wrap final-cta">
-      <h3>Ворота откроются 31 октября в 14:00</h3>
-      <p class="small">Выбери клан, внеси вклад в казну замка и приходи в образе.</p>
-      <a class="btn btn-main btn-lg" href="participate.html">Открыть врата</a>
-    </div>
   </section>
 
-  <section class="coauthors" id="join">
+  <section class="gate" id="join" aria-labelledby="gate-t">
     <div class="wrap">
       <div class="head">
-        <h2>Станьте <em class="acc">соавторами</em></h2>
-        <p class="lead">Мы зовём не только в гости. Замок большой, и в нём хватит места для ваших идей.</p>
+        <h2 id="gate-t">Замок <em class="acc">ждёт</em></h2>
+        <p class="lead">Три клана, одна ночь и место у костра, которое займёт кто-то другой, если ты не займёшь его первым.</p>
       </div>
-      <div class="ways">
-        <div class="plate"><span class="label">Своя локация</span><h3>Придумайте свой уголок замка</h3><p class="small">Квест, ритуал, инсталляция, персонаж с тайной или свой звук у костра. Расскажите идею, и мы найдём для неё место.</p></div>
-        <div class="plate"><span class="label">Команда хранителя</span><h3>Помогите собрать одну из зон</h3><p class="small">Чайная, бар, декор, программа или пир. Напишите хранителю зоны, которая вам ближе.</p></div>
+      <div class="gate-clans">
+        <a class="gate-c" href="participate.html" style="--d:0.0s"><span class="gate-arch"><img src="art/clan-vampire-b.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Вампиры</span></a>
+        <a class="gate-c" href="participate.html" style="--d:0.7s"><span class="gate-arch"><img src="art/clan-werewolf-c.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Оборотни</span></a>
+        <a class="gate-c" href="participate.html" style="--d:1.4s"><span class="gate-arch"><img src="art/clan-darkelf-b.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Тёмные эльфы</span></a>
       </div>
-      <h3 class="keepers-title">Хранители замка</h3>
-      <div class="keepers">
-        <div class="plate keeper"><h3>Чайная и костёр</h3><div class="who"><a href="https://t.me/nlapenko" target="_blank" rel="noopener">@nlapenko</a><a href="https://t.me/Iakov_garuda" target="_blank" rel="noopener">@Iakov_garuda</a></div></div>
-        <div class="plate keeper"><h3>Квесты и программа</h3><div class="who"><a href="https://t.me/dariagaity" target="_blank" rel="noopener">@dariagaity</a><a href="https://t.me/pobedeen" target="_blank" rel="noopener">@pobedeen</a></div></div>
-        <div class="plate keeper"><h3>Танцпол, музыка и пир</h3><div class="who"><a href="https://t.me/ksunderr" target="_blank" rel="noopener">@ksunderr</a></div></div>
-        <div class="plate keeper"><h3>Площадка</h3><div class="who"><a href="https://t.me/ksunderr" target="_blank" rel="noopener">@ksunderr</a></div></div>
-        <div class="plate keeper"><h3>Бар и приглашения</h3><div class="who"><a href="https://t.me/maxrokach" target="_blank" rel="noopener">@maxrokach</a></div></div>
-        <div class="plate keeper"><h3>Декор</h3><div class="who"><a href="https://t.me/okovalskaya" target="_blank" rel="noopener">@okovalskaya</a><a href="https://t.me/Ellina_lee" target="_blank" rel="noopener">@Ellina_lee</a></div></div>
+      <div class="gate-count" data-cd-to="2026-10-31T14:00:00+08:00">
+        <span class="label">До открытия ворот</span>
+        <div class="cd"><span><b data-cd="d">—</b><i data-cd-l="d">дней</i></span><span><b data-cd="h">—</b><i data-cd-l="h">часов</i></span><span><b data-cd="m">—</b><i data-cd-l="m">минут</i></span></div>
       </div>
+      <a class="btn btn-main btn-lg gate-btn" href="participate.html">Открыть врата</a>
+      <p class="small gate-note">В каждом клане по 20 мест. Кланы растут вровень.</p>
     </div>
   </section>
 </main>
@@ -453,7 +449,6 @@ footer small{font-size:15px;opacity:.7}
   <p>31 октября · с 14:00</p>
   <small>Bale Tudor, Jl. Dewi Tilotama, Bongkasa Pertiwi, Bali · <a href="https://maps.app.goo.gl/QkY5Y5VHLDEFLeCC8" target="_blank" rel="noopener">карта</a></small>
 </footer>
-<a class="btn btn-main sticky-cta" href="participate.html" aria-hidden="true" tabindex="-1">Открыть врата</a>
 <dialog class="lb" aria-label="Фото замка"><figure><img src="" alt=""><button class="lb-x" type="button" aria-label="Закрыть">×</button><figcaption></figcaption></figure></dialog>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
@@ -472,12 +467,14 @@ c.style.setProperty('--mx',(x*100).toFixed(1)+'%');c.style.setProperty('--my',(y
 c.addEventListener('pointerenter',()=>{c.classList.add('on');c.style.setProperty('--sc','1.03')});
 c.addEventListener('pointermove',e=>{ev=e;if(!raf)raf=requestAnimationFrame(set)});
 c.addEventListener('pointerleave',()=>{c.classList.remove('on');['--rx','--ry','--sc'].forEach(p=>c.style.removeProperty(p))});});})();
-/* Плавающая кнопка: видна, когда обложка ушла с экрана и рядом нет другой кнопки */
-(()=>{const b=document.querySelector('.sticky-cta');if(!b||!('IntersectionObserver' in window))return;
-  const seen=new Set(),targets=[document.querySelector('.cover'),...document.querySelectorAll('main .btn-main,footer')];
-  const upd=()=>{const on=!seen.size;b.classList.toggle('on',on);b.setAttribute('aria-hidden',on?'false':'true');b.tabIndex=on?0:-1};
-  const io=new IntersectionObserver(es=>{es.forEach(e=>e.isIntersecting?seen.add(e.target):seen.delete(e.target));upd()});
-  targets.forEach(t=>t&&io.observe(t));})();
+
+/* Отсчёт до открытия ворот (время Бали, UTC+8) */
+(()=>{const box=document.querySelector('[data-cd-to]');if(!box)return;const to=Date.parse(box.dataset.cdTo);
+  const pl=(n,a,b,c)=>{const m=n%10,h=n%100;return m===1&&h!==11?a:m>=2&&m<=4&&(h<12||h>14)?b:c};
+  const L={d:['день','дня','дней'],h:['час','часа','часов'],m:['минута','минуты','минут']};
+  const set=(k,v)=>{box.querySelector(`[data-cd="${k}"]`).textContent=v;box.querySelector(`[data-cd-l="${k}"]`).textContent=pl(v,...L[k])};
+  const tick=()=>{let t=Math.max(0,to-Date.now());const d=Math.floor(t/864e5);t-=d*864e5;const h=Math.floor(t/36e5);t-=h*36e5;set('d',d);set('h',h);set('m',Math.floor(t/6e4))};
+  tick();setInterval(tick,30000);})();
 
 /* Костёр: видео играет только на экране; при reduced-motion — стоп-кадр */
 (()=>{const v=document.querySelector('.bf-v');if(!v)return;
@@ -489,7 +486,7 @@ addEventListener('DOMContentLoaded',()=>{
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce||!window.gsap||!window.ScrollTrigger)return;
   gsap.registerPlugin(ScrollTrigger);
-  const groups=['.night-intro .text>*','.rules li','.head','.estate','.clan-cta','.castle>*','.real figure','.vig','.feast .inner','.sky li','.ways .plate','.keeper'];
+  const groups=['.night-intro .text>*','.rules li','.head','.estate','.clan-cta','.castle>*','.real figure','.vig','.feast .inner','.sky li','.gate-c','.gate-count','.gate-btn'];
   groups.forEach(sel=>{const els=gsap.utils.toArray(sel);if(!els.length)return;
     gsap.set(els,{autoAlpha:0,y:34});
     ScrollTrigger.batch(els,{start:'top 88%',once:true,onEnter:b=>gsap.to(b,{autoAlpha:1,y:0,duration:.8,ease:'power3.out',stagger:.12,overwrite:true,clearProps:'transform'})});
