@@ -982,6 +982,12 @@ h1 .acc,h2 .acc{font:inherit;line-height:inherit;text-transform:inherit;letter-s
 <div class="plate toast" id="toast" role="status" hidden></div>
 
 <script>
+/* Навигация: каждое окно или режим поверх страницы — один шаг истории. ×, Esc и «Назад» браузера закрывают его одинаково */
+const NAV={stack:[],skip:0,queue:[]};
+function navOpen(id,fn){if(NAV.stack.some(x=>x.id===id))return;NAV.stack.push({id,fn});const push=()=>history.pushState({nav:id},'');NAV.skip?NAV.queue.push(push):push()}
+function navAdopt(id,fn){if(!NAV.stack.some(x=>x.id===id))NAV.stack.push({id,fn})}
+function navClose(id){const i=NAV.stack.findIndex(x=>x.id===id);if(i<0)return;NAV.stack.splice(i,1);NAV.skip++;history.back()}
+addEventListener('popstate',()=>{if(NAV.skip){NAV.skip--;if(!NAV.skip)NAV.queue.splice(0).forEach(f=>f());return}const top=NAV.stack.pop();if(top)top.fn()});
 (()=>{'use strict';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const NB=' ';
@@ -1303,12 +1309,12 @@ function openPro(stage,dismissable){
   $$('[data-act="pro-close"]',pro).forEach(b=>b.hidden=!proDismiss);
   pro.hidden=false;document.documentElement.classList.add('lock');outside().forEach(e=>e.inert=true);
   if(!proSky)proSky=starSky($('.pro-sky'));proSky.start();
-  showStage(stage);renderClans();
+  showStage(stage);renderClans();if(proDismiss)navOpen('pro',()=>{if(!pro.hidden)closePro()});
   if(G){G.fromTo(pro,{autoAlpha:0},{autoAlpha:1,duration:.5});startFloats(pro)}
   requestAnimationFrame(()=>{const t=stage==='intro'?$('[data-act="pro-next"]',pro):$('#pro-t2');t&&t.focus({preventScroll:true})});
 }
 function closePro(){
-  clearTimeout(greetTimer);
+  clearTimeout(greetTimer);navClose('pro');
   const done=()=>{pro.hidden=true;proSky&&proSky.stop();document.documentElement.classList.remove('lock');outside().forEach(e=>e.inert=false);$('#me-btn').focus({preventScroll:true});initMotion();
     if(reopenCo){reopenCo=false;if(myClan)requestAnimationFrame(()=>openCheckout())}
     const h=location.hash&&document.getElementById(location.hash.slice(1));if(h)requestAnimationFrame(()=>h.scrollIntoView({block:'start'}))};
@@ -1396,10 +1402,10 @@ function openCheckout(tf){
   co.payOnly=false;
   showStep('form');renderCo();['form','tariff','gold'].forEach(k=>setErr(k,''));
   const cd=clanData(myClan);setErr('clan',cd&&!cd.available?ty(reasonText(cd.reason)+'. Выбери другой клан — остальные данные сохранены.'):'');
-  if(!dlg.open)dlg.showModal();
+  if(!dlg.open){dlg.showModal();navOpen('sheet',()=>dlg.open&&dlg.close())}
   requestAnimationFrame(()=>$('#co-t').focus({preventScroll:true}));
 }
-function openPayOnly(){co.payOnly=true;renderPay();showStep('pay');if(!dlg.open)dlg.showModal();requestAnimationFrame(()=>$('#pay-t').focus())}
+function openPayOnly(){co.payOnly=true;renderPay();showStep('pay');if(!dlg.open){dlg.showModal();navOpen('sheet',()=>dlg.open&&dlg.close())}requestAnimationFrame(()=>$('#pay-t').focus())}
 function renderPay(){
   const s=S(),p=s.payment||{},a=co.payOnly?applied:null,d=co.data;
   let ticket,dinner,total;
@@ -1471,7 +1477,7 @@ goldInp.addEventListener('blur',()=>{const g=parseAmount(goldInp.value);if(g!=nu
 $$('.tcard').forEach(c=>{const on=()=>{if(applied)return;hoverTf=c.dataset.tf;renderGhost()},off=()=>{hoverTf=null;renderGhost()};
   if(FINE){c.addEventListener('pointerenter',on);c.addEventListener('pointerleave',off)}
   c.addEventListener('focusin',on);c.addEventListener('focusout',off)});
-dlg.addEventListener('close',()=>{if(co.step==='done'||co.payOnly)showStep('form')});
+dlg.addEventListener('close',()=>{navClose('sheet');if(co.step==='done'||co.payOnly)showStep('form')});
 dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
 
 async function copyText(text,btn){
@@ -1547,6 +1553,10 @@ function loadMotion(){
     if(!pro.hidden)startFloats(pro);if(motionReady)startPageMotion()};
   add('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js',()=>add('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js',ready,ready),()=>{});
 }
+
+/* «К истории замка»: если пришли с главной, возвращаемся по истории — на тот же блок и в то же состояние */
+$$('a[href="./"]').forEach(a=>a.addEventListener('click',e=>{try{const r=document.referrer?new URL(document.referrer):null;
+  if(r&&r.origin===location.origin&&/\/(index\.html)?$/.test(r.pathname)&&history.length>1){e.preventDefault();history.back()}}catch(_){}}));
 
 /* ── запуск ── */
 renderAll();initTilt();

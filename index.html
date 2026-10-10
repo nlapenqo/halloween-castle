@@ -306,9 +306,12 @@ footer small{font-size:15px;opacity:.7}
 .night .head h2{color:var(--paper);transition-delay:.3s}.night .head h2 .acc{color:var(--gold)}
 .night .head .lead{color:#E8D6B8;opacity:1}
 .estate{position:relative;isolation:isolate;padding:14px 14px 22px;cursor:pointer;transition:color .5s}
-.estate::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pl,var(--rose));border:2.5px solid var(--ink);border-radius:26px 18px 30px 16px/18px 30px 16px 26px;filter:url(#rough);opacity:0;scale:.92;transition:opacity .35s,scale .7s cubic-bezier(.2,.9,.25,1.25)}
+.estate::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pl,var(--rose));border-radius:26px 18px 30px 16px/18px 30px 16px 26px;filter:url(#rough);opacity:0;scale:.92;transition:opacity .35s,scale .7s cubic-bezier(.2,.9,.25,1.25)}
 .est-WEREWOLF{--pl:var(--ochre);--i:1}.est-DARK_ELF{--pl:var(--cobalt);--i:2}
-.night .estate{cursor:default}
+.night .estate{cursor:pointer;transition:color .5s,translate .45s cubic-bezier(.2,.8,.2,1)}
+.night .estate.picked{translate:0 -10px}
+@media (hover:hover){.night .estate:not(.picked):hover{translate:0 -5px}}
+.no-tr,.no-tr *,.no-tr *::before,.no-tr *::after{transition:none!important}
 .night .estate::before{opacity:1;scale:1;transition-delay:calc(.3s + var(--i,0) * .1s)}
 .night .est-DARK_ELF{color:var(--paper);transition-delay:.35s}
 .est-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.2,.8,.2,1)}
@@ -317,12 +320,16 @@ footer small{font-size:15px;opacity:.7}
 .night .est-more{grid-template-rows:1fr;transition-delay:calc(.4s + var(--i,0) * .1s)}
 .night .est-more>div{overflow:visible;padding-bottom:4px}
 .night .est-join{opacity:1;translate:0 0;transition-delay:calc(.55s + var(--i,0) * .1s)}
-.estate::after{content:"";position:absolute;inset:-8px;z-index:-2;border-radius:34px 24px 38px 22px/24px 38px 22px 34px;box-shadow:0 0 0 2px var(--gold),0 0 46px 6px rgba(217,174,82,.5);opacity:0;transition:opacity .6s .6s;pointer-events:none}
+.estate::after{content:"";position:absolute;inset:6px;z-index:-2;border-radius:26px 18px 30px 16px/18px 30px 16px 26px;box-shadow:0 0 70px 14px rgba(217,174,82,.42);opacity:0;transition:opacity .45s;pointer-events:none}
+.night.opening .estate.picked::after{transition-delay:.6s}
 .night .estate.picked::after{opacity:1}
 .est-back{background:none;border:0;padding:6px 2px;font:400 18px/1.3 var(--f-display);color:var(--paper);text-decoration:underline dashed;text-underline-offset:7px;cursor:pointer}
 .night .clan-cta .est-open{display:none}
 .night .clan-cta .small{color:#E8D6B8;opacity:1}
 @media (prefers-reduced-motion:reduce){.est-night,.swap>span,.estate,.estate::before,.est-more,.est-join,.estate.picked::after{transition:none!important}}
+.est-x{position:sticky;top:max(14px,env(safe-area-inset-top));z-index:3;display:grid;place-items:center;width:50px;height:50px;margin:-60px max(14px,env(safe-area-inset-right)) 10px auto;border:0;background:none;cursor:pointer;font:400 30px/1 var(--f-display);color:var(--ink);isolation:isolate;opacity:0;transition:opacity .4s .5s}
+.est-x::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:52% 48% 50% 46%/48% 52% 46% 50%;filter:url(#rough)}
+.night .est-x{opacity:1}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -365,6 +372,7 @@ footer small{font-size:15px;opacity:.7}
 
   <section class="estates-sec" id="clans">
     <div class="est-night" aria-hidden="true"><canvas class="sky-cv"></canvas></div>
+    <button class="est-x" type="button" aria-label="Закрыть выбор клана" hidden>×</button>
     <div class="wrap">
       <div class="head">
         <h2 class="swap"><span class="sw-day">Три <em class="acc">клана</em></span><span class="sw-night" aria-hidden="true">Выбери свой <em class="acc">клан</em></span></h2>
@@ -487,8 +495,15 @@ footer small{font-size:15px;opacity:.7}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
 <script>
+/* Навигация: каждое окно или режим поверх страницы — один шаг истории. ×, Esc и «Назад» браузера закрывают его одинаково */
+const NAV={stack:[],skip:0,queue:[]};
+function navOpen(id,fn){if(NAV.stack.some(x=>x.id===id))return;NAV.stack.push({id,fn});const push=()=>history.pushState({nav:id},'');NAV.skip?NAV.queue.push(push):push()}
+function navAdopt(id,fn){if(!NAV.stack.some(x=>x.id===id))NAV.stack.push({id,fn})}
+function navClose(id){const i=NAV.stack.findIndex(x=>x.id===id);if(i<0)return;NAV.stack.splice(i,1);NAV.skip++;history.back()}
+addEventListener('popstate',()=>{if(NAV.skip){NAV.skip--;if(!NAV.skip)NAV.queue.splice(0).forEach(f=>f());return}const top=NAV.stack.pop();if(top)top.fn()});
 (()=>{const d=document.querySelector('.lb'),im=d.querySelector('img'),cap=d.querySelector('figcaption');
-const open=z=>{im.src=z.src;im.alt=z.alt;cap.textContent=z.closest('figure')?.querySelector('figcaption')?.textContent||'';d.showModal()};
+const open=z=>{im.src=z.src;im.alt=z.alt;cap.textContent=z.closest('figure')?.querySelector('figcaption')?.textContent||'';d.showModal();navOpen('lb',()=>d.open&&d.close())};
+d.addEventListener('close',()=>navClose('lb'));
 document.querySelectorAll('.zoom').forEach(z=>{z.addEventListener('click',()=>open(z));z.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(z)}})});
 d.querySelector('.lb-x').addEventListener('click',()=>d.close());
 d.addEventListener('click',e=>{if(e.target===d)d.close()});})();
@@ -526,28 +541,45 @@ function starSky(cv,{density=6500,max=240}={}){
 /* «Три клана»: клик по карточке или «Вступить в клан» превращает блок в выбор клана на ночном небе */
 (()=>{const sec=document.getElementById('clans');if(!sec)return;
   const night=sec.querySelector('.est-night'),sky=starSky(sec.querySelector('.sky-cv')),cards=[...sec.querySelectorAll('.estate')],
-    open=sec.querySelector('.est-open'),back=sec.querySelector('.est-back'),swaps=[...sec.querySelectorAll('.swap')];
+    open=sec.querySelector('.est-open'),back=sec.querySelector('.est-back'),xb=sec.querySelector('.est-x'),swaps=[...sec.querySelectorAll('.swap')];
   let isNight=false,inView=false;
   const tick=()=>{isNight&&inView?sky.start():sky.stop()};
   if('IntersectionObserver' in window)new IntersectionObserver(es=>{inView=es[0].isIntersecting;tick()}).observe(sec);else inView=true;
-  function setNight(on,x,y,picked){
+  function setNight(on,x,y,picked,quiet){
     const r=sec.getBoundingClientRect();
     if(x!=null){const cx=x-r.left,cy=y-r.top;sec.style.setProperty('--cx',cx+'px');sec.style.setProperty('--cy',cy+'px');
       sec.style.setProperty('--cr',Math.ceil(Math.hypot(Math.max(cx,r.width-cx),Math.max(cy,r.height-cy))+40)+'px')}
-    isNight=on;sec.classList.toggle('night',on);back.hidden=!on;
+    isNight=on;sec.classList.toggle('night',on);back.hidden=!on;xb.hidden=!on;
+    if(on){quiet?(history.state&&history.state.nav==='clans'&&navAdopt('clans',()=>setNight(false))):navOpen('clans',()=>setNight(false))}else navClose('clans');if(on&&!quiet){sec.classList.add('opening');setTimeout(()=>sec.classList.remove('opening'),1100)}
     swaps.forEach(w=>{w.querySelector('.sw-day').setAttribute('aria-hidden',String(on));w.querySelector('.sw-night').setAttribute('aria-hidden',String(!on))});
     cards.forEach(c=>{c.classList.toggle('picked',on&&c===picked);c.querySelector('.est-join').tabIndex=on?0:-1;
       if(on){c.removeAttribute('role');c.removeAttribute('tabindex')}else{c.setAttribute('role','button');c.tabIndex=0}});
     tick();
-    if(on&&picked)setTimeout(()=>{const b=picked.getBoundingClientRect();if(b.top<0||b.bottom>innerHeight)picked.scrollIntoView({behavior:'smooth',block:'center'});picked.querySelector('.est-join').focus({preventScroll:true})},950);
-    if(!on)setTimeout(()=>open.focus({preventScroll:true}),50);
+    if(on&&picked&&!quiet)setTimeout(()=>{const b=picked.getBoundingClientRect();if(b.top<0||b.bottom>innerHeight)picked.scrollIntoView({behavior:'smooth',block:'center'});picked.querySelector('.est-join').focus({preventScroll:true})},950);
+    if(!on&&!quiet)setTimeout(()=>open.focus({preventScroll:true}),50);
   }
   cards.forEach(c=>{c.setAttribute('role','button');c.tabIndex=0;c.setAttribute('aria-label','Выбрать клан «'+c.querySelector('h3').textContent+'»');
-    c.addEventListener('click',e=>{if(isNight)return;e.preventDefault();setNight(true,e.clientX,e.clientY,c)});
+    c.addEventListener('click',e=>{if(isNight){if(!e.target.closest('.est-join'))cards.forEach(x=>x.classList.toggle('picked',x===c));return}e.preventDefault();setNight(true,e.clientX,e.clientY,c)});
     c.addEventListener('keydown',e=>{if(isNight||(e.key!=='Enter'&&e.key!==' '))return;e.preventDefault();const b=c.getBoundingClientRect();setNight(true,b.left+b.width/2,b.top+b.height/2,c)})});
   open.addEventListener('click',e=>{e.preventDefault();const b=open.getBoundingClientRect();setNight(true,b.left+b.width/2,b.top+b.height/2,null);setTimeout(()=>cards[0].querySelector('.est-join').focus({preventScroll:true}),950)});
   back.addEventListener('click',()=>{const b=back.getBoundingClientRect();setNight(false,b.left+b.width/2,b.top+b.height/2)});
+  xb.addEventListener('click',()=>{const b=xb.getBoundingClientRect();setNight(false,b.left+b.width/2,b.top+b.height/2)});
   sec.addEventListener('keydown',e=>{if(e.key==='Escape'&&isNight)setNight(false)});
+  window.estRestore=code=>{sec.classList.add('no-tr');setNight(true,null,null,cards.find(c=>c.dataset.clan===code)||null,true);requestAnimationFrame(()=>requestAnimationFrame(()=>sec.classList.remove('no-tr')))};
+  window.estState=()=>({night:isNight,picked:(cards.find(c=>c.classList.contains('picked'))||{dataset:{}}).dataset.clan||null});
+})();
+
+/* Кнопка «назад»: запоминаем блок, смещение в нём и выбор клана; при возврате ставим всё на место */
+(()=>{const KEY='hc_promo_pos',secs=()=>[...document.querySelectorAll('body > section, body > footer, main > section')];
+  addEventListener('pagehide',()=>{try{const list=secs();let i=0;list.forEach((el,k)=>{if(el.getBoundingClientRect().top<=120)i=k});
+    const top=list[i].getBoundingClientRect().top+scrollY;sessionStorage.setItem(KEY,JSON.stringify(Object.assign({i,off:scrollY-top},window.estState?estState():{})))}catch(_){}});
+  let st=null;try{st=JSON.parse(sessionStorage.getItem(KEY)||'null')}catch(_){}
+  const nav=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];
+  if(!st||!nav||nav.type!=='back_forward')return;
+  if('scrollRestoration' in history)history.scrollRestoration='manual';
+  if(st.night&&window.estRestore)estRestore(st.picked);
+  const go=()=>{const el=secs()[st.i];if(el)scrollTo(0,el.getBoundingClientRect().top+scrollY+st.off)};
+  go();requestAnimationFrame(go);addEventListener('load',()=>{go();setTimeout(go,300)});if(document.fonts)document.fonts.ready.then(go);
 })();
 
 
