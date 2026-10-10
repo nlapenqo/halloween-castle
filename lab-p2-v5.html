@@ -12,9 +12,9 @@
 <title>Вступить в&nbsp;игру · Halloween</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alice&family=Kurale&family=Neucha&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alice&family=Kurale&display=swap">
 <style>
-/* Layout V5 «Свиток вклада»: пролог и клан → «ты в клане, теперь вклад» → слева список путей, справа свиток-чек с казной и живым превью вклада → трапеза на весь экран → кланы полосой */
+/* Layout V5: пролог и клан → «ты в клане, а теперь вклад» → строка казны, одна шкала и три карточки пути → трапеза в золотой плашке → одна большая кнопка с гарантией → кланы полосой. Окно оформления на весь экран */
 :root{
   --paper:#F2E0C0;
   --paper-deep:#E9D1A6;
@@ -32,7 +32,7 @@
   --gold:#D9AE52;
   --f-display:"Alice","Kurale",Georgia,serif;
   --f-body:"Kurale","Alice",Georgia,serif;
-  --f-hand:"Neucha","Alice",Georgia,serif;
+  --f-hand:"Alice",Georgia,serif;
   --gutter:clamp(16px,5vw,64px);
   --r-plate:26px 34px 22px 38px/34px 22px 38px 26px;
   --r-pill:40px 28px 44px 30px/30px 44px 28px 40px;
@@ -129,166 +129,125 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 @media (max-width:520px){.hero .deco{display:none}.hero .lead{font-size:17px}}
 @media (max-width:700px){.hero .seal,.hero .facts{display:none!important}}
 
-/* ── главный блок: список путей + свиток-чек ── */
-.path-sec{padding-block:clamp(20px,3vw,40px) clamp(56px,9vw,120px)}
-.path-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(24px,3.6vw,56px);align-items:start;max-width:1180px;margin-inline:auto}
-.path-main{display:grid;gap:clamp(16px,1.8vw,22px);min-width:0}
-.path-head{display:grid;gap:12px;justify-items:start;margin-bottom:6px}
-.path-head h2{text-align:left;font-size:clamp(34px,3.9vw,54px)}
-.path-head .lead{opacity:.85}
-@media (max-width:880px){.path-grid{grid-template-columns:minmax(0,1fr);max-width:620px}.path-head{justify-items:center;text-align:center}.path-head h2{text-align:center}}
+/* ── «Выбери свой путь»: одна строка казны, одна шкала и три карточки ── */
+.path-sec{padding-block:clamp(36px,5vw,72px) clamp(48px,6vw,84px)}
+.path-sec .head{margin-bottom:clamp(18px,2.4vw,28px)}
+.purse{max-width:780px;margin:0 auto clamp(40px,4.6vw,60px);display:grid;gap:0}
+.purse-l{font-size:18px;font-variant-numeric:lining-nums;text-align:center}
+.purse-l b{font:400 21px/1.2 var(--f-display);color:var(--vermilion)}
+.bar{--p:0;--g:0;position:relative;height:38px;margin-top:16px;isolation:isolate;transition:--p 1.8s cubic-bezier(.2,.8,.2,1),--g .5s cubic-bezier(.2,.8,.2,1)}
+.bar::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper-deep);border:2.5px solid var(--ink);border-radius:30px 22px 34px 20px/22px 34px 20px 30px;filter:url(#rough)}
+.fill{position:absolute;left:6px;top:6px;bottom:6px;width:calc((100% - 12px) * var(--p) / 100);background:var(--vermilion) var(--stars);background-size:260px;border-radius:22px 14px 24px 12px/14px 24px 12px 22px;filter:url(#rough-sm)}
+.ghost{position:absolute;top:3px;bottom:3px;left:calc(6px + (100% - 12px) * var(--p) / 100);width:max(12px,calc((100% - 12px) * var(--g) / 100));background:repeating-linear-gradient(-45deg,var(--gold) 0 5px,#EBCB85 5px 10px);border:2px dashed var(--ink);border-left:0;border-radius:0 14px 12px 0/0 12px 14px 0;animation:ghost 1.8s ease-in-out infinite}
+@keyframes ghost{50%{opacity:.62}}
+.ghost-tag{position:absolute;top:calc(100% + 9px);left:clamp(30px,calc(6px + (100% - 12px) * (var(--p) + var(--g) / 2) / 100),calc(100% - 30px));transform:translateX(-50%);padding:6px 11px 5px;font:400 16px/1 var(--f-display);white-space:nowrap;color:var(--ink);background:var(--gold);border-radius:12px 9px 13px 8px/9px 13px 8px 12px;font-variant-numeric:lining-nums}
+.ghost-tag::after{content:"";position:absolute;left:50%;bottom:100%;margin-left:-6px;border:6px solid transparent;border-bottom-color:var(--gold);border-top:0}
+.bar[data-g="0"] .ghost,.bar[data-g="0"] .ghost-tag{display:none}
+.bar-star{position:absolute;top:50%;left:clamp(20px,calc(6px + (100% - 12px) * var(--p) / 100),calc(100% - 20px));width:36px;height:36px;margin:-18px 0 0 -18px;pointer-events:none}
+.bar[data-g="1"] .bar-star{left:clamp(20px,calc(6px + (100% - 12px) * var(--p) / 100 + max(12px,(100% - 12px) * var(--g) / 100)),calc(100% - 20px));margin-left:-3px}
+@media (prefers-reduced-motion:reduce){.bar{transition:none}.ghost{animation:none}}
+.stale{font-size:15px;color:var(--vermilion);text-align:center}
 
-.paths{border:0;margin:0;padding:0;display:grid;gap:14px;min-width:0}
-.path{position:relative;isolation:isolate;--pl-bg:var(--paper-deep);--pl-line:var(--ink);color:var(--ink);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
-.path::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pl-bg);border:2px solid var(--pl-line);border-radius:var(--r-plate);filter:url(#rough-sm)}
-.paths .path:nth-child(3n+2)::before{border-radius:34px 24px 38px 22px/24px 36px 22px 34px}
-.paths .path:nth-child(3n)::before{border-radius:22px 38px 26px 34px/36px 24px 34px 22px}
-.path-h{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"ic name price" "ic desc desc";column-gap:clamp(12px,1.6vw,18px);row-gap:4px;align-items:center;min-height:88px;padding:14px clamp(14px,1.8vw,22px) 14px clamp(12px,1.4vw,16px);cursor:pointer}
-.path-h input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
-.path:has(input:focus-visible){outline:2px dashed var(--vermilion);outline-offset:5px;border-radius:28px}
-.path-ic{grid-area:ic;position:relative;width:clamp(56px,5.2vw,68px);align-self:start}
-.path-ic img{width:100%;height:auto}
-.path-n{grid-area:name;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px;font:400 19px/1.15 var(--f-display);letter-spacing:.14em;text-transform:uppercase}
-.path-flag{font:400 19px/1 var(--f-hand);letter-spacing:0;text-transform:none;color:var(--gold)}
-.path-d{grid-area:desc;font-size:16px;line-height:1.42;opacity:.9}
-.path-p{grid-area:price;display:grid;justify-items:end;gap:5px;text-align:right}
-.pp{font:400 clamp(21px,1.9vw,25px)/1 var(--f-display);white-space:nowrap;font-variant-numeric:lining-nums}
-.pp small{font-size:.56em;letter-spacing:.06em}
-.gain{font:400 14px/1 var(--f-body);color:var(--cobalt-deep);white-space:nowrap}
-.path.on{--pl-bg:var(--paper);--pl-line:var(--vermilion);transform:rotate(-.35deg)}
-.path.on::before{border-width:3.5px}
-.paths .path.on .path-n::after{content:"твой путь";font:400 19px/1 var(--f-hand);letter-spacing:0;text-transform:none;color:var(--vermilion)}
-.path-dn.on .path-n::after{content:"добавлена";font:400 19px/1 var(--f-hand);letter-spacing:0;text-transform:none;color:var(--vermilion)}
-.path-gold{--pl-bg:var(--night);--pl-line:var(--gold);color:var(--paper)}
-.path-gold.on{--pl-bg:var(--night);--pl-line:var(--gold)}
-.path-gold.on::before{border-width:4.5px}
-.paths .path-gold.on .path-n::after{color:var(--gold)}
-.path-gold.on .path-flag{display:none}
-.path-gold .path-n,.path-gold .pp,.path-gold .gain{color:var(--gold)}
-@media (hover:hover) and (pointer:fine){.path:not(.on):hover{transform:rotate(-.5deg) translateX(3px)}}
-/* выбранный путь: вермильоновая рамка, «твой путь» и галочка в углу — без кружков поверх иконок */
-.mark{position:absolute;top:-11px;right:-9px;width:32px;height:32px;display:grid;place-items:center;isolation:isolate;transform:scale(0) rotate(-40deg);transition:transform .35s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
-.mark::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--vermilion);border:2px solid var(--ink);border-radius:50% 46% 52% 48%/48% 52% 46% 50%;filter:url(#rough-sm)}
-.mark::after{content:"";width:8px;height:14px;border:solid var(--paper);border-width:0 3px 3px 0;transform:translateY(-2px) rotate(45deg)}
-.path.on .mark{transform:none}
-.path-gold .mark::before{border-color:var(--gold)}
-/* трапеза — обычная галочка справа в строке */
-.path-dn .path-h{grid-template-columns:auto minmax(0,1fr) auto auto;grid-template-areas:"ic name price mark" "ic desc desc mark"}
-.path-dn .mark{position:relative;top:auto;right:auto;grid-area:mark;transform:none;width:30px;height:30px}
-.path-dn .mark::before{background:var(--paper);border-radius:8px 6px 9px 5px/6px 9px 5px 8px}
-.path-dn .mark::after{opacity:0;border-color:var(--paper)}
-.path-dn.on .mark::before{background:var(--vermilion)}
-.path-dn.on .mark::after{opacity:1}
-@media (prefers-reduced-motion:reduce){.path,.mark{transition:none}}
-/* иконки усилений Gold: фрагменты иллюстраций проекта (монеты из сундука, мишень, тыква, свеча) */
+/* три карточки одинаковой высоты; клик по карточке = кнопка */
+.tcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,32px);align-items:stretch;max-width:1180px;margin-inline:auto;padding-top:14px}
+.tw{display:grid;min-width:0}
+.tcard{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:clamp(26px,2.8vw,36px) clamp(20px,2.4vw,30px) clamp(24px,2.6vw,32px);cursor:pointer;color:var(--ink);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.tcard::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pl-bg,var(--paper-deep));border:2.5px solid var(--pl-line,var(--ink));border-radius:var(--r-plate);filter:url(#rough)}
+.t-silver{--pl-bg:var(--paper)}
+.t-silver::before{border-radius:34px 24px 38px 22px/24px 36px 22px 34px}
+.t-ic{width:clamp(92px,8.4vw,118px);height:auto;margin-top:-4px}
+.t-name{font:400 clamp(26px,2.3vw,32px)/1.1 var(--f-display)}
+.t-price{font:400 clamp(28px,2.7vw,36px)/1 var(--f-display);white-space:nowrap;font-variant-numeric:lining-nums}
+.t-price small{font-size:.5em;letter-spacing:.06em}
+.t-txt{font-size:16.5px;line-height:1.5;max-width:34ch}
+.t-gain{margin-top:auto;font:400 16px/1.2 var(--f-body);color:var(--cobalt-deep);padding-top:4px}
+.tcard .btn{margin-top:2px}
+/* Gold: ночная плашка, двойная золотая линия со звёздами, мягкое свечение и блик, приподнята */
+.t-gold{--pl-bg:var(--night);--pl-line:var(--gold);color:var(--paper);--ty0:-14px}
+.t-gold::before{border-width:3px}
+.t-gold .book-fr{inset:10px}
+.t-gold .book-fr svg{width:22px;height:22px}
+.t-gold .t-glow{box-shadow:0 0 30px 6px rgba(217,174,82,.32),0 22px 40px -8px rgba(28,17,27,.45)}
+.t-shine{position:absolute;inset:12px;z-index:0;overflow:hidden;border-radius:20px 28px 16px 30px/28px 16px 30px 20px;pointer-events:none}
+.t-shine::after{content:"";position:absolute;top:-10%;bottom:-10%;left:0;width:38%;background:linear-gradient(100deg,transparent,rgba(242,224,192,.13) 45%,rgba(217,174,82,.18) 55%,transparent);transform:translateX(-140%) skewX(-16deg);animation:shine 7s ease-in-out 1.2s infinite}
+@keyframes shine{0%,62%{transform:translateX(-140%) skewX(-16deg)}100%{transform:translateX(330%) skewX(-16deg)}}
+.t-gold>:not(.t-shine):not(.t-glow):not(.book-fr){position:relative;z-index:1}
+.t-gold .t-name,.t-gold .t-price,.t-gold .t-gain{color:var(--gold)}
+.t-gold .btn{--btn-bg:var(--gold)}
+/* подъём при наведении и фокусе + наклон за курсором (как у карточек кланов на первой странице) — один transform, без конфликтов */
+.tcard.tilt3d{transform:perspective(1000px) translateY(var(--ty,var(--ty0,0px))) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--sc,1));transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.tcard.tilt3d.on{transition:transform .22s ease-out}
+.t-glow{position:absolute;inset:10px 8px 0;z-index:-2;border-radius:var(--r-plate);box-shadow:0 10px 22px -12px rgba(28,17,27,.28);pointer-events:none;transition:box-shadow .35s cubic-bezier(.2,.8,.2,1)}
+@media (hover:hover) and (pointer:fine){
+  .tcard:hover,.tcard:focus-within{--ty:-8px}
+  .tcard:hover .t-glow,.tcard:focus-within .t-glow{box-shadow:0 24px 40px -14px rgba(28,17,27,.42)}
+  .t-gold:hover,.t-gold:focus-within{--ty:-24px}
+  .t-gold:hover .t-glow,.t-gold:focus-within .t-glow{box-shadow:0 0 40px 10px rgba(217,174,82,.42),0 34px 50px -12px rgba(28,17,27,.55)}
+}
+@media (prefers-reduced-motion:reduce){.tcard,.tcard.tilt3d,.tcard.tilt3d.on,.t-glow{transition:none}.tcard:hover,.tcard:focus-within{--ty:var(--ty0,0px)}.t-shine::after{animation:none;display:none}}
+/* «Все усиления ▾» внутри карточки Gold */
+.perks{width:100%;max-width:34ch}
+.perks summary{list-style:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;font:400 17px/1.2 var(--f-display);color:var(--gold);text-decoration:underline dashed;text-underline-offset:5px}
+.perks summary::-webkit-details-marker{display:none}
+.perks summary::after{content:"▾";text-decoration:none;display:inline-block;transition:transform .3s}
+.perks[open] summary::after{transform:rotate(180deg)}
+.perks summary:focus-visible{outline:2px dashed var(--vermilion-soft);outline-offset:4px;border-radius:6px}
+.perk-list{list-style:none;margin:6px 0 2px;padding:0;display:grid;gap:8px;text-align:left}
+.perk-list li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;font-size:15.5px;line-height:1.35}
+/* иконки усилений: фрагменты иллюстраций проекта (монеты из сундука, мишень, тыква, свеча) */
 .bi{flex:none;display:inline-block;width:32px;height:32px;border-radius:50%;background:var(--paper) no-repeat;border:1.5px solid var(--gold);vertical-align:middle}
 .bi-coin{background-image:url(art/treasury.webp);background-size:360%;background-position:92% 100%}
 .bi-arrow{background-image:url(art/v-archery.webp);background-size:300%;background-position:98% 66%}
 .bi-pumpkin{background-image:url(art/s-pumpkin1.webp);background-size:84%;background-position:50% 50%}
 .bi-candle{background-image:url(art/s-candle.webp);background-size:auto 84%;background-position:50% 50%}
-.bi-row{display:flex;gap:8px;margin-top:8px}
-.path-gold.on .bi-row{display:none}
-.buffs .bi{width:26px;height:26px}
-/* Gold раскрывается прямо в строке: усиления чипами и сумма с быстрыми вариантами */
-.path-x{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1),visibility 0s .45s}
-.path.on .path-x{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1),visibility 0s}
-@media (prefers-reduced-motion:reduce){.path-x,.path.on .path-x{transition:none}}
-.px-in{min-height:0;overflow:hidden}
-.px-pad{display:grid;gap:14px;padding:4px clamp(14px,1.8vw,22px) 20px}
-.buffs{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.buffs li{position:relative;isolation:isolate;display:inline-flex;align-items:center;gap:8px;padding:5px 13px 5px 6px;font-size:15px;line-height:1.25}
-.buffs li::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--night-2);border:1.5px solid var(--gold);border-radius:var(--r-pill);filter:url(#rough-sm)}
-.buffs .star-i{flex:none;width:18px;height:18px}
-.gold-f{display:grid;gap:8px}
-.gold-f>label{font:400 14px/1.3 var(--f-display);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-.gold-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.gold-row .inp{flex:1 1 190px}
-.path-gold .inp::before{border-color:var(--gold)}
-.presets{display:flex;flex-wrap:wrap;gap:8px}
-.preset{position:relative;isolation:isolate;min-height:46px;padding:10px 14px;border:0;background:none;cursor:pointer;font:400 16px/1 var(--f-display);color:var(--paper);font-variant-numeric:lining-nums;white-space:nowrap}
-.preset::before{content:"";position:absolute;inset:0;z-index:-1;border:2px solid var(--gold);border-radius:var(--r-pill);filter:url(#rough-sm)}
-.preset[aria-pressed="true"]{color:var(--ink)}
-.preset[aria-pressed="true"]::before{background:var(--gold)}
-.preset:focus-visible{outline:2px dashed var(--vermilion-soft);outline-offset:4px;border-radius:20px}
-.path-gold .hint{opacity:.8}
-.path-gold .err{color:var(--vermilion-soft)}
-/* трапеза отдельной строкой-галочкой */
-.path-dn .path-ic img{aspect-ratio:1;object-fit:cover;object-position:50% 40%;border-radius:50% 46% 52% 48%/48% 52% 46% 50%;border:2px solid var(--ink)}
-.path-dn .path-n{font-size:17px;letter-spacing:.1em}
-.dn-more{justify-self:start;min-height:44px;margin-top:-6px;font:400 16px/1.2 var(--f-display);color:var(--cobalt-deep);text-decoration:underline dashed;text-underline-offset:5px;display:inline-flex;align-items:center;padding-inline:6px}
-.flash{animation:flash 1.4s ease-out}
-@keyframes flash{0%,30%{filter:drop-shadow(0 0 0 transparent)}15%{filter:drop-shadow(0 0 14px var(--gold))}}
-@media (prefers-reduced-motion:reduce){.flash{animation:none}}
-@media (max-width:480px){
-  .path-h{grid-template-areas:"ic name price" "desc desc desc";row-gap:10px;padding:14px 14px 16px}
-  .path-dn .path-h{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"ic name mark" "ic price mark" "desc desc desc"}
-  .path-dn .path-p{justify-items:start;text-align:left}
-  .path-ic{width:50px;align-self:center}
-  .path-n{font-size:17px}
-  .path-d{font-size:15.5px}
-  .px-pad{padding-inline:14px}
+@media (max-width:880px){
+  .tcards{grid-template-columns:minmax(0,1fr);max-width:520px;gap:22px}
+  .t-gold{--ty0:0px;margin-block:6px}
+  .t-txt,.perks{max-width:40ch}
 }
 
-/* ── свиток-чек: казна, превью вклада, итог и кнопка ── */
-.scroll{position:sticky;top:16px;padding-block:16px;min-width:0}
-@media (max-width:880px){.scroll{position:relative;top:auto}}
-.roll{position:absolute;left:0;right:0;height:32px;z-index:2;background:var(--paper-deep);border:2.5px solid var(--ink);border-radius:18px 22px 16px 24px/16px 24px 18px 22px;filter:url(#rough);pointer-events:none}
-.roll::before,.roll::after{content:"";position:absolute;top:5px;bottom:5px;width:12px;border:2px solid var(--ink);border-radius:50%;background:var(--ochre)}
-.roll::before{left:8px}.roll::after{right:8px}
-.roll-t{top:0}.roll-b{bottom:0}
-.scroll-in{position:relative;isolation:isolate;display:grid;gap:14px;margin-inline:12px;padding:clamp(34px,3vw,40px) clamp(20px,2.4vw,30px) clamp(36px,3vw,42px)}
-.scroll-in::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-block:0;border-radius:6px;filter:url(#rough)}
-.rc-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 14px;align-items:center}
-.rc-top img{width:clamp(70px,6.6vw,92px)}
-.scroll .m-big{font-size:clamp(30px,2.9vw,40px)}
-.bar{--p:0;--g:0;position:relative;height:40px;margin-block:34px 0;isolation:isolate;transition:--p 1.8s cubic-bezier(.2,.8,.2,1),--g .55s cubic-bezier(.2,.8,.2,1)}
-.bar::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper-deep);border:2.5px solid var(--ink);border-radius:30px 22px 34px 20px/22px 34px 20px 30px;filter:url(#rough)}
-.fill{position:absolute;left:6px;top:6px;bottom:6px;width:calc((100% - 12px) * var(--p) / 100);background:var(--vermilion) var(--stars);background-size:260px;border-radius:22px 14px 24px 12px/14px 24px 12px 22px;filter:url(#rough-sm)}
-.ghost{position:absolute;top:3px;bottom:3px;left:calc(6px + (100% - 12px) * var(--p) / 100);width:max(12px,calc((100% - 12px) * var(--g) / 100));background:repeating-linear-gradient(-45deg,var(--gold) 0 5px,#EBCB85 5px 10px);border:2px dashed var(--ink);border-left:0;border-radius:0 14px 12px 0/0 12px 14px 0;animation:ghost 1.8s ease-in-out infinite}
-.bar[data-g="0"] .ghost,.bar[data-g="0"] .ghost-tag{display:none}
-.bar[data-g="1"] .bar-star{left:clamp(20px,calc(6px + (100% - 12px) * var(--p) / 100 + max(12px,(100% - 12px) * var(--g) / 100)),calc(100% - 20px));margin-left:-3px}
-.ghost-tag{position:absolute;bottom:calc(100% + 8px);left:clamp(30px,calc(6px + (100% - 12px) * (var(--p) + var(--g) / 2) / 100),calc(100% - 30px));transform:translateX(-50%);padding:6px 11px 5px;font:400 16px/1 var(--f-display);white-space:nowrap;color:var(--ink);background:var(--gold);border-radius:12px 9px 13px 8px/9px 13px 8px 12px;font-variant-numeric:lining-nums}
-.ghost-tag::after{content:"";position:absolute;left:50%;top:100%;margin-left:-6px;border:6px solid transparent;border-top-color:var(--gold);border-bottom:0}
-@keyframes ghost{50%{opacity:.62}}
-.bar-star{position:absolute;top:50%;left:clamp(20px,calc(6px + (100% - 12px) * var(--p) / 100),calc(100% - 20px));width:38px;height:38px;margin:-19px 0 0 -19px;pointer-events:none}
-@media (prefers-reduced-motion:reduce){.bar{transition:none}.ghost{animation:none}}
-.m-big{font:400 clamp(34px,4.2vw,52px)/1.02 var(--f-display);font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
-.m-big .u{font-size:.45em;letter-spacing:.06em}
-.m-of{font-size:16px;opacity:.85}
-.m-row{display:flex;justify-content:space-between;align-items:baseline;gap:6px 16px;flex-wrap:wrap;font-size:16px}
-.m-pct{font:400 24px/1 var(--f-display);color:var(--vermilion);font-variant-numeric:lining-nums}
-.m-over{font:400 18px/1.3 var(--f-display);color:var(--cobalt-deep)}
-.rc-you{position:relative;isolation:isolate;padding:12px 16px;font:400 18px/1.35 var(--f-display);font-variant-numeric:lining-nums}
-.rc-you::before{content:"";position:absolute;inset:0;z-index:-1;background:#F6E7C4;border:2px dashed var(--ochre);border-radius:var(--r-pill);filter:url(#rough-sm)}
-.rc-you b{font-weight:400;color:var(--vermilion);white-space:nowrap}
-.rc-cross{display:block;margin-top:4px;font:400 22px/1.15 var(--f-hand);color:var(--cobalt-deep)}
-.m-mood{font:400 clamp(24px,2.3vw,28px)/1.1 var(--f-hand);color:var(--cobalt-deep)}
-.m-meta{font-size:15px;opacity:.85}
-.stale{font-size:15px;color:var(--vermilion)}
-.rc-items{margin:0;display:grid;gap:10px;padding-top:16px;border-top:2px dashed rgba(38,23,29,.35)}
-.rc-items>div{display:grid;grid-template-columns:auto minmax(12px,1fr) auto;align-items:baseline;gap:10px}
-.rc-items i{border-bottom:2px dotted rgba(38,23,29,.38);transform:translateY(-.3em)}
-.rc-items dt{font-size:17px;min-width:0}
-.rc-items dd{margin:0;font:400 18px/1.2 var(--f-display);white-space:nowrap;font-variant-numeric:lining-nums tabular-nums}
-.rc-items .off dt,.rc-items .off dd{opacity:.6}
-.rc-items .off dd{font:400 16px/1.2 var(--f-body)}
-.rc-add{background:none;border:0;padding:0 2px;min-height:40px;font:400 16px/1.2 var(--f-display);color:var(--cobalt-deep);text-decoration:underline dashed;text-underline-offset:4px;cursor:pointer}
-.rc-items .sum{border-top:2px solid var(--ink);padding-top:12px;margin-top:2px}
-.rc-items .sum dt{font:400 13px/1.3 var(--f-display);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
-.rc-items .sum dd{font-size:clamp(25px,2.4vw,30px);color:var(--vermilion)}
-.rc-go{width:100%;min-height:58px;font-size:21px}
-.rc-note{text-align:center;font-size:15px;line-height:1.45;opacity:.8;margin-top:-4px}
-.rc-budget{display:grid;gap:10px;padding-top:16px;border-top:2px dashed rgba(38,23,29,.35)}
+/* ── королевская трапеза: большая иллюстрация без рамок, под ней заголовок и цена ── */
+.dn-sec{padding-block:clamp(16px,2.4vw,32px) 0}
+.dn-img{margin:0 auto;max-width:1180px}
+.dn-img img{width:100%;aspect-ratio:2000/1116;object-fit:cover;border-radius:20px 28px 16px 30px/28px 16px 30px 20px;filter:url(#rough-sm)}
+/* золотая рамка со звёздами в углах — как у обложки на первой странице (.cv-frame): тёмная полоса, внешняя золотая линия, внутренняя тонкая */
+.dn-img{--band:12px;--star:34px;--ln:4px;position:relative;padding:var(--band);background:#1E111B;border-radius:6px 10px 5px 9px/9px 5px 10px 6px}
+.dn-img picture{display:block}
+.dn-frame{position:absolute;inset:0;pointer-events:none}
+.dn-frame::before,.dn-frame::after{content:"";position:absolute;border:2px solid var(--gold);border-radius:6px 10px 5px 9px/9px 5px 10px 6px;filter:url(#rough)}
+.dn-frame::before{inset:var(--ln)}
+.dn-frame::after{inset:calc(var(--band) - 3px);border-width:1px;opacity:.6}
+.dn-frame svg{position:absolute;width:var(--star);height:var(--star);fill:var(--gold);filter:url(#rough-sm)}
+.dn-frame svg:nth-child(1){left:var(--ln);top:var(--ln);transform:translate(-50%,-50%)}
+.dn-frame svg:nth-child(2){right:var(--ln);top:var(--ln);transform:translate(50%,-50%)}
+.dn-frame svg:nth-child(3){left:var(--ln);bottom:var(--ln);transform:translate(-50%,50%)}
+.dn-frame svg:nth-child(4){right:var(--ln);bottom:var(--ln);transform:translate(50%,50%)}
+@media (max-width:700px){.dn-img{--band:7px;--star:21px;--ln:2.5px}}
+.dn-body{display:grid;gap:14px;justify-items:center;text-align:center;max-width:640px;margin:clamp(26px,3.2vw,40px) auto 0}
+.dn-body p{font-size:clamp(17px,1.4vw,19px);line-height:1.55;color:var(--ink);font-variant-numeric:lining-nums}
+.dn-body b{font-weight:400;color:var(--vermilion);white-space:nowrap}
+@media (max-width:880px){.dn-img{max-width:620px}.dn-img img{aspect-ratio:1}}
+
+/* ── главная кнопка внизу, гарантия и «Куда идут монеты» ── */
+.join-sec{padding-block:clamp(32px,3.6vw,52px) 0}
+.join{display:grid;justify-items:center;gap:16px;max-width:640px;margin-inline:auto;text-align:center}
+.btn-big{min-height:68px;padding:18px clamp(34px,4vw,52px);font-size:clamp(21px,2vw,25px)}
+.guar,.coins summary{font:400 15px/1.5 var(--f-body);color:var(--ink);opacity:.85}
+.guar{max-width:50ch;margin-top:-4px}
+.coins{width:min(100%,520px)}
+.coins summary{list-style:none;display:inline-flex;align-items:center;gap:6px;min-height:44px;cursor:pointer;text-decoration:underline dashed;text-underline-offset:4px}
+.coins summary::-webkit-details-marker{display:none}
+.coins summary::after{content:"▾";display:inline-block;transition:transform .3s}
+.coins[open] summary::after{transform:rotate(180deg)}
+.coins .lines{margin-top:12px;text-align:left}
 .lines{margin:0;display:grid;gap:8px}
 .lines>div{display:grid;grid-template-columns:auto minmax(12px,1fr) auto;align-items:baseline;gap:10px}
 .lines i{border-bottom:2px dotted rgba(38,23,29,.38);transform:translateY(-.3em)}
 .lines dt{font-size:16px}
 .lines dd{margin:0;font:400 17px/1.2 var(--f-display);font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
 .lines .sum{border-top:1.5px solid var(--ink);padding-top:9px;margin-top:2px}
-.lines .sum dt{font:400 13px/1.3 var(--f-display);text-transform:uppercase;letter-spacing:.14em}
-@media (max-width:400px){.lines>div,.rc-items>div{grid-template-columns:minmax(0,1fr) auto}.lines i,.rc-items i{display:none}}
-.rc-guar{--pl-bg:var(--night);--pl-line:var(--gold);color:var(--gold);display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;padding:16px 18px;font:400 16px/1.45 var(--f-display)}
-.rc-guar img{width:26px}
+@media (max-width:400px){.lines>div{grid-template-columns:minmax(0,1fr) auto}.lines i{display:none}}
+@media (prefers-reduced-motion:reduce){.perks summary::after,.coins summary::after{transition:none}}
 
 /* ── кланы ── */
 .clans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,2.6vw,36px);align-items:stretch}
@@ -333,11 +292,12 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 @media (max-width:480px){.clans-main .clan{grid-template-columns:38% minmax(0,1fr)}.clan h3{font-size:24px}}
 
 /* кланы на этой странице: узкая полоса со счётчиками и списками, не главный герой */
-.clans-sec{padding-block:clamp(64px,8vw,110px) clamp(56px,7vw,96px)}
+.clans-sec{padding-block:clamp(56px,7vw,88px) clamp(56px,7vw,96px)}
 .clans-sec .head{margin-bottom:clamp(24px,3vw,36px)}
-.clans-mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,26px);align-items:start;max-width:1180px;margin-inline:auto}
-.clans-mini .clan,.clans-mini .clan-DARK_ELF{--pl-bg:var(--paper-deep);color:var(--ink);height:auto;display:block;padding:16px 18px 18px}
-.clans-mini .clan-body{display:grid!important;gap:8px;padding:0;justify-items:start}
+.clans-mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,26px);align-items:stretch;max-width:1180px;margin-inline:auto}
+.clans-mini .clan,.clans-mini .clan-DARK_ELF{--pl-bg:var(--paper-deep);color:var(--ink);height:100%;display:flex;flex-direction:column;padding:16px 18px 18px}
+.clans-mini .clan-body{display:flex!important;flex-direction:column;align-items:stretch;flex:1;gap:8px;padding:0}
+.clans-mini .empty{font-style:normal}
 .cm-ava{grid-area:ava;position:relative;isolation:isolate;width:54px;height:54px;margin:4px 0}
 .cm-ava::before{content:"";position:absolute;inset:-5px;z-index:-1;background:var(--cm,var(--rose));border:2px solid var(--ink);border-radius:50% 46% 52% 48%/48% 52% 46% 50%;filter:url(#rough-sm)}
 .cm-ava img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;border-radius:50%;border:2px solid var(--ink)}
@@ -350,46 +310,13 @@ h1 .acc,h2 .acc{font:400 1.5em/.8 var(--f-hand);font-style:normal;text-transform
 .cm-head{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"ava name" "ava cnt";column-gap:14px;row-gap:4px;align-items:center;width:100%;margin-bottom:4px}
 .cm-head h3{grid-area:name}
 .cm-head .cnt{grid-area:cnt}
-.cm-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;width:100%}
+.cm-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;width:100%;margin-top:auto;padding-top:4px}
 .cm-foot:not(:has(>:not([hidden]))){display:none}
 .clans-mini .join{margin:0 0 0 auto}
 .clans-mini .more{min-height:40px}
 @media (max-width:480px){.cm-ava{width:48px;height:48px}.clans-mini .clan{padding:14px 14px 16px}}
-.clans-mini .mine-badge{font-size:15px;padding:8px 14px 8px 10px}
+.clans-mini .mine-badge{margin:0 0 0 auto;min-height:44px;font-size:15px;padding:8px 14px 8px 10px}
 @media (max-width:880px){.clans-mini{grid-template-columns:minmax(0,1fr);max-width:620px}}
-
-/* ── трапеза: момент на весь экран ── */
-.feast{position:relative;isolation:isolate;min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;justify-items:center;padding:clamp(52px,8svh,90px) var(--gutter) clamp(40px,6svh,72px);color:var(--paper);background:var(--night);overflow:hidden}
-.feast-bg{position:absolute;inset:0;z-index:-2;display:block;margin:0;overflow:hidden}
-.feast-bg img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;transform-origin:56% 46%;transform:scale(1.02);animation:kb 38s ease-in-out infinite alternate;animation-play-state:paused}
-.feast.live .feast-bg img{animation-play-state:running}
-/* Motion: медленный наезд камеры на стол — только transform, без перерисовки */
-@keyframes kb{from{transform:scale(1.02) translate3d(0,0,0)}to{transform:scale(1.14) translate3d(-1.6%,-1%,0)}}
-@media (prefers-reduced-motion:reduce){.feast-bg img{animation:none;transform:none}}
-.feast-edge{position:absolute;left:-24px;right:-24px;height:30px;z-index:1;background:var(--paper);filter:url(#rough);pointer-events:none}
-.feast-edge.t{top:-15px}.feast-edge.b{bottom:-15px}
-.feast-title,.feast-card{--pl-bg:var(--night);--pl-line:var(--gold);z-index:2;text-align:center;display:grid;justify-items:center}
-.feast-title::before,.feast-card::before{border-width:3px}
-.feast-title{gap:8px;padding:clamp(26px,2.8vw,36px) clamp(30px,4vw,60px) clamp(22px,2.4vw,30px)}
-.feast-title .label{color:var(--gold);font-size:15px}
-.feast-title h2{font-size:clamp(38px,5.2vw,74px);color:var(--paper);white-space:nowrap}
-.feast-title .acc{color:var(--gold)}
-.feast-card{grid-row:3;width:min(100%,780px);gap:16px;padding:clamp(22px,2.4vw,30px) clamp(24px,3.4vw,44px)}
-.feast-card .lead{max-width:58ch;opacity:.92;font-size:clamp(17px,1.4vw,19px)}
-.feast-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 28px}
-.feast-price{text-align:left;font:400 clamp(24px,2.4vw,30px)/1.1 var(--f-display);color:var(--gold);font-variant-numeric:lining-nums}
-.feast-price small{display:block;margin-top:5px;font:400 15px/1.4 var(--f-body);color:var(--paper);opacity:.85}
-.feast-card .btn .star-i{width:20px;height:20px}
-@media (max-width:700px){
-  .feast{display:block;min-height:100svh;padding:0 0 60px}
-  .feast-bg{position:relative;inset:auto;z-index:0;aspect-ratio:1/1}
-  .feast-title{margin:-46px 16px 0;padding:28px 18px 24px}
-  .feast-title h2{white-space:normal}
-  .feast-card{width:auto;margin:0 16px;padding:22px 2px 0}
-  .feast-card::before{display:none}
-  .feast-price{text-align:center}
-  .feast-card .lead{font-size:17px}
-}
 
 /* ── поля ── */
 .field{display:grid;gap:7px;min-width:0}
@@ -423,30 +350,105 @@ fieldset.field legend{padding:0;margin-bottom:7px}
 .check input{width:24px;height:24px;margin:1px 0 0;accent-color:var(--vermilion);cursor:pointer}
 .check b{font:400 17px/1.2 var(--f-display);white-space:nowrap}
 
-/* ── окно оформления: по центру на компьютере, шторка снизу на телефоне ── */
-.sheet{border:0;padding:0;background:none;color:var(--ink);width:min(620px,calc(100vw - 32px));max-width:none;max-height:calc(100svh - 40px);overflow:visible;isolation:isolate}
-.sheet::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:var(--r-plate);filter:url(#rough)}
-.sheet::backdrop{background:rgba(20,10,18,.74)}
+/* ── окно оформления: на весь экран на любой ширине, прокрутка внутри ── */
+.sheet{position:fixed;inset:0;width:100%;height:100%;height:100dvh;max-width:none;max-height:none;margin:0;border:0;padding:0;background:var(--paper) var(--stars);background-size:520px;color:var(--ink);overflow:hidden}
+.sheet::backdrop{background:var(--night)}
 .sheet[open]{animation:sheet-in .35s cubic-bezier(.2,.8,.2,1)}
-@keyframes sheet-in{from{opacity:0;transform:translateY(18px) scale(.98)}}
-.sheet-in{max-height:calc(100svh - 40px);overflow-y:auto;overscroll-behavior:contain;padding:clamp(28px,4vw,44px) clamp(20px,4vw,44px) clamp(24px,3vw,36px)}
+@keyframes sheet-in{from{opacity:0;transform:translateY(16px)}}
+@media (prefers-reduced-motion:reduce){.sheet[open]{animation:none}}
+.sheet-in{height:100%;overflow-y:auto;overscroll-behavior:contain;padding:clamp(22px,3.4vw,44px) var(--gutter) calc(48px + env(safe-area-inset-bottom))}
+.sheet-in>.step{max-width:700px;margin-inline:auto}
 .sheet-grip{display:none}
-.sheet-x{position:absolute;top:10px;right:10px;width:48px;height:48px;display:grid;place-items:center;border:0;background:none;cursor:pointer;font:400 30px/1 var(--f-display);color:var(--ink);isolation:isolate;z-index:2}
+.sheet-x{position:fixed;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));width:50px;height:50px;display:grid;place-items:center;border:0;background:none;cursor:pointer;font:400 30px/1 var(--f-display);color:var(--ink);isolation:isolate;z-index:3}
 .sheet-x::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:52% 48% 50% 46%/48% 52% 46% 50%;filter:url(#rough)}
-.sheet-t{font-size:clamp(28px,3.4vw,40px);padding-right:52px}
+.sheet-t{font-size:clamp(28px,3.4vw,42px);padding-right:56px}
 .step{display:grid;gap:20px}
-.step-sub{font-size:17px;opacity:.85;margin-top:-8px}
-.total{--pl-bg:var(--paper-deep);display:grid;gap:6px;padding:16px 20px}
+.step-sub{font-size:17px;opacity:.85}
+.form-actions{display:flex;justify-content:center}
+.form-actions .btn{min-width:min(100%,340px)}
+/* выбор пути в окне: подзаголовок и три карточки в ряд (и на телефоне) */
+.co-sub{display:block;padding:0;margin-bottom:14px;font:400 clamp(22px,2.6vw,28px)/1.2 var(--f-display);text-transform:none;letter-spacing:0;color:var(--ink)}
+.seg{border:0;margin:0;padding:0;display:grid;gap:8px;min-width:0}
+.seg-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1.6vw,16px);padding-top:6px}
+.seg label{position:relative;isolation:isolate;display:grid;justify-items:center;align-content:start;gap:5px;padding:clamp(12px,1.6vw,18px) 6px clamp(12px,1.5vw,16px);cursor:pointer;text-align:center;color:var(--ink);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.seg label::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper-deep);border:2.5px solid var(--ink);border-radius:var(--r-plate);filter:url(#rough-sm)}
+.seg label::after{content:"";position:absolute;inset:10px 8px 0;z-index:-2;border-radius:var(--r-plate);box-shadow:0 8px 18px -12px rgba(28,17,27,.28);transition:box-shadow .35s cubic-bezier(.2,.8,.2,1)}
+.seg img{width:clamp(40px,4.6vw,56px);height:auto;margin-bottom:2px}
+.seg-n{font:400 clamp(19px,2vw,24px)/1.1 var(--f-display)}
+.seg small{font:400 clamp(13px,1.3vw,16px)/1.25 var(--f-body);font-variant-numeric:lining-nums;opacity:.85}
+.seg input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:1}
+.seg label:has(input:checked){color:var(--paper)}
+.seg label:has(input:checked)::before{background:var(--night);border-width:3px}
+.seg label:has(input:checked) small{opacity:1}
+.seg label.g::before{border-color:var(--gold)}
+.seg label.g:has(input:checked) .seg-n,.seg label.g:has(input:checked) small{color:var(--gold)}
+.seg label:has(input:focus-visible){outline:2px dashed var(--vermilion);outline-offset:4px;border-radius:26px}
+.seg.bad label:not(.g)::before{border-color:var(--vermilion)}
+@media (hover:hover) and (pointer:fine){
+  .seg label:hover,.seg label:has(input:focus-visible){transform:translateY(-8px)}
+  .seg label:hover::after,.seg label:has(input:focus-visible)::after{box-shadow:0 22px 34px -14px rgba(28,17,27,.42)}
+}
+@media (prefers-reduced-motion:reduce){.seg label,.seg label::after{transition:none}.seg label:hover,.seg label:has(input:focus-visible){transform:none}}
+.co-pick{text-align:center;font-size:17px;opacity:.85}
+/* что входит в выбранный путь; при смене — короткое проявление */
+.co-inc-p{--pl-bg:var(--paper-deep)}
+.inc-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.inc-list li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;font-size:17px;line-height:1.5}
+.inc-list .star-i{width:22px;height:22px;margin-top:2px}
+.co-inc>.fade{animation:inc-in .3s ease-out}
+@keyframes inc-in{from{opacity:0;transform:translateY(6px)}}
+@media (prefers-reduced-motion:reduce){.co-inc>.fade{animation:none}}
+/* в окне нет мелких подписей */
+.sheet .field>label,.sheet .flabel{font:400 19px/1.25 var(--f-display);text-transform:none;letter-spacing:0}
+@media (max-width:520px){.seg label{padding:10px 4px 12px}.seg small{font-size:12.5px}.seg-n{font-size:18px}.co-sub{font-size:22px}}
+/* Gold: сумма и усиления */
+.co-gold{--pl-bg:var(--night);--pl-line:var(--gold);color:var(--paper);display:grid;gap:16px}
+.co-gold .flabel{color:var(--gold)}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+.preset{position:relative;isolation:isolate;min-height:46px;padding:10px 16px;border:0;background:none;cursor:pointer;font:400 17px/1 var(--f-display);color:var(--paper);font-variant-numeric:lining-nums;white-space:nowrap}
+.preset::before{content:"";position:absolute;inset:0;z-index:-1;border:2px solid var(--gold);border-radius:var(--r-pill);filter:url(#rough-sm)}
+.preset[aria-pressed="true"]{color:var(--ink)}
+.preset[aria-pressed="true"]::before{background:var(--gold)}
+.preset:focus-visible{outline:2px dashed var(--vermilion-soft);outline-offset:4px;border-radius:20px}
+.co-gold .inp::before{border-color:var(--gold)}
+.co-gold .hint{opacity:.8}
+.co-gold .err{color:var(--vermilion-soft)}
+.co-gold .perk-list{margin:0}
+/* трапеза — большая карточка-переключатель */
+.dn-tog{position:relative;isolation:isolate;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px 16px;align-items:center;padding:14px 18px 14px 14px;cursor:pointer}
+.dn-tog::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper-deep);border:2.5px solid var(--ink);border-radius:var(--r-plate);filter:url(#rough-sm)}
+.dn-tog input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.dn-ic{width:clamp(52px,6vw,64px);aspect-ratio:1;background:url(art/s-candle-full.webp) center/contain no-repeat}
+.dn-tog-t{display:grid;gap:4px}
+.dn-tog-t b{font:400 clamp(18px,1.8vw,21px)/1.25 var(--f-display);font-variant-numeric:lining-nums}
+.dn-tog-t>span{font-size:15.5px;line-height:1.4;opacity:.85}
+.dn-mark{position:relative;width:34px;height:34px;display:grid;place-items:center;isolation:isolate}
+.dn-mark::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2px solid var(--ink);border-radius:8px 6px 9px 5px/6px 9px 5px 8px;filter:url(#rough-sm)}
+.dn-mark::after{content:"";width:9px;height:16px;border:solid var(--paper);border-width:0 3px 3px 0;transform:translateY(-2px) rotate(45deg);opacity:0}
+.dn-tog:has(input:checked)::before{background:var(--paper);border-color:var(--vermilion);border-width:3.5px}
+.dn-tog:has(input:checked) .dn-mark::before{background:var(--vermilion)}
+.dn-tog:has(input:checked) .dn-mark::after{opacity:1}
+.dn-tog:has(input:focus-visible){outline:2px dashed var(--vermilion);outline-offset:5px;border-radius:28px}
+/* итог */
+.total{--pl-bg:var(--paper-deep);display:grid;gap:8px;padding:18px 22px}
 .tl{display:flex;justify-content:space-between;gap:12px;font-size:17px;font-variant-numeric:lining-nums}
+.tl span:first-child{min-width:0}
 .tl span:last-child{white-space:nowrap}
 .tl.sum{font:400 22px/1.2 var(--f-display);border-top:2px solid var(--ink);padding-top:10px;margin-top:4px}
 .tl.sum b{font-weight:400;color:var(--vermilion)}
-.form-actions{display:flex;justify-content:flex-end}
-.tl-edit{min-height:40px;font-size:16px}
-.tl-acts{display:flex;flex-wrap:wrap;gap:0 18px;margin-top:2px}
-.co-sum{margin-top:-4px}
-.step-sub{margin-top:0}
-.tl span:first-child{min-width:0}
+.co-you{margin-top:6px;font:400 17px/1.4 var(--f-display);font-variant-numeric:lining-nums}
+.co-you b{font-weight:400;color:var(--vermilion);white-space:nowrap}
+.co-cross{display:block;font:400 16px/1.35 var(--f-body);color:var(--cobalt-deep)}
+.co-mood{font-size:15px;opacity:.8}
+.co-clan{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px 16px;padding-block:4px}
+.co-clan p:first-child{font-size:17px}
+.co-clan b{font:400 19px/1.2 var(--f-display);font-weight:400;color:var(--vermilion)}
+.co-clan .err{flex-basis:100%}
+@media (max-width:520px){
+  .dn-tog{gap:12px;padding:14px}
+  .dn-ic{width:44px}
+  .form-actions .btn,.pay-actions .btn-main{width:100%}
+}
 .pay-sum{--pl-bg:var(--paper-deep);display:grid;justify-items:center;gap:10px;text-align:center}
 .pay-sum b{font:400 clamp(32px,5vw,42px)/1 var(--f-display);color:var(--vermilion);font-variant-numeric:lining-nums;white-space:nowrap}
 .pay-sum .small{opacity:.85}
@@ -471,17 +473,7 @@ fieldset.field legend{padding:0;margin-bottom:7px}
 .done img{width:64px}
 .done .sheet-t{padding-right:0}
 .done p{max-width:44ch}
-@media (max-width:640px){
-  .sheet{width:100%;max-width:100%;margin:0;inset:auto 0 0 0;max-height:92svh}
-  .sheet::before{bottom:-30px;border-radius:30px 36px 0 0/30px 36px 0 0}
-  .sheet-in{max-height:92svh;padding:30px 18px calc(24px + env(safe-area-inset-bottom))}
-  .sheet-grip{display:block;position:absolute;top:10px;left:50%;width:46px;height:5px;margin-left:-23px;border-radius:3px;background:rgba(38,23,29,.3)}
-  .sheet[open]{animation:sheet-up .38s cubic-bezier(.2,.8,.2,1)}
-  .sheet-x{top:14px;right:12px}
-  .form-actions .btn,.pay-actions .btn-main{width:100%}
-}
-@keyframes sheet-up{from{transform:translateY(100%)}}
-@media (prefers-reduced-motion:reduce){.sheet[open]{animation:none}}
+
 
 /* ── пролог и выбор клана ── */
 .pro{position:fixed;inset:0;z-index:50;overflow-y:auto;overscroll-behavior:contain;background:var(--night) var(--stars);background-size:420px;color:var(--paper)}
@@ -572,20 +564,6 @@ fieldset.field legend{padding:0;margin-bottom:7px}
 .pro-x::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:52% 48% 50% 46%/48% 52% 46% 50%;filter:url(#rough)}
 
 /* ── мелочи ── */
-.mbar{display:none}
-@media (max-width:880px){
-  /* липкая полоса на телефоне: пока виден выбор, свиток с кнопкой ниже экрана */
-  .mbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;gap:12px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));color:var(--paper);isolation:isolate;transform:translateY(120%);visibility:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),visibility 0s .35s}
-  .mbar::before{content:"";position:absolute;inset:0 -14px -14px;z-index:-1;background:var(--night);border-top:2.5px solid var(--gold);filter:url(#rough)}
-  .mbar.on{transform:none;visibility:visible;transition:transform .35s cubic-bezier(.2,.8,.2,1),visibility 0s}
-  .mbar-t{flex:1;min-width:0;display:grid;gap:3px}
-  .mbar-t b{font:400 17px/1.2 var(--f-display);font-variant-numeric:lining-nums}
-  .mbar-t span{font:400 15px/1.2 var(--f-body);color:var(--gold)}
-  .mbar .btn{flex:none;min-height:46px;padding:11px 16px;font-size:16px}
-  body.mbar-on .toast{bottom:calc(86px + env(safe-area-inset-bottom))}
-  body.mbar-on .mockbadge{bottom:96px}
-}
-@media (prefers-reduced-motion:reduce){.mbar,.mbar.on{transition:none}}
 .toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:40;--pl-bg:var(--night);--pl-line:var(--gold);color:var(--paper);width:max-content;max-width:min(560px,calc(100vw - 32px));padding:16px 24px;text-align:center;font-size:17px}
 .toast b{font:400 20px/1.2 var(--f-display);color:var(--gold);display:block;margin-bottom:4px}
 .mockbadge{position:fixed;left:10px;bottom:10px;z-index:60;font:400 12px/1 var(--f-display);letter-spacing:.12em;text-transform:uppercase;background:var(--vermilion);color:var(--paper);padding:6px 10px;border-radius:8px;pointer-events:none}
@@ -654,141 +632,87 @@ h1 .acc,h2 .acc{font:inherit;line-height:inherit;text-transform:inherit;letter-s
   </section>
 
   <section class="path-sec" id="path" aria-labelledby="pt-t">
-    <div class="wrap path-grid">
-      <div class="path-main">
-        <div class="path-head" data-rv>
-          <h2 id="pt-t">Выбери свой <em class="acc">путь</em></h2>
-          <p class="lead">Взнос&nbsp;— это вклад в&nbsp;общую казну. Выбирай то, что тебе по&nbsp;силам: в&nbsp;свитке сразу видно, насколько он&nbsp;сдвинет казну.</p>
-        </div>
-        <fieldset class="paths" id="paths" data-rv>
-          <legend class="sr-only">Путь участия</legend>
-          <div class="path path-bronze" data-path="BRONZE">
-            <label class="path-h">
-              <input type="radio" name="path" value="BRONZE">
-              <span class="path-ic"><img src="art/t-bronze.webp" alt="" width="600" height="581" loading="lazy" onerror="this.remove()"></span>
-              <span class="path-n">Bronze</span>
-              <span class="path-d">Даже одна монета помогает замку. Этот путь&nbsp;— для&nbsp;друзей, которым сейчас нужен самый доступный формат участия (ограниченный бюджет)</span>
-              <span class="path-p"><span class="pp"><span data-price="bronze">150&nbsp;000</span>&nbsp;<small>IDR</small></span><span class="gain" data-gain="BRONZE"></span></span>
-              <span class="mark" aria-hidden="true"></span>
-            </label>
-          </div>
-          <div class="path path-silver" data-path="SILVER">
-            <label class="path-h">
-              <input type="radio" name="path" value="SILVER">
-              <span class="path-ic"><img src="art/t-silver.webp" alt="" width="600" height="530" loading="lazy" onerror="this.remove()"></span>
-              <span class="path-n">Silver</span>
-              <span class="path-d">Врата открыты: все события, испытания и&nbsp;приключения</span>
-              <span class="path-p"><span class="pp"><span data-price="silver">300&nbsp;000</span>&nbsp;<small>IDR</small></span><span class="gain" data-gain="SILVER"></span></span>
-              <span class="mark" aria-hidden="true"></span>
-            </label>
-          </div>
-          <div class="path path-gold" data-path="GOLD">
-            <label class="path-h">
-              <input type="radio" name="path" value="GOLD" aria-controls="gold-x">
-              <span class="path-ic"><img src="art/t-gold.webp" alt="" width="600" height="564" loading="lazy" onerror="this.remove()"></span>
-              <span class="path-n">Gold <span class="path-flag">все усиления</span></span>
-              <span class="path-d">Помоги пробудить замок сильнее&nbsp;— и&nbsp;получи все игровые усиления<span class="bi-row"><span class="bi bi-coin" role="img" aria-label="+1 стартовая монета для клана" title="+1 стартовая монета для клана"></span><span class="bi bi-arrow" role="img" aria-label="Дополнительная серия из 5 стрел на стрельбище" title="Дополнительная серия из 5 стрел на стрельбище"></span><span class="bi bi-pumpkin" role="img" aria-label="Двойной голос за лучший костюм и лучшую тыкву" title="Двойной голос за лучший костюм и лучшую тыкву"></span><span class="bi bi-candle" role="img" aria-label="Секретная подсказка к шифру" title="Секретная подсказка к шифру"></span></span></span>
-              <span class="path-p"><span class="pp">от&nbsp;<span data-price="gold">500&nbsp;000</span>&nbsp;<small>IDR</small></span><span class="gain" data-gain="GOLD"></span></span>
-              <span class="mark" aria-hidden="true"></span>
-            </label>
-            <div class="path-x" id="gold-x"><div class="px-in"><div class="px-pad">
-              <ul class="buffs" aria-label="Усиления Gold">
-                <li><span class="bi bi-coin" aria-hidden="true"></span>+1&nbsp;стартовая монета для&nbsp;клана</li>
-                <li><span class="bi bi-arrow" aria-hidden="true"></span>Дополнительная серия из&nbsp;5&nbsp;стрел на&nbsp;стрельбище</li>
-                <li><span class="bi bi-pumpkin" aria-hidden="true"></span>Двойной голос за&nbsp;лучший костюм и&nbsp;лучшую тыкву</li>
-                <li><span class="bi bi-candle" aria-hidden="true"></span>Секретная подсказка к&nbsp;шифру</li>
-              </ul>
-              <div class="gold-f">
-                <label for="gold-amt">Твой вклад</label>
-                <div class="gold-row">
-                  <div class="inp" id="gold-amt-inp"><input id="gold-amt" inputmode="numeric" autocomplete="off" value="500 000" aria-describedby="gold-amt-h gold-amt-e"><span class="suf">IDR</span></div>
-                  <div class="presets" role="group" aria-label="Быстрый выбор суммы">
-                    <button class="preset" type="button" data-amt="500000" aria-pressed="true">500&nbsp;000</button>
-                    <button class="preset" type="button" data-amt="750000" aria-pressed="false">750&nbsp;000</button>
-                    <button class="preset" type="button" data-amt="1000000" aria-pressed="false">1&nbsp;000&nbsp;000</button>
-                  </div>
-                </div>
-                <p class="hint" id="gold-amt-h">Минимальный взнос&nbsp;— 500&nbsp;000&nbsp;IDR. Больше&nbsp;— на&nbsp;твоё усмотрение</p>
-                <p class="err" id="gold-amt-e"></p>
-              </div>
-            </div></div></div>
-          </div>
-        </fieldset>
-        <div class="path path-dn" id="p-dn-row" data-rv>
-          <label class="path-h">
-            <input type="checkbox" id="p-dinner">
-            <span class="path-ic"><img src="art/dinner-b-m.jpg" alt="" width="1000" height="1000" loading="lazy" onerror="this.remove()"></span>
-            <span class="path-n">Королевская трапеза</span>
-            <span class="path-d">18:00, двор замка. По&nbsp;желанию, к&nbsp;любому пути</span>
-            <span class="path-p"><span class="pp">+<span data-price="dinner">250&nbsp;000</span>&nbsp;<small>IDR</small></span></span>
-            <span class="mark" aria-hidden="true"></span>
-          </label>
-        </div>
-        <a class="dn-more" href="#dinner">Что это за&nbsp;ужин ↓</a>
+    <div class="wrap">
+      <div class="head" data-rv>
+        <h2 id="pt-t">Выбери свой <em class="acc">путь</em></h2>
       </div>
-
-      <aside class="scroll" id="receipt" aria-labelledby="rc-t" data-rv>
-        <div class="roll roll-t" aria-hidden="true"></div>
-        <div class="scroll-in">
-          <div class="rc-top">
-            <div>
-              <span class="label" id="rc-t">Заявлено в&nbsp;казну</span>
-              <p class="m-big"><span data-k="declared">—</span> <span class="u">IDR</span></p>
-              <p class="m-of">из&nbsp;<span data-k="target-of">12&nbsp;100&nbsp;000&nbsp;IDR</span></p>
-            </div>
-            <img class="float" src="art/treasury.webp" alt="" width="800" height="790" loading="lazy" onerror="this.remove()">
-          </div>
-          <div class="bar" id="bar" data-g="0" role="progressbar" aria-label="Заявлено в казну" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <div class="fill"></div>
-            <div class="ghost"></div>
-            <span class="ghost-tag" id="ghost-tag" aria-hidden="true"></span>
-            <img class="bar-star" src="art/star.png" alt="">
-          </div>
-          <div class="m-row"><span class="m-pct" data-k="pct">0%</span><span data-k="remain"></span></div>
-          <p class="m-over" data-k="over" hidden></p>
-          <p class="rc-you" id="rc-you"></p>
-          <p class="m-mood" data-k="mood"></p>
-          <dl class="rc-items" id="rc-items">
-            <div><dt id="rc-ticket-l">Путь</dt><i aria-hidden="true"></i><dd id="rc-ticket">—</dd></div>
-            <div id="rc-dn"><dt>Королевская трапеза</dt><i aria-hidden="true"></i><dd id="rc-dn-v"><span id="rc-dn-sum"></span></dd></div>
-            <div class="sum"><dt>Итого к&nbsp;оплате</dt><i aria-hidden="true"></i><dd id="rc-total" aria-live="polite">—</dd></div>
-          </dl>
-          <p class="err" id="rc-err" role="alert"></p>
-          <button class="btn btn-main rc-go" type="button" id="rc-go">Вступить в&nbsp;игру</button>
-          <p class="rc-note" id="rc-note">Дальше&nbsp;— имя, Telegram и&nbsp;реквизиты для&nbsp;перевода</p>
-          <div class="rc-budget">
-            <span class="label">Во&nbsp;что обходится ночь</span>
-            <dl class="lines">
-              <div><dt>Площадка</dt><i aria-hidden="true"></i><dd data-k="venue">8&nbsp;600&nbsp;000&nbsp;IDR</dd></div>
-              <div><dt>Операционные расходы</dt><i aria-hidden="true"></i><dd data-k="ops">3&nbsp;500&nbsp;000&nbsp;IDR</dd></div>
-              <div class="sum"><dt>Цель казны</dt><i aria-hidden="true"></i><dd data-k="target">12&nbsp;100&nbsp;000&nbsp;IDR</dd></div>
-            </dl>
-            <p class="m-meta" data-k="meta"></p>
-          </div>
-          <p class="plate rc-guar"><img src="art/star.png" alt=""><span>Не&nbsp;соберём необходимую сумму до&nbsp;20&nbsp;октября&nbsp;— отменим праздник и&nbsp;вернём каждому 100%&nbsp;его взноса</span></p>
-          <p class="stale" data-stale hidden>Не&nbsp;удалось обновить данные</p>
+      <div class="purse" data-rv>
+        <p class="purse-l">Собрано <b data-k="declared">—</b>&nbsp;из&nbsp;<span data-k="target-of">12&nbsp;100&nbsp;000&nbsp;IDR</span></p>
+        <div class="bar" id="bar" data-g="0" role="progressbar" aria-label="Заявлено в казну" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="fill"></div>
+          <div class="ghost"></div>
+          <span class="ghost-tag" id="ghost-tag" aria-hidden="true"></span>
+          <img class="bar-star" src="art/star.png" alt="">
         </div>
-        <div class="roll roll-b" aria-hidden="true"></div>
-      </aside>
+        <p class="stale" data-stale hidden>Не&nbsp;удалось обновить данные</p>
+      </div>
+      <div class="tcards">
+        <div class="tw" data-rv><article class="plate tcard t-bronze tilt3d" data-tf="BRONZE" aria-labelledby="t-b">
+          <span class="t-glow" aria-hidden="true"></span>
+          <img class="t-ic" src="art/t-bronze.webp" alt="" width="600" height="581" loading="lazy" onerror="this.remove()">
+          <h3 class="t-name" id="t-b">Bronze</h3>
+          <p class="t-price"><span data-price="bronze">150&nbsp;000</span>&nbsp;<small>IDR</small></p>
+          <p class="t-txt">Даже одна монета помогает замку. Этот путь&nbsp;— для&nbsp;друзей, которым сейчас нужен самый доступный формат участия (ограниченный бюджет)</p>
+          <p class="t-gain" data-gain="BRONZE"></p>
+          <button class="btn" type="button" data-pick="BRONZE">Выбрать Bronze</button>
+        </article></div>
+        <div class="tw" data-rv><article class="plate tcard t-silver tilt3d" data-tf="SILVER" aria-labelledby="t-s">
+          <span class="t-glow" aria-hidden="true"></span>
+          <img class="t-ic" src="art/t-silver.webp" alt="" width="600" height="530" loading="lazy" onerror="this.remove()">
+          <h3 class="t-name" id="t-s">Silver</h3>
+          <p class="t-price"><span data-price="silver">300&nbsp;000</span>&nbsp;<small>IDR</small></p>
+          <p class="t-txt">Врата открыты: все события, испытания и&nbsp;приключения. Вся ночь в&nbsp;замке&nbsp;— от&nbsp;первого испытания до&nbsp;последнего уголька в&nbsp;костре.</p>
+          <p class="t-gain" data-gain="SILVER"></p>
+          <button class="btn" type="button" data-pick="SILVER">Выбрать Silver</button>
+        </article></div>
+        <div class="tw" data-rv><article class="plate tcard t-gold tilt3d" data-tf="GOLD" aria-labelledby="t-g">
+          <span class="t-glow" aria-hidden="true"></span>
+          <span class="t-shine" aria-hidden="true"></span>
+          <div class="book-fr" aria-hidden="true"><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg></div>
+          <img class="t-ic" src="art/t-gold.webp" alt="" width="600" height="564" loading="lazy" onerror="this.remove()">
+          <h3 class="t-name" id="t-g">Gold</h3>
+          <p class="t-price">от&nbsp;<span data-price="gold">500&nbsp;000</span>&nbsp;<small>IDR</small></p>
+          <p class="t-txt">Помоги пробудить замок сильнее: сумму вклада выбираешь сам. В&nbsp;благодарность&nbsp;— все игровые усиления.</p>
+          <details class="perks">
+            <summary>Все усиления</summary>
+            <ul class="perk-list">
+              <li><span class="bi bi-coin" aria-hidden="true"></span>+1&nbsp;стартовая монета для&nbsp;клана</li>
+              <li><span class="bi bi-arrow" aria-hidden="true"></span>Дополнительная серия из&nbsp;5&nbsp;стрел на&nbsp;стрельбище</li>
+              <li><span class="bi bi-pumpkin" aria-hidden="true"></span>Двойной голос за&nbsp;лучший костюм и&nbsp;лучшую тыкву</li>
+              <li><span class="bi bi-candle" aria-hidden="true"></span>Секретная подсказка к&nbsp;шифру</li>
+            </ul>
+          </details>
+          <p class="t-gain" data-gain="GOLD"></p>
+          <button class="btn btn-main" type="button" data-pick="GOLD">Выбрать Gold</button>
+        </article></div>
+      </div>
     </div>
   </section>
 
-  <section class="feast" id="dinner" aria-labelledby="dn-t">
-    <div class="feast-edge t" aria-hidden="true"></div>
-    <picture class="feast-bg"><source media="(max-width:700px)" srcset="art/dinner-b-m.jpg" width="1000" height="1000"><img src="art/dinner-b.jpg" alt="Королевская трапеза: жители замка из&nbsp;всех кланов за&nbsp;одним длинным столом во&nbsp;дворе, свечи и&nbsp;фонари на&nbsp;деревьях" width="2000" height="1116" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='art/feast.jpg'}"></picture>
-    <div class="plate feast-title" data-rv>
-      <div class="book-fr" aria-hidden="true"><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg></div>
-      <span class="label">18:00 · двор замка</span>
-      <h2 id="dn-t">Королевская <em class="acc">трапеза</em></h2>
-    </div>
-    <div class="plate feast-card" data-rv>
-      <p class="lead">Игра окончена, монеты пересчитаны. Все кланы садятся за&nbsp;один длинный стол во&nbsp;дворе замка: свечи, фонари в&nbsp;ветвях, тосты за&nbsp;победителей и&nbsp;за&nbsp;тех, кто почти победил.</p>
-      <div class="feast-row">
-        <p class="feast-price">+<span data-price="dinner">250&nbsp;000</span>&nbsp;IDR<small>По&nbsp;желанию, к&nbsp;любому пути</small></p>
-        <button class="btn btn-main" type="button" data-act="add-dinner" id="feast-btn">Добавить трапезу</button>
+  <section class="dn-sec" id="dinner" aria-labelledby="dn-t">
+    <div class="wrap">
+      <figure class="dn-img" data-rv><picture><source media="(max-width:880px)" srcset="art/dinner-b-m.jpg" width="1000" height="1000"><img src="art/dinner-b.jpg" alt="Королевская трапеза: жители замка из&nbsp;всех кланов за&nbsp;одним длинным столом во&nbsp;дворе, свечи и&nbsp;фонари на&nbsp;деревьях" width="2000" height="1116" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='art/feast.jpg'}"></picture><div class="dn-frame" aria-hidden="true"><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg></div></figure>
+      <div class="dn-body" data-rv>
+        <h2 id="dn-t">Королевская <em class="acc">трапеза</em></h2>
+        <p>В&nbsp;18:00 игра окончена, монеты пересчитаны. Все кланы садятся за&nbsp;один длинный стол во&nbsp;дворе замка: свечи, фонари в&nbsp;ветвях, тосты за&nbsp;победителей и&nbsp;за&nbsp;тех, кто почти победил.</p>
+        <p>Участие в&nbsp;трапезе&nbsp;— <b><span data-price="dinner">250&nbsp;000</span>&nbsp;IDR</b>, добавляется одной кнопкой, когда выбираешь путь.</p>
       </div>
     </div>
-    <div class="feast-edge b" aria-hidden="true"></div>
+  </section>
+
+  <section class="join-sec" id="join" aria-label="Вступить в игру">
+    <div class="wrap join" data-rv>
+      <button class="btn btn-main btn-big" type="button" id="join-go">Вступить в&nbsp;игру</button>
+      <p class="guar">Не&nbsp;соберём необходимую сумму до&nbsp;20&nbsp;октября&nbsp;— отменим праздник и&nbsp;вернём каждому 100%&nbsp;его взноса</p>
+      <details class="coins">
+        <summary>Куда идут монеты</summary>
+        <dl class="lines">
+          <div><dt>Площадка</dt><i aria-hidden="true"></i><dd data-k="venue">8&nbsp;600&nbsp;000&nbsp;IDR</dd></div>
+          <div><dt>Операционные расходы</dt><i aria-hidden="true"></i><dd data-k="ops">3&nbsp;500&nbsp;000&nbsp;IDR</dd></div>
+          <div class="sum"><dt>Цель казны</dt><i aria-hidden="true"></i><dd data-k="target">12&nbsp;100&nbsp;000&nbsp;IDR</dd></div>
+        </dl>
+      </details>
+    </div>
   </section>
 
   <section class="clans-sec" id="clans" aria-labelledby="cl-t">
@@ -803,15 +727,9 @@ h1 .acc,h2 .acc{font:inherit;line-height:inherit;text-transform:inherit;letter-s
   </section>
 </main>
 
-<div class="mbar" id="mbar" aria-hidden="true">
-  <p class="mbar-t"><b id="mbar-name">Silver · 300&nbsp;000&nbsp;IDR</b><span id="mbar-gain"></span></p>
-  <button class="btn btn-main" type="button" id="mbar-go" tabindex="-1">Вступить в&nbsp;игру</button>
-</div>
-
 <footer>
   <img class="star" src="art/s-star.webp" alt="">
-  <p>31&nbsp;октября · с&nbsp;14:00</p>
-  <small>Bale Tudor, Bongkasa Pertiwi, Bali · <a href="./">к&nbsp;истории замка</a></small>
+  <small>Bale Tudor, Bongkasa Pertiwi, Bali, <a href="./">к&nbsp;истории замка</a></small>
 </footer>
 
 <!-- пролог и выбор клана -->
@@ -879,17 +797,60 @@ h1 .acc,h2 .acc{font:inherit;line-height:inherit;text-transform:inherit;letter-s
   <div class="sheet-in">
     <form class="step" data-step="form" id="co-form" novalidate>
       <h2 class="sheet-t" id="co-t" tabindex="-1">Вступить в&nbsp;<em class="acc">игру</em></h2>
-      <div class="plate total co-sum" aria-live="polite">
-        <div class="tl"><span>Клан</span><span id="tl-clan">—</span></div>
-        <div class="tl"><span id="tl-ticket-l">Путь</span><span id="tl-ticket">—</span></div>
-        <div class="tl"><span>Королевская трапеза</span><span id="tl-dn">—</span></div>
-        <div class="tl sum"><span>Итого к&nbsp;оплате</span><b id="tl-total">—</b></div>
-        <p class="err" data-err="clan" role="alert"></p>
-        <p class="err" data-err="tariff"></p>
-        <p class="err" data-err="gold"></p>
-        <div class="tl-acts"><button class="linkbtn tl-edit" type="button" data-act="edit-path">Изменить путь или&nbsp;трапезу</button><button class="linkbtn tl-edit" type="button" data-act="co-clan" id="co-clan" hidden>Сменить клан</button></div>
+      <fieldset class="seg" id="co-seg" aria-describedby="f-tariff-e">
+        <legend class="co-sub">Выбери путь</legend>
+        <div class="seg-row">
+          <label><input type="radio" name="tariff" value="BRONZE"><img src="art/t-bronze.webp" alt="" width="600" height="581"><span class="seg-n">Bronze</span><small><span data-price="bronze">150&nbsp;000</span>&nbsp;IDR</small></label>
+          <label><input type="radio" name="tariff" value="SILVER"><img src="art/t-silver.webp" alt="" width="600" height="530"><span class="seg-n">Silver</span><small><span data-price="silver">300&nbsp;000</span>&nbsp;IDR</small></label>
+          <label class="g"><input type="radio" name="tariff" value="GOLD"><img src="art/t-gold.webp" alt="" width="600" height="564"><span class="seg-n">Gold</span><small>от&nbsp;<span data-price="gold">500&nbsp;000</span>&nbsp;IDR</small></label>
+        </div>
+        <p class="err" id="f-tariff-e" data-err="tariff" role="alert"></p>
+      </fieldset>
+      <p class="co-pick" id="co-pick">Нажми на&nbsp;один из&nbsp;путей&nbsp;— и&nbsp;увидишь, что в&nbsp;него входит.</p>
+      <div class="co-inc" id="co-inc">
+        <div class="plate co-inc-p" data-inc="BRONZE" hidden><ul class="inc-list"><li><span class="star-i" aria-hidden="true"></span>Даже одна монета помогает замку. Этот путь&nbsp;— для&nbsp;друзей, которым сейчас нужен самый доступный формат участия (ограниченный бюджет)</li></ul></div>
+        <div class="plate co-inc-p" data-inc="SILVER" hidden><ul class="inc-list"><li><span class="star-i" aria-hidden="true"></span>Врата открыты: все события, испытания и&nbsp;приключения</li></ul></div>
+        <div class="plate co-gold" id="co-gold" data-inc="GOLD" hidden>
+          <div class="field">
+            <span class="flabel" id="gold-l">Сумма вклада</span>
+            <div class="presets" role="group" aria-labelledby="gold-l">
+              <button class="preset" type="button" data-amt="500000" aria-pressed="true">500&nbsp;000</button>
+              <button class="preset" type="button" data-amt="750000" aria-pressed="false">750&nbsp;000</button>
+              <button class="preset" type="button" data-amt="1000000" aria-pressed="false">1&nbsp;000&nbsp;000</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="gold-amt">Своя сумма</label>
+            <div class="inp" id="gold-amt-inp"><input id="gold-amt" name="f_gold" inputmode="numeric" autocomplete="off" maxlength="13" value="500 000" aria-describedby="gold-amt-h gold-amt-e"><span class="suf">IDR</span></div>
+            <p class="hint" id="gold-amt-h">Минимальный взнос&nbsp;— 500&nbsp;000&nbsp;IDR. Больше&nbsp;— на&nbsp;твоё усмотрение</p>
+            <p class="err" id="gold-amt-e" data-err="gold"></p>
+          </div>
+          <ul class="perk-list" aria-label="Усиления Gold">
+            <li><span class="bi bi-coin" aria-hidden="true"></span>+1&nbsp;стартовая монета для&nbsp;клана</li>
+            <li><span class="bi bi-arrow" aria-hidden="true"></span>Дополнительная серия из&nbsp;5&nbsp;стрел на&nbsp;стрельбище</li>
+            <li><span class="bi bi-pumpkin" aria-hidden="true"></span>Двойной голос за&nbsp;лучший костюм и&nbsp;лучшую тыкву</li>
+            <li><span class="bi bi-candle" aria-hidden="true"></span>Секретная подсказка к&nbsp;шифру</li>
+          </ul>
+        </div>
       </div>
-      <p class="step-sub">Осталось представиться&nbsp;— дальше реквизиты для&nbsp;перевода.</p>
+      <label class="dn-tog" id="dn-tog">
+        <input type="checkbox" id="f-dinner" name="f_dinner">
+        <span class="dn-ic" aria-hidden="true"></span>
+        <span class="dn-tog-t"><b>Добавить королевскую трапезу, <span data-price="dinner">250&nbsp;000</span>&nbsp;IDR</b><span>18:00, двор замка: все кланы за&nbsp;одним длинным столом</span></span>
+        <span class="dn-mark" aria-hidden="true"></span>
+      </label>
+      <div class="plate total" aria-live="polite">
+        <div class="tl"><span id="tl-ticket-l">Путь</span><span id="tl-ticket">—</span></div>
+        <div class="tl"><span>Королевская трапеза</span><span id="tl-dn">не&nbsp;выбрана</span></div>
+        <div class="tl sum"><span>Итого к&nbsp;оплате</span><b id="tl-total">—</b></div>
+        <p class="co-you" id="co-you"></p>
+        <p class="co-mood" id="co-mood"></p>
+      </div>
+      <div class="co-clan">
+        <p>Клан: <b id="tl-clan">—</b></p>
+        <button class="linkbtn" type="button" data-act="co-clan" id="co-clan">Сменить клан</button>
+        <p class="err" data-err="clan" role="alert"></p>
+      </div>
       <div class="field">
         <label for="f-name">Имя</label>
         <div class="inp"><input id="f-name" name="f_name" autocomplete="name" maxlength="60" required aria-describedby="f-name-h f-name-e"></div>
@@ -954,8 +915,6 @@ h1 .acc,h2 .acc{font:inherit;line-height:inherit;text-transform:inherit;letter-s
 
 <div class="plate toast" id="toast" role="status" hidden></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
 <script>
 (()=>{'use strict';
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -971,13 +930,12 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const FINE=matchMedia('(hover: hover) and (pointer: fine)').matches;
-const G=!RM&&window.gsap?window.gsap:null;
-const ST=G&&window.ScrollTrigger?window.ScrollTrigger:null;
-if(ST)G.registerPlugin(ST);
+/* GSAP грузится после запуска: страница считает и работает без него, анимации — когда он приедет */
+let G=null,ST=null;
 
 /* ── данные кланов ── */
 const CLAN_ORDER=['VAMPIRE','WEREWOLF','DARK_ELF'];
-const CLAN_ART={VAMPIRE:'art/clan-vampire-b.jpg',WEREWOLF:'art/clan-werewolf-c.jpg',DARK_ELF:'art/clan-darkelf-b.jpg'};
+const CLAN_ART={VAMPIRE:'art/clan-vampire-b.jpg',WEREWOLF:'art/clan-werewolf-c.jpg',DARK_ELF:'art/clan-darkelf-k.jpg'};
 const CLAN_ART_FALLBACK={VAMPIRE:'art/nobles.jpg',WEREWOLF:'art/commoners.jpg',DARK_ELF:'art/crown.jpg'};
 const CLANS={
   VAMPIRE:{name:'Вампиры',desc:'Древняя кровь, бархат и долгая память. Им некуда спешить: впереди вечность.',empty:'Склеп пока пуст. Первому достанется лучший гроб.',gl:'Клан вампиров',gt:['Ночь приняла','тебя'],gp:'Древняя кровь узнала родную. Вампиры не спешат: впереди вечность, а сегодня — целый замок.'},
@@ -1131,7 +1089,7 @@ function renderClans(){
     const more=f('more');more.hidden=mem.length<=lim;more.textContent=all?'свернуть':`показать всех (${mem.length})`;more.setAttribute('aria-expanded',String(all));
     f('empty').hidden=!(d&&!mem.length);
     const join=f('join'),why=f('reason');
-    f('mine').hidden=!mine;f('mine-t').textContent=applied&&mine?'Ты в этом клане':'Твой клан';
+    f('mine').hidden=!mine;f('mine-t').textContent=applied&&mine?ty('Ты в этом клане'):'Твой клан';
     join.hidden=mine||!!applied;
     const blocked=!!(d&&!d.available);
     join.disabled=blocked;
@@ -1143,9 +1101,9 @@ function renderClans(){
 
 function renderMe(){
   const txt=$('#me-txt'),btn=$('#me-btn'),warn=$('#me-warn');
-  if(applied){txt.innerHTML=tyh(`Ты уже в клане <b>${esc(CLANS[applied.clan_code].name)}</b>`);btn.textContent='Реквизиты для оплаты';btn.dataset.act='show-pay'}
+  if(applied){txt.innerHTML=tyh(`Ты уже в клане <b>${esc(CLANS[applied.clan_code].name)}</b>`);btn.textContent=ty('Реквизиты для оплаты');btn.dataset.act='show-pay'}
   else if(myClan){txt.innerHTML=`Твой клан: <b>${esc(CLANS[myClan].name)}</b>`;btn.textContent='Сменить клан';btn.dataset.act='change'}
-  else{txt.textContent='Клан ещё не выбран';btn.textContent='Выбрать клан';btn.dataset.act='change'}
+  else{txt.textContent=ty('Клан ещё не выбран');btn.textContent='Выбрать клан';btn.dataset.act='change'}
   const d=myClan&&!applied?clanData(myClan):null;
   warn.hidden=!(d&&!d.available);warn.textContent=d&&!d.available?reasonText(d.reason):'';
 }
@@ -1157,7 +1115,7 @@ function renderHero(){
   ch.textContent=code?'Сменить клан':'Выбрать клан';ch.hidden=!!applied;
   if(applied){
     h.innerHTML=tyh(`Ты в клане ${esc(CLAN_GEN[code])}, вклад <em class="acc">заявлен</em>`);
-    p.textContent=ty('Осталось перевести взнос и отправить скриншот организатору. Реквизиты — в свитке ниже.');
+    p.textContent=ty('Осталось перевести взнос и отправить скриншот организатору. Реквизиты — по кнопке внизу страницы.');
   }else if(code){
     h.innerHTML=tyh(`Ты в клане ${esc(CLAN_GEN[code])}, а теперь <em class="acc">вклад</em>`);
     p.textContent=ty('Казна замка оплачивает площадку и всё, что нужно для ночи. Выбери путь — и увидишь, насколько твой вклад приблизит праздник.');
@@ -1184,24 +1142,16 @@ function renderTreasury(){
   k('venue').textContent=idr(s.venue_cost_idr);k('ops').textContent=idr(s.operations_cost_idr);
   k('target').textContent=idr(s.target_idr);k('target-of').textContent=idr(s.target_idr);
   if(!stats||!meterSeen){renderGhost();return}
-  const tgt=s.target_idr,d=s.declared_ticket_total_idr||0,raw=tgt>0?d/tgt*100:100,pct=Math.min(100,raw);
-  const remain=s.remaining_to_target_idr??Math.max(0,tgt-d),over=s.over_target_idr??Math.max(0,d-tgt);
+  const tgt=s.target_idr,d=s.declared_ticket_total_idr||0,pct=Math.min(100,tgt>0?d/tgt*100:100);
   countTo(k('declared'),d);
   const bar=$('#bar');bar.style.setProperty('--p',pct.toFixed(2));
-  bar.setAttribute('aria-valuenow',String(Math.round(pct)));bar.setAttribute('aria-valuetext',`${idr(d)} из ${idr(tgt)}`);
-  k('pct').textContent=pct1(pct);
-  k('remain').textContent=remain>0?ty(`Осталось собрать: ${idr(remain)}`):'Цель достигнута';
-  k('over').hidden=!(over>0);k('over').textContent=over>0?`Сверх цели: +${idr(over)}`:'';
-  k('mood').textContent=ty(d>0?MOODS.find(([m])=>raw>=m)[1]:'Казна ждёт первую монету');
-  const meta=[`Гостей в замке: ${s.registered_count??0} из ${s.max_guests}`];
-  if(s.dinner_count)meta.push(`на трапезе: ${s.dinner_count}`);
-  k('meta').textContent=ty(meta.join(' · '));
+  bar.setAttribute('aria-valuenow',String(Math.round(pct)));bar.setAttribute('aria-valuetext',ty(`Собрано ${idr(d)} из ${idr(tgt)}`));
   renderGhost();
 }
 
-/* ── выбор пути живёт на странице; окно спрашивает только имя и Telegram ── */
+/* ── выбор пути: карточки открывают окно, всё остальное — в окне ── */
 const TARIFFS=['BRONZE','SILVER','GOLD'];
-let sel={tariff:'SILVER',dinner:false},hoverTf=null;
+let sel={tariff:null,dinner:false},hoverTf=null;
 const goldInp=$('#gold-amt');
 /* одно правило для всех процентов: округление до 0,1; не показываем 0% при ненулевой сумме и 100% до цели */
 const pct1=x=>{let v=Math.round(x*10)/10;if(x>0&&v===0)return '<0,1%';if(x<100&&v>=100)v=99.9;return String(v).replace('.',',')+'%'};
@@ -1209,62 +1159,44 @@ function ticketFor(tf,loose){const t=S().tariffs;
   if(tf==='BRONZE')return t.bronze_idr;if(tf==='SILVER')return t.silver_idr;
   if(tf==='GOLD'){const gs=goldState(goldInp.value,t.gold_min_idr);return gs.err?(loose?t.gold_min_idr:null):gs.g}
   return null}
-/* призрачный отрезок на шкале: куда сдвинется казна с выбранным (или наведённым) путём */
+/* призрачный отрезок на шкале: куда сдвинется казна с наведённым путём */
 function renderGhost(){
-  const s=S(),bar=$('#bar'),you=$('#rc-you'),tgt=s.target_idr||1;
-  TARIFFS.forEach(t=>{const e=$(`[data-gain="${t}"]`),a=ticketFor(t,true);if(e)e.textContent=a?ty(`+${pct1(a/tgt*100)} к казне`):''});
-  const tf=hoverTf||sel.tariff,add=applied?0:(ticketFor(tf,!!hoverTf)||0);
+  const s=S(),bar=$('#bar'),tgt=s.target_idr||1;
+  TARIFFS.forEach(t=>{const e=$(`[data-gain="${t}"]`),a=t==='GOLD'?s.tariffs.gold_min_idr:ticketFor(t);if(e)e.textContent=a?ty(`+${pct1(a/tgt*100)} к казне`):''});
+  const add=applied||!hoverTf?0:(hoverTf==='GOLD'?s.tariffs.gold_min_idr:ticketFor(hoverTf))||0;
   const known=!!stats&&meterSeen,d=known?(s.declared_ticket_total_idr||0):0,cur=Math.min(100,d/tgt*100);
   const g=known&&add?Math.max(0,Math.min(100-cur,add/tgt*100)):0;
   bar.style.setProperty('--g',g.toFixed(2));bar.dataset.g=g>0?'1':'0';$('#ghost-tag').textContent=add?'+'+pct1(add/tgt*100):'';
-  if(applied){you.textContent=ty('Твой взнос уже заявлен в казну');return}
-  if(!add){you.textContent=ty(tf==='GOLD'?`Укажи сумму для Gold — от ${idr(s.tariffs.gold_min_idr)}`:'Выбери путь — и увидишь, как вырастет казна');return}
-  if(!known){you.innerHTML=tyh(`Твой вклад: <b>+${idr(add)}</b>`);return}
-  const after=(d+add)/tgt*100,th=[25,50,75,100].find(x=>cur<x&&after>=x);
-  you.innerHTML=tyh(`Твой вклад: <b>+${idr(add)}</b> →${NB}казна${NB}<b>${pct1(Math.min(after,100))}</b>`+
-    (th?`<span class="rc-cross">${th===100?'С тобой казна наполнится до цели!':`С тобой казна перейдёт отметку ${th}%`}</span>`:''));
 }
-function renderReceipt(){
-  const t=S().tariffs;
-  $$('.paths .path').forEach(r=>r.classList.toggle('on',r.dataset.path===sel.tariff));
-  $$('input[name="path"]').forEach(i=>i.checked=i.value===sel.tariff);
-  $('#paths').disabled=!!applied;
-  const pd=$('#p-dinner');pd.checked=sel.dinner;pd.disabled=!!applied;$('#p-dn-row').classList.toggle('on',sel.dinner);
-  let ticket,dinner,tf;
-  if(applied){tf=applied.tariff_code;ticket=applied.ticket_amount_idr;dinner=applied.dinner_amount_idr||0}
-  else{tf=sel.tariff;ticket=ticketFor(tf);dinner=sel.dinner?t.dinner_idr:0}
-  $('#rc-ticket-l').textContent=tf?`Путь · ${TARIFF_NAME[tf]}`:'Путь';
-  $('#rc-ticket').textContent=ticket!=null?idr(ticket):'—';
-  $('#rc-dn').classList.toggle('off',!dinner);
-  $('#rc-dn-sum').textContent=dinner?'+'+idr(dinner):'не выбрана';
-  $('#rc-total').textContent=ticket!=null?idr(ticket+dinner):'—';
-  const go=$('#rc-go'),gt=applied?'Реквизиты для оплаты':'Вступить в'+NB+'игру';if(go.textContent!==gt)go.textContent=gt;
-  go.classList.toggle('is-blocked',!applied&&ticket==null);
-  $('#rc-note').textContent=applied?ty('Повторная заявка не нужна: реквизиты откроются в окне'):ty('Дальше — имя, Telegram и реквизиты для перевода');
+/* окно: переключатель пути, Gold-сумма, трапеза, живой итог */
+function renderCo(){
+  const s=S(),t=s.tariffs,tf=sel.tariff,din=sel.dinner,ticket=ticketFor(tf),tgt=s.target_idr||1;
+  $$('input[name="tariff"]',form).forEach(i=>i.checked=i.value===tf);
+  $('#co-pick').hidden=!!tf;
+  $$('[data-inc]',form).forEach(x=>{const on=x.dataset.inc===tf;if(on&&x.hidden&&!RM){x.classList.remove('fade');void x.offsetWidth;x.classList.add('fade')}x.hidden=!on});
   const ga=parseAmount(goldInp.value);$$('.preset').forEach(b=>b.setAttribute('aria-pressed',String(ga===Number(b.dataset.amt))));
-  const tgt=S().target_idr||1;
-  $('#mbar-name').textContent=ticket!=null?`${TARIFF_NAME[tf]} · ${idr(ticket+dinner)}`:ty(`${TARIFF_NAME[tf]} · укажи сумму`);
-  $('#mbar-gain').textContent=ticket!=null?ty((dinner?'с трапезой · ':'')+`+${pct1(ticket/tgt*100)} к казне`):ty(`от ${idr(t.gold_min_idr)}`);
-  syncBar();
-  const fb=$('#feast-btn'),on=!!(dinner),fk=on?'1':'0';
-  if(fb.dataset.k!==fk){fb.dataset.k=fk;fb.innerHTML=on?tyh(`<span class="star-i" aria-hidden="true"></span>Трапеза уже в свитке`):'Добавить трапезу'}
-  renderGhost();
+  el.f_dinner.checked=din;
+  $('#tl-ticket-l').textContent=tf?`Путь ${TARIFF_NAME[tf]}`:'Путь';
+  $('#tl-ticket').textContent=ticket!=null?idr(ticket):'—';
+  $('#tl-dn').textContent=din?idr(t.dinner_idr):'не'+NB+'выбрана';
+  $('#tl-total').textContent=ticket!=null?idr(ticket+(din?t.dinner_idr:0)):'—';
+  $('#tl-clan').textContent=myClan?CLANS[myClan].name:'—';
+  const you=$('#co-you'),known=!!stats,d=known?(s.declared_ticket_total_idr||0):0,cur=Math.min(100,d/tgt*100);
+  if(ticket==null)you.textContent=ty(tf==='GOLD'?`Укажи сумму для Gold — от ${idr(t.gold_min_idr)}`:'Выбери путь — и увидишь, как вырастет казна');
+  else if(!known)you.innerHTML=tyh(`Твой вклад: <b>+${idr(ticket)}</b>`);
+  else{const after=(d+ticket)/tgt*100,th=[25,50,75,100].find(x=>cur<x&&after>=x);
+    you.innerHTML=tyh(`Твой вклад: <b>+${idr(ticket)}</b> →${NB}казна${NB}<b>${pct1(Math.min(after,100))}</b>`+(th?`<span class="co-cross">${th===100?'С тобой казна наполнится до цели!':`С тобой казна перейдёт отметку ${th}%`}</span>`:''))}
+  $('#co-mood').textContent=known?ty(d>0?MOODS.find(([m])=>d/tgt*100>=m)[1]:'Казна ждёт первую монету'):'';
+  $('#co-form .form-actions .btn').classList.toggle('is-blocked',ticket==null);
+  return ticket;
 }
-/* полоса внизу на телефоне: видна, пока на экране выбор пути, а кнопка свитка — нет */
-let seeChoice=false,seeGo=false;
-function syncBar(){const m=$('#mbar'),on=seeChoice&&!seeGo&&!applied&&pro.hidden&&matchMedia('(max-width:880px)').matches;
-  if(m.classList.contains('on')===on)return;m.classList.toggle('on',on);m.setAttribute('aria-hidden',String(!on));$('#mbar-go').tabIndex=on?0:-1;document.body.classList.toggle('mbar-on',on)}
-if('IntersectionObserver' in window){
-  const vis=new Map(),io=new IntersectionObserver(es=>{es.forEach(e=>vis.set(e.target,e.isIntersecting));seeChoice=[...vis.values()].some(Boolean);syncBar()},{rootMargin:'0px 0px -35% 0px'});
-  io.observe($('#paths'));io.observe($('#p-dn-row'));
-  new IntersectionObserver(es=>{seeGo=es[0].isIntersecting;syncBar()}).observe($('#rc-go'));
-}
+function renderJoin(){const b=$('#join-go'),tx=applied?ty('Реквизиты для оплаты'):'Вступить в'+NB+'игру';if(b.textContent!==tx)b.textContent=tx}
 function checkGold(){const {err}=goldState(goldInp.value,S().tariffs.gold_min_idr),show=goldInp.dataset.touched==='1'&&sel.tariff==='GOLD'?err:'';
   $('#gold-amt-e').textContent=show;$('#gold-amt-inp').classList.toggle('bad',!!show);goldInp.setAttribute('aria-invalid',String(!!show))}
 
 function setStale(v){$$('[data-stale]').forEach(e=>e.hidden=!v)}
 function applyStats(s){if(!s||typeof s!=='object'||!s.clans)return;stats=s;renderAll()}
-function renderAll(){renderPrices();renderTreasury();renderClans();renderMe();renderHero();renderReceipt();updateTotal();checkGold()}
+function renderAll(){renderPrices();renderTreasury();renderClans();renderMe();renderHero();renderJoin();renderCo();checkGold()}
 
 async function refresh(){
   try{const s=await api.stats();if(!s||!s.clans)throw new Error('bad stats');applyStats(s);setStale(false)}
@@ -1285,7 +1217,7 @@ function openPro(stage,dismissable){
 }
 function closePro(){
   clearTimeout(greetTimer);
-  const done=()=>{pro.hidden=true;document.documentElement.classList.remove('lock');outside().forEach(e=>e.inert=false);$('#me-btn').focus({preventScroll:true});initMotion();syncBar();
+  const done=()=>{pro.hidden=true;document.documentElement.classList.remove('lock');outside().forEach(e=>e.inert=false);$('#me-btn').focus({preventScroll:true});initMotion();
     if(reopenCo){reopenCo=false;if(myClan)requestAnimationFrame(()=>openCheckout())}
     const h=location.hash&&document.getElementById(location.hash.slice(1));if(h)requestAnimationFrame(()=>h.scrollIntoView({block:'start'}))};
   if(G)G.to(pro,{autoAlpha:0,duration:.6,ease:'power2.inOut',onComplete:()=>{G.set(pro,{clearProps:'opacity,visibility'});done()}});else done();
@@ -1326,53 +1258,36 @@ function toast(html){const t=$('#toast');t.innerHTML=html;t.hidden=false;if(G)G.
 const dlg=$('#checkout'),form=$('#co-form'),el=form.elements;
 let co={step:'form',data:null,busy:false,payOnly:false};
 let reopenCo=false;
-function goldState(raw,min){const g=parseAmount(raw);if(!String(raw||'').trim())return {g:null,err:ty(`Укажи сумму вклада — от ${idr(min)}`)};if(g===null)return {g:null,err:'Только целое число, без букв и копеек'};if(g<min)return {g,err:ty(`Минимальный взнос — ${idr(min)}. Сейчас указано ${idr(g)}`)};return {g,err:''}}
-function updateTotal(){
-  const t=S().tariffs,tf=sel.tariff,din=sel.dinner,ticket=ticketFor(tf);
-  $('#tl-clan').textContent=myClan?CLANS[myClan].name:'—';
-  $('#tl-ticket-l').textContent=tf?`Путь · ${TARIFF_NAME[tf]}`:'Путь';
-  $('#tl-ticket').textContent=ticket!=null?idr(ticket):'—';
-  $('#tl-dn').textContent=din?'+'+idr(t.dinner_idr):'не выбрана';
-  $('#tl-total').textContent=ticket!=null?idr(ticket+(din?t.dinner_idr:0)):'—';
-  $('#co-form .form-actions .btn').classList.toggle('is-blocked',ticket==null);
-  return ticket;
-}
+const GOLD_MAX=100000000;
+function goldState(raw,min){const g=parseAmount(raw);if(!String(raw||'').trim())return {g:null,err:ty(`Укажи сумму вклада — от ${idr(min)}`)};if(g===null)return {g:null,err:ty('Только целое число, без букв и копеек')};if(g>GOLD_MAX)return {g:null,err:ty(`Сумма больше ${idr(GOLD_MAX)} — напиши организатору`)};if(g<min)return {g,err:ty(`Минимальный взнос — ${idr(min)}. Сейчас указано ${idr(g)}`)};return {g,err:''}}
+function updateTotal(){return renderCo()}
 const ERR_INPUT={name:'f-name',tg:'f-tg',gold:'gold-amt'};
-function setErr(k,msg){const p=$(`[data-err="${k}"]`,form);if(!p)return;p.textContent=msg||'';if(k==='clan')$('#co-clan').hidden=!msg;const id=ERR_INPUT[k];if(id){const i=$('#'+id);i.setAttribute('aria-invalid',String(!!msg));i.closest('.inp').classList.toggle('bad',!!msg)}}
+function setErr(k,msg){const p=$(`[data-err="${k}"]`,form);if(!p)return;p.textContent=msg||'';if(k==='tariff')$('#co-seg').classList.toggle('bad',!!msg);const id=ERR_INPUT[k];if(id){const i=$('#'+id);i.setAttribute('aria-invalid',String(!!msg));i.closest('.inp').classList.toggle('bad',!!msg)}}
 function validate(){
   const s=S(),e={},name=el.f_name.value.trim(),tgRaw=el.f_tg.value.trim();
   if(!name)e.name=ty('Укажи имя — так тебя увидят в списке клана');else if([...name].length>60)e.name='Имя не длиннее 60 символов';
   if(!tgRaw)e.tg=ty('Укажи Telegram — по нему организатор найдёт тебя');else if(!normTg(tgRaw))e.tg=ty('Ник в Telegram: латиница, цифры и _, от 5 до 32 символов');
   const clan=myClan;if(!clan)e.clan='Выбери клан';else{const d=clanData(clan);if(d&&!d.available)e.clan=ty(reasonText(d.reason)+'. Выбери другой клан — остальные данные сохранены.')}
-  const tf=sel.tariff;if(!TARIFF_NAME[tf])e.tariff='Выбери путь';
+  const tf=sel.tariff;if(!TARIFF_NAME[tf])e.tariff=ty('Выбери путь: Bronze, Silver или Gold');
   let gold=null;if(tf==='GOLD'){const gs=goldState(goldInp.value,s.tariffs.gold_min_idr);if(gs.err)e.gold=gs.err;else gold=gs.g}
   ['name','tg','clan','tariff','gold','form'].forEach(k=>setErr(k,e[k]));
   return {e,data:{name,tg:normTg(tgRaw),clan,tariff:tf,gold,dinner:sel.dinner,news:el.f_news.checked}};
 }
-/* ошибка пути или суммы Gold: закрыть окно и вернуть к списку */
-function toPath(msg){
-  if(dlg.open)dlg.close();
-  const gold=sel.tariff==='GOLD',t=gold?goldInp:($('input[name="path"]:checked')||$('input[name="path"]'));
-  if(gold){goldInp.dataset.touched='1';checkGold();if(msg)$('#gold-amt-e').textContent=msg}
-  $('#rc-err').textContent=msg||'';
-  t.focus({preventScroll:true});t.closest('.path').scrollIntoView({block:'center',behavior:RM?'auto':'smooth'});
-}
-function focusFirstErr(){const k=['name','tg','clan','tariff','gold','form'].find(k=>$(`[data-err="${k}"]`,form).textContent);if(!k)return;
-  if(k==='gold'||k==='tariff'){toPath($(`[data-err="${k}"]`,form).textContent);return}
-  const t=k==='clan'?$('#co-clan'):ERR_INPUT[k]?$('#'+ERR_INPUT[k]):null;
-  (t||$(`[data-err="${k}"]`,form)).focus?.();t?.scrollIntoView({block:'center',behavior:RM?'auto':'smooth'})}
+function focusFirstErr(){const k=['tariff','gold','clan','name','tg','form'].find(k=>$(`[data-err="${k}"]`,form).textContent);if(!k)return;
+  const t=k==='clan'?$('#co-clan'):k==='tariff'?$('input[name="tariff"]',form):ERR_INPUT[k]?$('#'+ERR_INPUT[k]):null;
+  (t||$(`[data-err="${k}"]`,form)).focus?.({preventScroll:true});(t||$(`[data-err="${k}"]`,form)).scrollIntoView?.({block:'center',behavior:RM?'auto':'smooth'})}
 
 function showStep(step){co.step=step;$$('.step',dlg).forEach(s=>s.hidden=s.dataset.step!==step);$('.sheet-in',dlg).scrollTop=0}
-function openCheckout(){
+/* окно открывается с карточки (путь выбран) или с нижней кнопки (путь как был; Gold сам не выбирается) */
+function openCheckout(tf){
   if(applied){openPayOnly();return}
-  if(ticketFor(sel.tariff)==null){toPath(sel.tariff==='GOLD'?goldState(goldInp.value,S().tariffs.gold_min_idr).err:'Выбери путь');return}
-  $('#rc-err').textContent='';
+  if(TARIFF_NAME[tf])sel.tariff=tf;
   if(!myClan){reopenCo=true;openPro('clans',false);return}
   co.payOnly=false;
-  showStep('form');updateTotal();['form','tariff','gold'].forEach(k=>setErr(k,''));
+  showStep('form');renderCo();['form','tariff','gold'].forEach(k=>setErr(k,''));
   const cd=clanData(myClan);setErr('clan',cd&&!cd.available?ty(reasonText(cd.reason)+'. Выбери другой клан — остальные данные сохранены.'):'');
   if(!dlg.open)dlg.showModal();
-  requestAnimationFrame(()=>{const t=!el.f_name.value.trim()?el.f_name:!el.f_tg.value.trim()?el.f_tg:$('#co-t');t.focus()});
+  requestAnimationFrame(()=>$('#co-t').focus({preventScroll:true}));
 }
 function openPayOnly(){co.payOnly=true;renderPay();showStep('pay');if(!dlg.open)dlg.showModal();requestAnimationFrame(()=>$('#pay-t').focus())}
 function renderPay(){
@@ -1433,19 +1348,19 @@ function showDone(){
 form.addEventListener('submit',e=>{e.preventDefault();$$('input',form).forEach(i=>i.dataset.touched='1');const {e:errs,data}=validate();updateTotal();
   if(Object.keys(errs).length){focusFirstErr();return}
   co.data=data;showStep('pay');renderPay();$('#pay-t').focus()});
-form.addEventListener('input',e=>{const t=e.target;if(t.id==='f-name'&&t.dataset.touched)setErr('name','');if(t.id==='f-tg'&&t.dataset.touched)setErr('tg','');if(t.name==='clan')setErr('clan','');if(t.name==='tariff')setErr('tariff','');updateTotal()});
-form.addEventListener('change',()=>updateTotal());
+form.addEventListener('input',e=>{const t=e.target;if(t.id==='f-dinner')sel.dinner=t.checked;if(t.name==='tariff')sel.tariff=t.value;if(t.id==='f-name'&&t.dataset.touched)setErr('name','');if(t.id==='f-tg'&&t.dataset.touched)setErr('tg','');if(t.name==='clan')setErr('clan','');if(t.name==='tariff')setErr('tariff','');updateTotal()});
+form.addEventListener('change',e=>{const t=e.target;
+  if(t.name==='tariff'){sel.tariff=t.value;setErr('tariff','');checkGold()}
+  if(t.id==='f-dinner')sel.dinner=t.checked;
+  renderCo()});
 form.addEventListener('focusout',e=>{const t=e.target;if(!['f-name','f-tg'].includes(t.id)||!t.value.trim())return;t.dataset.touched='1';
   if(t.id==='f-tg'){const n=normTg(t.value);if(n)t.value=n;setErr('tg',n?'':ty('Ник в Telegram: латиница, цифры и _, от 5 до 32 символов'))}});
-/* список путей и свиток */
-$('#paths').addEventListener('change',e=>{if(e.target.name!=='path')return;sel.tariff=e.target.value;$('#rc-err').textContent='';renderReceipt();checkGold()});
-$('#p-dinner').addEventListener('change',e=>{sel.dinner=e.target.checked;renderReceipt()});
-goldInp.addEventListener('input',()=>{goldInp.dataset.touched='1';$('#rc-err').textContent='';checkGold();renderReceipt()});
+goldInp.addEventListener('input',()=>{goldInp.dataset.touched='1';setErr('gold','');checkGold();renderCo()});
 goldInp.addEventListener('blur',()=>{const g=parseAmount(goldInp.value);if(g!=null)goldInp.value=fmt(g)});
-if(FINE)$$('.paths .path').forEach(r=>{
-  r.addEventListener('pointerenter',()=>{if(applied)return;hoverTf=r.dataset.path;renderGhost()});
-  r.addEventListener('pointerleave',()=>{hoverTf=null;renderGhost()})});
-const flash=els=>{if(RM)return;els.forEach(x=>{x.classList.remove('flash');void x.offsetWidth;x.classList.add('flash')})};
+/* наведение или фокус на карточке — превью вклада на шкале */
+$$('.tcard').forEach(c=>{const on=()=>{if(applied)return;hoverTf=c.dataset.tf;renderGhost()},off=()=>{hoverTf=null;renderGhost()};
+  if(FINE){c.addEventListener('pointerenter',on);c.addEventListener('pointerleave',off)}
+  c.addEventListener('focusin',on);c.addEventListener('focusout',off)});
 dlg.addEventListener('close',()=>{if(co.step==='done'||co.payOnly)showStep('form')});
 dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});
 
@@ -1457,23 +1372,20 @@ async function copyText(text,btn){
 
 /* ── клики ── */
 document.addEventListener('click',e=>{
+  const card=e.target.closest('.tcard');
+  if(card&&!e.target.closest('button,a,details')){openCheckout(card.dataset.tf);return}
   const t=e.target.closest('button,[data-act]');if(!t)return;
   if(t.dataset.join){chooseClan(t.dataset.join,!!t.closest('.pro'));return}
   if(t.classList.contains('more')){const card=t.closest('.clan');card.dataset.all=card.dataset.all==='1'?'0':'1';renderClans();return}
-  if(t.id==='rc-go'){openCheckout();return}
-  if(t.classList.contains('preset')){goldInp.value=fmt(Number(t.dataset.amt));goldInp.dataset.touched='1';$('#rc-err').textContent='';checkGold();renderReceipt();return}
+  if(t.dataset.pick){openCheckout(t.dataset.pick);return}
+  if(t.id==='join-go'){openCheckout(null);return}
+  if(t.classList.contains('preset')){goldInp.value=fmt(Number(t.dataset.amt));goldInp.dataset.touched='1';setErr('gold','');checkGold();renderCo();return}
   if('close' in t.dataset){dlg.close();return}
   if('back' in t.dataset){showStep('form');$('#co-t').focus();return}
   if('paid' in t.dataset){submitApp();return}
   if(t.dataset.copy==='amount'){copyText(String(co.total||''),t);return}
   if(t.dataset.copy==='bank'){copyText($('#bank-txt').textContent,t);return}
-  if(t.dataset.act==='add-dinner'){if(!applied){sel.dinner=true;renderReceipt()}
-    const wide=matchMedia('(min-width:881px)').matches;
-    (wide?$('#path'):$('#rc-items')).scrollIntoView({behavior:RM?'auto':'smooth',block:wide?'start':'center'});
-    if(!applied)$('#p-dinner').focus({preventScroll:true});flash([$('#p-dn-row'),$('#rc-dn')]);return}
   if(t.dataset.act==='co-clan'){dlg.close();reopenCo=true;openPro('clans',true);return}
-  if(t.id==='mbar-go'){openCheckout();return}
-  if(t.dataset.act==='edit-path'){dlg.close();const r=$('input[name="path"]:checked')||$('input[name="path"]');r.focus({preventScroll:true});$('#path').scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});return}
   switch(t.dataset.act){
     case 'pro-next':turnToClans();break;
     case 'pro-close':case 'pro-enter':closePro();break;
@@ -1496,26 +1408,41 @@ function initTilt(){
 const floated=new WeakSet();
 function startFloats(root){if(!G)return;$$('.float',root).forEach((f,i)=>{if(floated.has(f))return;floated.add(f);
   G.to(f,{y:(i%2?-1:1)*(8+i%3*4),rotation:(i%2?-1:1)*(3+i%2*2),duration:3.2+i%3*.9,ease:'sine.inOut',yoyo:true,repeat:-1,delay:i*.25})})}
+let pageMotion=false;
 function initMotion(){
   if(motionReady)return;motionReady=true;
-  if(!G){meterSeen=true;renderTreasury();return}
+  /* шкала заполняется, когда видна; без IntersectionObserver — сразу */
+  const bar=$('#bar');
+  if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();meterSeen=true;renderTreasury()}},{rootMargin:'0px 0px -8% 0px'});io.observe(bar)}
+  else{meterSeen=true;renderTreasury()}
+  if(G)startPageMotion();
+}
+/* появление при прокрутке: только opacity и сдвиг (без visibility), только для блоков ниже экрана */
+function startPageMotion(){
+  if(pageMotion||!G)return;pageMotion=true;
   startFloats($('main'));
   G.to('.bar-star',{rotation:360,duration:30,repeat:-1,ease:'none'});
-  if(!ST){meterSeen=true;renderTreasury();return}
-  const rv=$$('main [data-rv]');G.set(rv,{autoAlpha:0,y:34});
-  ST.batch(rv,{start:'top 90%',once:true,onEnter:b=>G.to(b,{autoAlpha:1,y:0,duration:.9,stagger:.1,ease:'power3.out',overwrite:true})});
-  ST.create({trigger:'#receipt',start:'top 88%',once:true,onEnter:()=>{meterSeen=true;renderTreasury()}});
-  if(!FINE)$$('main .sway').forEach((s,i)=>{const d=i%2?-1:1;
-    G.fromTo(s,{rotation:-1.6*d,y:16},{rotation:1.3*d,y:-12,ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'bottom top',scrub:.8}})});
+  if(!ST)return;
+  const rv=$$('main [data-rv]').filter(e=>e.getBoundingClientRect().top>innerHeight*.92);
+  G.set(rv,{opacity:0,y:34});
+  ST.batch(rv,{start:'top 90%',once:true,onEnter:b=>G.to(b,{opacity:1,y:0,duration:.9,stagger:.1,ease:'power3.out',overwrite:true})});
   requestAnimationFrame(()=>ST.refresh());
+}
+/* клавиатура: блок, в который пришёл фокус, сразу проявляется */
+document.addEventListener('focusin',e=>{const r=e.target.closest&&e.target.closest('main [data-rv]');if(r&&G&&+getComputedStyle(r).opacity<1)G.to(r,{opacity:1,y:0,duration:.35,overwrite:true})});
+function loadMotion(){
+  if(RM)return;
+  const add=(src,ok,fail)=>{const sc=document.createElement('script');sc.src=src;sc.async=true;sc.onload=ok;sc.onerror=fail;document.head.append(sc)};
+  const ready=()=>{if(!window.gsap)return;G=window.gsap;if(window.ScrollTrigger){ST=window.ScrollTrigger;G.registerPlugin(ST)}
+    if(!pro.hidden)startFloats(pro);if(motionReady)startPageMotion()};
+  add('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js',()=>add('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js',ready,ready),()=>{});
 }
 
 /* ── запуск ── */
 renderAll();initTilt();
-{const f=$('#dinner');if(!RM&&'IntersectionObserver' in window)new IntersectionObserver(es=>es.forEach(e=>f.classList.toggle('live',e.isIntersecting))).observe(f)}
 if(applied||myClan){initMotion()}
 else openPro(LS.get('hc_seen')?'clans':'intro',false);
-refresh();
+refresh();loadMotion();
 setInterval(()=>{if(document.visibilityState==='visible')refresh()},12000);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refresh()});
 })();
