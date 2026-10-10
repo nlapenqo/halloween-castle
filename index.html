@@ -15,21 +15,21 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1C111B">
 <link rel="icon" href="art/s-pumpkin1.webp" type="image/webp">
-<style>body{margin:0}[hidden]{display:none!important}</style>
 <title>Halloween · Lost Castle</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alice&family=Kurale&family=Neucha&family=IM+Fell+English+SC&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alice&family=Kurale&display=swap">
 <style>
-/* Layout: книга-сказка — обложка с вписанной датой, главы на кремовой бумаге, неровные рамки, день темнеет полосами от солнца к луне */
+/* Книга-сказка: обложка с лого, главы на кремовой бумаге, неровные плашки и рамки, день темнеет полосами от солнца к луне */
 :root{
   --paper:#F2E0C0;
   --paper-deep:#E9D1A6;
+  --paper-dim:#E8D6B8;  /* светлый текст на тёмных блоках */
   --ink:#26171D;
-  --night:#1C111B;      /* фон обложки и финала */
+  --night:#1C111B;      /* обложка, ночь выбора клана, финал */
+  --night-soft:#21151E; /* трапеза: в тон фону иллюстрации */
   --cobalt:#3D63B0;
   --cobalt-deep:#2C4A8E;
-  --navy:#22305C;
   --vermilion:#DC5530;
   --rose:#DA9391;
   --mauve:#9A8593;
@@ -37,74 +37,97 @@
   --gold:#D9AE52;
   --sky-sand:#E4C08A;   /* полосы таймлайна между бумагой и розовым */
   --sky-peach:#E3A782;
+  /* шрифты: Alice — заголовки, кнопки, чипы; Kurale — текст */
   --f-display:"Alice","Kurale",Georgia,serif;
   --f-body:"Kurale","Alice",Georgia,serif;
+  /* шкала кеглей: шесть ступеней на всю страницу */
+  --fs-h2:clamp(34px,4.6vw,60px);
+  --fs-num:clamp(34px,3.6vw,46px);  /* время в таймлайне */
+  --fs-h3:clamp(22px,2vw,28px);
+  --fs-lead:clamp(19px,1.5vw,21px);
+  --fs-body:18px;                   /* текст, кнопки, чипы */
+  --fs-small:16px;                  /* описания в карточках, подписи */
+  /* формы: одна толщина линии и набор неровных радиусов */
+  --line:2.5px;
+  --r-plate:26px 34px 22px 38px/34px 22px 38px 26px;
+  --r-frame:30px 40px 26px 44px/40px 26px 44px 30px;
+  --r-img:20px 28px 16px 30px/28px 16px 30px 20px;
+  --r-pill:40px 28px 44px 30px/30px 44px 28px 40px;
+  --r-round:52% 48% 50% 46%/48% 52% 46% 50%;
+  --ease:cubic-bezier(.2,.8,.2,1);
   --gutter:clamp(16px,5vw,64px);
   --stars:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="520" height="520"%3E%3Cfilter id="r"%3E%3CfeTurbulence type="fractalNoise" baseFrequency=".09" numOctaves="1" seed="3"/%3E%3CfeDisplacementMap in="SourceGraphic" scale="2"/%3E%3C/filter%3E%3Cg fill="%23D9AE52" fill-opacity=".55" filter="url(%23r)"%3E%3Cpolygon points="60.0,61.0 61.0,67.6 66.4,63.6 62.4,69.0 69.0,70.0 62.4,71.0 66.4,76.4 61.0,72.4 60.0,79.0 59.0,72.4 53.6,76.4 57.6,71.0 51.0,70.0 57.6,69.0 53.6,63.6 59.0,67.6"/%3E%3Cpolygon points="330.0,35.0 330.6,38.6 333.5,36.5 331.4,39.4 335.0,40.0 331.4,40.6 333.5,43.5 330.6,41.4 330.0,45.0 329.4,41.4 326.5,43.5 328.6,40.6 325.0,40.0 328.6,39.4 326.5,36.5 329.4,38.6"/%3E%3Cpolygon points="250.0,203.0 250.8,208.2 254.9,205.1 251.8,209.2 257.0,210.0 251.8,210.8 254.9,214.9 250.8,211.8 250.0,217.0 249.2,211.8 245.1,214.9 248.2,210.8 243.0,210.0 248.2,209.2 245.1,205.1 249.2,208.2"/%3E%3Cpolygon points="90.0,325.5 90.5,328.8 93.2,326.8 91.2,329.5 94.5,330.0 91.2,330.5 93.2,333.2 90.5,331.2 90.0,334.5 89.5,331.2 86.8,333.2 88.8,330.5 85.5,330.0 88.8,329.5 86.8,326.8 89.5,328.8"/%3E%3Cpolygon points="400.0,292.0 400.9,297.9 405.7,294.3 402.1,299.1 408.0,300.0 402.1,300.9 405.7,305.7 400.9,302.1 400.0,308.0 399.1,302.1 394.3,305.7 397.9,300.9 392.0,300.0 397.9,299.1 394.3,294.3 399.1,297.9"/%3E%3Cpolygon points="180.0,435.0 180.6,438.6 183.5,436.5 181.4,439.4 185.0,440.0 181.4,440.6 183.5,443.5 180.6,441.4 180.0,445.0 179.4,441.4 176.5,443.5 178.6,440.6 175.0,440.0 178.6,439.4 176.5,436.5 179.4,438.6"/%3E%3Cpolygon points="470.0,464.0 470.7,468.3 474.2,465.8 471.7,469.3 476.0,470.0 471.7,470.7 474.2,474.2 470.7,471.7 470.0,476.0 469.3,471.7 465.8,474.2 468.3,470.7 464.0,470.0 468.3,469.3 465.8,465.8 469.3,468.3"/%3E%3C/g%3E%3C/svg%3E');
   color-scheme:light;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{background:var(--paper);color:var(--ink);font:400 18px/1.55 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 var(--fs-body)/1.55 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit}
-a:focus-visible{outline:2px dashed var(--vermilion);outline-offset:4px;border-radius:6px}
 p{margin:0}
+:focus-visible{outline:2px dashed var(--focus,var(--vermilion));outline-offset:4px;border-radius:6px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .wrap{max-width:1240px;margin-inline:auto;padding-inline:var(--gutter)}
 section{position:relative;overflow-x:clip}
+/* тёмные блоки: акцентное слово и рамка фокуса золотые */
+.feast,.gate,.estates-sec.night,.lb{--acc:var(--gold);--focus:var(--gold)}
 
-/* ── типографика: два шрифта, один стиль заголовков ── */
+/* ── типографика: два шрифта, шесть кеглей из :root, капс с разрядкой только у h2 ── */
 h1,h2,h3{margin:0;font-weight:400;text-wrap:balance;font-family:var(--f-display)}
-h2{font-size:clamp(34px,4.6vw,60px);line-height:1.05;text-transform:uppercase;letter-spacing:.04em;filter:url(#ink)}
-h3{font-size:clamp(22px,2vw,28px);line-height:1.15}
-h2 .acc{font:400 1.5em/.8 "Neucha",var(--f-display);font-style:normal;text-transform:none;letter-spacing:0;color:var(--vermilion);position:relative;top:.01em;padding-inline:.04em}
-.label{font:400 13px/1.3 var(--f-display);text-transform:uppercase;letter-spacing:.18em;color:var(--vermilion)}
-.lead{font-size:clamp(19px,1.5vw,21px);max-width:58ch}
-.small{font-size:16px;line-height:1.5}
+h2{font-size:var(--fs-h2);line-height:1.05;text-transform:uppercase;letter-spacing:.04em;filter:url(#ink)}
+h3{font-size:var(--fs-h3);line-height:1.15}
+h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
+.lead{font-size:var(--fs-lead);max-width:58ch}
+.small{font-size:var(--fs-small);line-height:1.5}
 .head{display:grid;gap:16px;justify-items:center;text-align:center;margin-bottom:clamp(36px,5vw,60px)}
 .head .lead{opacity:.85}
+.drop::first-letter{float:left;font:400 4.4em/.82 var(--f-display);color:var(--vermilion);padding:.08em .1em 0 0}
 
-/* ── неровные плашки ── */
-.plate{position:relative;isolation:isolate;padding:clamp(20px,2.4vw,28px)}
-.plate::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pl-bg,var(--paper-deep));border:2.5px solid var(--pl-line,var(--ink));border-radius:26px 34px 22px 38px/34px 22px 38px 26px;filter:url(#rough)}
-.frame{position:relative;isolation:isolate;padding:clamp(8px,1vw,14px);margin:0}
-.frame::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--fr,var(--night));border-radius:30px 40px 26px 44px/40px 26px 44px 30px;filter:url(#rough)}
-.frame img{width:100%;border-radius:20px 28px 16px 30px/28px 16px 30px 20px;filter:url(#rough-sm)}
-.tilt-l{transform:rotate(-1.2deg)}.tilt-r{transform:rotate(1deg)}
-.btn{position:relative;isolation:isolate;display:inline-flex;align-items:center;padding:15px 24px;text-decoration:none;font:400 18px/1 var(--f-display);color:var(--ink);transition:transform .25s}
-.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:40px 28px 44px 30px/30px 44px 28px 40px;filter:url(#rough)}
-.btn:hover{transform:rotate(-2deg) scale(1.04)}
-.btn-main::before{background:var(--gold)}
-.btn-lg{padding:18px 30px;font-size:21px}
+/* ── неровные формы: подложка — псевдоэлемент с фильтром #rough ── */
+.plate,.frame,.btn,.chip,.icon-btn,.estate,.lb figure{position:relative;isolation:isolate}
+.plate::before,.frame::before,.btn::before,.chip::before,.icon-btn::before,.estate::before,.lb figure::before{content:"";position:absolute;inset:0;z-index:-1;filter:url(#rough)}
+.plate{padding:clamp(20px,2.4vw,28px)}
+.plate::before{background:var(--pl-bg,var(--paper-deep));border:var(--line) solid var(--ink);border-radius:var(--r-plate)}
+.frame{padding:clamp(8px,1vw,14px);margin:0}
+.frame::before{background:var(--fr,var(--night));border-radius:var(--r-frame)}
+.frame img{width:100%;border-radius:var(--r-img);filter:url(#rough-sm)}
+.tilt-l{rotate:-1.2deg}.tilt-r{rotate:1deg}
+
+/* ── кнопки и чипы: одна форма-«пилюля»; при наведении кнопка приподнимается ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 24px;text-decoration:none;font:400 var(--fs-body)/1 var(--f-display);color:var(--ink);transition:translate .25s var(--ease)}
+.btn::before{background:var(--btn-bg,var(--paper));border:var(--line) solid var(--ink);border-radius:var(--r-pill)}
+.btn-main{--btn-bg:var(--gold)}
+.btn-lg{padding:18px 30px;font-size:var(--fs-lead)}
+.icon-btn{display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;background:none;cursor:pointer;font:400 30px/1 var(--f-display);color:var(--ink);transition:translate .25s var(--ease)}
+.icon-btn::before{background:var(--paper);border:var(--line) solid var(--ink);border-radius:var(--r-round)}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.btn:hover,.icon-btn:hover{translate:0 -3px}}
+.chip{display:inline-flex;align-items:center;padding:14px 20px;font:400 var(--fs-body)/1 var(--f-display);color:var(--ink);-webkit-text-stroke:.6px currentColor;font-variant-numeric:lining-nums;white-space:nowrap}
+.chip::before{background:var(--paper);border:var(--line) solid var(--ink);border-radius:var(--r-pill)}
+.chip:nth-child(2)::before{border-radius:30px 44px 28px 40px/44px 30px 40px 28px}
+.chip:nth-child(3)::before{border-radius:44px 30px 40px 28px/28px 40px 30px 44px}
+@media (max-width:520px){.chip{padding:13px 16px}}
 .cta-row{margin-top:clamp(22px,3vw,32px)}
-@media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
 
-/* ── обложка: на весь экран, заголовок набран шрифтом заголовков ── */
-.cover{--cv-pad:clamp(16px,4svh,48px);background:#1E111B;color:var(--paper);min-height:100svh;display:grid;place-items:center;padding:var(--cv-pad) clamp(20px,2.2vw,40px)}
+/* ── обложка: иллюстрация на весь экран, поверх векторное лого ── */
+.cover{--cv-pad:clamp(16px,4svh,48px);background:var(--night) var(--stars);background-size:420px;color:var(--paper);min-height:100svh;display:grid;place-items:center;padding:var(--cv-pad) clamp(20px,2.2vw,40px)}
 .stage{position:relative;width:min(100%,2200px,calc((100svh - 2 * var(--cv-pad)) * 2200 / 1228));container-type:inline-size}
 .stage img{width:100%}
 /* рамка обложки: тёмный кант прячет срез картинки, по нему двойная золотая линия, в углах звёзды */
-.cv-frame{position:absolute;inset:0;pointer-events:none;border:var(--cf-band,1.3cqw) solid #1E111B}
+.cv-frame{position:absolute;inset:0;pointer-events:none;border:1.3cqw solid var(--night)}
 .cv-frame::before,.cv-frame::after{content:"";position:absolute;border:2px solid var(--gold);border-radius:6px 10px 5px 9px/9px 5px 10px 6px;filter:url(#rough)}
 .cv-frame::before{inset:-.55cqw}
 .cv-frame::after{inset:.35cqw;border-width:1px;opacity:.6}
-.cv-frame svg{position:absolute;width:var(--cf-star,3.2cqw);height:auto;fill:var(--gold);filter:url(#rough-sm)}
+.cv-frame svg{position:absolute;width:3.2cqw;height:auto;fill:var(--gold);filter:url(#rough-sm)}
 .cv-frame svg:nth-child(1){left:0;top:0;transform:translate(-50%,-50%) translate(-.55cqw,-.55cqw)}
 .cv-frame svg:nth-child(2){right:0;top:0;transform:translate(50%,-50%) translate(.55cqw,-.55cqw)}
 .cv-frame svg:nth-child(3){left:0;bottom:0;transform:translate(-50%,50%) translate(-.55cqw,.55cqw)}
 .cv-frame svg:nth-child(4){right:0;bottom:0;transform:translate(50%,50%) translate(.55cqw,.55cqw)}
-.cover{background-image:var(--stars);background-size:420px}
-.ov{position:absolute;left:51%;top:47.6%;transform:translate(-50%,-50%);width:42.8%;display:grid;justify-items:center;text-align:center}
+/* лого по центру самого большого пустого места иллюстрации */
+.ov{position:absolute;left:51%;top:47.6%;transform:translate(-50%,-50%);width:42.8%;display:grid;justify-items:center}
 .ov-logo{display:block;width:40cqw;height:auto}
-.ov-t{margin:0;font:400 5.37cqw/1 "IM Fell English SC",var(--f-display);text-transform:uppercase;letter-spacing:.04em;color:#F1E3C8;white-space:nowrap}
-.ov-t .H{font-size:1.3em;line-height:.8;color:var(--vermilion);-webkit-text-stroke:.012em #CF9F68;paint-order:stroke fill}
-.ov-curl{display:block;width:30cqw;height:auto;margin:.9cqw 0 .9cqw;overflow:visible}
-.ov-s{display:flex;align-items:center;gap:1.1cqw;font:400 1.35cqw/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.3em;color:var(--gold);white-space:nowrap}
 @media (max-width:700px){
   /* телефон: обложка на весь экран, картинка заполняет его целиком */
-  .cover{display:block;position:relative;height:100svh;min-height:520px;padding:0;overflow:hidden}
+  .cover{display:block;height:100svh;min-height:520px;padding:0;overflow:hidden}
   .stage{position:absolute;inset:0;width:auto;container-type:normal}
   .stage picture,.stage img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
   .cv-frame{inset:12px;border:0}
@@ -117,63 +140,100 @@ h2 .acc{font:400 1.5em/.8 "Neucha",var(--f-display);font-style:normal;text-trans
   .cv-frame svg:nth-child(4){transform:translate(50%,50%)}
   .ov{left:50%;top:31%;width:calc(100% - 64px)}
   .ov-logo{width:min(100%,460px)}
-  .ov-t{font-size:min(calc((100vw - 64px) / 7.9),70px)}
-  .ov-curl{width:min(66vw,420px);margin:2.2vw 0 2.6vw}
-  .ov-s{font-size:min(3.1vw,18px);letter-spacing:.2em;white-space:normal}
 }
+/* звёзды в углах рамки мерцают по кругу: масштаб и прозрачность, со сдвигом по углам; вне экрана стоят */
+@keyframes fr-tw{0%,100%{scale:1;opacity:1}50%{scale:.68;opacity:.5}}
+@media (prefers-reduced-motion:no-preference){
+  .cv-frame svg{animation:fr-tw 2.8s ease-in-out infinite}
+  .cv-frame svg:nth-child(2){animation-delay:-.7s}
+  .cv-frame svg:nth-child(3){animation-delay:-2.1s}
+  .cv-frame svg:nth-child(4){animation-delay:-1.4s}
+}
+.cover.off .cv-frame svg{animation-play-state:paused}
+/* светлячки: canvas поверх иллюстрации, его добавляет JS */
+.ff{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
 
 /* ── о ночи ── */
 .night-intro{padding-block:clamp(72px,10vw,120px) 0}
 .night-intro .grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:start}
-.facts{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px}
-.chip{position:relative;isolation:isolate;display:inline-flex;align-items:center;padding:14px 20px;font:400 18px/1 var(--f-display);color:var(--ink);-webkit-text-stroke:.6px currentColor;letter-spacing:.02em;font-variant-numeric:lining-nums;white-space:nowrap}
-.chip::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:40px 28px 44px 30px/30px 44px 28px 40px;filter:url(#rough)}
-.chip:nth-child(2)::before{border-radius:30px 44px 28px 40px/44px 30px 40px 28px}
-.chip:nth-child(3)::before{border-radius:44px 30px 40px 28px/28px 40px 30px 44px}
-@media (max-width:520px){.chip{padding:13px 18px;font-size:16px}}
 .night-intro .text{display:grid;gap:22px}
 @media (max-width:880px){.night-intro .grid{grid-template-columns:minmax(0,1fr)}}
-.drop::first-letter{float:left;font:400 4.4em/.82 var(--f-display);color:var(--vermilion);padding:.08em .1em 0 0}
+.facts{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px}
 .rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;list-style:none;margin:0;padding:0}
 .rules li{display:grid;gap:10px;align-content:start;padding:clamp(26px,3vw,38px) clamp(24px,2.8vw,34px);min-height:clamp(170px,16vw,210px)}
-.rules li::before{border-width:3.5px}
-.rules li .label{font-size:15px}
-.rules li .small{font-size:17px}
 .rules li:nth-child(1){--pl-bg:var(--rose)}
 .rules li:nth-child(2){--pl-bg:var(--ochre)}
 .rules li:nth-child(3){--pl-bg:var(--cobalt);color:var(--paper)}
-.rules li:nth-child(3) .label{color:var(--paper)}
 .rules li:nth-child(4){--pl-bg:var(--paper-deep)}
-.rules li .label{color:var(--ink)}
-.rules li:nth-child(odd){transform:rotate(-.8deg)}.rules li:nth-child(even){transform:rotate(.9deg) translateY(10px)}
-@media (max-width:480px){.rules{grid-template-columns:minmax(0,1fr)}.rules li:nth-child(even){transform:rotate(.6deg)}}
+.rules li:nth-child(odd){rotate:-.8deg}
+/* чётные плашки ниже на 10px через top, а не transform: появление по скроллу не сбивает сдвиг */
+.rules li:nth-child(even){rotate:.9deg;top:10px}
+@media (max-width:480px){.rules{grid-template-columns:minmax(0,1fr)}.rules li:nth-child(even){rotate:.6deg;top:0}}
+/* процессия: четыре копии картинки едут по кругу; вне экрана и при reduced-motion стоят */
 .parade{--ph:clamp(150px,22vw,300px);margin-top:clamp(56px,8vw,100px);height:var(--ph);overflow:hidden;position:relative}
 .parade .track{display:flex;height:100%;width:max-content;animation:march 100s linear infinite}
+.parade.off .track{animation-play-state:paused}
 .parade img{height:100%;width:auto;max-width:none;margin-right:calc(var(--ph) * -.06)}
 @keyframes march{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 @media (prefers-reduced-motion:reduce){.parade .track{animation:none;transform:translateX(-12%)}}
 
-/* ── сословия ── */
-.estates-sec{padding-block:clamp(80px,11vw,140px)}
+/* ── «Три клана»: карточки с наклоном; клик превращает блок в выбор клана на ночном небе ── */
+.estates-sec{padding-block:clamp(80px,11vw,140px);isolation:isolate}
 .estates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(32px,4.4vw,72px);align-items:start}
-.estate{display:grid;gap:14px;justify-items:center;text-align:center;min-width:0}
+@media (max-width:880px){.estates{grid-template-columns:minmax(0,1fr);max-width:460px;margin-inline:auto}}
+.estate{display:grid;gap:14px;justify-items:center;text-align:center;min-width:0;padding:14px 14px 22px;cursor:pointer;transition:color .5s}
 .estate .frame{width:100%;margin-bottom:8px}
-/* карточки сословий наклоняются за курсором */
-.tilt3d{transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) rotate(var(--rz,0deg)) scale(var(--sc,1));transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.8,.2,1);will-change:transform}
+.estate p{max-width:34ch}
+/* наклон за курсором (только мышь); на тач-экранах наклон ведёт скролл */
+.tilt3d{transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) rotate(var(--rz,0deg)) scale(var(--sc,1));transform-style:preserve-3d;transition:transform .6s var(--ease);will-change:transform}
 .tilt3d.on{transition:transform .12s ease-out}
 .tilt3d img{transform:translateZ(28px)}
-.tilt3d::after{content:"";position:absolute;inset:clamp(8px,1vw,14px);border-radius:20px 28px 16px 30px/28px 16px 30px 20px;background:radial-gradient(circle at var(--mx,50%) var(--my,30%),rgba(255,244,220,.45),transparent 58%);mix-blend-mode:soft-light;opacity:0;transition:opacity .5s;pointer-events:none;transform:translateZ(29px)}
+.tilt3d::after{content:"";position:absolute;inset:clamp(8px,1vw,14px);border-radius:var(--r-img);background:radial-gradient(circle at var(--mx,50%) var(--my,30%),rgba(255,244,220,.45),transparent 58%);mix-blend-mode:soft-light;opacity:0;transition:opacity .5s;pointer-events:none;transform:translateZ(29px)}
 .tilt3d.on::after{opacity:1}
 @media (prefers-reduced-motion:reduce){.tilt3d,.tilt3d.on{transition:none}}
-.draft{max-width:680px;margin:clamp(56px,7vw,84px) auto 0;--pl-bg:var(--paper);display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:start}
-.draft p{font-size:17px;line-height:1.55}
-.draft .fn-star{width:34px;height:auto;margin-top:-2px;transform:rotate(-8deg)}
-h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-left:.08em;transform:translateY(-.08em) rotate(10deg)}
-.estate p{max-width:34ch}
-.estate .task{display:grid;gap:4px;justify-items:center;margin-top:4px}
-@media (max-width:900px){.estates{grid-template-columns:minmax(0,1fr);max-width:460px;margin-inline:auto}}
+.clan-cta{display:grid;gap:14px;justify-items:center;text-align:center;margin-top:clamp(44px,6vw,72px)}
+.clan-cta .small{max-width:46ch;opacity:.85}
+/* ночь раскрывается кругом от точки клика, звёзды рисует canvas */
+.est-night{position:absolute;inset:0;z-index:-1;background:var(--night);clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition:clip-path .85s cubic-bezier(.5,.05,.2,1);pointer-events:none}
+.est-night::before,.est-night::after{content:"";position:absolute;left:-20px;right:-20px;height:30px;background:var(--night);filter:url(#rough)}
+.est-night::before{top:-14px}.est-night::after{bottom:-14px}
+.night .est-night{clip-path:circle(var(--cr,3000px) at var(--cx,50%) var(--cy,50%))}
+.sky-cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* заголовок и подзаголовок сменяются: день уходит вверх, ночь приходит снизу */
+.swap{display:grid}
+.swap>span{grid-area:1/1;transition:opacity .45s,visibility .45s,translate .45s}
+.swap .sw-night{opacity:0;visibility:hidden;translate:0 10px}
+.night .swap .sw-day{opacity:0;visibility:hidden;translate:0 -10px}
+.night .swap .sw-night{opacity:1;visibility:visible;translate:0 0;transition-delay:.4s}
+.estates-sec .head h2,.estates-sec .head h2 .acc,.estates-sec .head .lead{transition:color .6s}
+.night .head h2{color:var(--paper);transition-delay:.3s}
+.night .head .lead,.night .clan-cta .small{color:var(--paper-dim);opacity:1}
+/* карточки становятся цветными плашками с кнопкой «Присоединиться» */
+.estate::before{background:var(--pl,var(--rose));border-radius:var(--r-plate);opacity:0;scale:.92;transition:opacity .35s,scale .7s cubic-bezier(.2,.9,.25,1.25)}
+.est-WEREWOLF{--pl:var(--ochre);--i:1}.est-DARK_ELF{--pl:var(--cobalt);--i:2}
+.night .estate::before{opacity:1;scale:1;transition-delay:calc(.3s + var(--i,0) * .1s)}
+.night .estate{transition:color .5s,translate .45s var(--ease)}
+.night .est-DARK_ELF{color:var(--paper);transition-delay:.35s,0s}
+.night .estate.picked{translate:0 -10px}
+@media (hover:hover){.night .estate:not(.picked):hover{translate:0 -5px}}
+.estate::after{content:"";position:absolute;inset:6px;z-index:-2;border-radius:var(--r-plate);box-shadow:0 0 70px 14px color-mix(in srgb,var(--gold) 42%,transparent);opacity:0;transition:opacity .45s;pointer-events:none}
+.night .estate.picked::after{opacity:1}
+.night.opening .estate.picked::after{transition-delay:.6s}
+.est-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s var(--ease)}
+.est-more>div{min-height:0;overflow:hidden;display:flex;justify-content:center}
+.night .est-more{grid-template-rows:1fr;transition-delay:calc(.4s + var(--i,0) * .1s)}
+.night .est-more>div{overflow:visible;padding-bottom:4px}
+.est-join{--jd:calc(.55s + var(--i,0) * .1s);margin-top:14px;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .4s,visibility .4s,transform .5s cubic-bezier(.2,.9,.25,1.3),translate .25s var(--ease)}
+.night .est-join{opacity:1;visibility:visible;transform:none;transition-delay:var(--jd),var(--jd),var(--jd),0s}
+.est-back{min-height:44px;padding:6px 2px;border:0;background:none;font:400 var(--fs-body)/1.3 var(--f-display);color:var(--paper);text-decoration:underline dashed;text-underline-offset:7px;cursor:pointer}
+.night .clan-cta .est-open{display:none}
+.est-x{position:sticky;top:max(14px,env(safe-area-inset-top));z-index:3;margin:-60px max(14px,env(safe-area-inset-right)) 12px auto;opacity:0;transition:opacity .4s .5s,translate .25s var(--ease)}
+.night .est-x{opacity:1}
+@starting-style{.night .est-x{opacity:0}}
+.no-tr,.no-tr *,.no-tr *::before,.no-tr *::after{transition:none!important}
+@media (prefers-reduced-motion:reduce){.est-night,.swap>span,.estate,.estate::before,.estate::after,.est-more,.est-join,.est-x{transition:none!important}}
 
-/* ── замок и места ── */
+/* ── замок, фото, места ── */
 .castle-sec{padding-bottom:clamp(48px,6vw,80px)}
 .castle{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:center}
 .castle .text{display:grid;gap:20px;justify-items:start}
@@ -182,154 +242,100 @@ h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-le
 .real-head{text-align:center;margin-top:clamp(64px,8vw,100px)}
 .real{display:grid;grid-template-columns:1.3fr .8fr 1.3fr;gap:clamp(14px,2vw,26px);margin-top:24px;align-items:end}
 .real figure{margin:0;display:grid;gap:10px;justify-items:center}
-.real .frame{--fr:var(--paper-deep);width:100%}
-.real figcaption{font-size:15px;opacity:.75}
-.zoom{cursor:zoom-in;transition:transform .3s}
-.zoom:hover{transform:scale(1.02)}
-.lb{border:0;padding:0;background:none;max-width:none;max-height:none;overflow:visible}
-.lb::backdrop{background:rgba(20,10,18,.88)}
-.lb[open]{display:grid;place-items:center}
-.lb figure{position:relative;margin:0;padding:clamp(8px,1vw,14px);isolation:isolate}
-.lb figure::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper-deep);border-radius:30px 40px 26px 44px/40px 26px 44px 30px;filter:url(#rough)}
-.lb img{display:block;max-width:min(92vw,1100px);max-height:82svh;width:auto;height:auto;border-radius:20px 28px 16px 30px/28px 16px 30px 20px}
-.lb figcaption{text-align:center;color:var(--paper);font-size:16px;margin-top:14px;position:absolute;left:0;right:0;top:100%}
-.lb-x{position:absolute;top:-18px;right:-18px;width:48px;height:48px;display:grid;place-items:center;border:0;background:none;cursor:pointer;font:400 30px/1 var(--f-display);color:var(--ink);isolation:isolate}
-.lb-x::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:52% 48% 50% 46%/48% 52% 46% 50%;filter:url(#rough)}
-.lb-x:hover{transform:rotate(8deg)}
-@media (max-width:520px){.lb-x{top:-22px;right:-6px}}
-@media (prefers-reduced-motion:reduce){.zoom{transition:none}.zoom:hover,.lb-x:hover{transform:none}}
+.real .frame{--fr:var(--paper-deep);width:100%;transition:translate .3s var(--ease)}
+.real figcaption{font-size:var(--fs-small);opacity:.75}
+.zoom{cursor:zoom-in}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.real .frame:hover{translate:0 -6px}}
 @media (max-width:640px){.real{grid-template-columns:1fr 1fr}.real figure:first-child{grid-column:1/-1}}
+/* лайтбокс; ::backdrop в части браузеров не видит переменные, поэтому цвет ночи числом */
+.lb{border:0;padding:0;background:none;max-width:none;max-height:none;overflow:visible}
+.lb::backdrop{background:rgba(28,17,27,.88)}
+.lb[open]{display:grid;place-items:center}
+.lb figure{margin:0;padding:clamp(8px,1vw,14px)}
+.lb figure::before{background:var(--paper-deep);border-radius:var(--r-frame)}
+.lb img{display:block;max-width:min(92vw,1100px);max-height:82svh;width:auto;height:auto;border-radius:var(--r-img)}
+.lb figcaption{position:absolute;left:0;right:0;top:100%;margin-top:14px;text-align:center;color:var(--paper);font-size:var(--fs-small)}
+.lb-x{position:absolute;top:-18px;right:-18px}
+@media (max-width:520px){.lb-x{top:-22px;right:-6px}}
 .places{margin-top:clamp(90px,12vw,150px)}
 .vgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,60px) clamp(20px,3vw,48px)}
 .vig{display:grid;gap:10px;justify-items:center;text-align:center;align-content:start;min-width:0}
-.vig img{width:min(100%,340px);aspect-ratio:1;object-fit:contain;transition:transform .5s cubic-bezier(.3,1.6,.5,1);margin-bottom:6px}
-.vig:hover img{transform:rotate(-2.5deg) scale(1.03)}
+.vig img{width:min(100%,340px);aspect-ratio:1;object-fit:contain;margin-bottom:6px;transition:translate .5s cubic-bezier(.3,1.6,.5,1)}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.vig:hover img{translate:0 -8px}}
+/* виньетки покачиваются сами, вразнобой; вне экрана стоят */
+@media (prefers-reduced-motion:no-preference){.vig img{animation:vig-sway 2.6s ease-in-out infinite alternate}}
+.vig:nth-child(3n+2) img{animation-duration:3s}.vig:nth-child(3n) img{animation-duration:3.4s}
+.vig:nth-child(even) img{--sw:2.2deg}
+@keyframes vig-sway{from{rotate:0deg}to{rotate:var(--sw,-2.2deg)}}
+.places.off .vig img{animation-play-state:paused}
 .vig p{max-width:32ch}
 @media (max-width:880px){.vgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.vgrid{grid-template-columns:minmax(0,1fr)}}
-@media (prefers-reduced-motion:reduce){.vig img{transition:none}.vig:hover img{transform:none}}
-/* Финал: ночное небо с мерцающими звёздами, арки кланов */
-.gate{position:relative;isolation:isolate;overflow:hidden;background:var(--night) var(--stars);background-size:420px;color:var(--paper);padding-block:clamp(90px,11vw,150px) clamp(90px,11vw,140px);text-align:center}
-.gate::before,.gate::after{content:"";position:absolute;inset:-600px;z-index:-1;pointer-events:none;background:var(--stars)}
-.gate::before{background-size:310px;background-position:140px 90px;animation:st-drift-a 140s linear infinite,st-twinkle 3.6s ease-in-out infinite alternate}
-.gate::after{background-size:540px;background-position:260px 330px;animation:st-drift-b 190s linear infinite,st-twinkle 5.2s ease-in-out -2.1s infinite alternate}
-@keyframes st-drift-a{to{transform:translate3d(-310px,-310px,0)}}
-@keyframes st-drift-b{to{transform:translate3d(540px,-540px,0)}}
-@keyframes st-twinkle{0%{opacity:.15}55%{opacity:.85}100%{opacity:.35}}
-.gate h2{color:var(--paper)}.gate h2 .acc{color:var(--gold)}
-.gate .head .lead{color:#E8D6B8;opacity:1;max-width:46ch}
-.gate-clans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,3vw,44px);max-width:860px;margin:0 auto clamp(44px,5.5vw,68px)}
-.gate-c{display:grid;gap:12px;justify-items:center;text-decoration:none;color:var(--paper);animation:gate-float 6s ease-in-out var(--d) infinite alternate}
-.gate-arch{display:block;width:100%;border-radius:999px 999px 18px 18px;overflow:hidden;border:3px solid var(--gold);box-shadow:0 0 0 6px rgba(217,174,82,.14);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
-.gate-arch img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 22%}
-.gate-n{font:400 clamp(17px,1.7vw,22px)/1.2 var(--f-display)}
-.gate-c:hover .gate-arch,.gate-c:focus-visible .gate-arch{transform:translateY(-10px) scale(1.03);box-shadow:0 0 0 6px rgba(217,174,82,.32),0 18px 40px rgba(217,174,82,.25)}
-@keyframes gate-float{to{transform:translateY(-8px)}}
-.gate-note{margin-top:18px;opacity:.75}
-@media (max-width:520px){.gate-n{font-size:15px}.gate-arch{border-width:2px;box-shadow:0 0 0 4px rgba(217,174,82,.14)}}
-@media (prefers-reduced-motion:reduce){.gate::before,.gate::after,.gate-c{animation:none}.gate::before,.gate::after{opacity:.4}.gate-arch{transition:none}}
-.clan-cta{display:grid;gap:14px;justify-items:center;text-align:center;margin-top:clamp(44px,6vw,72px)}
-.clan-cta .small{max-width:46ch;opacity:.85}
+/* трапеза: тёмная полоса с рваными краями, картинка во всю ширину (на телефоне листается вбок) */
+.feast{position:relative;display:grid;gap:clamp(20px,3vw,36px);background:var(--night-soft);color:var(--paper);margin-block:clamp(60px,8vw,110px);padding-block:clamp(48px,6vw,80px)}
+.feast::before,.feast::after{content:"";position:absolute;left:-20px;right:-20px;height:30px;background:var(--night-soft);filter:url(#rough)}
+.feast::before{top:-14px}.feast::after{bottom:-14px}
+.feast .inner{display:grid;justify-items:center;text-align:center}
+.feast h2{color:var(--paper)}
+.feast .pan{width:100%;overflow-x:auto;scrollbar-width:none;margin-block:calc(clamp(20px,3vw,36px) * -.3)}
+.feast .pan::-webkit-scrollbar{display:none}
+.feast img{width:100%;max-width:none;min-width:720px;-webkit-mask-image:linear-gradient(to bottom,#000 86%,transparent);mask-image:linear-gradient(to bottom,#000 86%,transparent)}
+.feast p{max-width:52ch;color:var(--paper-dim)}
 .bonfire{display:grid;justify-items:center;text-align:center;gap:clamp(18px,2.4vw,28px);margin-top:clamp(20px,3vw,40px)}
 .bonfire .head{margin-bottom:0}
 .bf-frame{width:min(100%,1100px)}
-.bf-v{display:block;width:100%;height:auto;aspect-ratio:1280/712;object-fit:cover;border-radius:20px 28px 16px 30px/28px 16px 30px 20px;background:#1E1A2A}
+.bf-v{display:block;width:100%;height:auto;aspect-ratio:1280/712;object-fit:cover;border-radius:var(--r-img);background:var(--night)}
 .bf-t{max-width:52ch}
-/* Motion: светлячки на обложке и покачивание карточек на тач-экранах; включается JS-ом, без JS всё видно сразу */
-.ff{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
-.feast{position:relative;background:#21151E;color:var(--paper);margin-block:clamp(60px,8vw,110px);padding-block:clamp(48px,6vw,80px)}
-.feast::before,.feast::after{content:"";position:absolute;left:-20px;right:-20px;height:30px;background:#21151E;filter:url(#rough)}
-.feast::before{top:-14px}.feast::after{bottom:-14px}
-.feast{display:grid;gap:clamp(20px,3vw,36px)}
-.feast .inner{display:grid;justify-items:center;text-align:center}
-.feast h2{color:var(--paper)}
-.feast .pan{width:100%;overflow-x:auto;scrollbar-width:none;margin-block:calc(clamp(20px,3vw,36px)*-.3)}
-.feast .pan::-webkit-scrollbar{display:none}
-.feast img{width:100%;max-width:none;min-width:720px;-webkit-mask-image:linear-gradient(to bottom,#000 86%,transparent);mask-image:linear-gradient(to bottom,#000 86%,transparent)}
-.feast p{max-width:52ch;color:#E8D6B8}
 
-/* ── ход дня ── */
+/* ── ход дня: полосы темнеют от солнца к луне ── */
 .day-sec{padding-top:clamp(32px,4vw,48px)}
 .ornament{width:min(100%,1100px);margin:0 auto clamp(56px,6vw,88px)}
 .sky{list-style:none;margin:0;padding:0}
 .sky li{--p:clamp(28px,3.6vw,42px);--o:14px;position:relative;isolation:isolate;padding-block:calc(var(--p) - var(--o)) calc(var(--p) + var(--o))}
-.sky li:first-child{--o:7px}
-.sky li:last-child{--o:7px}
-/* при наведении полоса чуть приподнимается: верх заходит на предыдущую, низ остаётся под следующей (перекрытие 14px > подъёма 8px) */
-@media (hover:hover) and (prefers-reduced-motion:no-preference){.sky li{transition:transform .35s cubic-bezier(.2,.8,.2,1)}.sky li:hover{transform:translateY(-8px)}}
+.sky li:first-child,.sky li:last-child{--o:7px}
 .sky li::before{content:"";position:absolute;inset:-14px -30px 0 -30px;z-index:-1;background:var(--band);filter:url(#rough)}
 .sky li:first-child::before{top:0}
 .sky li:last-child::before{bottom:-40px}
+/* при наведении полоса чуть приподнимается без тени: верх заходит на предыдущую, низ остаётся под следующей (перекрытие 14px > подъёма 8px) */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.sky li{transition:translate .35s var(--ease)}.sky li:hover{translate:0 -8px}}
 .sky .row{display:grid;grid-template-columns:150px 64px minmax(0,1fr);gap:clamp(14px,3vw,40px);align-items:center;max-width:980px}
-.sky time{font:400 clamp(32px,3.6vw,46px)/1 var(--f-display);font-variant-numeric:lining-nums tabular-nums}
+.sky time{font:400 var(--fs-num)/1 var(--f-display);font-variant-numeric:lining-nums tabular-nums}
 .sky img{width:60px;height:60px;object-fit:contain}
 .sky h3{margin-bottom:4px}
-.sky p{font-size:17px;max-width:56ch}
-.sky .day{--band:var(--paper);color:var(--ink)}
-.sky .day2{--band:var(--paper-deep);color:var(--ink)}
-.sky .sand{--band:var(--sky-sand);color:var(--ink)}
-.sky .peach{--band:var(--sky-peach);color:var(--ink)}
-.sky .dusk{--band:var(--rose);color:var(--ink)}
-.sky .dusk2{--band:var(--mauve);color:var(--ink)}
+.sky p{font-size:var(--fs-small);line-height:1.5;max-width:56ch}
+.sky .day{--band:var(--paper)}
+.sky .day2{--band:var(--paper-deep)}
+.sky .sand{--band:var(--sky-sand)}
+.sky .peach{--band:var(--sky-peach)}
+.sky .dusk{--band:var(--rose)}
+.sky .dusk2{--band:var(--mauve)}
 .sky .eve{--band:var(--cobalt-deep);color:var(--paper)}
-.sky .late{--band:var(--navy);color:var(--paper)}
-.sky .mid{--band:var(--night);color:var(--paper)}
-@media (max-width:620px){.sky .row{grid-template-columns:auto minmax(0,1fr);gap:10px 16px}.sky .row>div{grid-column:1/-1}.sky img{width:46px;height:46px}}
+@media (max-width:640px){.sky .row{grid-template-columns:auto minmax(0,1fr);gap:10px 16px}.sky .row>div{grid-column:1/-1}.sky img{width:46px;height:46px}}
 
-/* ── соавторы и хранители ── */
+/* ── финал: ночное небо (canvas мерцает, только пока блок на экране), арки кланов ── */
+.gate{isolation:isolate;overflow:hidden;background:var(--night) var(--stars);background-size:420px;color:var(--paper);padding-block:clamp(90px,11vw,150px) clamp(90px,11vw,140px);text-align:center}
+.gate.has-sky{background-image:none}
+.gate .sky-cv{z-index:-1}
+.gate h2{color:var(--paper)}
+.gate .head .lead{color:var(--paper-dim);opacity:1;max-width:46ch}
+.gate-clans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,3vw,44px);max-width:860px;margin:0 auto clamp(44px,5.5vw,68px)}
+.gate-c{display:grid;gap:12px;justify-items:center;text-decoration:none;color:var(--paper)}
+.gate-arch{display:block;width:100%;border-radius:999px 999px 18px 18px;overflow:hidden;border:3px solid var(--gold);box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 14%,transparent);transition:translate .45s var(--ease),scale .45s var(--ease),box-shadow .45s}
+.gate-arch img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 22%}
+.gate-n{font:400 var(--fs-lead)/1.2 var(--f-display)}
+.gate-c:hover .gate-arch,.gate-c:focus-visible .gate-arch{translate:0 -10px;scale:1.03;box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 32%,transparent),0 18px 40px color-mix(in srgb,var(--gold) 25%,transparent)}
+/* арки слегка покачиваются; вне экрана стоят */
+@media (prefers-reduced-motion:no-preference){.gate-c{animation:gate-float 6s ease-in-out var(--d,0s) infinite alternate}}
+@keyframes gate-float{to{translate:0 -8px}}
+.gate.off .gate-c{animation-play-state:paused}
+.gate-note{margin-top:18px;opacity:.75}
+@media (max-width:520px){.gate-clans{gap:10px}.gate-n{font-size:var(--fs-small);white-space:nowrap}.gate-arch{border-width:2px;box-shadow:0 0 0 4px color-mix(in srgb,var(--gold) 14%,transparent)}}
+@media (prefers-reduced-motion:reduce){.gate-arch{transition:none}}
 
 footer{padding-block:clamp(48px,6vw,72px);text-align:center;display:grid;gap:10px;justify-items:center}
 footer .star{width:40px}
-footer p{font:400 20px/1.3 var(--f-display)}
-footer small{font-size:15px;opacity:.7}
-/* звёзды на углах рамок мерцают по кругу: масштаб и прозрачность, со сдвигом по углам */
-@keyframes fr-tw{0%,100%{scale:1;opacity:1}50%{scale:.68;opacity:.5}}
-@media (prefers-reduced-motion:no-preference){
-  .cv-frame svg{animation:fr-tw 2.8s ease-in-out infinite}
-  .cv-frame svg:nth-child(2){animation-delay:-.7s}
-  .cv-frame svg:nth-child(3){animation-delay:-2.1s}
-  .cv-frame svg:nth-child(4){animation-delay:-1.4s}
-}
-/* «Три клана» → «Выбери свой клан»: ночь раскрывается кругом от клика, карточки становятся плашками с кнопкой */
-.estates-sec{position:relative;isolation:isolate}
-.est-night{position:absolute;inset:0;z-index:-1;background:var(--night);clip-path:circle(0 at var(--cx,50%) var(--cy,50%));transition:clip-path .85s cubic-bezier(.5,.05,.2,1);pointer-events:none}
-.est-night::before,.est-night::after{content:"";position:absolute;left:-20px;right:-20px;height:30px;background:var(--night);filter:url(#rough)}
-.est-night::before{top:-14px}.est-night::after{bottom:-14px}
-.sky-cv{position:absolute;inset:0;width:100%;height:100%;display:block}
-.estates-sec.night .est-night{clip-path:circle(var(--cr,3000px) at var(--cx,50%) var(--cy,50%))}
-.swap{display:grid}
-.swap>span{grid-area:1/1;transition:opacity .45s,visibility .45s,translate .45s}
-.swap .sw-night{opacity:0;visibility:hidden;translate:0 10px}
-.night .swap .sw-day{opacity:0;visibility:hidden;translate:0 -10px}
-.night .swap .sw-night{opacity:1;visibility:visible;translate:0 0;transition-delay:.4s}
-.head h2,.head .lead{transition:color .6s}
-.night .head h2{color:var(--paper);transition-delay:.3s}.night .head h2 .acc{color:var(--gold)}
-.night .head .lead{color:#E8D6B8;opacity:1}
-.estate{position:relative;isolation:isolate;padding:14px 14px 22px;cursor:pointer;transition:color .5s}
-.estate::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pl,var(--rose));border-radius:26px 18px 30px 16px/18px 30px 16px 26px;filter:url(#rough);opacity:0;scale:.92;transition:opacity .35s,scale .7s cubic-bezier(.2,.9,.25,1.25)}
-.est-WEREWOLF{--pl:var(--ochre);--i:1}.est-DARK_ELF{--pl:var(--cobalt);--i:2}
-.night .estate{cursor:pointer;transition:color .5s,translate .45s cubic-bezier(.2,.8,.2,1)}
-.night .estate.picked{translate:0 -10px}
-@media (hover:hover){.night .estate:not(.picked):hover{translate:0 -5px}}
-.no-tr,.no-tr *,.no-tr *::before,.no-tr *::after{transition:none!important}
-.night .estate::before{opacity:1;scale:1;transition-delay:calc(.3s + var(--i,0) * .1s)}
-.night .est-DARK_ELF{color:var(--paper);transition-delay:.35s}
-.est-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.2,.8,.2,1)}
-.est-more>div{min-height:0;overflow:hidden;display:flex;justify-content:center}
-.est-join{margin-top:14px;opacity:0;translate:0 12px;transition:opacity .4s,translate .5s cubic-bezier(.2,.9,.25,1.3)}
-.night .est-more{grid-template-rows:1fr;transition-delay:calc(.4s + var(--i,0) * .1s)}
-.night .est-more>div{overflow:visible;padding-bottom:4px}
-.night .est-join{opacity:1;translate:0 0;transition-delay:calc(.55s + var(--i,0) * .1s)}
-.estate::after{content:"";position:absolute;inset:6px;z-index:-2;border-radius:26px 18px 30px 16px/18px 30px 16px 26px;box-shadow:0 0 70px 14px rgba(217,174,82,.42);opacity:0;transition:opacity .45s;pointer-events:none}
-.night.opening .estate.picked::after{transition-delay:.6s}
-.night .estate.picked::after{opacity:1}
-.est-back{background:none;border:0;padding:6px 2px;font:400 18px/1.3 var(--f-display);color:var(--paper);text-decoration:underline dashed;text-underline-offset:7px;cursor:pointer}
-.night .clan-cta .est-open{display:none}
-.night .clan-cta .small{color:#E8D6B8;opacity:1}
-@media (prefers-reduced-motion:reduce){.est-night,.swap>span,.estate,.estate::before,.est-more,.est-join,.estate.picked::after{transition:none!important}}
-.est-x{position:sticky;top:max(14px,env(safe-area-inset-top));z-index:3;display:grid;place-items:center;width:50px;height:50px;margin:-60px max(14px,env(safe-area-inset-right)) 10px auto;border:0;background:none;cursor:pointer;font:400 30px/1 var(--f-display);color:var(--ink);isolation:isolate;opacity:0;transition:opacity .4s .5s}
-.est-x::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:52% 48% 50% 46%/48% 52% 46% 50%;filter:url(#rough)}
-.night .est-x{opacity:1}
+footer p{font:400 var(--fs-lead)/1.3 var(--f-display)}
+footer small{font-size:var(--fs-small);opacity:.7}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -359,46 +365,46 @@ footer small{font-size:15px;opacity:.7}
         <p class="facts"><span class="chip">31 октября</span><span class="chip">с 14:00</span><span class="chip">Bale Tudor, Убуд</span></p>
       </div>
       <ul class="rules">
-        <li class="plate"><span class="label">Кланы</span><p class="small">Вампиры, оборотни и тёмные эльфы. Сторону выбираешь ещё до праздника.</p></li>
-        <li class="plate"><span class="label">Монеты</span><p class="small">Валюта замка. Их добывают в испытаниях и квестах, а в конце считают по кланам.</p></li>
-        <li class="plate"><span class="label">Испытания</span><p class="small">Лук, турнир, тыквы, загадки и тайники. Играют все, даже организаторы.</p></li>
-        <li class="plate"><span class="label">Образ</span><p class="small">Приходите в образе своего клана. Лучший костюм получит награду.</p></li>
+        <li class="plate"><h3>Кланы</h3><p class="small">Вампиры, оборотни и тёмные эльфы. Сторону выбираешь ещё до праздника.</p></li>
+        <li class="plate"><h3>Монеты</h3><p class="small">Валюта замка. Их добывают в испытаниях и квестах, а в конце считают по кланам.</p></li>
+        <li class="plate"><h3>Испытания</h3><p class="small">Лук, турнир, тыквы, загадки и тайники. Играют все, даже организаторы.</p></li>
+        <li class="plate"><h3>Образ</h3><p class="small">Приходите в образе своего клана. Лучший костюм получит награду.</p></li>
       </ul>
     </div>
-    <div class="parade" aria-label="Процессия жителей замка: конь-скелет, дама-мотылёк, ворон-бард, ребёнок с головой-репой, скелет-жонглёр, заяц-барабанщик, соломенное чучело">
+    <div class="parade" role="img" aria-label="Процессия жителей замка: конь-скелет, дама-мотылёк, ворон-бард, ребёнок с головой-репой, скелет-жонглёр, заяц-барабанщик, соломенное чучело">
       <div class="track"><img src="art/procession.webp" alt=""><img src="art/procession.webp" alt=""><img src="art/procession.webp" alt=""><img src="art/procession.webp" alt=""></div>
     </div>
   </section>
 
   <section class="estates-sec" id="clans">
     <div class="est-night" aria-hidden="true"><canvas class="sky-cv"></canvas></div>
-    <button class="est-x" type="button" aria-label="Закрыть выбор клана" hidden>×</button>
+    <button class="icon-btn est-x" type="button" aria-label="Закрыть выбор клана" hidden>×</button>
     <div class="wrap">
       <div class="head">
         <h2 class="swap"><span class="sw-day">Три <em class="acc">клана</em></span><span class="sw-night" aria-hidden="true">Выбери свой <em class="acc">клан</em></span></h2>
-        <p class="lead swap"><span class="sw-day">С кем ты войдёшь в ворота</span><span class="sw-night" aria-hidden="true">С ними ты пройдёшь всю ночь: от первых испытаний до последнего уголька в костре</span></p>
+        <p class="lead swap"><span class="sw-day">С кем ты войдёшь в ворота</span><span class="sw-night" aria-hidden="true">С ними ты пройдёшь всю ночь: от первых испытаний до последнего уголька в костре</span></p>
       </div>
       <div class="estates">
         <article class="estate est-VAMPIRE" data-clan="VAMPIRE">
           <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-vampire-b.jpg" alt="Вампиры с черепами летучих мышей: кавалер в полосатом плаще с кубком и дама в чёрном платье с брыжами среди роз" width="900" height="1205" loading="lazy"></figure>
           <h3>Вампиры</h3>
           <p class="small">Древняя кровь, бархат и безупречные манеры. Вампиры не спешат: у них впереди вечность и целая ночь.</p>
-          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=VAMPIRE" tabindex="-1">Присоединиться</a></div></div>
+          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=VAMPIRE">Присоединиться</a></div></div>
         </article>
         <article class="estate est-WEREWOLF" data-clan="WEREWOLF">
           <figure class="frame tilt3d" style="--rz:1deg"><img src="art/clan-werewolf-c.jpg" alt="Оборотни в разгар превращения: он пригнулся перед прыжком, она на камне воет на полную луну" width="900" height="1205" loading="lazy"></figure>
           <h3>Оборотни</h3>
           <p class="small">Сила, чутьё и стая за спиной. Оборотни берут азартом, особенно когда взойдёт луна.</p>
-          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=WEREWOLF" tabindex="-1">Присоединиться</a></div></div>
+          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=WEREWOLF">Присоединиться</a></div></div>
         </article>
         <article class="estate est-DARK_ELF" data-clan="DARK_ELF">
           <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-darkelf-k.jpg" alt="Тёмные эльфы играют в карты за столом-мухомором при свече и луне" width="900" height="1205" loading="lazy"></figure>
           <h3>Тёмные эльфы</h3>
           <p class="small">Тайные знаки, древняя магия и холодный расчёт. Тёмные эльфы видят то, что другие пропускают.</p>
-          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=DARK_ELF" tabindex="-1">Присоединиться</a></div></div>
+          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=DARK_ELF">Присоединиться</a></div></div>
         </article>
       </div>
-      <div class="clan-cta"><a class="btn btn-main btn-lg est-open" href="lab-p2-v5.html">Вступить в клан</a><button class="est-back" type="button" hidden>Вернуться к истории</button><p class="small">В каждом клане до 20 мест. Кланы держим в равновесии, чтобы игра была честной.</p></div>
+      <div class="clan-cta"><a class="btn btn-main btn-lg est-open" href="lab-p2-v5.html">Вступить в клан</a><button class="est-back" type="button" hidden>Вернуться к истории</button><p class="small">В каждом клане до 20 мест. Кланы держим в равновесии, чтобы игра была честной.</p></div>
     </div>
   </section>
 
@@ -470,18 +476,19 @@ footer small{font-size:15px;opacity:.7}
   </section>
 
   <section class="gate" id="join" aria-labelledby="gate-t">
+    <canvas class="sky-cv" aria-hidden="true"></canvas>
     <div class="wrap">
       <div class="head">
         <h2 id="gate-t">Замок <em class="acc">ждёт</em></h2>
         <p class="lead">Три клана, одна ночь и место у костра, которое займёт кто-то другой, если ты не займёшь его первым.</p>
       </div>
       <div class="gate-clans">
-        <a class="gate-c" href="lab-p2-v5.html" style="--d:0.0s"><span class="gate-arch"><img src="art/clan-vampire-b.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Вампиры</span></a>
-        <a class="gate-c" href="lab-p2-v5.html" style="--d:0.7s"><span class="gate-arch"><img src="art/clan-werewolf-c.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Оборотни</span></a>
-        <a class="gate-c" href="lab-p2-v5.html" style="--d:1.4s"><span class="gate-arch"><img src="art/clan-darkelf-k.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Тёмные эльфы</span></a>
+        <a class="gate-c" href="lab-p2-v5.html?clan=VAMPIRE" style="--d:0s"><span class="gate-arch"><img src="art/clan-vampire-b.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Вампиры</span></a>
+        <a class="gate-c" href="lab-p2-v5.html?clan=WEREWOLF" style="--d:0.7s"><span class="gate-arch"><img src="art/clan-werewolf-c.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Оборотни</span></a>
+        <a class="gate-c" href="lab-p2-v5.html?clan=DARK_ELF" style="--d:1.4s"><span class="gate-arch"><img src="art/clan-darkelf-k.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Тёмные эльфы</span></a>
       </div>
-      <a class="btn btn-main btn-lg gate-btn" href="lab-p2-v5.html">Вступить в игру</a>
-      <p class="small gate-note">В каждом клане по 20 мест. Кланы растут вровень.</p>
+      <a class="btn btn-main btn-lg gate-btn" href="lab-p2-v5.html">Вступить в игру</a>
+      <p class="small gate-note">В каждом клане по 20 мест. Кланы растут вровень.</p>
     </div>
   </section>
 </main>
@@ -489,11 +496,9 @@ footer small{font-size:15px;opacity:.7}
 <footer>
   <img class="star" src="art/s-star.webp" alt="">
   <p>31 октября, с 14:00</p>
-  <small>Bale Tudor, Jl. Dewi Tilotama, Bongkasa Pertiwi, Bali, <a href="https://maps.app.goo.gl/QkY5Y5VHLDEFLeCC8" target="_blank" rel="noopener">карта</a></small>
+  <small>Bale Tudor, Jl. Dewi Tilotama, Bongkasa Pertiwi, Bali, <a href="https://maps.app.goo.gl/QkY5Y5VHLDEFLeCC8" target="_blank" rel="noopener">карта</a></small>
 </footer>
-<dialog class="lb" aria-label="Фото замка"><figure><img src="" alt=""><button class="lb-x" type="button" aria-label="Закрыть">×</button><figcaption></figcaption></figure></dialog>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
+<dialog class="lb" aria-label="Фото замка"><figure><img alt=""><button class="icon-btn lb-x" type="button" aria-label="Закрыть">×</button><figcaption></figcaption></figure></dialog>
 <script>
 /* Навигация: каждое окно или режим поверх страницы — один шаг истории. ×, Esc и «Назад» браузера закрывают его одинаково */
 const NAV={stack:[],skip:0,queue:[]};
@@ -501,76 +506,99 @@ function navOpen(id,fn){if(NAV.stack.some(x=>x.id===id))return;NAV.stack.push({i
 function navAdopt(id,fn){if(!NAV.stack.some(x=>x.id===id))NAV.stack.push({id,fn})}
 function navClose(id){const i=NAV.stack.findIndex(x=>x.id===id);if(i<0)return;NAV.stack.splice(i,1);NAV.skip++;history.back()}
 addEventListener('popstate',()=>{if(NAV.skip){NAV.skip--;if(!NAV.skip)NAV.queue.splice(0).forEach(f=>f());return}const top=NAV.stack.pop();if(top)top.fn()});
+
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Блок на экране или нет: fn(true) при появлении, fn(false) при уходе */
+function onView(el,fn,threshold=0){if(!el)return;if(!('IntersectionObserver' in window)){fn(true);return}
+  new IntersectionObserver(es=>fn(es[es.length-1].isIntersecting),{threshold}).observe(el)}
+
+/* Лайтбокс для фото замка */
 (()=>{const d=document.querySelector('.lb'),im=d.querySelector('img'),cap=d.querySelector('figcaption');
-const open=z=>{im.src=z.src;im.alt=z.alt;cap.textContent=z.closest('figure')?.querySelector('figcaption')?.textContent||'';d.showModal();navOpen('lb',()=>d.open&&d.close())};
-d.addEventListener('close',()=>navClose('lb'));
-document.querySelectorAll('.zoom').forEach(z=>{z.addEventListener('click',()=>open(z));z.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(z)}})});
-d.querySelector('.lb-x').addEventListener('click',()=>d.close());
-d.addEventListener('click',e=>{if(e.target===d)d.close()});})();
+  const open=z=>{im.src=z.src;im.alt=z.alt;cap.textContent=z.closest('figure')?.querySelector('figcaption')?.textContent||'';d.showModal();navOpen('lb',()=>d.open&&d.close())};
+  d.addEventListener('close',()=>navClose('lb'));
+  document.querySelectorAll('.zoom').forEach(z=>{z.addEventListener('click',()=>open(z));z.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(z)}})});
+  d.querySelector('.lb-x').addEventListener('click',()=>d.close());
+  d.addEventListener('click',e=>{if(e.target===d)d.close()});})();
 
-(()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches||!matchMedia('(hover: hover) and (pointer: fine)').matches)return;
-document.querySelectorAll('.tilt3d').forEach(c=>{let raf=0,ev=null;
-const set=()=>{raf=0;const p=c.parentElement.getBoundingClientRect(),x=Math.min(1,Math.max(0,(ev.clientX-p.left)/c.offsetWidth)),y=Math.min(1,Math.max(0,(ev.clientY-p.top)/c.offsetHeight));
-c.style.setProperty('--ry',((x-.5)*16).toFixed(2)+'deg');c.style.setProperty('--rx',((.5-y)*14).toFixed(2)+'deg');
-c.style.setProperty('--mx',(x*100).toFixed(1)+'%');c.style.setProperty('--my',(y*100).toFixed(1)+'%')};
-c.addEventListener('pointerenter',()=>{c.classList.add('on');c.style.setProperty('--sc','1.03')});
-c.addEventListener('pointermove',e=>{ev=e;if(!raf)raf=requestAnimationFrame(set)});
-c.addEventListener('pointerleave',()=>{c.classList.remove('on');['--rx','--ry','--sc'].forEach(p=>c.style.removeProperty(p))});});})();
+/* Карточки кланов наклоняются за курсором: только мышь и без reduced-motion */
+(()=>{if(RM||!matchMedia('(hover: hover) and (pointer: fine)').matches)return;
+  document.querySelectorAll('.tilt3d').forEach(c=>{let raf=0,ev=null;
+    const set=()=>{raf=0;const p=c.parentElement.getBoundingClientRect(),x=Math.min(1,Math.max(0,(ev.clientX-p.left)/c.offsetWidth)),y=Math.min(1,Math.max(0,(ev.clientY-p.top)/c.offsetHeight));
+      c.style.setProperty('--ry',((x-.5)*16).toFixed(2)+'deg');c.style.setProperty('--rx',((.5-y)*14).toFixed(2)+'deg');
+      c.style.setProperty('--mx',(x*100).toFixed(1)+'%');c.style.setProperty('--my',(y*100).toFixed(1)+'%')};
+    c.addEventListener('pointerenter',()=>{c.classList.add('on');c.style.setProperty('--sc','1.03')});
+    c.addEventListener('pointermove',e=>{ev=e;if(!raf)raf=requestAnimationFrame(set)});
+    c.addEventListener('pointerleave',()=>{c.classList.remove('on');['--rx','--ry','--sc'].forEach(p=>c.style.removeProperty(p))});});})();
 
+/* CSS-анимации вне экрана стоят: звёзды рамки обложки, процессия, виньетки, арки финала */
+document.querySelectorAll('.cover,.parade,.places,.gate').forEach(el=>onView(el,v=>el.classList.toggle('off',!v)));
 
-/* Звёздное небо на canvas: золотые восьмиконечные звёзды и кремовые точки мерцают, ~30 кадров в секунду, только пока видно */
+/* Звёздное небо на canvas: золотые восьмиконечные звёзды и кремовые точки мерцают, ~30 кадров в секунду, только пока видно.
+   Координаты звёзд в долях, поэтому при смене высоты блока (раскрытие карточек) небо не перетасовывается */
 function starSky(cv,{density=6500,max=240}={}){
-  const ctx=cv.getContext('2d'),RMS=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let W=0,H=0,stars=[],raf=0,last=0,run=false;
+  const ctx=cv.getContext('2d');
+  let W=0,H=0,stars=[],raf=0,last=0,run=false,rt=0;
   const GOLD='217,174,82',CREAM='242,224,192';
+  const star=()=>{const big=Math.random()<.18;return{x:Math.random(),y:Math.random(),r:big?5+Math.random()*7:.9+Math.random()*1.5,big,ph:Math.random()*6.283,sp:.5+Math.random()*1.4,c:big||Math.random()<.35?GOLD:CREAM}};
   function size(){const dpr=Math.min(2,devicePixelRatio||1);W=cv.clientWidth;H=cv.clientHeight;if(!W||!H)return;
     cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
-    const n=Math.min(max,Math.round(W*H/density));
-    stars=Array.from({length:n},()=>{const big=Math.random()<.18;return{x:Math.random()*W,y:Math.random()*H,r:big?5+Math.random()*7:.9+Math.random()*1.5,big,ph:Math.random()*6.283,sp:.5+Math.random()*1.4,c:big||Math.random()<.35?GOLD:CREAM}});
+    const n=Math.min(max,Math.round(W*H/density));while(stars.length<n)stars.push(star());stars.length=n;
     draw(performance.now())}
   function spark(x,y,r){ctx.beginPath();for(let i=0;i<16;i++){const a=i*Math.PI/8,rr=i%4===0?r:i%2===0?r*.55:r*.2;ctx.lineTo(x+Math.sin(a)*rr,y-Math.cos(a)*rr)}ctx.closePath();ctx.fill()}
   function draw(t){ctx.clearRect(0,0,W,H);const s=t/1000;
-    for(const p of stars){const k=.5+.5*Math.sin(s*p.sp+p.ph),a=p.big?.35+.65*k:.2+.8*k;ctx.fillStyle=`rgba(${p.c},${a.toFixed(3)})`;
-      if(p.big)spark(p.x,p.y,p.r*(.75+.25*k));else{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill()}}}
+    for(const p of stars){const k=.5+.5*Math.sin(s*p.sp+p.ph),a=p.big?.35+.65*k:.2+.8*k,x=p.x*W,y=p.y*H;ctx.fillStyle=`rgba(${p.c},${a.toFixed(3)})`;
+      if(p.big)spark(x,y,p.r*(.75+.25*k));else{ctx.beginPath();ctx.arc(x,y,p.r,0,6.283);ctx.fill()}}}
   function loop(t){raf=requestAnimationFrame(loop);if(t-last<33)return;last=t;draw(t)}
-  if('ResizeObserver' in window)new ResizeObserver(size).observe(cv);else addEventListener('resize',size);
+  /* пока блок меняет высоту, холст просто растягивается; перерисовываем по размеру, когда всё успокоилось */
+  const later=()=>{clearTimeout(rt);rt=setTimeout(size,150)};
+  if('ResizeObserver' in window)new ResizeObserver(later).observe(cv);else addEventListener('resize',later);
   size();
-  return{start(){if(RMS){draw(0);return}if(run)return;run=true;raf=requestAnimationFrame(loop)},stop(){run=false;cancelAnimationFrame(raf)}};
+  return{start(){if(RM){draw(0);return}if(run)return;run=true;raf=requestAnimationFrame(loop)},stop(){run=false;cancelAnimationFrame(raf)}};
 }
 
 /* «Три клана»: клик по карточке или «Вступить в клан» превращает блок в выбор клана на ночном небе */
 (()=>{const sec=document.getElementById('clans');if(!sec)return;
-  const night=sec.querySelector('.est-night'),sky=starSky(sec.querySelector('.sky-cv')),cards=[...sec.querySelectorAll('.estate')],
+  const sky=starSky(sec.querySelector('.sky-cv')),cards=[...sec.querySelectorAll('.estate')],
     open=sec.querySelector('.est-open'),back=sec.querySelector('.est-back'),xb=sec.querySelector('.est-x'),swaps=[...sec.querySelectorAll('.swap')];
   let isNight=false,inView=false;
   const tick=()=>{isNight&&inView?sky.start():sky.stop()};
-  if('IntersectionObserver' in window)new IntersectionObserver(es=>{inView=es[0].isIntersecting;tick()}).observe(sec);else inView=true;
+  onView(sec,v=>{inView=v;tick()});
+  const join=c=>c.querySelector('.est-join'),center=el=>{const b=el.getBoundingClientRect();return[b.left+b.width/2,b.top+b.height/2]};
+  /* дневные карточки — кнопки «Выбрать клан»; ночью это плашки со ссылкой внутри */
+  const asButton=(c,on)=>{if(on){c.setAttribute('role','button');c.tabIndex=0;c.setAttribute('aria-label','Выбрать клан «'+c.querySelector('h3').textContent+'»')}
+    else['role','tabindex','aria-label'].forEach(a=>c.removeAttribute(a))};
   function setNight(on,x,y,picked,quiet){
-    const r=sec.getBoundingClientRect();
-    if(x!=null){const cx=x-r.left,cy=y-r.top;sec.style.setProperty('--cx',cx+'px');sec.style.setProperty('--cy',cy+'px');
+    if(x!=null){const r=sec.getBoundingClientRect(),cx=x-r.left,cy=y-r.top;sec.style.setProperty('--cx',cx+'px');sec.style.setProperty('--cy',cy+'px');
       sec.style.setProperty('--cr',Math.ceil(Math.hypot(Math.max(cx,r.width-cx),Math.max(cy,r.height-cy))+40)+'px')}
     isNight=on;sec.classList.toggle('night',on);back.hidden=!on;xb.hidden=!on;
-    if(on){quiet?(history.state&&history.state.nav==='clans'&&navAdopt('clans',()=>setNight(false))):navOpen('clans',()=>setNight(false))}else navClose('clans');if(on&&!quiet){sec.classList.add('opening');setTimeout(()=>sec.classList.remove('opening'),1100)}
+    /* шаг истории: при открытии кладём, при закрытии снимаем; после возврата со страницы участия подхватываем уже лежащий */
+    if(!on)navClose('clans');else if(!quiet)navOpen('clans',()=>setNight(false));else if(history.state&&history.state.nav==='clans')navAdopt('clans',()=>setNight(false));
+    if(on&&!quiet){sec.classList.add('opening');setTimeout(()=>sec.classList.remove('opening'),1100)}
     swaps.forEach(w=>{w.querySelector('.sw-day').setAttribute('aria-hidden',String(on));w.querySelector('.sw-night').setAttribute('aria-hidden',String(!on))});
-    cards.forEach(c=>{c.classList.toggle('picked',on&&c===picked);c.querySelector('.est-join').tabIndex=on?0:-1;
-      if(on){c.removeAttribute('role');c.removeAttribute('tabindex')}else{c.setAttribute('role','button');c.tabIndex=0}});
+    cards.forEach(c=>{c.classList.toggle('picked',on&&c===picked);asButton(c,!on)});
     tick();
-    if(on&&picked&&!quiet)setTimeout(()=>{const b=picked.getBoundingClientRect();if(b.top<0||b.bottom>innerHeight)picked.scrollIntoView({behavior:'smooth',block:'center'});picked.querySelector('.est-join').focus({preventScroll:true})},950);
-    if(!on&&!quiet)setTimeout(()=>open.focus({preventScroll:true}),50);
+    if(quiet)return;
+    if(on&&picked)setTimeout(()=>{const b=picked.getBoundingClientRect();if(b.top<0||b.bottom>innerHeight)picked.scrollIntoView({behavior:RM?'auto':'smooth',block:'center'});join(picked).focus({preventScroll:true})},950);
+    if(on&&!picked)setTimeout(()=>join(cards[0]).focus({preventScroll:true}),950);
+    if(!on)setTimeout(()=>open.focus({preventScroll:true}),50);
   }
-  cards.forEach(c=>{c.setAttribute('role','button');c.tabIndex=0;c.setAttribute('aria-label','Выбрать клан «'+c.querySelector('h3').textContent+'»');
+  cards.forEach(c=>{asButton(c,true);
     c.addEventListener('click',e=>{if(isNight){if(!e.target.closest('.est-join'))cards.forEach(x=>x.classList.toggle('picked',x===c));return}e.preventDefault();setNight(true,e.clientX,e.clientY,c)});
-    c.addEventListener('keydown',e=>{if(isNight||(e.key!=='Enter'&&e.key!==' '))return;e.preventDefault();const b=c.getBoundingClientRect();setNight(true,b.left+b.width/2,b.top+b.height/2,c)})});
-  open.addEventListener('click',e=>{e.preventDefault();const b=open.getBoundingClientRect();setNight(true,b.left+b.width/2,b.top+b.height/2,null);setTimeout(()=>cards[0].querySelector('.est-join').focus({preventScroll:true}),950)});
-  back.addEventListener('click',()=>{const b=back.getBoundingClientRect();setNight(false,b.left+b.width/2,b.top+b.height/2)});
-  xb.addEventListener('click',()=>{const b=xb.getBoundingClientRect();setNight(false,b.left+b.width/2,b.top+b.height/2)});
-  sec.addEventListener('keydown',e=>{if(e.key==='Escape'&&isNight)setNight(false)});
+    c.addEventListener('keydown',e=>{if(isNight||(e.key!=='Enter'&&e.key!==' '))return;e.preventDefault();setNight(true,...center(c),c)})});
+  open.addEventListener('click',e=>{e.preventDefault();setNight(true,...center(open),null)});
+  back.addEventListener('click',()=>setNight(false,...center(back)));
+  xb.addEventListener('click',()=>setNight(false,...center(xb)));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&isNight&&!document.querySelector('dialog[open]'))setNight(false)});
   window.estRestore=code=>{sec.classList.add('no-tr');setNight(true,null,null,cards.find(c=>c.dataset.clan===code)||null,true);requestAnimationFrame(()=>requestAnimationFrame(()=>sec.classList.remove('no-tr')))};
   window.estState=()=>({night:isNight,picked:(cards.find(c=>c.classList.contains('picked'))||{dataset:{}}).dataset.clan||null});
 })();
 
+/* Финал: то же звёздное небо, мерцает только пока блок на экране */
+(()=>{const g=document.querySelector('.gate'),cv=g&&g.querySelector('.sky-cv');if(!cv||!cv.getContext)return;
+  const sky=starSky(cv);g.classList.add('has-sky');onView(g,v=>v?sky.start():sky.stop())})();
+
 /* Кнопка «назад»: запоминаем блок, смещение в нём и выбор клана; при возврате ставим всё на место */
-(()=>{const KEY='hc_promo_pos',secs=()=>[...document.querySelectorAll('body > section, body > footer, main > section')];
+(()=>{const KEY='hc_promo_pos',secs=()=>[...document.querySelectorAll('main > section, body > footer')];
   addEventListener('pagehide',()=>{try{const list=secs();let i=0;list.forEach((el,k)=>{if(el.getBoundingClientRect().top<=120)i=k});
     const top=list[i].getBoundingClientRect().top+scrollY;sessionStorage.setItem(KEY,JSON.stringify(Object.assign({i,off:scrollY-top},window.estState?estState():{})))}catch(_){}});
   let st=null;try{st=JSON.parse(sessionStorage.getItem(KEY)||'null')}catch(_){}
@@ -582,53 +610,52 @@ function starSky(cv,{density=6500,max=240}={}){
   go();requestAnimationFrame(go);addEventListener('load',()=>{go();setTimeout(go,300)});if(document.fonts)document.fonts.ready.then(go);
 })();
 
+/* Трапеза на телефоне шире экрана и листается вбок: начинаем с середины стола */
+(()=>{const p=document.querySelector('.feast .pan');if(p&&p.scrollWidth>p.clientWidth)p.scrollLeft=(p.scrollWidth-p.clientWidth)/2})();
 
 /* Костёр: видео играет только на экране; при reduced-motion — стоп-кадр */
 (()=>{const v=document.querySelector('.bf-v');if(!v)return;
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause();v.poster='art/bonfire-still.jpg';return}
-  if('IntersectionObserver' in window)new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?v.play().catch(()=>{}):v.pause()),{threshold:.15}).observe(v);})();
+  if(RM){v.removeAttribute('autoplay');v.pause();v.poster='art/bonfire-still.jpg';return}
+  onView(v,on=>on?v.play().catch(()=>{}):v.pause(),.15)})();
 
-/* Motion: появление блоков по скроллу, покачивание карточек на телефоне, светлячки на обложке */
-addEventListener('DOMContentLoaded',()=>{
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduce||!window.gsap||!window.ScrollTrigger)return;
-  gsap.registerPlugin(ScrollTrigger);
-  const groups=['.night-intro .text>*','.rules li','.head','.estate','.clan-cta','.castle>*','.real figure','.vig','.feast .inner','.sky li','.gate-c','.gate-btn'];
-  groups.forEach(sel=>{const els=gsap.utils.toArray(sel);if(!els.length)return;
-    gsap.set(els,{autoAlpha:0,y:34});
-    ScrollTrigger.batch(els,{start:'top 88%',once:true,onEnter:b=>gsap.to(b,{autoAlpha:1,y:0,duration:.8,ease:'power3.out',stagger:.12,overwrite:true,clearProps:'transform'})});
-  });
-  /* виньетки покачиваются сами, пока видны */
-  gsap.utils.toArray('.vig img').forEach((im,i)=>{
-    const tw=gsap.to(im,{rotation:i%2?2.2:-2.2,duration:2.6+i%3*.4,ease:'sine.inOut',yoyo:true,repeat:-1,paused:true});
-    ScrollTrigger.create({trigger:im,start:'top bottom',end:'bottom top',onToggle:st=>st.isActive?tw.play():tw.pause()});
-  });
-  /* тач: карточки кланов слегка наклоняются по ходу скролла вместо курсора */
-  if(!matchMedia('(hover: hover) and (pointer: fine)').matches){
-    gsap.utils.toArray('.tilt3d').forEach((c,i)=>{
-      gsap.fromTo(c,{'--ry':(i%2?-7:7)+'deg','--rx':'5deg'},{'--ry':(i%2?7:-7)+'deg','--rx':'-4deg',ease:'none',
-        scrollTrigger:{trigger:c,start:'top bottom',end:'bottom top',scrub:.6}});
-    });
+/* Светлячки на обложке: свечение нарисовано один раз в спрайт, кадры идут только пока обложка видна и вкладка открыта */
+(()=>{const st=document.querySelector('.cover .stage');if(RM||!st)return;
+  const c=document.createElement('canvas');c.className='ff';c.setAttribute('aria-hidden','true');st.appendChild(c);
+  const x=c.getContext('2d'),dpr=Math.min(2,devicePixelRatio||1),N=innerWidth<700||(navigator.hardwareConcurrency||8)<=4?22:48;
+  const S=40,spr=document.createElement('canvas'),sx=spr.getContext('2d');spr.width=spr.height=Math.round(S*dpr);
+  sx.setTransform(dpr,0,0,dpr,0,0);sx.fillStyle='rgba(255,214,120,.9)';sx.shadowColor='rgba(255,190,90,.9)';sx.shadowBlur=8;sx.beginPath();sx.arc(S/2,S/2,2,0,6.283);sx.fill();
+  const ps=Array.from({length:N},()=>({x:Math.random(),y:Math.random(),r:1+Math.random()*1.8,a:Math.random()*6.283,s:.00005+Math.random()*.0001,ph:Math.random()*6.283}));
+  let W=0,H=0,on=false,inView=true,raf=0,last=0;
+  const size=()=>{W=c.clientWidth;H=c.clientHeight;c.width=Math.round(W*dpr);c.height=Math.round(H*dpr);x.setTransform(dpr,0,0,dpr,0,0)};
+  const tick=t=>{raf=0;if(!on){last=0;return}const k=last?Math.min(3,(t-last)/16.7):1;last=t;x.clearRect(0,0,W,H);
+    for(const p of ps){p.a+=(Math.random()-.5)*.06*k;p.x+=Math.cos(p.a)*p.s*k;p.y+=(Math.sin(p.a)*p.s-.00002)*k;
+      if(p.x<0)p.x=1;if(p.x>1)p.x=0;if(p.y<0)p.y=1;if(p.y>1)p.y=0;
+      const d=S*p.r/2;x.globalAlpha=.3+.7*Math.max(0,Math.sin(t/2200+p.ph));x.drawImage(spr,p.x*W-d/2,p.y*H-d/2,d,d)}
+    raf=requestAnimationFrame(tick)};
+  const run=()=>{on=inView&&!document.hidden;if(on&&!raf)raf=requestAnimationFrame(tick)};
+  if('ResizeObserver' in window)new ResizeObserver(size).observe(c);else addEventListener('resize',size);
+  size();run();onView(st,v=>{inView=v;run()});document.addEventListener('visibilitychange',run);
+})();
+
+/* Появление блоков по скроллу и наклон карточек на тач-экранах.
+   GSAP грузится асинхронно и только дополняет страницу: без него (и при reduced-motion) всё видно сразу */
+(()=>{if(RM)return;
+  const add=(src,ok)=>{const s=document.createElement('script');s.src=src;s.async=true;s.onload=ok;document.head.append(s)};
+  add('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js',()=>add('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js',motion));
+  function motion(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);
+    const SEL='.night-intro .text>*,.rules li,.head,.estate,.clan-cta,.castle>*,.real figure,.vig,.feast .inner,.sky li,.gate-c,.gate-btn';
+    /* прячем только то, что ниже экрана: если GSAP пришёл поздно, видимое не мигает */
+    const els=gsap.utils.toArray(SEL).filter(e=>e.getBoundingClientRect().top>innerHeight*.92);
+    gsap.set(els,{opacity:0,y:34});
+    ScrollTrigger.batch(els,{start:'top 88%',once:true,onEnter:b=>gsap.to(b,{opacity:1,y:0,duration:.8,ease:'power3.out',stagger:.12,overwrite:true,clearProps:'transform'})});
+    /* клавиатура: блок, в который пришёл фокус, проявляется сразу */
+    document.addEventListener('focusin',e=>{const r=e.target.closest&&e.target.closest(SEL);if(r&&+getComputedStyle(r).opacity<1)gsap.to(r,{opacity:1,y:0,duration:.35,overwrite:true,clearProps:'transform'})});
+    /* тач: карточки кланов слегка наклоняются по ходу скролла вместо курсора */
+    if(!matchMedia('(hover: hover) and (pointer: fine)').matches)
+      gsap.utils.toArray('.tilt3d').forEach((c,i)=>gsap.fromTo(c,{'--ry':(i%2?-7:7)+'deg','--rx':'5deg'},{'--ry':(i%2?7:-7)+'deg','--rx':'-4deg',ease:'none',
+        scrollTrigger:{trigger:c,start:'top bottom',end:'bottom top',scrub:.6}}));
   }
-  /* светлячки на обложке */
-  const cv=document.querySelector('.cover .stage');
-  if(cv){const c=document.createElement('canvas');c.className='ff';c.setAttribute('aria-hidden','true');cv.appendChild(c);
-    const x=c.getContext('2d'),dpr=Math.min(2,devicePixelRatio||1),N=innerWidth<700||(navigator.hardwareConcurrency||8)<=4?22:48;let W,H,ps=[],on=true,raf=0;
-    const size=()=>{W=c.clientWidth;H=c.clientHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0)};
-    size();addEventListener('resize',size);
-    for(let i=0;i<N;i++)ps.push({x:Math.random(),y:Math.random(),r:1+Math.random()*1.8,a:Math.random()*6.28,s:.00005+Math.random()*.0001,ph:Math.random()*6.28});
-    let last=0;
-    const tick=t=>{const k=last?Math.min(3,(t-last)/16.7):1;last=t;x.clearRect(0,0,W,H);
-      for(const p of ps){p.a+=(Math.random()-.5)*.06*k;p.x+=Math.cos(p.a)*p.s*k;p.y+=(Math.sin(p.a)*p.s-.00002)*k;
-        if(p.x<0)p.x=1;if(p.x>1)p.x=0;if(p.y<0)p.y=1;if(p.y>1)p.y=0;
-        const o=.3+.7*Math.max(0,Math.sin(t/2200+p.ph));
-        x.beginPath();x.fillStyle=`rgba(255,214,120,${o*.9})`;x.shadowColor='rgba(255,190,90,.9)';x.shadowBlur=8;x.arc(p.x*W,p.y*H,p.r,0,6.28);x.fill()}
-      raf=on?requestAnimationFrame(tick):(last=0,0)};
-    ScrollTrigger.create({trigger:cv,start:'top bottom',end:'bottom top',onToggle:st=>{on=st.isActive;if(on&&!raf)raf=requestAnimationFrame(tick)}});
-    document.addEventListener('visibilitychange',()=>{on=!document.hidden;if(on&&!raf)raf=requestAnimationFrame(tick)});
-    raf=requestAnimationFrame(tick);}
-});
+})();
 </script>
-
 </body>
 </html>
