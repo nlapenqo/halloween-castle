@@ -308,6 +308,14 @@ fieldset.field legend{padding:0;margin-bottom:7px}
 
 /* ── пролог и выбор клана ── */
 .pro{position:fixed;inset:0;z-index:50;overflow-y:auto;overscroll-behavior:contain;background:var(--night) var(--stars);background-size:420px;color:var(--paper)}
+.pro::before,.pro::after{content:"";position:fixed;inset:-600px;z-index:0;pointer-events:none;background:var(--stars)}
+/* Motion: два слоя звёзд разного масштаба медленно плывут в разные стороны и мерцают не в такт */
+.pro::before{background-size:310px;background-position:140px 90px;animation:st-drift-a 140s linear infinite,st-twinkle 3.6s ease-in-out infinite alternate}
+.pro::after{background-size:540px;background-position:260px 330px;animation:st-drift-b 190s linear infinite,st-twinkle 5.2s ease-in-out -2.1s infinite alternate}
+@keyframes st-drift-a{to{transform:translate3d(-310px,-310px,0)}}
+@keyframes st-drift-b{to{transform:translate3d(540px,-540px,0)}}
+@keyframes st-twinkle{0%{opacity:.15}55%{opacity:.85}100%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.pro::before,.pro::after{animation:none;opacity:.4}}
 /* без картинки пролога: бумажная страница-плашка; с картинкой: текст прямо на страницах разворота */
 .spread{position:relative;display:grid;place-items:center;width:100%}
 .spread-img{display:none}
@@ -703,7 +711,7 @@ if(ST)G.registerPlugin(ST);
 
 /* ── данные кланов ── */
 const CLAN_ORDER=['VAMPIRE','WEREWOLF','DARK_ELF'];
-const CLAN_ART={VAMPIRE:'art/clan-vampire-b.jpg',WEREWOLF:'art/clan-werewolf-b.jpg',DARK_ELF:'art/clan-darkelf-b.jpg'};
+const CLAN_ART={VAMPIRE:'art/clan-vampire-b.jpg',WEREWOLF:'art/clan-werewolf-c.jpg',DARK_ELF:'art/clan-darkelf-b.jpg'};
 const CLAN_ART_FALLBACK={VAMPIRE:'art/nobles.jpg',WEREWOLF:'art/commoners.jpg',DARK_ELF:'art/crown.jpg'};
 const CLANS={
   VAMPIRE:{name:'Вампиры',desc:'Древняя кровь, бархат и долгая память. Им некуда спешить: впереди вечность.',empty:'Склеп пока пуст. Первому достанется лучший гроб.',gl:'Клан вампиров',gt:['Ночь приняла','тебя'],gp:'Древняя кровь узнала родную. Вампиры не спешат: впереди вечность, а сегодня — целый замок.'},
