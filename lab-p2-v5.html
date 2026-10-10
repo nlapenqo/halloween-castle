@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<!-- api-base пустой = демо-режим без сервера; после деплоя вписать адрес API -->
+<!-- api-base пустой: на Pages демо без сервера, локально — сервер 127.0.0.1:8787; после запуска вписать адрес API -->
 <meta name="api-base" content="">
 <meta name="theme-color" content="#1C111B">
 <link rel="icon" href="art/s-pumpkin1.webp" type="image/webp">
@@ -1047,8 +1047,10 @@ const parseAmount=v=>{const s=String(v||'').replace(/[\s  ]/g,'');if(!/^\d{1,
 
 /* ── API ── */
 const qs=new URLSearchParams(location.search);
-const MOCK=qs.get('mock')==='1'||!($('meta[name="api-base"]')?.content||'').trim();
-const BASE=($('meta[name="api-base"]')?.content||'http://127.0.0.1:8787').replace(/\/+$/,'');
+/* api-base пустой: на Pages — демо без сервера, на 127.0.0.1/localhost — локальный сервер :8787 (демо — ?mock=1) */
+const META_BASE=($('meta[name="api-base"]')?.content||'').trim(),LOCAL=/^(127\.0\.0\.1|localhost)$/.test(location.hostname);
+const MOCK=qs.get('mock')==='1'||(!META_BASE&&!LOCAL);
+const BASE=(META_BASE||'http://127.0.0.1:8787').replace(/\/+$/,'');
 async function req(path,body){
   const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),15000);
   try{
