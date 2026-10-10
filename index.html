@@ -77,6 +77,16 @@ h2 .acc{font:400 1.5em/.8 "Neucha",var(--f-display);font-style:normal;text-trans
 .btn{position:relative;isolation:isolate;display:inline-flex;align-items:center;padding:15px 24px;text-decoration:none;font:400 18px/1 var(--f-display);color:var(--ink);transition:transform .25s}
 .btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:2.5px solid var(--ink);border-radius:40px 28px 44px 30px/30px 44px 28px 40px;filter:url(#rough)}
 .btn:hover{transform:rotate(-2deg) scale(1.04)}
+.btn-main::before{background:var(--gold)}
+.btn-lg{padding:18px 30px;font-size:21px}
+.cta-row{margin-top:clamp(22px,3vw,32px)}
+.final-cta{display:grid;justify-items:center;text-align:center;gap:16px;padding-top:clamp(70px,9vw,110px)}
+.final-cta p{max-width:44ch;opacity:.85}
+/* плавающая кнопка: появляется после обложки, прячется рядом с другими кнопками и в подвале */
+.sticky-cta{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));z-index:40;transform:translate(-50%,140%);transition:transform .45s cubic-bezier(.2,.8,.2,1);box-shadow:none}
+.sticky-cta.on{transform:translate(-50%,0)}
+.sticky-cta.on:hover{transform:translate(-50%,0) rotate(-2deg) scale(1.04)}
+@media (prefers-reduced-motion:reduce){.sticky-cta{transition:none}}
 @media (prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}}
 
 /* ── обложка: на весь экран, заголовок набран шрифтом заголовков ── */
@@ -231,8 +241,8 @@ h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-le
 .sky li{--p:clamp(28px,3.6vw,42px);--o:14px;position:relative;isolation:isolate;padding-block:calc(var(--p) - var(--o)) calc(var(--p) + var(--o))}
 .sky li:first-child{--o:7px}
 .sky li:last-child{--o:-13px}
-/* при наведении полоса чуть вытягивается из стопки */
-@media (hover:hover) and (prefers-reduced-motion:no-preference){.sky li{transition:transform .35s cubic-bezier(.2,.8,.2,1)}.sky li:hover{transform:translateY(-6px) rotate(-.25deg);z-index:2}.sky li::before{transition:box-shadow .35s}.sky li:hover::before{box-shadow:0 12px 20px rgba(38,23,29,.22)}}
+/* при наведении полоса чуть приподнимается: верх заходит на предыдущую, низ остаётся под следующей (перекрытие 14px > подъёма 8px) */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.sky li{transition:transform .35s cubic-bezier(.2,.8,.2,1)}.sky li:hover{transform:translateY(-8px)}.sky li::before{transition:box-shadow .35s}.sky li:hover::before{box-shadow:0 -8px 16px rgba(38,23,29,.16)}}
 .sky li::before{content:"";position:absolute;inset:-14px -30px 0 -30px;z-index:-1;background:var(--band);filter:url(#rough)}
 .sky li:first-child::before{top:0}
 .sky li:last-child::before{bottom:-40px}
@@ -300,6 +310,7 @@ footer small{font-size:15px;opacity:.7}
         <h2>О чём эта <em class="acc">ночь</em></h2>
         <p class="lead drop">В ночь на первое ноября граница между мирами истончается. Мы открываем ворота замка и превращаем его в одну большую игру. Каждый, кто войдёт, вступает в один из трёх кланов: вместе вы проходите испытания, разгадываете загадки и добываете монеты для своего клана. К закату станет ясно, чей клан сильнее. А потом общий стол, костёр и маршмеллоу на огне.</p>
         <p class="facts"><span class="chip">31 октября</span><span class="chip">с 14:00</span><span class="chip">Bale Tudor · Убуд</span></p>
+        <p class="cta-row"><a class="btn btn-main" href="participate.html">Открыть врата</a></p>
       </div>
       <ul class="rules">
         <li class="plate"><span class="label">Кланы</span><p class="small">Вампиры, оборотни и тёмные эльфы. Сторону выбираешь ещё до праздника.</p></li>
@@ -336,7 +347,7 @@ footer small{font-size:15px;opacity:.7}
           <p class="small">Тайные знаки, древняя магия и холодный расчёт. Тёмные эльфы видят то, что другие пропускают.</p>
         </article>
       </div>
-      <div class="clan-cta"><a class="btn" href="participate.html">Выбрать клан</a><p class="small">В каждом клане до 20 мест. Кланы держим в равновесии, чтобы игра была честной.</p></div>
+      <div class="clan-cta"><a class="btn btn-main btn-lg" href="participate.html">Вступить в клан</a><p class="small">В каждом клане до 20 мест. Кланы держим в равновесии, чтобы игра была честной.</p></div>
     </div>
   </section>
 
@@ -378,7 +389,7 @@ footer small{font-size:15px;opacity:.7}
     <div class="feast">
       <div class="wrap inner"><h2>Королевская <em class="acc">трапеза</em></h2></div>
       <div class="pan"><img src="art/feast.jpg" alt="Пир: все жители замка за одним длинным столом с тыквами, свечами и кубками" width="2200" height="933" loading="lazy"></div>
-      <div class="wrap inner"><p class="small">Совместный ужин во дворе замка, когда игра закончится. Одна скатерть, все кланы, итоги дня и тосты. Трапеза по желанию: её отмечают при вступлении в клан.</p></div>
+      <div class="wrap inner"><p class="small">Совместный ужин во дворе замка, когда игра закончится. Одна скатерть, все кланы, итоги дня и тосты. Трапеза по желанию: её отмечают при вступлении в клан.</p><p class="cta-row"><a class="btn btn-main" href="participate.html#dinner">Занять место за столом</a></p></div>
     </div>
 
     <div class="wrap bonfire">
@@ -405,6 +416,11 @@ footer small{font-size:15px;opacity:.7}
       <li class="dusk2"><div class="wrap row"><time>18:00</time><img src="art/s-candle.webp" alt=""><div><h3>Трапеза</h3><p>Солнце уходит за джунгли, все садятся за один длинный стол во дворе замка.</p></div></div></li>
       <li class="eve"><div class="wrap row"><time>19:30</time><img src="art/s-moon.webp" alt=""><div><h3>Костёр</h3><p>Огонь, музыка и маршмеллоу на шампурах. Свободный вечер под звёздами.</p></div></div></li>
     </ol>
+    <div class="wrap final-cta">
+      <h3>Ворота откроются 31 октября в 14:00</h3>
+      <p class="small">Выбери клан, внеси вклад в казну замка и приходи в образе.</p>
+      <a class="btn btn-main btn-lg" href="participate.html">Открыть врата</a>
+    </div>
   </section>
 
   <section class="coauthors" id="join">
@@ -435,6 +451,7 @@ footer small{font-size:15px;opacity:.7}
   <p>31 октября · с 14:00</p>
   <small>Bale Tudor, Jl. Dewi Tilotama, Bongkasa Pertiwi, Bali · <a href="https://maps.app.goo.gl/QkY5Y5VHLDEFLeCC8" target="_blank" rel="noopener">карта</a></small>
 </footer>
+<a class="btn btn-main sticky-cta" href="participate.html" aria-hidden="true" tabindex="-1">Открыть врата</a>
 <dialog class="lb" aria-label="Фото замка"><figure><img src="" alt=""><button class="lb-x" type="button" aria-label="Закрыть">×</button><figcaption></figcaption></figure></dialog>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
@@ -453,6 +470,13 @@ c.style.setProperty('--mx',(x*100).toFixed(1)+'%');c.style.setProperty('--my',(y
 c.addEventListener('pointerenter',()=>{c.classList.add('on');c.style.setProperty('--sc','1.03')});
 c.addEventListener('pointermove',e=>{ev=e;if(!raf)raf=requestAnimationFrame(set)});
 c.addEventListener('pointerleave',()=>{c.classList.remove('on');['--rx','--ry','--sc'].forEach(p=>c.style.removeProperty(p))});});})();
+/* Плавающая кнопка: видна, когда обложка ушла с экрана и рядом нет другой кнопки */
+(()=>{const b=document.querySelector('.sticky-cta');if(!b||!('IntersectionObserver' in window))return;
+  const seen=new Set(),targets=[document.querySelector('.cover'),...document.querySelectorAll('main .btn-main,footer')];
+  const upd=()=>{const on=!seen.size;b.classList.toggle('on',on);b.setAttribute('aria-hidden',on?'false':'true');b.tabIndex=on?0:-1};
+  const io=new IntersectionObserver(es=>{es.forEach(e=>e.isIntersecting?seen.add(e.target):seen.delete(e.target));upd()});
+  targets.forEach(t=>t&&io.observe(t));})();
+
 /* Костёр: видео играет только на экране; при reduced-motion — стоп-кадр */
 (()=>{const v=document.querySelector('.bf-v');if(!v)return;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause();v.poster='art/bonfire-still.jpg';return}

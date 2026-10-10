@@ -962,7 +962,8 @@ function openPro(stage,dismissable){
 }
 function closePro(){
   clearTimeout(greetTimer);
-  const done=()=>{pro.hidden=true;document.documentElement.classList.remove('lock');outside().forEach(e=>e.inert=false);$('#me-btn').focus({preventScroll:true});initMotion()};
+  const done=()=>{pro.hidden=true;document.documentElement.classList.remove('lock');outside().forEach(e=>e.inert=false);$('#me-btn').focus({preventScroll:true});initMotion();
+    const h=location.hash&&document.getElementById(location.hash.slice(1));if(h)requestAnimationFrame(()=>h.scrollIntoView({block:'start'}))};
   if(G)G.to(pro,{autoAlpha:0,duration:.6,ease:'power2.inOut',onComplete:()=>{G.set(pro,{clearProps:'opacity,visibility'});done()}});else done();
 }
 function turnToClans(){
