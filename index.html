@@ -2,11 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="31 октября, 14:00–00:00. Halloween в замке Bale Tudor рядом с Убудом: сословия, квесты, пир за длинным столом, костёр и танцы до полуночи.">
+<meta name="description" content="31 октября. Halloween в замке Bale Tudor рядом с Убудом: три клана, игра за монеты, турнир, тыквы, королевская трапеза и костёр.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Halloween в замке посреди джунглей">
-<meta property="og:description" content="31 октября, 14:00–00:00. Halloween в замке Bale Tudor рядом с Убудом: сословия, квесты, пир за длинным столом, костёр и танцы до полуночи.">
+<meta property="og:description" content="31 октября. Halloween в замке Bale Tudor рядом с Убудом: три клана, игра за монеты, турнир, тыквы, королевская трапеза и костёр.">
 <meta property="og:image" content="https://nlapenqo.github.io/halloween-castle/art/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -201,6 +202,11 @@ h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-le
 @media (max-width:880px){.vgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.vgrid{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){.vig img{transition:none}.vig:hover img{transform:none}}
+.clan-cta{display:grid;gap:14px;justify-items:center;text-align:center;margin-top:clamp(44px,6vw,72px)}
+.clan-cta .small{max-width:46ch;opacity:.85}
+.vig-solo{max-width:420px;margin:0 auto}
+/* Motion: светлячки на обложке и покачивание карточек на тач-экранах; включается JS-ом, без JS всё видно сразу */
+.ff{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
 .feast{position:relative;background:#21151E;color:var(--paper);margin-block:clamp(60px,8vw,110px);padding-block:clamp(48px,6vw,80px)}
 .feast::before,.feast::after{content:"";position:absolute;left:-20px;right:-20px;height:30px;background:#21151E;filter:url(#rough)}
 .feast::before{top:-14px}.feast::after{bottom:-14px}
@@ -265,7 +271,7 @@ footer small{font-size:15px;opacity:.7}
 
 <main>
   <section class="cover" aria-labelledby="t">
-    <h1 class="sr-only" id="t">Halloween в замке посреди джунглей. 31 октября, 14:00–00:00, Bale Tudor, Убуд</h1>
+    <h1 class="sr-only" id="t">Halloween в замке посреди джунглей. 31 октября, с 14:00, Bale Tudor, Убуд</h1>
     <div class="stage">
       <picture>
         <source media="(max-width:700px)" srcset="art/cover-m-clean.jpg" width="1200" height="1490">
@@ -280,14 +286,14 @@ footer small{font-size:15px;opacity:.7}
     <div class="wrap grid">
       <div class="text">
         <h2>О чём эта <em class="acc">ночь</em></h2>
-        <p class="lead drop">В ночь на первое ноября граница между мирами истончается. Мы открываем ворота замка на десять часов, от дневного солнца до полуночи, и превращаем его в одну большую игру. Каждый, кто войдёт, становится жителем замка: получает сословие, союзников и общее дело. Формат уже проверен: так мы играли в старой усадьбе под Москвой.</p>
-        <p class="facts"><span class="chip">31 октября</span><span class="chip">14:00 — 00:00</span><span class="chip">Bale Tudor · Убуд</span></p>
+        <p class="lead drop">В ночь на первое ноября граница между мирами истончается. Мы открываем ворота замка и превращаем его в одну большую игру. Каждый, кто войдёт, вступает в один из трёх кланов: вместе вы проходите испытания, разгадываете загадки и добываете монеты для своего клана. К закату станет ясно, чей клан сильнее. А потом общий стол, костёр и маршмеллоу на огне.</p>
+        <p class="facts"><span class="chip">31 октября</span><span class="chip">с 14:00</span><span class="chip">Bale Tudor · Убуд</span></p>
       </div>
       <ul class="rules">
-        <li class="plate"><span class="label">Сословия</span><p class="small">Две-три большие группы. У каждой своё главное задание на весь день.</p></li>
-        <li class="plate"><span class="label">Квесты</span><p class="small">Личные истории по желанию. Можно плести интриги, а можно просто пить чай и смотреть.</p></li>
-        <li class="plate"><span class="label">Персонажи</span><p class="small">Барды и актёры ведут игру: раздают задания, хранят тайны, подливают масла в огонь.</p></li>
-        <li class="plate"><span class="label">Образ</span><p class="small">Приходите в образе своего сословия. Подробности после распределения.</p></li>
+        <li class="plate"><span class="label">Кланы</span><p class="small">Вампиры, оборотни и тёмные эльфы. Сторону выбираешь ещё до праздника.</p></li>
+        <li class="plate"><span class="label">Монеты</span><p class="small">Валюта замка. Их добывают в испытаниях и квестах, а в конце считают по кланам.</p></li>
+        <li class="plate"><span class="label">Испытания</span><p class="small">Лук, турнир, тыквы, загадки и тайники. Играют все, даже организаторы.</p></li>
+        <li class="plate"><span class="label">Образ</span><p class="small">Приходите в образе своего клана. Лучший костюм получит награду.</p></li>
       </ul>
     </div>
     <div class="parade" aria-label="Процессия жителей замка: конь-скелет, дама-мотылёк, ворон-бард, ребёнок с головой-репой, скелет-жонглёр, заяц-барабанщик, соломенное чучело">
@@ -295,33 +301,30 @@ footer small{font-size:15px;opacity:.7}
     </div>
   </section>
 
-  <section class="estates-sec" id="estates">
+  <section class="estates-sec" id="clans">
     <div class="wrap">
       <div class="head">
-        <h2>Три <em class="acc">сословия</em><img class="fn" src="art/star.png" alt="*"></h2>
-        <p class="lead">Кем ты войдёшь в ворота</p>
+        <h2>Три <em class="acc">клана</em></h2>
+        <p class="lead">С кем ты войдёшь в ворота</p>
       </div>
       <div class="estates">
         <article class="estate">
-          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/nobles.jpg" alt="Скелет-дворянка в красной мантии с брыжами и короной ведёт мотылька на ленте, рядом лебедь в маске" width="900" height="1205" loading="lazy"></figure>
-          <h3>Дворяне</h3>
-          <p class="small">Гербы, союзы и браки по расчёту. Влияние здесь копят шёпотом и тратят за один вечер.</p>
-          <div class="task"><span class="label">Главное дело</span><p class="small">Удержать власть над замком до полуночи</p></div>
+          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-vampire-b.jpg" alt="Вампиры с черепами летучих мышей: кавалер в полосатом плаще с кубком и дама в чёрном платье с брыжами среди роз" width="900" height="1205" loading="lazy"></figure>
+          <h3>Вампиры</h3>
+          <p class="small">Древняя кровь, бархат и безупречные манеры. Вампиры не спешат: у них впереди вечность и целая ночь.</p>
         </article>
         <article class="estate">
-          <figure class="frame tilt3d" style="--rz:1deg"><img src="art/commoners.jpg" alt="Крестьянин с головой-тыквой с серпом и корзиной и куст-человек с фонарём" width="900" height="1205" loading="lazy"></figure>
-          <h3>Простолюдины</h3>
-          <p class="small">Ремесло, торговля, слухи с кухни. Без них не горит ни один очаг и не начинается ни один бунт.</p>
-          <div class="task"><span class="label">Главное дело</span><p class="small">Собрать урожай или забрать своё силой</p></div>
+          <figure class="frame tilt3d" style="--rz:1deg"><img src="art/clan-werewolf-b.jpg" alt="Оборотни: волчица в венке играет на скрипке, волк воет на полную луну" width="900" height="1205" loading="lazy"></figure>
+          <h3>Оборотни</h3>
+          <p class="small">Сила, чутьё и стая за спиной. Оборотни берут азартом, особенно когда взойдёт луна.</p>
         </article>
         <article class="estate">
-          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/crown.jpg" alt="Канцлер с черепом коня в полосатой мантии с печатью и свитком, у ног чёрный кот-писарь" width="900" height="1205" loading="lazy"></figure>
-          <h3>Корона</h3>
-          <p class="small">Закон, печати и подати. Корона следит за порядком, судит споры и знает о каждом больше, чем стоило бы.</p>
-          <div class="task"><span class="label">Главное дело</span><p class="small">Сохранить порядок, когда граница миров тоньше всего</p></div>
+          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-darkelf-b.jpg" alt="Тёмные эльфы с черепами-масками и рогами передают друг другу светящуюся сферу среди грибов и мотыльков" width="900" height="1205" loading="lazy"></figure>
+          <h3>Тёмные эльфы</h3>
+          <p class="small">Тайные знаки, древняя магия и холодный расчёт. Тёмные эльфы видят то, что другие пропускают.</p>
         </article>
       </div>
-      <div class="plate draft"><img class="fn-star" src="art/star.png" alt="*"><p>Проработка финальной концепции сословий идёт прямо сейчас. Названия, главные задания и образы уточняем вместе с командой и покажем совсем скоро.</p></div>
+      <div class="clan-cta"><a class="btn" href="participate.html">Выбрать клан</a><p class="small">В каждом клане до 20 мест. Кланы держим в равновесии, чтобы игра была честной.</p></div>
     </div>
   </section>
 
@@ -348,27 +351,26 @@ footer small{font-size:15px;opacity:.7}
       </div>
 
       <div class="places">
-        <div class="head"><h2>Семь мест, где&nbsp;что&#8209;то <em class="acc">случится</em></h2></div>
+        <div class="head"><h2>Где добывают <em class="acc">монеты</em></h2></div>
         <div class="vgrid">
-          <article class="vig"><img src="art/v-tea.webp" alt="Дама-мотылёк разливает чай из чайника с крыльями летучей мыши" loading="lazy"><h3>Чайная</h3><p class="small">Тихое сердце замка. Здесь заваривают чай, слушают сплетни и заключают перемирия.</p></article>
-          <article class="vig"><img src="art/v-archery.webp" alt="Ворон-бард стреляет из лука в тыкву-мишень" loading="lazy"><h3>Ристалище</h3><p class="small">Стрельба из лука и испытания. Здесь выясняют, кто меткий, а кто просто громкий.</p></article>
-          <article class="vig"><img src="art/v-bar.webp" alt="Чёрный заяц-бармен наливает тыквенный арак" loading="lazy"><h3>Бар</h3><p class="small">Тыквенный арак и другие зелья, о составе которых лучше не спрашивать после заката.</p></article>
+          <article class="vig"><img src="art/v-bar.webp" alt="Чёрный заяц за стойкой таверны" loading="lazy"><h3>Таверна</h3><p class="small">Сердце игры. Здесь берут задания с доски, сдают находки и получают монеты.</p></article>
+          <article class="vig"><img src="art/v-archery.webp" alt="Ворон-бард стреляет из лука в тыкву-мишень" loading="lazy"><h3>Стрельбище</h3><p class="small">Пять стрел за попытку. Каждое попадание приносит монету клану.</p></article>
+          <article class="vig"><img src="art/v-hideouts.webp" alt="Кривой домик на дереве с глазами в окнах, свиток и ключ в дупле" loading="lazy"><h3>Тайники</h3><p class="small">По замку спрятаны предметы, загадки и карты сокровищ. Кто внимательнее, тот богаче.</p></article>
+          <article class="vig"><img src="art/v-pumpkins.webp" alt="Житель замка вырезает тыкву, рядом готовые тыквы с номерами" loading="lazy"><h3>Тыквенная мастерская</h3><p class="small">Вырежи свою тыкву и поставь номер. Лучшую выберут голосованием гостей.</p></article>
+          <article class="vig"><img src="art/v-arena.webp" alt="Двое сражаются мягкими палками на деревянном помосте" loading="lazy"><h3>Арена</h3><p class="small">Турнир на мягких палках. Бойцы от каждого клана, победитель забирает пять монет.</p></article>
+          <article class="vig"><img src="art/v-apples.webp" alt="Житель замка ловит зубами яблоко в бочке с водой" loading="lazy"><h3>Яблоки</h3><p class="small">Достань яблоко зубами, без рук. Мокро, смешно и за монету.</p></article>
         </div>
       </div>
     </div>
 
     <div class="feast">
-      <div class="wrap inner"><h2>Мистический <em class="acc">ужин</em></h2></div>
-      <div class="pan"><img src="art/feast.jpg" alt="Пир: все жители замка за одним длинным столом с тыквами, свечами и кубками" width="2200" height="933" loading="lazy"></div>
-      <div class="wrap inner"><p class="small">Большой тематический ужин на всех. Одна скатерть, все сословия, никаких отдельных столиков. Здесь развязываются интриги дня.</p></div>
+      <div class="wrap inner"><h2>Королевская <em class="acc">трапеза</em></h2></div>
+      <div class="pan"><img src="art/feast.jpg" alt="Пир: все жители замка за одним длинным столом с тыквами, свечами и кубками" width="2200" height="933" loading="lazy"></div>
+      <div class="wrap inner"><p class="small">Совместный ужин во дворе замка, когда игра закончится. Одна скатерть, все кланы, итоги дня и тосты. Трапеза по желанию: её отмечают при вступлении в клан.</p></div>
     </div>
 
     <div class="wrap">
-      <div class="vgrid">
-        <article class="vig"><img src="art/v-hideouts.webp" alt="Кривой домик на дереве с глазами в окнах, свиток и ключ в дупле" loading="lazy"><h3>Тайники</h3><p class="small">Башни, мостики, укромные углы. Барды и актёры прячут здесь задания и чужие секреты.</p></article>
-        <article class="vig"><img src="art/v-dance.webp" alt="Скелет-арлекин и ребёнок с головой-репой танцуют под луной-диско-шаром" loading="lazy"><h3>Танцпол</h3><p class="small">Когда стемнеет, начинаются диджей и живой звук. Игра заканчивается, ночь только начинается.</p></article>
-        <article class="vig"><img src="art/v-bonfire.webp" alt="Соломенное чучело горит в костре, вокруг хоровод жителей замка" loading="lazy"><h3>Костёр</h3><p class="small">Сожжение чучела уходящего лета. Всё, что не хочется брать с собой дальше, отправляется в огонь.</p></article>
-      </div>
+      <article class="vig vig-solo"><img src="art/v-bonfire.webp" alt="Костёр, вокруг хоровод жителей замка" loading="lazy"><h3>Костёр</h3><p class="small">После заката разводим большой костёр и жарим маршмеллоу. Игра закончилась, начинается тёплый вечер, как в старых американских фильмах.</p></article>
     </div>
   </section>
 
@@ -377,17 +379,17 @@ footer small{font-size:15px;opacity:.7}
       <img class="ornament" src="art/ornament.webp" alt="" loading="lazy">
       <div class="head">
         <h2>От солнца до <em class="acc">луны</em></h2>
-        <p class="lead">Время ориентировочное. Начинаем при свете, проходим через закат и заканчиваем в полной темноте.</p>
+        <p class="lead">Время ориентировочное. Начинаем при свете, игру заканчиваем к закату, а вечер встречаем у огня.</p>
       </div>
     </div>
     <ol class="sky">
-      <li class="day"><div class="wrap row"><time>14:00</time><img src="art/s-frangipani.webp" alt=""><div><h3>Ворота открываются</h3><p>Встреча гостей, распределение по сословиям, первые знакомства и первые подозрения.</p></div></div></li>
-      <li class="day2"><div class="wrap row"><time>14:30</time><img src="art/s-crow.webp" alt=""><div><h3>Игра</h3><p>Задания сословий, стрельба из лука, чайная, барды с поручениями. Замок живёт сам по себе.</p></div></div></li>
-      <li class="dusk"><div class="wrap row"><time>18:00</time><img src="art/s-pumpkin1.webp" alt=""><div><h3>Закат</h3><p>Солнце уходит за джунгли. Сословия подводят итоги дня, у кого-то они неожиданные.</p></div></div></li>
-      <li class="dusk2"><div class="wrap row"><time>18:30</time><img src="art/s-candle.webp" alt=""><div><h3>Пир</h3><p>Все за одним длинным столом. Тосты, развязки интриг, тыквенный арак.</p></div></div></li>
-      <li class="eve"><div class="wrap row"><time>20:30</time><img src="art/s-turnip.webp" alt=""><div><h3>Сожжение</h3><p>Большой костёр под открытым небом. Отпускаем лето и всё, что с ним не ушло.</p></div></div></li>
-      <li class="late"><div class="wrap row"><time>21:00</time><img src="art/s-bat2.webp" alt=""><div><h3>Танцы</h3><p>Диджей и музыка до полуночи. Маски можно оставить, роли уже нет.</p></div></div></li>
-      <li class="mid"><div class="wrap row"><time>00:00</time><img src="art/s-moon.webp" alt=""><div><h3>Ворота закрываются</h3><p>Граница миров снова на месте. До следующего года.</p></div></div></li>
+      <li class="day"><div class="wrap row"><time>14:00</time><img src="art/s-frangipani.webp" alt=""><div><h3>Ворота открываются</h3><p>Встреча гостей: ленты кланов, карточки игроков, карта замка и первые подозрения.</p></div></div></li>
+      <li class="day"><div class="wrap row"><time>15:00</time><img src="art/s-crow.webp" alt=""><div><h3>Игра</h3><p>Таверна, стрельбище, тайники и мастерская работают одновременно. Каждый выбирает свой путь к монетам.</p></div></div></li>
+      <li class="day2"><div class="wrap row"><time>16:00</time><img src="art/s-star.webp" alt=""><div><h3>Турнир</h3><p>Бойцы кланов сходятся на арене. Мягкие палки, жёсткие ставки.</p></div></div></li>
+      <li class="day2"><div class="wrap row"><time>16:30</time><img src="art/s-pumpkin1.webp" alt=""><div><h3>Яблоки</h3><p>Конкурс без рук. Полотенца выдадим.</p></div></div></li>
+      <li class="dusk"><div class="wrap row"><time>17:40</time><img src="art/s-turnip.webp" alt=""><div><h3>Итоги</h3><p>Считаем монеты кланов, называем лучший костюм и лучшую тыкву. Победителям грамоты и игристое.</p></div></div></li>
+      <li class="dusk2"><div class="wrap row"><time>18:00</time><img src="art/s-candle.webp" alt=""><div><h3>Трапеза</h3><p>Солнце уходит за джунгли, все садятся за один длинный стол во дворе замка.</p></div></div></li>
+      <li class="eve"><div class="wrap row"><time>19:30</time><img src="art/s-moon.webp" alt=""><div><h3>Костёр</h3><p>Огонь, музыка и маршмеллоу на шампурах. Свободный вечер под звёздами.</p></div></div></li>
     </ol>
   </section>
 
@@ -416,10 +418,12 @@ footer small{font-size:15px;opacity:.7}
 
 <footer>
   <img class="star" src="art/s-star.webp" alt="">
-  <p>31 октября · 14:00 — 00:00</p>
+  <p>31 октября · с 14:00</p>
   <small>Bale Tudor, Jl. Dewi Tilotama, Bongkasa Pertiwi, Bali · <a href="https://maps.app.goo.gl/QkY5Y5VHLDEFLeCC8" target="_blank" rel="noopener">карта</a></small>
 </footer>
 <dialog class="lb" aria-label="Фото замка"><figure><img src="" alt=""><button class="lb-x" type="button" aria-label="Закрыть">×</button><figcaption></figcaption></figure></dialog>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
 <script>
 (()=>{const d=document.querySelector('.lb'),im=d.querySelector('img'),cap=d.querySelector('figcaption');
 const open=z=>{im.src=z.src;im.alt=z.alt;cap.textContent=z.closest('figure')?.querySelector('figcaption')?.textContent||'';d.showModal()};
@@ -435,6 +439,45 @@ c.style.setProperty('--mx',(x*100).toFixed(1)+'%');c.style.setProperty('--my',(y
 c.addEventListener('pointerenter',()=>{c.classList.add('on');c.style.setProperty('--sc','1.03')});
 c.addEventListener('pointermove',e=>{ev=e;if(!raf)raf=requestAnimationFrame(set)});
 c.addEventListener('pointerleave',()=>{c.classList.remove('on');['--rx','--ry','--sc'].forEach(p=>c.style.removeProperty(p))});});})();
+/* Motion: появление блоков по скроллу, покачивание карточек на телефоне, светлячки на обложке */
+addEventListener('DOMContentLoaded',()=>{
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce||!window.gsap||!window.ScrollTrigger)return;
+  gsap.registerPlugin(ScrollTrigger);
+  const groups=['.night-intro .text>*','.rules li','.head','.estate','.clan-cta','.castle>*','.real figure','.vig','.feast .inner','.sky li','.ways .plate','.keeper'];
+  groups.forEach(sel=>{const els=gsap.utils.toArray(sel);if(!els.length)return;
+    gsap.set(els,{autoAlpha:0,y:34});
+    ScrollTrigger.batch(els,{start:'top 88%',once:true,onEnter:b=>gsap.to(b,{autoAlpha:1,y:0,duration:.8,ease:'power3.out',stagger:.12,overwrite:true})});
+  });
+  /* виньетки покачиваются сами, пока видны */
+  gsap.utils.toArray('.vig img').forEach((im,i)=>{
+    const tw=gsap.to(im,{rotation:i%2?2.2:-2.2,duration:2.6+i%3*.4,ease:'sine.inOut',yoyo:true,repeat:-1,paused:true});
+    ScrollTrigger.create({trigger:im,start:'top bottom',end:'bottom top',onToggle:st=>st.isActive?tw.play():tw.pause()});
+  });
+  /* тач: карточки кланов слегка наклоняются по ходу скролла вместо курсора */
+  if(!matchMedia('(hover: hover) and (pointer: fine)').matches){
+    gsap.utils.toArray('.tilt3d').forEach((c,i)=>{
+      gsap.fromTo(c,{'--ry':(i%2?-7:7)+'deg','--rx':'5deg'},{'--ry':(i%2?7:-7)+'deg','--rx':'-4deg',ease:'none',
+        scrollTrigger:{trigger:c,start:'top bottom',end:'bottom top',scrub:.6}});
+    });
+  }
+  /* светлячки на обложке */
+  const cv=document.querySelector('.cover .stage');
+  if(cv){const c=document.createElement('canvas');c.className='ff';c.setAttribute('aria-hidden','true');cv.appendChild(c);
+    const x=c.getContext('2d'),dpr=Math.min(2,devicePixelRatio||1),N=innerWidth<700||(navigator.hardwareConcurrency||8)<=4?22:48;let W,H,ps=[],on=true,raf=0;
+    const size=()=>{W=c.clientWidth;H=c.clientHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0)};
+    size();addEventListener('resize',size);
+    for(let i=0;i<N;i++)ps.push({x:Math.random(),y:Math.random(),r:1+Math.random()*1.8,a:Math.random()*6.28,s:.0003+Math.random()*.0006,ph:Math.random()*6.28});
+    const tick=t=>{x.clearRect(0,0,W,H);
+      for(const p of ps){p.a+=(Math.random()-.5)*.2;p.x+=Math.cos(p.a)*p.s;p.y+=Math.sin(p.a)*p.s-.00012;
+        if(p.x<0)p.x=1;if(p.x>1)p.x=0;if(p.y<0)p.y=1;if(p.y>1)p.y=0;
+        const o=.35+.65*Math.max(0,Math.sin(t/900+p.ph));
+        x.beginPath();x.fillStyle=`rgba(255,214,120,${o*.9})`;x.shadowColor='rgba(255,190,90,.9)';x.shadowBlur=8;x.arc(p.x*W,p.y*H,p.r,0,6.28);x.fill()}
+      raf=on?requestAnimationFrame(tick):0};
+    ScrollTrigger.create({trigger:cv,start:'top bottom',end:'bottom top',onToggle:st=>{on=st.isActive;if(on&&!raf)raf=requestAnimationFrame(tick)}});
+    document.addEventListener('visibilitychange',()=>{on=!document.hidden;if(on&&!raf)raf=requestAnimationFrame(tick)});
+    raf=requestAnimationFrame(tick);}
+});
 </script>
 
 </body>
