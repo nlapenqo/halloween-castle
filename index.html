@@ -208,7 +208,7 @@ h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-le
 @media (max-width:880px){.vgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:520px){.vgrid{grid-template-columns:minmax(0,1fr)}}
 @media (prefers-reduced-motion:reduce){.vig img{transition:none}.vig:hover img{transform:none}}
-/* Финал: ночное небо с мерцающими звёздами, арки кланов, отсчёт до ворот */
+/* Финал: ночное небо с мерцающими звёздами, арки кланов */
 .gate{position:relative;isolation:isolate;overflow:hidden;background:var(--night) var(--stars);background-size:420px;color:var(--paper);padding-block:clamp(90px,11vw,150px) clamp(90px,11vw,140px);text-align:center}
 .gate::before,.gate::after{content:"";position:absolute;inset:-600px;z-index:-1;pointer-events:none;background:var(--stars)}
 .gate::before{background-size:310px;background-position:140px 90px;animation:st-drift-a 140s linear infinite,st-twinkle 3.6s ease-in-out infinite alternate}
@@ -218,19 +218,13 @@ h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-le
 @keyframes st-twinkle{0%{opacity:.15}55%{opacity:.85}100%{opacity:.35}}
 .gate h2{color:var(--paper)}.gate h2 .acc{color:var(--gold)}
 .gate .head .lead{color:#E8D6B8;opacity:1;max-width:46ch}
-.gate-clans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,3vw,44px);max-width:860px;margin:0 auto clamp(40px,5vw,60px)}
+.gate-clans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,3vw,44px);max-width:860px;margin:0 auto clamp(44px,5.5vw,68px)}
 .gate-c{display:grid;gap:12px;justify-items:center;text-decoration:none;color:var(--paper);animation:gate-float 6s ease-in-out var(--d) infinite alternate}
 .gate-arch{display:block;width:100%;border-radius:999px 999px 18px 18px;overflow:hidden;border:3px solid var(--gold);box-shadow:0 0 0 6px rgba(217,174,82,.14);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s}
 .gate-arch img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 22%}
 .gate-n{font:400 clamp(17px,1.7vw,22px)/1.2 var(--f-display)}
 .gate-c:hover .gate-arch,.gate-c:focus-visible .gate-arch{transform:translateY(-10px) scale(1.03);box-shadow:0 0 0 6px rgba(217,174,82,.32),0 18px 40px rgba(217,174,82,.25)}
 @keyframes gate-float{to{transform:translateY(-8px)}}
-.gate-count{display:grid;gap:12px;justify-items:center;margin-bottom:clamp(30px,4vw,44px)}
-.gate-count .label{color:var(--gold)}
-.cd{display:flex;gap:clamp(18px,4vw,48px)}
-.cd span{display:grid;justify-items:center;gap:4px}
-.cd b{font:400 clamp(44px,6vw,76px)/1 var(--f-display);font-variant-numeric:lining-nums tabular-nums;color:var(--paper)}
-.cd i{font-style:normal;font-size:15px;letter-spacing:.12em;text-transform:uppercase;opacity:.75}
 .gate-note{margin-top:18px;opacity:.75}
 @media (max-width:520px){.gate-n{font-size:15px}.gate-arch{border-width:2px;box-shadow:0 0 0 4px rgba(217,174,82,.14)}}
 @media (prefers-reduced-motion:reduce){.gate::before,.gate::after,.gate-c{animation:none}.gate::before,.gate::after{opacity:.4}.gate-arch{transition:none}}
@@ -434,10 +428,6 @@ footer small{font-size:15px;opacity:.7}
         <a class="gate-c" href="participate.html" style="--d:0.7s"><span class="gate-arch"><img src="art/clan-werewolf-c.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Оборотни</span></a>
         <a class="gate-c" href="participate.html" style="--d:1.4s"><span class="gate-arch"><img src="art/clan-darkelf-b.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Тёмные эльфы</span></a>
       </div>
-      <div class="gate-count" data-cd-to="2026-10-31T14:00:00+08:00">
-        <span class="label">До открытия ворот</span>
-        <div class="cd"><span><b data-cd="d">—</b><i data-cd-l="d">дней</i></span><span><b data-cd="h">—</b><i data-cd-l="h">часов</i></span><span><b data-cd="m">—</b><i data-cd-l="m">минут</i></span></div>
-      </div>
       <a class="btn btn-main btn-lg gate-btn" href="participate.html">Открыть врата</a>
       <p class="small gate-note">В каждом клане по 20 мест. Кланы растут вровень.</p>
     </div>
@@ -468,13 +458,6 @@ c.addEventListener('pointerenter',()=>{c.classList.add('on');c.style.setProperty
 c.addEventListener('pointermove',e=>{ev=e;if(!raf)raf=requestAnimationFrame(set)});
 c.addEventListener('pointerleave',()=>{c.classList.remove('on');['--rx','--ry','--sc'].forEach(p=>c.style.removeProperty(p))});});})();
 
-/* Отсчёт до открытия ворот (время Бали, UTC+8) */
-(()=>{const box=document.querySelector('[data-cd-to]');if(!box)return;const to=Date.parse(box.dataset.cdTo);
-  const pl=(n,a,b,c)=>{const m=n%10,h=n%100;return m===1&&h!==11?a:m>=2&&m<=4&&(h<12||h>14)?b:c};
-  const L={d:['день','дня','дней'],h:['час','часа','часов'],m:['минута','минуты','минут']};
-  const set=(k,v)=>{box.querySelector(`[data-cd="${k}"]`).textContent=v;box.querySelector(`[data-cd-l="${k}"]`).textContent=pl(v,...L[k])};
-  const tick=()=>{let t=Math.max(0,to-Date.now());const d=Math.floor(t/864e5);t-=d*864e5;const h=Math.floor(t/36e5);t-=h*36e5;set('d',d);set('h',h);set('m',Math.floor(t/6e4))};
-  tick();setInterval(tick,30000);})();
 
 /* Костёр: видео играет только на экране; при reduced-motion — стоп-кадр */
 (()=>{const v=document.querySelector('.bf-v');if(!v)return;
@@ -486,8 +469,7 @@ addEventListener('DOMContentLoaded',()=>{
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce||!window.gsap||!window.ScrollTrigger)return;
   gsap.registerPlugin(ScrollTrigger);
-  const groups=['.night-intro .text>*','.rules li','.head','.estate','.clan-cta','.castle>*','.real figure','.vig','.feast .inner','.sky li','.gate-c','.gate-count','.gate-btn'];
-  groups.forEach(sel=>{const els=gsap.utils.toArray(sel);if(!els.length)return;
+  const groups=['.night-intro .text>*','.rules li','.head','.estate','.clan-cta','.castle>*','.real figure','.vig','.feast .inner','.sky li','.gate-c','  groups.forEach(sel=>{const els=gsap.utils.toArray(sel);if(!els.length)return;
     gsap.set(els,{autoAlpha:0,y:34});
     ScrollTrigger.batch(els,{start:'top 88%',once:true,onEnter:b=>gsap.to(b,{autoAlpha:1,y:0,duration:.8,ease:'power3.out',stagger:.12,overwrite:true,clearProps:'transform'})});
   });
