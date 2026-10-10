@@ -256,7 +256,7 @@ h2 .fn{display:inline-block;width:.46em;height:auto;vertical-align:top;margin-le
 .sky li:first-child{--o:7px}
 .sky li:last-child{--o:-13px}
 /* при наведении полоса чуть приподнимается: верх заходит на предыдущую, низ остаётся под следующей (перекрытие 14px > подъёма 8px) */
-@media (hover:hover) and (prefers-reduced-motion:no-preference){.sky li{transition:transform .35s cubic-bezier(.2,.8,.2,1)}.sky li:hover{transform:translateY(-8px)}.sky li::before{transition:box-shadow .35s}.sky li:hover::before{box-shadow:0 -8px 16px rgba(38,23,29,.16)}}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.sky li{transition:transform .35s cubic-bezier(.2,.8,.2,1)}.sky li:hover{transform:translateY(-8px)}}
 .sky li::before{content:"";position:absolute;inset:-14px -30px 0 -30px;z-index:-1;background:var(--band);filter:url(#rough)}
 .sky li:first-child::before{top:0}
 .sky li:last-child::before{bottom:-40px}
@@ -309,7 +309,6 @@ footer small{font-size:15px;opacity:.7}
         <h2>О чём эта <em class="acc">ночь</em></h2>
         <p class="lead drop">В ночь на первое ноября граница между мирами истончается. Мы открываем ворота замка и превращаем его в одну большую игру. Каждый, кто войдёт, вступает в один из трёх кланов: вместе вы проходите испытания, разгадываете загадки и добываете монеты для своего клана. К закату станет ясно, чей клан сильнее. А потом общий стол, костёр и маршмеллоу на огне.</p>
         <p class="facts"><span class="chip">31 октября</span><span class="chip">с 14:00</span><span class="chip">Bale Tudor · Убуд</span></p>
-        <p class="cta-row"><a class="btn btn-main" href="participate.html">Вступить в игру</a></p>
       </div>
       <ul class="rules">
         <li class="plate"><span class="label">Кланы</span><p class="small">Вампиры, оборотни и тёмные эльфы. Сторону выбираешь ещё до праздника.</p></li>
