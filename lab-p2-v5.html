@@ -425,7 +425,21 @@ fieldset.field legend{padding:0;margin-bottom:7px}
 .dn-tog{position:relative;isolation:isolate;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px 16px;align-items:center;padding:14px 18px 14px 14px;cursor:pointer}
 .dn-tog::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper-deep);border:2.5px solid var(--ink);border-radius:var(--r-plate);filter:url(#rough-sm)}
 .dn-tog input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
-.dn-ic{width:clamp(52px,6vw,64px);aspect-ratio:1;background:url(art/s-candle-full.webp) center/contain no-repeat}
+.dn-ic{width:clamp(52px,6vw,64px);aspect-ratio:1;display:block}
+.dn-ic svg{width:100%;height:100%;display:block;overflow:visible;filter:url(#rough-sm)}
+/* вилка и ложка: расходятся и звонко сходятся крест-накрест, в момент удара вспыхивает звёздочка */
+.dn-fork,.dn-spoon{transform-box:view-box;transform-origin:50px 60px}
+.dn-fork{transform:rotate(-34deg)}.dn-spoon{transform:rotate(34deg)}
+.dn-spark{transform-box:view-box;transform-origin:50px 50px;transform:scale(0);opacity:0}
+@keyframes dn-fork{0%,100%{transform:rotate(-34deg)}30%{transform:rotate(-52deg)}42%{transform:rotate(-26deg)}50%{transform:rotate(-37deg)}58%{transform:rotate(-33deg)}}
+@keyframes dn-spoon{0%,100%{transform:rotate(34deg)}30%{transform:rotate(52deg)}42%{transform:rotate(26deg)}50%{transform:rotate(37deg)}58%{transform:rotate(33deg)}}
+@keyframes dn-spark{0%,40%{transform:scale(0) rotate(0);opacity:0}44%{transform:scale(1.25) rotate(20deg);opacity:1}62%{transform:scale(.5) rotate(45deg);opacity:0}100%{transform:scale(0);opacity:0}}
+@media (prefers-reduced-motion:no-preference){
+  .dn-fork{animation:dn-fork 2.8s cubic-bezier(.45,0,.2,1) infinite}
+  .dn-spoon{animation:dn-spoon 2.8s cubic-bezier(.45,0,.2,1) infinite}
+  .dn-spark{animation:dn-spark 2.8s ease-out infinite}
+  .dn-tog:has(input:checked) :is(.dn-fork,.dn-spoon,.dn-spark){animation-duration:1.6s}
+}
 .dn-tog-t{display:grid;gap:4px}
 .dn-tog-t b{font:400 clamp(18px,1.8vw,21px)/1.25 var(--f-display);font-variant-numeric:lining-nums}
 .dn-tog-t>span{font-size:15.5px;line-height:1.4;opacity:.85}
@@ -882,7 +896,7 @@ h1 .acc,h2 .acc{font:inherit;line-height:inherit;text-transform:inherit;letter-s
       <div class="dn-wrap">
       <label class="dn-tog" id="dn-tog">
         <input type="checkbox" id="f-dinner" name="f_dinner">
-        <span class="dn-ic" aria-hidden="true"></span>
+        <span class="dn-ic" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><filter id="dn-stk" x="-20%" y="-20%" width="140%" height="140%"><feMorphology in="SourceAlpha" operator="dilate" radius="3.2" result="d"/><feFlood flood-color="#FBF4E6"/><feComposite in2="d" operator="in" result="w"/><feMerge><feMergeNode in="w"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g filter="url(#dn-stk)" stroke="#1E111B" stroke-width="2.4" stroke-linejoin="round"><g class="dn-fork"><rect x="46" y="46" width="8" height="46" rx="4" fill="#7A3E2A"/><rect x="45.3" y="49" width="9.4" height="5" rx="2" fill="#D9AE52"/><rect x="47.6" y="36" width="4.8" height="12" fill="#E4DED2"/><path d="M39.5 22h21v5c0 7-4.5 10.5-10.5 10.5S39.5 34 39.5 27Z" fill="#E4DED2"/><rect x="39.5" y="6" width="3.6" height="19" rx="1.8" fill="#E4DED2"/><rect x="45.3" y="6" width="3.6" height="19" rx="1.8" fill="#E4DED2"/><rect x="51.1" y="6" width="3.6" height="19" rx="1.8" fill="#E4DED2"/><rect x="56.9" y="6" width="3.6" height="19" rx="1.8" fill="#E4DED2"/></g><g class="dn-spoon"><rect x="46" y="46" width="8" height="46" rx="4" fill="#7A3E2A"/><rect x="45.3" y="49" width="9.4" height="5" rx="2" fill="#D9AE52"/><rect x="47.6" y="33" width="4.8" height="15" fill="#E4DED2"/><ellipse cx="50" cy="21" rx="10.5" ry="14" fill="#E4DED2"/><ellipse cx="46.3" cy="17" rx="3" ry="6" fill="#fff" stroke="none" opacity=".75"/></g></g><path class="dn-spark" d="M50 40 51.6 48.4 58 46 53.6 50 58 54 51.6 51.6 50 60 48.4 51.6 42 54 46.4 50 42 46 48.4 48.4Z" fill="#D9AE52" stroke="#1E111B" stroke-width="1.2" stroke-linejoin="round"/></svg></span>
         <span class="dn-tog-t"><b>Добавить королевскую трапезу, <span data-price="dinner">250&nbsp;000</span>&nbsp;IDR</b><span>18:00, двор замка: все кланы за&nbsp;одним длинным столом</span></span>
         <span class="dn-mark" aria-hidden="true"></span>
       </label>
