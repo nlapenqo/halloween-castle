@@ -10,9 +10,21 @@
 <link rel="icon" href="art/s-pumpkin-64.webp" type="image/webp">
 <style>body{margin:0}[hidden]{display:none!important}</style>
 <title>Вступить в игру, Halloween · Lost Castle</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alice&family=Kurale&display=swap">
+<!-- большую картинку пролога увидит только новый гость: ему начинаем грузить её сразу, остальным она не нужна (у img loading="lazy") -->
+<script>try{if(!localStorage.getItem('hc_seen')&&!localStorage.getItem('hc_clan')&&!localStorage.getItem('hc_applied')&&!/[?&]clan=/i.test(location.search)){const m=matchMedia('(max-width:880px), (max-aspect-ratio:1/1)').matches,l=document.createElement('link');l.rel='preload';l.as='image';l.type='image/avif';l.fetchPriority='high';l.href='art/prologue'+(m?'-m':'')+'.avif';document.head.append(l)}}catch{}</script>
+<!-- шрифты со своего сервера: только кириллица и латиница, без лишних соединений -->
+<link rel="preload" href="fonts/kurale-cyr.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/alice-cyr.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/kurale-lat.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/alice-lat.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Alice';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/alice-cyr.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Alice';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/alice-lat.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+@font-face{font-family:'Kurale';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/kurale-cyr.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Kurale';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/kurale-lat.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
+/* обёртка для AVIF не влияет на раскладку: картинка ведёт себя как прямой потомок */
+picture.av{display:contents}
+</style>
 <style>
 /* Страница участия: пролог и выбор клана → «ты в клане, а теперь вклад» → казна, одна шкала и три пути → трапеза → большая кнопка с гарантией → кланы. Окно оформления на весь экран */
 :root{
@@ -678,7 +690,7 @@ footer a{display:inline-block;padding-block:11px}
       <div class="tcards">
         <div class="tw" data-rv><article class="plate tcard t-bronze tilt3d" data-tf="BRONZE" aria-labelledby="t-b">
           <span class="t-glow" aria-hidden="true"></span>
-          <img class="t-ic" src="art/t-bronze-240.webp" alt="" width="600" height="581" loading="lazy" onerror="this.remove()">
+          <img class="t-ic" data-src="art/t-bronze-240.webp" alt="" width="600" height="581" loading="lazy" onerror="this.remove()">
           <h3 class="t-name" id="t-b">Bronze</h3>
           <p class="t-price"><span data-price="bronze">150&nbsp;000</span>&nbsp;<small>IDR</small></p>
           <p class="t-txt">Даже одна монета помогает замку. Этот путь&nbsp;— для&nbsp;друзей, которым сейчас нужен самый доступный формат участия (ограниченный бюджет)</p>
@@ -687,7 +699,7 @@ footer a{display:inline-block;padding-block:11px}
         </article></div>
         <div class="tw" data-rv><article class="plate tcard t-silver tilt3d" data-tf="SILVER" aria-labelledby="t-s">
           <span class="t-glow" aria-hidden="true"></span>
-          <img class="t-ic" src="art/t-silver-240.webp" alt="" width="600" height="530" loading="lazy" onerror="this.remove()">
+          <img class="t-ic" data-src="art/t-silver-240.webp" alt="" width="600" height="530" loading="lazy" onerror="this.remove()">
           <h3 class="t-name" id="t-s">Silver</h3>
           <p class="t-price"><span data-price="silver">300&nbsp;000</span>&nbsp;<small>IDR</small></p>
           <p class="t-txt">Врата открыты: все события, испытания и&nbsp;приключения. Вся ночь в&nbsp;замке&nbsp;— от&nbsp;первого испытания до&nbsp;последнего уголька в&nbsp;костре.</p>
@@ -698,7 +710,7 @@ footer a{display:inline-block;padding-block:11px}
           <span class="t-glow" aria-hidden="true"></span>
           <span class="t-shine" aria-hidden="true"></span>
           <div class="book-fr" aria-hidden="true"><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg></div>
-          <img class="t-ic" src="art/t-gold-240.webp" alt="" width="600" height="564" loading="lazy" onerror="this.remove()">
+          <img class="t-ic" data-src="art/t-gold-240.webp" alt="" width="600" height="564" loading="lazy" onerror="this.remove()">
           <h3 class="t-name" id="t-g">Gold</h3>
           <p class="t-price">от&nbsp;<span data-price="gold">500&nbsp;000</span>&nbsp;<small>IDR</small></p>
           <p class="t-txt">Помоги пробудить замок сильнее: сумму вклада выбираешь сам. В&nbsp;благодарность&nbsp;— все игровые усиления.</p>
@@ -720,7 +732,7 @@ footer a{display:inline-block;padding-block:11px}
 
   <section class="dn-sec" id="dinner" aria-labelledby="dn-t">
     <div class="wrap">
-      <figure class="dn-img" data-rv><picture><source media="(max-width:880px)" srcset="art/dinner-b-m.webp" width="1000" height="1000"><img src="art/dinner-b.webp" alt="Королевская трапеза: жители замка из&nbsp;всех кланов за&nbsp;одним длинным столом во&nbsp;дворе, свечи и&nbsp;фонари на&nbsp;деревьях" width="2000" height="1116" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='art/feast.jpg'}"></picture><div class="dn-frame" aria-hidden="true"><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg></div></figure>
+      <figure class="dn-img" data-rv><picture><source type="image/avif" media="(max-width:880px)" data-srcset="art/dinner-b-m.avif" width="1000" height="1000"><source media="(max-width:880px)" data-srcset="art/dinner-b-m.webp" width="1000" height="1000"><source type="image/avif" data-srcset="art/dinner-b.avif"><img data-src="art/dinner-b.webp" alt="Королевская трапеза: жители замка из&nbsp;всех кланов за&nbsp;одним длинным столом во&nbsp;дворе, свечи и&nbsp;фонари на&nbsp;деревьях" width="2000" height="1116" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='art/feast.jpg'}"></picture><div class="dn-frame" aria-hidden="true"><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg></div></figure>
       <div class="dn-body" data-rv>
         <h2 id="dn-t">Королевская <em class="acc">трапеза</em></h2>
         <p>В&nbsp;18:00 игра окончена, монеты пересчитаны. Все кланы садятся за&nbsp;один длинный стол во&nbsp;дворе замка: свечи, фонари в&nbsp;ветвях, тосты за&nbsp;победителей и&nbsp;за&nbsp;тех, кто почти победил.</p>
@@ -770,21 +782,21 @@ footer a{display:inline-block;padding-block:11px}
   <button class="pro-x" type="button" data-act="pro-close" aria-label="Закрыть" hidden>×</button>
 
   <div class="pro-stage" data-stage="intro" hidden>
-    <img class="pro-deco k1 float" src="art/s-crow.webp" alt="">
+    <img loading="lazy" class="pro-deco k1 float" data-src="art/s-crow.webp" alt="">
     <img class="pro-deco k2 float" src="art/s-pumpkin-64.webp" alt="">
-    <img class="pro-deco k3 float" src="art/s-candle.webp" alt="">
-    <img class="pro-deco k4 float" src="art/s-star.webp" alt="">
+    <img loading="lazy" class="pro-deco k3 float" data-src="art/s-candle.webp" alt="">
+    <img loading="lazy" class="pro-deco k4 float" data-src="art/s-star.webp" alt="">
     <div class="spread" id="spread">
       <picture class="spread-img" id="pro-bg">
-        <source media="(max-width:880px), (max-aspect-ratio:1/1)" srcset="art/prologue-m.webp" width="1200" height="1600">
-        <img src="art/prologue.webp" alt="" id="pro-bg-img" width="2200" height="1228" fetchpriority="high">
+        <source type="image/avif" media="(max-width:880px), (max-aspect-ratio:1/1)" srcset="art/prologue-m.avif" width="1200" height="1600"><source media="(max-width:880px), (max-aspect-ratio:1/1)" srcset="art/prologue-m.webp" width="1200" height="1600">
+        <source type="image/avif" srcset="art/prologue.avif"><img src="art/prologue.webp" alt="" id="pro-bg-img" width="2200" height="1228" fetchpriority="high" loading="lazy">
       </picture>
       <div class="book-wrap">
         <div class="book-under" aria-hidden="true"></div>
         <div class="plate book" id="book">
           <div class="book-fr" aria-hidden="true"><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg></div>
           <div class="pg pg-l">
-            <img class="orn" src="art/ornament-1100.webp" alt="" width="1100" height="267">
+            <picture class="av"><source type="image/avif" data-srcset="art/ornament-1100.avif"><img class="orn" loading="lazy" data-src="art/ornament-1100.webp" alt="" width="1100" height="267"></picture>
             <h2 id="pro-t" tabindex="-1">Странник, замок зовёт тебя в&nbsp;<em class="acc">игру</em></h2>
           </div>
           <div class="pg pg-r">
@@ -832,9 +844,9 @@ footer a{display:inline-block;padding-block:11px}
       <fieldset class="seg" id="co-seg" aria-describedby="f-tariff-e">
         <legend class="co-sub">Выбери путь</legend>
         <div class="seg-row">
-          <label><input type="radio" name="tariff" value="BRONZE"><img src="art/t-bronze-240.webp" alt="" width="600" height="581"><span class="seg-n">Bronze</span><small><span data-price="bronze">150&nbsp;000</span>&nbsp;IDR</small></label>
-          <label><input type="radio" name="tariff" value="SILVER"><img src="art/t-silver-240.webp" alt="" width="600" height="530"><span class="seg-n">Silver</span><small><span data-price="silver">300&nbsp;000</span>&nbsp;IDR</small></label>
-          <label class="g"><input type="radio" name="tariff" value="GOLD"><img src="art/t-gold-240.webp" alt="" width="600" height="564"><span class="seg-n">Gold</span><small>от&nbsp;<span data-price="gold">500&nbsp;000</span>&nbsp;IDR</small></label>
+          <label><input type="radio" name="tariff" value="BRONZE"><img loading="lazy" data-src="art/t-bronze-240.webp" alt="" width="600" height="581"><span class="seg-n">Bronze</span><small><span data-price="bronze">150&nbsp;000</span>&nbsp;IDR</small></label>
+          <label><input type="radio" name="tariff" value="SILVER"><img loading="lazy" data-src="art/t-silver-240.webp" alt="" width="600" height="530"><span class="seg-n">Silver</span><small><span data-price="silver">300&nbsp;000</span>&nbsp;IDR</small></label>
+          <label class="g"><input type="radio" name="tariff" value="GOLD"><img loading="lazy" data-src="art/t-gold-240.webp" alt="" width="600" height="564"><span class="seg-n">Gold</span><small>от&nbsp;<span data-price="gold">500&nbsp;000</span>&nbsp;IDR</small></label>
         </div>
         <p class="err" id="f-tariff-e" data-err="tariff" role="alert"></p>
       </fieldset>
@@ -957,7 +969,7 @@ footer a{display:inline-block;padding-block:11px}
     </div>
 
     <div class="step done" data-step="done" hidden>
-      <img src="art/s-star.webp" alt="" loading="lazy">
+      <img data-src="art/s-star.webp" alt="" loading="lazy">
       <h2 class="sheet-t" id="done-t" tabindex="-1"></h2>
       <p id="done-sum"></p>
       <p class="small">Твоё имя уже в&nbsp;списке клана, а&nbsp;взнос&nbsp;— в&nbsp;казне замка. Если ещё не&nbsp;отправил скриншот организатору, сделай это сейчас.</p>
@@ -1103,7 +1115,7 @@ function buildClan(code,where){
   const c=CLANS[code],i=CLAN_ORDER.indexOf(code),w=document.createElement('div');
   w.className='cw';if(where==='main')w.dataset.rv='';
   w.innerHTML=`<article class="plate clan clan-${code}" data-clan="${code}" aria-labelledby="cl-${where}-${code}">
-    <div class="fw"><figure class="frame tilt3d" style="--rz:${[-1.2,1,-1][i]}deg"><img src="${CLAN_ART[code]}" alt="Иллюстрация клана «${c.name}»" width="900" height="1205" loading="lazy"></figure></div>
+    <div class="fw"><figure class="frame tilt3d" style="--rz:${[-1.2,1,-1][i]}deg"><img data-src="${CLAN_ART[code]}" alt="Иллюстрация клана «${c.name}»" width="900" height="1205" loading="lazy"></figure></div>
     <div class="clan-body">
       <h3 id="cl-${where}-${code}">${c.name}</h3>
       <p class="small clan-d">${c.desc}</p>
@@ -1124,7 +1136,7 @@ function buildClanMini(code){
   w.className='cw';w.dataset.rv='';
   w.innerHTML=`<article class="plate clan clan-${code}" data-clan="${code}" aria-labelledby="cl-main-${code}">
     <div class="clan-body">
-      <div class="cm-head"><span class="cm-ava"><img src="art/face-${code.toLowerCase().replace('_','')}.webp" alt="" width="240" height="240" loading="lazy"></span><h3 id="cl-main-${code}">${c.name}</h3>
+      <div class="cm-head"><span class="cm-ava"><img data-src="art/face-${code.toLowerCase().replace('_','')}.webp" alt="" width="240" height="240" loading="lazy"></span><h3 id="cl-main-${code}">${c.name}</h3>
       <div class="cnt"><span class="cnt-n"><b data-f="count">—</b>${NB}/${NB}<span data-f="max">20</span><span class="sr-only"> мест занято</span></span><span class="cbar" aria-hidden="true"><i data-f="cfill"></i></span></div></div>
       <ul class="members" data-f="members" aria-label="Участники клана «${c.name}»"></ul>
       <p class="empty small" data-f="empty" hidden>${c.empty}</p>
@@ -1286,11 +1298,14 @@ function starSky(cv,{density=6500,max=240}={}){
     const n=Math.min(max,Math.round(W*H/density));
     stars=Array.from({length:n},()=>{const big=Math.random()<.18;return{x:Math.random()*W,y:Math.random()*H,r:big?5+Math.random()*7:.9+Math.random()*1.5,big,ph:Math.random()*6.283,sp:.5+Math.random()*1.4,c:big||Math.random()<.35?GOLD:CREAM}});
     draw(performance.now())}
-  function spark(x,y,r){ctx.beginPath();for(let i=0;i<16;i++){const a=i*Math.PI/8,rr=i%4===0?r:i%2===0?r*.55:r*.2;ctx.lineTo(x+Math.sin(a)*rr,y-Math.cos(a)*rr)}ctx.closePath();ctx.fill()}
+  /* звёзды рисуем один раз в маленькие холсты-спрайты, в кадре только копируем их с нужной прозрачностью */
+  const sprite=(R,c,big)=>{const d=2*Math.min(2,devicePixelRatio||1),cv2=document.createElement('canvas'),g=cv2.getContext('2d');cv2.width=cv2.height=Math.ceil(2*R*d);g.scale(d,d);g.fillStyle=`rgb(${c})`;g.beginPath();
+    if(big){for(let i=0;i<16;i++){const a=i*Math.PI/8,rr=i%4===0?R:i%2===0?R*.55:R*.2;g.lineTo(R+Math.sin(a)*rr,R-Math.cos(a)*rr)}g.closePath()}else g.arc(R,R,R,0,6.283);g.fill();return cv2};
+  const SPR={big:sprite(12,GOLD,true),[GOLD]:sprite(2.4,GOLD,false),[CREAM]:sprite(2.4,CREAM,false)};
   function draw(t){ctx.clearRect(0,0,W,H);const s=t/1000;
-    for(const p of stars){const k=.5+.5*Math.sin(s*p.sp+p.ph),a=p.big?.35+.65*k:.2+.8*k;ctx.fillStyle=`rgba(${p.c},${a.toFixed(3)})`;
-      if(p.big)spark(p.x,p.y,p.r*(.75+.25*k));else{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill()}}}
-  function loop(t){raf=requestAnimationFrame(loop);if(t-last<33)return;last=t;draw(t)}
+    for(const p of stars){const k=.5+.5*Math.sin(s*p.sp+p.ph),r=p.big?p.r*(.75+.25*k):p.r;ctx.globalAlpha=p.big?.35+.65*k:.2+.8*k;
+      ctx.drawImage(p.big?SPR.big:SPR[p.c],p.x-r,p.y-r,2*r,2*r)}ctx.globalAlpha=1}
+  function loop(t){raf=requestAnimationFrame(loop);if(t-last<40)return;last=t;draw(t)}
   if('ResizeObserver' in window)new ResizeObserver(size).observe(cv);else addEventListener('resize',size);
   size();
   return{start(){if(RMS){draw(0);return}if(run)return;run=true;raf=requestAnimationFrame(loop)},stop(){run=false;cancelAnimationFrame(raf)}};
@@ -1561,7 +1576,7 @@ function loadMotion(){
   const add=(src,ok,fail)=>{const sc=document.createElement('script');sc.src=src;sc.async=true;sc.onload=ok;sc.onerror=fail;document.head.append(sc)};
   const ready=()=>{if(!window.gsap)return;G=window.gsap;if(window.ScrollTrigger){ST=window.ScrollTrigger;G.registerPlugin(ST)}
     if(!pro.hidden)floats(true);if(motionReady)startPageMotion()};
-  add('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js',()=>add('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js',ready,ready),()=>{});
+  add('vendor/gsap.min.js',()=>add('vendor/ScrollTrigger.min.js',ready,ready),()=>{});
 }
 
 /* «К истории замка»: если пришли с главной, возвращаемся по истории — на тот же блок и в то же состояние */
@@ -1593,6 +1608,17 @@ refresh();loadMotion();
 setInterval(()=>{if(document.visibilityState==='visible')refresh()},12000);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refresh()});
 })();
+</script>
+<script>
+/* Картинки ниже первого экрана ждут, пока загрузится первый экран: сервер отдаёт файлы без приоритетов,
+   и иначе они делят канал с обложкой. Дальше браузер сам решает по loading="lazy", когда их грузить */
+(()=>{let done=false;const go=()=>{if(done)return;done=true;
+  document.querySelectorAll('[data-srcset]').forEach(e=>{e.srcset=e.dataset.srcset;e.removeAttribute('data-srcset')});
+  document.querySelectorAll('[data-src]').forEach(e=>{e.src=e.dataset.src;e.removeAttribute('data-src')});
+  document.querySelectorAll('[data-href]').forEach(e=>{e.setAttribute('href',e.dataset.href);e.removeAttribute('data-href')});
+  document.querySelectorAll('video[data-poster]').forEach(e=>{e.poster=e.dataset.poster;e.removeAttribute('data-poster')})};
+  const first=(!document.getElementById('pro').hidden&&document.querySelector('.pro-stage[data-stage="intro"]:not([hidden])')&&document.getElementById('pro-bg-img'));
+  if(first&&!first.complete){first.addEventListener('load',go,{once:true});first.addEventListener('error',go,{once:true});setTimeout(go,5000)}else go()})();
 </script>
 </body>
 </html>
