@@ -610,13 +610,12 @@ function onView(el,fn,threshold=0){if(!el)return;if(!('IntersectionObserver' in 
   d.addEventListener('click',e=>{if(e.target===d)d.close()});})();
 
 /* Пасхалки: летучие мыши. Без картинок и библиотек — маленький SVG, элементы живут только пока на экране.
-   При заходе на главную три мыши сидят на рамке обложки и вспархивают; потом мыши прилетают на постер замка
-   и карточку вампиров в финале; наведёшь курсор — улетают */
+   Мыши неподвижно сидят на рамке обложки, постере замка и карточке вампиров; наведёшь курсор (тапнешь) на одну — она улетает */
 (()=>{if(RM||!Element.prototype.animate)return;
   const BAT='<svg class="egg-bat" viewBox="0 0 64 34" aria-hidden="true"><g fill="#5E4A6B" stroke="#26171D" stroke-width="1.6" stroke-linejoin="round"><path class="w l" d="M30 15C24 7 13 5 2 9c5 2 6 6 5 10 4-3 8-2 10 2 3-4 8-4 13-2z"/><path class="w r" d="M34 15c6-8 17-10 28-6-5 2-6 6-5 10-4-3-8-2-10 2-3-4-8-4-13-2z"/><path d="M28 10l1.5-5 2.5 4 2.5-4 1.5 5c1 2 1 8-4 11-5-3-5-9-4-11z"/></g><circle cx="30.3" cy="12" r="1" fill="#F2C14E"/><circle cx="33.7" cy="12" r="1" fill="#F2C14E"/></svg>';
   const make=()=>{const t=document.createElement('template');t.innerHTML=BAT;return t.content.firstChild};
   const rnd=(a,b)=>a+Math.random()*(b-a);
-  /* полёт без исчезновения: мышь неторопливо уходит за край экрана по волнистой дуге (или прилетает из-за него) */
+  /* полёт без исчезновения: мышь неторопливо уходит за край экрана по волнистой дуге */
   const offscreen=(b,dir)=>{const r=b.getBoundingClientRect();return [dir>0?innerWidth-r.left+60:-(r.right+60),-(r.bottom+80)]};
   const wave=(dx,dy)=>{const k=[];for(let i=0;i<=6;i++){const t=i/6,e=t*t*(3-2*t),bob=Math.sin(t*Math.PI*3)*18*(1-t);
     k.push({transform:`translate(${dx*e}px,${dy*e+bob}px) rotate(${Math.sign(dx)*6*Math.sin(t*Math.PI)}deg)`})}return k};
@@ -625,19 +624,15 @@ function onView(el,fn,threshold=0){if(!el)return;if(!('IntersectionObserver' in 
   const away=b=>{if(!b.isConnected||b.dataset.gone)return;b.dataset.gone=1;b.style.pointerEvents='none';
     const br=toFixed(b),dir=br.left+br.width/2<innerWidth/2?-1:1,[dx,dy]=offscreen(b,dir);
     b.animate(wave(dx,dy),{duration:3200,easing:'linear'}).onfinish=()=>b.remove()};
-  /* сесть на верхний край блока: сразу (sit) или прилететь из-за края экрана */
-  const perch=(el,at,{fly=true,w=104,top=0}={})=>{const b=make();b.classList.add('perch');b.style.cssText=`left:${at}%;top:${top-w*.42}px;width:${w}px`;el.append(b);
-    const sit=()=>{b.classList.add('sit');b.addEventListener('pointerenter',()=>away(b));el.addEventListener('pointerenter',()=>b.classList.contains('sit')&&away(b),{once:true})};
-    if(!fly){sit();return b}
-    const host=b.style.cssText,dir=Math.random()<.5?-1:1;toFixed(b);const [dx,dy]=offscreen(b,dir);
-    b.animate(wave(dx,dy).reverse(),{duration:3400,easing:'linear'}).onfinish=()=>{b.style.cssText=host;b.classList.add('perch');el.append(b);sit()};return b};
-  /* обложка: трое сидят на рамке и вспархивают, будто их спугнули */
+  /* сидит на верхнем крае блока, пока не наведут курсор */
+  const perch=(el,at,{w=104,top=0}={})=>{const b=make();b.classList.add('perch','sit');b.style.cssText=`left:${at}%;top:${top-w*.42}px;width:${w}px`;el.append(b);
+    b.addEventListener('pointerenter',()=>away(b));return b};
+  /* обложка: трое сидят на рамке */
   const cov=document.querySelector('.cover'),fr=cov&&cov.querySelector('.cv-frame');
   if(fr){const top=fr.getBoundingClientRect().top-cov.getBoundingClientRect().top+parseFloat(getComputedStyle(fr).borderTopWidth)+(parseFloat(getComputedStyle(fr,'::before').top)||0);
-    const flock=[18,24,71].map((at,i)=>perch(cov,at,{fly:false,w:[120,96,108][i],top}));setTimeout(()=>flock.forEach((b,i)=>setTimeout(()=>away(b),i*450)),1400)}
-  /* по ходу страницы: прилетают, когда блок показался */
-  [['.castle .frame',70],['.gcard.est-VAMPIRE',64]].forEach(([sel,at])=>{const el=document.querySelector(sel);if(!el)return;
-    const io=new IntersectionObserver(es=>{if(es.some(x=>x.isIntersecting)){io.disconnect();setTimeout(()=>perch(el,at),600)}},{threshold:.6});io.observe(el)});
+    [18,24,71].forEach((at,i)=>perch(cov,at,{w:[120,96,108][i],top}))}
+  /* по ходу страницы */
+  [['.castle .frame',70],['.gcard.est-VAMPIRE',64]].forEach(([sel,at])=>{const el=document.querySelector(sel);if(el)perch(el,at)});
 })();
 
 /* Карточки кланов наклоняются за курсором: только мышь и без reduced-motion */
