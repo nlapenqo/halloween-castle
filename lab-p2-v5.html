@@ -562,7 +562,17 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .pro-foot{display:flex;justify-content:center;--ring:var(--vermilion-soft)}
 .pro-foot .linkbtn{color:var(--paper)}
 .greet{max-width:600px}
-.greet .greet-face{width:240px;height:240px;object-fit:contain;margin-block:-20px -8px}
+.greet .greet-face{width:240px;height:240px;margin-block:-20px -8px;overflow:visible}
+.greet-face .lid{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0)}
+.greet-face .gf-spk{opacity:0}
+@media (prefers-reduced-motion:no-preference){
+  .greet-face .gf-head{transform-origin:120px 228px;animation:gf-sway 5.5s ease-in-out infinite alternate}
+  .greet-face .lid{animation:gf-blink 4.6s ease-in-out 1.2s infinite}
+  .greet-face .gf-spk{animation:gf-tw 2.6s ease-in-out infinite}
+}
+@keyframes gf-sway{0%{transform:rotate(-2.5deg) translateY(0)}50%{transform:rotate(0) translateY(-4px)}100%{transform:rotate(2.5deg) translateY(0)}}
+@keyframes gf-blink{0%,88%,100%{transform:scaleY(0)}92%,94%{transform:scaleY(1)}}
+@keyframes gf-tw{0%,100%{opacity:0;transform:scale(.2) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
 @media (max-width:520px),(max-height:760px){.greet .greet-face{width:160px;height:160px;margin-block:-10px -4px}}
 .greet .lead{text-align:center}
 /* приветствие: под листом заметен второй — сильнее выдвинут, толще обводка; при наведении листы раздвигаются */
@@ -796,7 +806,7 @@ footer a{display:inline-block;padding-block:11px}
       <div class="book-under" aria-hidden="true"></div>
       <div class="plate book" id="greet-book" aria-live="polite">
         <div class="book-fr" aria-hidden="true"><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg></div>
-        <img class="greet-face" id="greet-face" src="art/face-vampire.webp" alt="" width="240" height="240">
+        <svg class="greet-face" id="greet-face" viewBox="0 0 240 240" aria-hidden="true"></svg>
         <span class="label" id="greet-l"></span>
         <h2 id="greet-t" tabindex="-1"></h2>
         <p class="lead" id="greet-p"></p>
@@ -1304,9 +1314,16 @@ function turnToClans(){
   else if(G){const b=$('#book');G.timeline().to(b,{rotationY:-105,autoAlpha:0,duration:.85,ease:'power2.in',transformPerspective:1600}).to('.book-wrap .book-under',{autoAlpha:0,duration:.25},'-=.35').add(()=>{G.set([b,'.book-under'],{clearProps:'all'});go()})}
   else go();
 }
+/* лицо клана в приветствии: картинка + SVG-слои — голова покачивается, моргают веки цвета кожи, искрятся корона или серьги */
+const FACE_FX={VAMPIRE:{lid:'#F8E4CC',eyes:[[93,116,11,11],[144,116,11,11]],spk:[[120,52],[150,206]]},
+  WEREWOLF:{lid:'#A88A72',eyes:[[91,104,12,8],[142,104,12,8]],spk:[[58,40],[186,44]]},
+  DARK_ELF:{lid:'#A9A887',eyes:[[95,107,11,7],[145,107,11,7]],spk:[[40,112],[199,122]]}};
+function faceFx(svg,code){const f=FACE_FX[code],img=`art/face-${code.toLowerCase().replace('_','')}.webp`;
+  svg.innerHTML=`<g class="gf-head"><image href="${img}" width="240" height="240"/>${f.eyes.map(([x,y,rx,ry])=>`<ellipse class="lid" cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${f.lid}" stroke="#2A1A14" stroke-width="1.6"/>`).join('')}</g>`+
+    f.spk.map(([x,y],i)=>`<g transform="translate(${x} ${y})"><path class="gf-spk" style="animation-delay:${i*1.3}s" d="M0-11C1.5-3 3-1.5 11 0 3 1.5 1.5 3 0 11-1.5 3-3 1.5-11 0-3-1.5-1.5-3 0-11Z" fill="#FFE08A" stroke="#6B3D1F" stroke-width="1.6" stroke-linejoin="round"/></g>`).join('')}
 function showGreet(code){
   const c=CLANS[code];greetCode=code;
-  $('#greet-l').textContent=c.gl;$('#greet-t').innerHTML=`${esc(ty(c.gt[0]))} <em class="acc">${esc(c.gt[1])}</em>`;$('#greet-p').textContent=c.gp;$('#greet-face').src=`art/face-${code.toLowerCase().replace('_','')}.webp`;
+  $('#greet-l').textContent=c.gl;$('#greet-t').innerHTML=`${esc(ty(c.gt[0]))} <em class="acc">${esc(c.gt[1])}</em>`;$('#greet-p').textContent=c.gp;faceFx($('#greet-face'),code);
   pro.setAttribute('aria-labelledby','greet-t');showStage('greet');$('#greet-t').focus({preventScroll:true});
   if(G){G.fromTo('#greet-book',{scale:.92,autoAlpha:0,rotation:-1.5},{scale:1,autoAlpha:1,rotation:0,duration:.8,ease:'back.out(1.6)'});G.fromTo('#greet-face',{y:16,scale:.6},{y:0,scale:1,duration:1.1,ease:'elastic.out(1,.6)'})}
 }
