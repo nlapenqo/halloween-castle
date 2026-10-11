@@ -231,11 +231,11 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .perk-list{list-style:none;margin:6px 0 2px;padding:0;display:grid;gap:8px;text-align:left}
 .perk-list li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;font-size:var(--fs-small);line-height:1.35}
 /* иконки усилений: фрагменты иллюстраций проекта (монеты из сундука, мишень, тыква, свеча) */
-.bi{flex:none;display:inline-block;width:32px;height:32px;border-radius:50%;background:var(--paper) no-repeat;border:var(--bw-sm) solid var(--gold);vertical-align:middle}
-.bi-coin{background-image:url(art/treasury.webp);background-size:360%;background-position:92% 100%}
-.bi-arrow{background-image:url(art/v-archery.webp);background-size:300%;background-position:98% 66%}
-.bi-pumpkin{background-image:url(art/s-pumpkin1.webp);background-size:84%;background-position:50% 50%}
-.bi-candle{background-image:url(art/s-candle.webp);background-size:auto 84%;background-position:50% 50%}
+.bi{flex:none;display:inline-block;width:38px;height:38px;background:no-repeat 50% 50%/contain;vertical-align:middle}
+.bi-coin{background-image:url(art/p-coins.webp)}
+.bi-arrow{background-image:url(art/p-target.webp)}
+.bi-pumpkin{background-image:url(art/p-pumpkin.webp)}
+.bi-cipher{background-image:url(art/p-cipher.webp)}
 @media (max-width:880px){
   .tcards{grid-template-columns:minmax(0,1fr);max-width:520px;gap:22px}
   .t-gold{--ty0:0px;margin-block:6px}
@@ -319,16 +319,14 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .cm-head{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"ava name" "ava cnt";column-gap:14px;row-gap:4px;align-items:center;width:100%;margin-bottom:4px}
 .cm-head h3{grid-area:name}
 .cm-head .cnt{grid-area:cnt}
-.cm-ava{grid-area:ava;position:relative;isolation:isolate;width:54px;height:54px;margin:4px 0}
-.cm-ava::before{content:"";position:absolute;inset:-5px;z-index:-1;background:var(--cm,var(--rose));border:var(--bw-sm) solid var(--ink);border-radius:var(--r-round);filter:url(#rough-sm)}
-.cm-ava img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;border-radius:50%;border:var(--bw-sm) solid var(--ink)}
-.clan-WEREWOLF .cm-ava{--cm:var(--ochre)}.clan-DARK_ELF .cm-ava{--cm:var(--cobalt)}
+.cm-ava{grid-area:ava;width:72px;height:72px;margin:-4px -4px -4px -8px}
+.cm-ava img{width:100%;height:100%;object-fit:contain}
 .cm-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;width:100%;margin-top:auto;padding-top:4px}
 .cm-foot:not(:has(>:not([hidden]))){display:none}
 .cm-foot .join,.cm-foot .mine-badge{margin-left:auto}
 .cm-foot .mine-badge{font-size:var(--fs-small);padding-inline:10px 14px}
 @media (max-width:880px){.clans-mini{grid-template-columns:minmax(0,1fr);max-width:620px}}
-@media (max-width:480px){.cm-ava{width:48px;height:48px}.clans-mini .clan{padding:14px 14px 16px}}
+@media (max-width:480px){.cm-ava{width:60px;height:60px}.clans-mini .clan{padding:14px 14px 16px}}
 
 /* ── поля ── */
 .field{display:grid;gap:7px;min-width:0}
@@ -677,7 +675,7 @@ footer a{display:inline-block;padding-block:11px}
               <li><span class="bi bi-coin" aria-hidden="true"></span>+1&nbsp;стартовая монета для&nbsp;клана</li>
               <li><span class="bi bi-arrow" aria-hidden="true"></span>Дополнительная серия из&nbsp;5&nbsp;стрел на&nbsp;стрельбище</li>
               <li><span class="bi bi-pumpkin" aria-hidden="true"></span>Двойной голос за&nbsp;лучший костюм и&nbsp;лучшую тыкву</li>
-              <li><span class="bi bi-candle" aria-hidden="true"></span>Секретная подсказка к&nbsp;шифру</li>
+              <li><span class="bi bi-cipher" aria-hidden="true"></span>Секретная подсказка к&nbsp;шифру</li>
             </ul>
           </details>
           <p class="t-gain" data-gain="GOLD"></p>
@@ -827,7 +825,7 @@ footer a{display:inline-block;padding-block:11px}
             <li><span class="bi bi-coin" aria-hidden="true"></span>+1&nbsp;стартовая монета для&nbsp;клана</li>
             <li><span class="bi bi-arrow" aria-hidden="true"></span>Дополнительная серия из&nbsp;5&nbsp;стрел на&nbsp;стрельбище</li>
             <li><span class="bi bi-pumpkin" aria-hidden="true"></span>Двойной голос за&nbsp;лучший костюм и&nbsp;лучшую тыкву</li>
-            <li><span class="bi bi-candle" aria-hidden="true"></span>Секретная подсказка к&nbsp;шифру</li>
+            <li><span class="bi bi-cipher" aria-hidden="true"></span>Секретная подсказка к&nbsp;шифру</li>
           </ul>
         </div>
       </div>
@@ -1088,7 +1086,7 @@ function buildClanMini(code){
   w.className='cw';w.dataset.rv='';
   w.innerHTML=`<article class="plate clan clan-${code}" data-clan="${code}" aria-labelledby="cl-main-${code}">
     <div class="clan-body">
-      <div class="cm-head"><span class="cm-ava"><img src="${CLAN_ART[code]}" alt="" width="900" height="1205" loading="lazy"></span><h3 id="cl-main-${code}">${c.name}</h3>
+      <div class="cm-head"><span class="cm-ava"><img src="art/face-${code.toLowerCase().replace('_','')}.webp" alt="" width="240" height="240" loading="lazy"></span><h3 id="cl-main-${code}">${c.name}</h3>
       <div class="cnt"><span class="cnt-n"><b data-f="count">—</b>${NB}/${NB}<span data-f="max">20</span><span class="sr-only"> мест занято</span></span><span class="cbar" aria-hidden="true"><i data-f="cfill"></i></span></div></div>
       <ul class="members" data-f="members" aria-label="Участники клана «${c.name}»"></ul>
       <p class="empty small" data-f="empty" hidden>${c.empty}</p>

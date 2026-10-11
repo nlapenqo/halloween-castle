@@ -157,10 +157,13 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 .night-intro{padding-block:clamp(72px,10vw,120px) 0}
 .night-intro .grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:start}
 .night-intro .text{display:grid;gap:22px}
+@media (max-width:1000px){.night-intro .grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:880px){.night-intro .grid{grid-template-columns:minmax(0,1fr)}}
 .facts{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px}
 .rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;list-style:none;margin:0;padding:0}
-.rules li{display:grid;gap:10px;align-content:start;padding:clamp(26px,3vw,38px) clamp(24px,2.8vw,34px);min-height:clamp(170px,16vw,210px)}
+.rules li{--frw:clamp(8px,1vw,14px);display:grid;gap:10px;align-content:start;padding:calc(clamp(24px,2.6vw,34px) + var(--frw) - var(--line)) calc(clamp(16px,1.8vw,26px) + var(--frw) - var(--line));min-height:clamp(170px,16vw,210px)}
+.rules li::before{border-width:var(--frw);border-color:var(--night)}
+.rules h3{font-size:var(--fs-lead);text-transform:uppercase;letter-spacing:.03em;filter:url(#ink)}
 .rules li:nth-child(1){--pl-bg:var(--rose)}
 .rules li:nth-child(2){--pl-bg:var(--ochre)}
 .rules li:nth-child(3){--pl-bg:var(--cobalt);color:var(--paper)}
@@ -300,8 +303,43 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 @media (hover:hover) and (prefers-reduced-motion:no-preference){.sky li{transition:translate .35s var(--ease)}.sky li:hover{translate:0 -8px}}
 .sky .row{display:grid;grid-template-columns:150px 64px minmax(0,1fr);gap:clamp(14px,3vw,40px);align-items:center;max-width:980px}
 .sky time{font:400 var(--fs-num)/1 var(--f-display);font-variant-numeric:lining-nums tabular-nums}
-.sky img{width:68px;height:68px;object-fit:contain}
 .sky h3{margin-bottom:4px}
+/* иконки таймлайна оживают при наведении на строку, на тач-экранах — когда строка посередине экрана */
+.sky .ic{width:68px;height:68px;overflow:visible;transition:scale .35s var(--ease)}
+.ic .fx{opacity:0}
+.ic .glow{mix-blend-mode:screen}
+@media (prefers-reduced-motion:no-preference){
+  .sky li:is(:hover,.act) .ic{scale:1.14}
+  .sky li:is(:hover,.act) .ic .flame{filter:url(#ic-flick)}
+  .sky li:is(:hover,.act) .ic .glow{animation:ic-glow 1.2s ease-in-out infinite alternate}
+  .sky li:is(:hover,.act) .ic .spk{animation:ic-rise 1.6s ease-out var(--d,0s) infinite}
+  .sky li:is(:hover,.act) .ic .tw{animation:ic-tw 1.4s ease-in-out var(--d,0s) infinite}
+  .sky li:is(:hover,.act) .ic .glint{animation:ic-glint 1.8s ease-in-out infinite}
+  .sky li:is(:hover,.act) .ic-map .xpulse{animation:ic-pulse .9s ease-in-out infinite}
+  .sky li:is(:hover,.act) .ic-tourney .clash{animation:ic-shake 1.1s ease-out infinite}
+  .sky li:is(:hover,.act) .ic-tourney .bang{animation:ic-bang 1.1s ease-out infinite}
+  .sky li:is(:hover,.act) .ic-apples .bob{animation:ic-bob 1.6s ease-in-out infinite}
+  .sky li:is(:hover,.act) .ic-apples .drop{animation:ic-drop 1.1s cubic-bezier(.3,.6,.5,1) var(--d,0s) infinite}
+  .sky li:is(:hover,.act) .ic-apples .ripple{animation:ic-ripple 1.1s ease-out infinite}
+  .sky li:is(:hover,.act) .ic-results .stamp{animation:ic-stamp 1.3s ease-in-out infinite}
+  .sky li:is(:hover,.act) .ic-feast .cheer{animation:ic-cheer 1.6s ease-in-out infinite}
+  .sky li:is(:hover,.act) .ic-feast .steam{animation:ic-steam 1.35s ease-out var(--d,0s) infinite}
+  .sky li:is(:hover,.act) .ic-bonfire .spark{animation:ic-rise 1.4s ease-out var(--d,0s) infinite}
+}
+@keyframes ic-glow{from{opacity:.2}to{opacity:.85}}
+@keyframes ic-rise{0%{opacity:0;transform:translate(0,0) scale(.3)}20%{opacity:1;transform:translate(0,-8px) scale(1)}100%{opacity:0;transform:translate(var(--dx,0px),-120px) scale(.4)}}
+@keyframes ic-tw{0%,100%{opacity:0;transform:scale(.2) rotate(0)}50%{opacity:1;transform:scale(1.1) rotate(45deg)}}
+@keyframes ic-glint{0%{opacity:0;transform:translateX(-70px)}15%{opacity:.85}55%{opacity:.85;transform:translateX(70px)}56%,100%{opacity:0;transform:translateX(70px)}}
+@keyframes ic-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
+@keyframes ic-shake{0%,100%{transform:rotate(0)}12%{transform:rotate(-6deg) scale(1.04)}26%{transform:rotate(5deg)}40%{transform:rotate(-3deg)}54%{transform:rotate(1deg)}66%{transform:rotate(0)}}
+@keyframes ic-bang{0%,8%{opacity:0;transform:scale(.3) rotate(0)}16%{opacity:1;transform:scale(1) rotate(10deg)}45%,100%{opacity:0;transform:scale(1.4) rotate(18deg)}}
+@keyframes ic-bob{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-4px) rotate(-2.5deg)}75%{transform:translateY(2px) rotate(2.5deg)}}
+@keyframes ic-drop{0%{opacity:0;transform:translate(0,0) scale(.4)}15%{opacity:1}50%{transform:translate(calc(var(--dx) * .6),var(--h)) scale(1)}100%{opacity:0;transform:translate(var(--dx),6px) scale(.7)}}
+@keyframes ic-ripple{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(1.4)}}
+@keyframes ic-stamp{0%,100%{transform:rotate(0) scale(1)}30%{transform:rotate(-16deg) scale(1.12)}60%{transform:rotate(9deg) scale(1.04)}}
+@keyframes ic-cheer{0%,100%{transform:rotate(0)}30%{transform:rotate(-6deg)}55%{transform:rotate(3deg)}}
+@keyframes ic-steam{0%{opacity:0;transform:translateY(16px)}35%{opacity:.9}100%{opacity:0;transform:translateY(-44px)}}
+
 .sky p{font-size:var(--fs-small);line-height:1.5;max-width:56ch}
 .sky .day{--band:var(--paper)}
 .sky .day2{--band:var(--paper-deep)}
@@ -310,7 +348,7 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 .sky .dusk{--band:var(--rose)}
 .sky .dusk2{--band:var(--mauve)}
 .sky .eve{--band:var(--cobalt-deep);color:var(--paper)}
-@media (max-width:640px){.sky .row{grid-template-columns:auto minmax(0,1fr);gap:10px 16px}.sky .row>div{grid-column:1/-1}.sky img{width:52px;height:52px}}
+@media (max-width:640px){.sky .row{grid-template-columns:auto minmax(0,1fr);gap:10px 16px}.sky .row>div{grid-column:1/-1}.sky .ic{width:52px;height:52px}}
 
 /* ── финал: ночное небо (canvas мерцает, только пока блок на экране), арки кланов ── */
 .gate{isolation:isolate;overflow:hidden;background:var(--night) var(--stars);background-size:420px;color:var(--paper);padding-block:clamp(90px,11vw,150px) clamp(90px,11vw,140px);text-align:center}
@@ -318,19 +356,20 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 .gate .sky-cv{z-index:-1}
 .gate h2{color:var(--paper)}
 .gate .head .lead{color:var(--paper-dim);opacity:1;max-width:46ch}
-.gate-clans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,3vw,44px);max-width:860px;margin:0 auto clamp(44px,5.5vw,68px)}
-.gate-c{display:grid;gap:12px;justify-items:center;text-decoration:none;color:var(--paper)}
-.gate-arch{display:block;width:100%;border-radius:999px 999px 18px 18px;overflow:hidden;border:3px solid var(--gold);box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 14%,transparent);transition:translate .45s var(--ease),scale .45s var(--ease),box-shadow .45s}
-.gate-arch img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 22%}
-.gate-n{font:400 var(--fs-lead)/1.2 var(--f-display)}
-.gate-c:hover .gate-arch,.gate-c:focus-visible .gate-arch{translate:0 -10px;scale:1.03;box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 32%,transparent),0 18px 40px color-mix(in srgb,var(--gold) 25%,transparent)}
-/* арки слегка покачиваются; вне экрана стоят */
-@media (prefers-reduced-motion:no-preference){.gate-c{animation:gate-float 6s ease-in-out var(--d,0s) infinite alternate}}
-@keyframes gate-float{to{translate:0 -8px}}
-.gate.off .gate-c{animation-play-state:paused}
-.gate-note{margin-top:18px;opacity:.75}
-@media (max-width:520px){.gate-clans{gap:10px}.gate-n{font-size:var(--fs-small);white-space:nowrap}.gate-arch{border-width:2px;box-shadow:0 0 0 4px color-mix(in srgb,var(--gold) 14%,transparent)}}
-@media (prefers-reduced-motion:reduce){.gate-arch{transition:none}}
+/* карточки кланов как в ночном выборе: цветная плашка, картинка в раме, кнопка; наведение поднимает и подсвечивает */
+.gate-clans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3.4vw,56px);align-items:start;margin:0 auto clamp(36px,4.5vw,56px);text-align:center}
+.gcard{position:relative;isolation:isolate;display:grid;gap:14px;justify-items:center;min-width:0;padding:14px 14px 26px;color:var(--ink);cursor:pointer;transition:translate .45s var(--ease)}
+.gcard::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--pl,var(--rose));border-radius:var(--r-plate);filter:url(#rough)}
+.gcard::after{content:"";position:absolute;inset:6px;z-index:-2;border-radius:var(--r-plate);box-shadow:0 0 70px 14px color-mix(in srgb,var(--gold) 42%,transparent);opacity:0;transition:opacity .45s;pointer-events:none}
+.gcard.est-DARK_ELF{color:var(--paper)}
+.gcard .frame{width:100%;margin-bottom:8px}
+.gcard p{max-width:34ch}
+.gcard .btn{margin-top:6px}
+@media (hover:hover){.gcard:hover{translate:0 -10px}.gcard:hover::after{opacity:1}}
+.gcard:focus-within::after{opacity:1}
+.gate-note{opacity:.75}
+@media (max-width:880px){.gate-clans{grid-template-columns:minmax(0,1fr);max-width:460px}}
+@media (prefers-reduced-motion:reduce){.gcard,.gcard::after{transition:none}}
 
 footer{padding-block:clamp(48px,6vw,72px);text-align:center;display:grid;gap:10px;justify-items:center}
 footer .star{width:40px}
@@ -341,6 +380,10 @@ footer small{font-size:var(--fs-small);opacity:.7}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <filter id="rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G"/></filter>
   <filter id="rough-sm" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="ic-flick" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence type="fractalNoise" baseFrequency="0.03 0.08" numOctaves="2" seed="1" result="n"><animate attributeName="seed" values="1;4;7;2;9;5;3;8" dur="0.64s" calcMode="discrete" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <radialGradient id="ic-warm"><stop offset="0" stop-color="#FFE7A3" stop-opacity=".95"/><stop offset=".55" stop-color="#FFB547" stop-opacity=".45"/><stop offset="1" stop-color="#FF8A2A" stop-opacity="0"/></radialGradient>
+  <path id="ic-spk" d="M0-22C3-6 6-3 22 0 6 3 3 6 0 22-3 6-6 3-22 0-6-3-3-6 0-22Z" fill="#FFE08A" stroke="#6B3D1F" stroke-width="3.5" stroke-linejoin="round"/>
+  <path id="ic-bang" d="M0-26 6-9 22-16 12-2 26 6 9 8 12 24 0 12-12 24-9 8-26 6-12-2-22-16-6-9Z" fill="#FFD25E" stroke="#6B3D1F" stroke-width="2.5" stroke-linejoin="round"/>
   <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="1" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/></filter>
 </svg>
 
@@ -445,7 +488,7 @@ footer small{font-size:var(--fs-small);opacity:.7}
 
     <div class="feast">
       <div class="wrap inner"><h2>Королевская <em class="acc">трапеза</em></h2></div>
-      <div class="pan"><img src="art/feast.jpg" alt="Пир: все жители замка за одним длинным столом с тыквами, свечами и кубками" width="2200" height="933" loading="lazy"></div>
+      <div class="pan"><img src="art/feast-clans.jpg" alt="Пир: жители замка и три клана, вампир, оборотень и тёмный эльф, за одним длинным столом с тыквами, свечами и кубками" width="1925" height="817" loading="lazy"></div>
       <div class="wrap inner"><p class="small">Совместный ужин во дворе замка, когда игра закончится. Одна скатерть, все кланы, итоги дня и тосты. Трапеза по желанию: её отмечают при вступлении в клан.</p><p class="cta-row"><a class="btn btn-main" href="lab-p2-v5.html#dinner">Занять место за столом</a></p></div>
     </div>
 
@@ -465,13 +508,13 @@ footer small{font-size:var(--fs-small);opacity:.7}
       </div>
     </div>
     <ol class="sky">
-      <li class="day"><div class="wrap row"><time>14:00</time><img src="art/i-gate.webp" alt=""><div><h3>Ворота открываются</h3><p>Встреча гостей: ленты кланов, карточки игроков, карта замка и первые подозрения.</p></div></div></li>
-      <li class="day2"><div class="wrap row"><time>15:00</time><img src="art/i-map.webp" alt=""><div><h3>Игра</h3><p>Таверна, стрельбище, тайники и мастерская работают одновременно. Каждый выбирает свой путь к монетам.</p></div></div></li>
-      <li class="sand"><div class="wrap row"><time>16:00</time><img src="art/i-tourney.webp" alt=""><div><h3>Турнир</h3><p>Бойцы кланов сходятся на арене. Мягкие палки, жёсткие ставки.</p></div></div></li>
-      <li class="peach"><div class="wrap row"><time>16:30</time><img src="art/i-apples.webp" alt=""><div><h3>Яблоки</h3><p>Конкурс без рук. Полотенца выдадим.</p></div></div></li>
-      <li class="dusk"><div class="wrap row"><time>17:40</time><img src="art/i-results.webp" alt=""><div><h3>Итоги</h3><p>Считаем монеты кланов, называем лучший костюм и лучшую тыкву. Победителям грамоты и игристое.</p></div></div></li>
-      <li class="dusk2"><div class="wrap row"><time>18:00</time><img src="art/i-feast.webp" alt=""><div><h3>Трапеза</h3><p>Солнце уходит за джунгли, все садятся за один длинный стол во дворе замка.</p></div></div></li>
-      <li class="eve"><div class="wrap row"><time>19:30</time><img src="art/i-bonfire.webp" alt=""><div><h3>Костёр</h3><p>Огонь, музыка и маршмеллоу на шампурах. Свободный вечер под звёздами.</p></div></div></li>
+      <li class="day"><div class="wrap row"><time>14:00</time><svg class="ic ic-gate" viewBox="0 0 314 320" aria-hidden="true"><defs><clipPath id="icc-torch"><ellipse cx="52" cy="140" rx="18" ry="26"/><ellipse cx="268" cy="146" rx="18" ry="28"/></clipPath></defs><image id="ici-gate" href="art/i-gate.webp" width="314" height="320"/><ellipse class="fx glow" cx="160" cy="172" rx="56" ry="88" fill="url(#ic-warm)"/><g class="flame"><use href="#ici-gate" clip-path="url(#icc-torch)"/></g><g transform="translate(140 210)"><use class="fx spk" href="#ic-spk" style="--dx:-28px;--d:0s"/></g><g transform="translate(178 190)"><use class="fx spk" href="#ic-spk" style="--dx:24px;--d:0.5s"/></g><g transform="translate(160 236)"><use class="fx spk" href="#ic-spk" style="--dx:8px;--d:1s"/></g></svg><div><h3>Ворота открываются</h3><p>Встреча гостей: ленты кланов, карточки игроков, карта замка и первые подозрения.</p></div></div></li>
+      <li class="day2"><div class="wrap row"><time>15:00</time><svg class="ic ic-map" viewBox="0 0 320 294" aria-hidden="true"><defs><clipPath id="icc-x"><rect x="172" y="147" width="66" height="16" transform="rotate(43 205 155)"/><rect x="172" y="147" width="66" height="16" transform="rotate(-43 205 155)"/></clipPath><clipPath id="icc-coin"><ellipse cx="245" cy="224" rx="35" ry="26"/></clipPath></defs><image id="ici-map" href="art/i-map.webp" width="320" height="294"/><g class="xpulse" style="transform-origin:205px 155px"><use href="#ici-map" clip-path="url(#icc-x)"/></g><g clip-path="url(#icc-coin)"><g transform="rotate(28 245 224)"><rect class="fx glint" x="238" y="180" width="12" height="90" fill="#FFF8E0"/></g></g><g transform="translate(238 128)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.2s"/></g><g transform="translate(176 186)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.7s"/></g></svg><div><h3>Игра</h3><p>Таверна, стрельбище, тайники и мастерская работают одновременно. Каждый выбирает свой путь к монетам.</p></div></div></li>
+      <li class="sand"><div class="wrap row"><time>16:00</time><svg class="ic ic-tourney" viewBox="0 0 294 320" aria-hidden="true"><g class="clash" style="transform-origin:147px 300px"><image href="art/i-tourney.webp" width="294" height="320"/></g><g transform="translate(147 150) scale(2.3)"><use class="fx bang" href="#ic-bang"/></g></svg><div><h3>Турнир</h3><p>Бойцы кланов сходятся на арене. Мягкие палки, жёсткие ставки.</p></div></div></li>
+      <li class="peach"><div class="wrap row"><time>16:30</time><svg class="ic ic-apples" viewBox="0 0 320 274" aria-hidden="true"><g class="bob" style="transform-origin:160px 250px"><image href="art/i-apples.webp" width="320" height="274"/></g><ellipse class="fx ripple" cx="152" cy="134" rx="62" ry="10" fill="none" stroke="#F4FBFF" stroke-width="7" style="transform-origin:152px 134px"/><circle class="fx drop" cx="152" cy="126" r="14.4" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:-94px;--h:-69px;--d:0s"/><circle class="fx drop" cx="152" cy="126" r="12" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:-54px;--h:-93px;--d:0.15s"/><circle class="fx drop" cx="152" cy="126" r="10.8" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:62px;--h:-87px;--d:0.08s"/><circle class="fx drop" cx="152" cy="126" r="14.4" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:99px;--h:-60px;--d:0.22s"/><circle class="fx drop" cx="152" cy="126" r="9.6" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:13px;--h:-105px;--d:0.3s"/></svg><div><h3>Яблоки</h3><p>Конкурс без рук. Полотенца выдадим.</p></div></div></li>
+      <li class="dusk"><div class="wrap row"><time>17:40</time><svg class="ic ic-results" viewBox="0 0 320 255" aria-hidden="true"><defs><clipPath id="icc-seal"><circle cx="201" cy="105" r="31"/></clipPath><clipPath id="icc-rcoin"><ellipse cx="83" cy="201" rx="28" ry="12"/><ellipse cx="140" cy="150" rx="30" ry="12"/></clipPath></defs><image id="ici-results" href="art/i-results.webp" width="320" height="255"/><g class="stamp" style="transform-origin:201px 105px"><use href="#ici-results" clip-path="url(#icc-seal)"/></g><g clip-path="url(#icc-rcoin)"><g transform="rotate(25 110 175)"><rect class="fx glint" x="104" y="110" width="12" height="130" fill="#FFF8E0"/></g></g><g transform="translate(60 160)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0s"/></g><g transform="translate(178 192)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.6s"/></g></svg><div><h3>Итоги</h3><p>Считаем монеты кланов, называем лучший костюм и лучшую тыкву. Победителям грамоты и игристое.</p></div></div></li>
+      <li class="dusk2"><div class="wrap row"><time>18:00</time><svg class="ic ic-feast" viewBox="0 0 320 318" aria-hidden="true"><defs><clipPath id="icc-cup"><path d="M36 30H146L138 100Q90 150 44 100Z"/></clipPath></defs><g class="cheer" style="transform-origin:90px 300px"><image href="art/i-feast.webp" width="320" height="318"/><g clip-path="url(#icc-cup)"><g transform="rotate(22 90 80)"><rect class="fx glint" x="84" y="0" width="14" height="170" fill="#FFF8E0"/></g></g></g><path class="fx steam" d="M182 150c-14-16 14-28 0-44s14-28 0-44" fill="none" stroke="#FFF3DC" stroke-width="12" stroke-linecap="round" style="--d:0s"/><path class="fx steam" d="M208 150c-14-16 14-28 0-44s14-28 0-44" fill="none" stroke="#FFF3DC" stroke-width="12" stroke-linecap="round" style="--d:0.45s"/><path class="fx steam" d="M234 150c-14-16 14-28 0-44s14-28 0-44" fill="none" stroke="#FFF3DC" stroke-width="12" stroke-linecap="round" style="--d:0.9s"/><g transform="translate(140 30)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.3s"/></g></svg><div><h3>Трапеза</h3><p>Солнце уходит за джунгли, все садятся за один длинный стол во дворе замка.</p></div></div></li>
+      <li class="eve"><div class="wrap row"><time>19:30</time><svg class="ic ic-bonfire" viewBox="0 0 316 320" aria-hidden="true"><defs><clipPath id="icc-fire"><ellipse cx="150" cy="138" rx="84" ry="90"/></clipPath></defs><image id="ici-bonfire" href="art/i-bonfire.webp" width="316" height="320"/><ellipse class="fx glow" cx="150" cy="150" rx="72" ry="80" fill="url(#ic-warm)"/><g class="flame"><use href="#ici-bonfire" clip-path="url(#icc-fire)"/></g><g transform="translate(120 80)"><circle class="fx spark" r="10" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:-32px;--d:0s"/></g><g transform="translate(150 60)"><circle class="fx spark" r="8.75" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:16px;--d:0.35s"/></g><g transform="translate(176 84)"><circle class="fx spark" r="10" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:36px;--d:0.7s"/></g><g transform="translate(136 100)"><circle class="fx spark" r="7.5" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:-12px;--d:1.05s"/></g><g transform="translate(166 104)"><circle class="fx spark" r="7.5" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:20px;--d:0.5s"/></g></svg><div><h3>Костёр</h3><p>Огонь, музыка и маршмеллоу на шампурах. Свободный вечер под звёздами.</p></div></div></li>
     </ol>
   </section>
 
@@ -483,11 +526,25 @@ footer small{font-size:var(--fs-small);opacity:.7}
         <p class="lead">Три клана, одна ночь и место у костра, которое займёт кто-то другой, если ты не займёшь его первым.</p>
       </div>
       <div class="gate-clans">
-        <a class="gate-c" href="lab-p2-v5.html?clan=VAMPIRE" style="--d:0s"><span class="gate-arch"><img src="art/clan-vampire-b.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Вампиры</span></a>
-        <a class="gate-c" href="lab-p2-v5.html?clan=WEREWOLF" style="--d:0.7s"><span class="gate-arch"><img src="art/clan-werewolf-c.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Оборотни</span></a>
-        <a class="gate-c" href="lab-p2-v5.html?clan=DARK_ELF" style="--d:1.4s"><span class="gate-arch"><img src="art/clan-darkelf-k.jpg" alt="" width="900" height="1205" loading="lazy"></span><span class="gate-n">Тёмные эльфы</span></a>
+        <article class="gcard est-VAMPIRE">
+          <figure class="frame" style="rotate:-1.2deg"><img src="art/clan-vampire-b.jpg" alt="" width="900" height="1205" loading="lazy"></figure>
+          <h3>Вампиры</h3>
+          <p class="small">Древняя кровь, бархат и безупречные манеры. Вампиры не спешат: у них впереди вечность и целая ночь.</p>
+          <a class="btn btn-main" href="lab-p2-v5.html?clan=VAMPIRE">Присоединиться</a>
+        </article>
+        <article class="gcard est-WEREWOLF">
+          <figure class="frame" style="rotate:1deg"><img src="art/clan-werewolf-c.jpg" alt="" width="900" height="1205" loading="lazy"></figure>
+          <h3>Оборотни</h3>
+          <p class="small">Сила, чутьё и стая за спиной. Оборотни берут азартом, особенно когда взойдёт луна.</p>
+          <a class="btn btn-main" href="lab-p2-v5.html?clan=WEREWOLF">Присоединиться</a>
+        </article>
+        <article class="gcard est-DARK_ELF">
+          <figure class="frame" style="rotate:-1.2deg"><img src="art/clan-darkelf-k.jpg" alt="" width="900" height="1205" loading="lazy"></figure>
+          <h3>Тёмные эльфы</h3>
+          <p class="small">Тайные знаки, древняя магия и холодный расчёт. Тёмные эльфы видят то, что другие пропускают.</p>
+          <a class="btn btn-main" href="lab-p2-v5.html?clan=DARK_ELF">Присоединиться</a>
+        </article>
       </div>
-      <a class="btn btn-main btn-lg gate-btn" href="lab-p2-v5.html">Вступить в игру</a>
       <p class="small gate-note">В каждом клане по 20 мест. Кланы растут вровень.</p>
     </div>
   </section>
@@ -594,6 +651,8 @@ function starSky(cv,{density=6500,max=240}={}){
 })();
 
 /* Финал: то же звёздное небо, мерцает только пока блок на экране */
+if(matchMedia('(hover:none)').matches&&'IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('act',e.isIntersecting)),{rootMargin:'-38% 0px -38% 0px'});document.querySelectorAll('.sky li').forEach(li=>io.observe(li))}
+document.querySelectorAll('.gcard').forEach(c=>c.addEventListener('click',e=>{if(!e.target.closest('a'))c.querySelector('a').click()}));
 (()=>{const g=document.querySelector('.gate'),cv=g&&g.querySelector('.sky-cv');if(!cv||!cv.getContext)return;
   const sky=starSky(cv);g.classList.add('has-sky');onView(g,v=>v?sky.start():sky.stop())})();
 
@@ -643,7 +702,7 @@ function starSky(cv,{density=6500,max=240}={}){
   const add=(src,ok)=>{const s=document.createElement('script');s.src=src;s.async=true;s.onload=ok;document.head.append(s)};
   add('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js',()=>add('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js',motion));
   function motion(){if(!window.gsap||!window.ScrollTrigger)return;gsap.registerPlugin(ScrollTrigger);
-    const SEL='.night-intro .text>*,.rules li,.head,.estate,.clan-cta,.castle>*,.real figure,.vig,.feast .inner,.sky li,.gate-c,.gate-btn';
+    const SEL='.night-intro .text>*,.rules li,.head,.estate,.clan-cta,.castle>*,.real figure,.vig,.feast .inner,.sky li,.gcard';
     /* прячем только то, что ниже экрана: если GSAP пришёл поздно, видимое не мигает */
     const els=gsap.utils.toArray(SEL).filter(e=>e.getBoundingClientRect().top>innerHeight*.92);
     gsap.set(els,{opacity:0,y:34});
