@@ -267,9 +267,16 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 /* ── главная кнопка, гарантия и «Куда идут монеты» ── */
 .join-sec{padding-block:var(--sec-y-s) 0}
 .join-box{display:grid;justify-items:center;gap:16px;max-width:640px;margin-inline:auto;text-align:center}
-.guar{max-width:50ch;margin-top:-4px;font-size:var(--fs-small);line-height:1.5;opacity:.85;text-wrap:balance}
+/* гарантия возврата — отдельная плашка: значок щита, крупный заголовок, условие */
+.guar{--pl-bg:var(--paper-deep);display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center;width:min(100%,600px);margin-top:12px;padding:clamp(18px,2.4vw,26px) clamp(20px,2.6vw,30px);text-align:left}
+.guar-ic{width:clamp(44px,5vw,58px);height:auto;fill:var(--gold);stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.guar-ic circle{fill:var(--paper)}
+.guar-ic .st{fill:var(--vermilion);stroke-width:1.4}
+.guar-t{margin:0 0 4px;font:400 var(--fs-h3)/1.15 var(--f-display);color:var(--vermilion);font-variant-numeric:lining-nums}
+.guar .guar-p{margin:0;font-size:var(--fs-lead);line-height:1.5;text-wrap:pretty}
+@media (max-width:480px){.guar{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}}
 .coins{width:min(100%,520px)}
-.coins summary{list-style:none;font-size:var(--fs-small);opacity:.85}
+.coins summary{list-style:none;font-size:var(--fs-lead);font-family:var(--f-display)}
 .coins .lines{margin-top:12px;text-align:left}
 .lines{margin:0;display:grid;gap:8px}
 .lines>div{display:grid;grid-template-columns:auto minmax(12px,1fr) auto;align-items:baseline;gap:10px}
@@ -708,7 +715,10 @@ footer a{display:inline-block;padding-block:11px}
   <section class="join-sec" id="join" aria-label="Вступить в игру">
     <div class="wrap join-box" data-rv>
       <button class="btn btn-main btn-big" type="button" id="join-go">Вступить в&nbsp;игру</button>
-      <p class="guar">Не&nbsp;соберём необходимую сумму до&nbsp;20&nbsp;октября&nbsp;— отменим праздник и&nbsp;вернём каждому 100%&nbsp;его взноса</p>
+      <div class="plate guar">
+        <svg class="guar-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 40 10v13c0 10-7 17-16 21C15 40 8 33 8 23V10z"/><circle cx="24" cy="23" r="8.5"/><path class="st" d="M24 17.5l1.6 3.9 4 .3-3.1 2.6 1 4-3.5-2.2-3.5 2.2 1-4-3.1-2.6 4-.3z"/></svg>
+        <div><p class="guar-t">Вернём 100%&nbsp;взноса</p><p class="guar-p">Если до&nbsp;<b>20&nbsp;октября</b> не&nbsp;соберём нужную сумму, праздник отменим и&nbsp;вернём каждому весь его взнос.</p></div>
+      </div>
       <details class="coins">
         <summary>Куда идут монеты</summary>
         <dl class="lines">
