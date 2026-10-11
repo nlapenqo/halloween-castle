@@ -33,10 +33,10 @@
   --white:#fff;
   --line:rgb(38 23 29 / .35);
   --line-dark:rgb(242 224 192 / .38);
-  --shadow:0 8px 0 rgb(28 17 27 / .16);           /* тени плоские, без размытия */
-  --shadow-up:0 16px 0 rgb(28 17 27 / .16);
-  --shadow-gold:0 10px 0 rgb(217 174 82 / .6);
-  --shadow-gold-up:0 20px 0 rgb(217 174 82 / .6);
+  --shadow:0 10px 22px -12px rgb(28 17 27 / .28);
+  --shadow-up:0 24px 40px -14px rgb(28 17 27 / .42);
+  --shadow-gold:0 0 30px 6px rgb(217 174 82 / .32),0 22px 40px -8px rgb(28 17 27 / .45);
+  --shadow-gold-up:0 0 40px 10px rgb(217 174 82 / .42),0 34px 50px -12px rgb(28 17 27 / .55);
   --ring:var(--vermilion);
   /* шрифты: только Alice и Kurale; шесть ступеней размера */
   --f-display:"Alice","Kurale",Georgia,serif;
@@ -199,9 +199,9 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 /* подъём при наведении и фокусе + наклон за курсором — один transform; тень усиливается прозрачностью второго слоя */
 .tcard.tilt3d{transform:perspective(1000px) translateY(var(--ty,var(--ty0,0px))) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(var(--sc,1));transition:transform .35s var(--ease)}
 .tcard.tilt3d.on{transition:transform .22s ease-out}
-.t-glow{position:absolute;inset:10px 8px 0;z-index:-2;border-radius:var(--r-plate);box-shadow:var(--shadow);filter:url(#rough);pointer-events:none}
+.t-glow{position:absolute;inset:10px 8px 0;z-index:-2;border-radius:var(--r-plate);box-shadow:var(--shadow);pointer-events:none}
 .t-glow::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:var(--shadow-up);opacity:0;transition:opacity .35s var(--ease)}
-/* Gold: ночная плашка, двойная золотая линия со звёздами, плоская золотая тень и блик, приподнята */
+/* Gold: ночная плашка, двойная золотая линия со звёздами, мягкое свечение и блик, приподнята */
 .t-gold{--pl-bg:var(--night);--pl-line:var(--gold);--ring:var(--vermilion-soft);--ty0:-14px;color:var(--paper)}
 .t-gold::before{border-width:var(--bw-on)}
 .t-gold .book-fr{inset:10px}
@@ -366,7 +366,7 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .seg-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1.6vw,16px);padding-top:6px}
 .seg label{position:relative;isolation:isolate;display:grid;justify-items:center;align-content:start;gap:5px;padding:clamp(12px,1.6vw,18px) 6px clamp(12px,1.5vw,16px);cursor:pointer;text-align:center;color:var(--ink);transition:transform .35s var(--ease)}
 .seg label::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper-deep);border:var(--bw) solid var(--ink);border-radius:var(--r-plate);filter:url(#rough-sm)}
-.seg label::after{content:"";position:absolute;inset:10px 8px 0;z-index:-2;border-radius:var(--r-plate);box-shadow:var(--shadow);filter:url(#rough-sm)}
+.seg label::after{content:"";position:absolute;inset:10px 8px 0;z-index:-2;border-radius:var(--r-plate);box-shadow:var(--shadow)}
 .seg img{width:clamp(40px,4.6vw,56px);height:auto;margin-bottom:2px}
 .seg-n{font:400 var(--fs-lead)/1.1 var(--f-display)}
 .seg small{font:400 var(--fs-small)/1.25 var(--f-body);font-variant-numeric:lining-nums;opacity:.85}
@@ -553,6 +553,13 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .greet{max-width:600px}
 .greet .greet-face{width:120px;height:120px;object-fit:contain}
 .greet .lead{text-align:center}
+/* приветствие: под листом заметен второй — сильнее выдвинут, толще обводка; при наведении листы раздвигаются */
+.greet .book-under{inset:24px -26px -24px 26px;border:4px solid var(--gold);transform:rotate(3.5deg);transition:transform .45s cubic-bezier(.2,.9,.25,1.3)}
+.greet #greet-book{transition:transform .45s cubic-bezier(.2,.9,.25,1.3)}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .greet:hover .book-under{transform:translate(14px,8px) rotate(6deg)}
+  .greet:hover #greet-book{transform:translate(-6px,-6px) rotate(-1.2deg)}
+}
 
 /* звёзды на углах рамок медленно вращаются вокруг своей оси и чуть дышат (±15%), каждая в своём темпе */
 @keyframes fr-spin{to{rotate:360deg}}
