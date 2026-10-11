@@ -1233,13 +1233,18 @@ function renderGhost(){
   bar.style.setProperty('--g',g.toFixed(2));bar.dataset.g=g>0?'1':'0';$('#ghost-tag').textContent=add?'+'+pct1(add/tgt*100):'';
 }
 /* окно: переключатель пути, Gold-сумма, трапеза, живой итог */
+/* черновик формы в sessionStorage: перезагрузка с открытым окном не стирает путь, сумму, трапезу, имя и ник */
+const DRAFT='hc_draft';
+function saveDraft(){try{sessionStorage.setItem(DRAFT,JSON.stringify({tariff:sel.tariff,dinner:sel.dinner,gold:el.f_gold.value,name:el.f_name.value,tg:el.f_tg.value}))}catch{}}
+function loadDraft(){let d=null;try{d=JSON.parse(sessionStorage.getItem(DRAFT)||'null')}catch{}if(!d)return;
+  if(TARIFF_NAME[d.tariff])sel.tariff=d.tariff;sel.dinner=!!d.dinner;['gold','name','tg'].forEach(k=>{if(typeof d[k]==='string')el['f_'+k].value=d[k]});if(d.gold)el.f_gold.dataset.touched='1'}
 function renderCo(){
   const s=S(),t=s.tariffs,tf=sel.tariff,din=sel.dinner,ticket=ticketFor(tf),tgt=s.target_idr||1;
   $$('input[name="tariff"]',form).forEach(i=>i.checked=i.value===tf);
   $('#co-pick').hidden=!!tf;
   $$('[data-inc]',form).forEach(x=>{const on=x.dataset.inc===tf;if(on&&x.hidden&&!RM){x.classList.remove('fade');void x.offsetWidth;x.classList.add('fade')}x.hidden=!on});
   const ga=parseAmount(goldInp.value);$$('.preset').forEach(b=>b.setAttribute('aria-pressed',String(ga===Number(b.dataset.amt))));
-  el.f_dinner.checked=din;syncNote();
+  el.f_dinner.checked=din;syncNote();saveDraft();
   $('#tl-ticket-l').textContent=tf?`Путь ${TARIFF_NAME[tf]}`:'Путь';
   $('#tl-ticket').textContent=ticket!=null?idr(ticket):'—';
   $('#tl-dn').textContent=din?idr(t.dinner_idr):'не'+NB+'выбрана';
@@ -1444,7 +1449,7 @@ async function submitApp(){
   if(res&&res.stats)applyStats(res.stats);
   if(res&&res.ok){
     applied={application_id:res.application_id,clan_code:res.clan_code||d.clan,tariff_code:res.tariff_code||d.tariff,ticket_amount_idr:res.ticket_amount_idr,dinner_amount_idr:res.dinner_amount_idr,total_due_idr:res.total_due_idr,display_name:d.name};
-    LS.set('hc_applied',JSON.stringify(applied));LS.del('hc_req');myClan=applied.clan_code;LS.set('hc_clan',myClan);
+    LS.set('hc_applied',JSON.stringify(applied));try{sessionStorage.removeItem(DRAFT)}catch{}LS.del('hc_req');myClan=applied.clan_code;LS.set('hc_clan',myClan);
     renderAll();setPayState('IDLE');showDone();return;
   }
   const r=res&&ERR2REASON[res.error];
@@ -1571,6 +1576,7 @@ function toHash(){
 }
 
 /* ── запуск ── */
+loadDraft();form.addEventListener('input',saveDraft);
 if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('off',!e.isIntersecting)));$$('.bar,.dn-frame,.tcards').forEach(el=>io.observe(el))}
 renderAll();initTilt();
 /* пришли с главной с выбранным кланом — приветствие клана, закрывается кнопкой «Продолжить», × или Esc */
