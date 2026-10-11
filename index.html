@@ -258,8 +258,13 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 .lb figure{margin:0;padding:clamp(8px,1vw,14px)}
 .lb figure::before{background:var(--paper-deep);border-radius:var(--r-frame)}
 .lb img{display:block;max-width:min(92vw,1100px);max-height:82svh;width:auto;height:auto;border-radius:var(--r-img)}
-.lb figcaption{position:absolute;left:0;right:0;top:100%;margin-top:14px;text-align:center;color:var(--paper);font-size:var(--fs-small)}
+.lb figcaption{position:absolute;left:0;right:0;top:100%;pointer-events:none;margin-top:14px;text-align:center;color:var(--paper);font-size:var(--fs-small)}
 .lb-x{position:absolute;top:-18px;right:-18px}
+/* стрелки по бокам фото; на телефоне — под фото по краям, подпись между ними */
+.lb-nav{position:absolute;top:50%;translate:0 -50%;font-size:24px}
+.lb-prev{left:-72px}.lb-next{right:-72px}
+@media (hover:hover){.lb-nav:hover{translate:0 calc(-50% - 3px)}}
+@media (max-width:900px){.lb-nav{top:calc(100% + 34px)}.lb-prev{left:0}.lb-next{right:0}.lb figcaption{padding-inline:60px}}
 @media (max-width:520px){.lb-x{top:-22px;right:-6px}}
 .places{margin-top:clamp(90px,12vw,150px)}
 .vgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,60px) clamp(20px,3vw,48px)}
@@ -552,7 +557,7 @@ footer small{font-size:var(--fs-small);opacity:.7}
   <p>31 октября, с 14:00</p>
   <small>Bale Tudor, Jl. Dewi Tilotama, Bongkasa Pertiwi, Bali, <a href="https://maps.app.goo.gl/QkY5Y5VHLDEFLeCC8" target="_blank" rel="noopener">карта</a></small>
 </footer>
-<dialog class="lb" aria-label="Фото замка"><figure><img alt=""><button class="icon-btn lb-x" type="button" aria-label="Закрыть">×</button><figcaption></figcaption></figure></dialog>
+<dialog class="lb" aria-label="Фото замка"><figure><img alt=""><button class="icon-btn lb-x" type="button" aria-label="Закрыть">×</button><button class="icon-btn lb-nav lb-prev" type="button" aria-label="Предыдущее фото">←</button><button class="icon-btn lb-nav lb-next" type="button" aria-label="Следующее фото">→</button><figcaption></figcaption></figure></dialog>
 <script>
 /* Навигация: каждое окно или режим поверх страницы — один шаг истории. ×, Esc и «Назад» браузера закрывают его одинаково */
 const NAV={stack:[],skip:0,queue:[]};
@@ -568,7 +573,15 @@ function onView(el,fn,threshold=0){if(!el)return;if(!('IntersectionObserver' in 
 
 /* Лайтбокс для фото замка */
 (()=>{const d=document.querySelector('.lb'),im=d.querySelector('img'),cap=d.querySelector('figcaption');
-  const open=z=>{im.src=z.src;im.alt=z.alt;cap.textContent=z.closest('figure')?.querySelector('figcaption')?.textContent||'';d.showModal();navOpen('lb',()=>d.open&&d.close())};
+  const all=[...document.querySelectorAll('.zoom')];let cur=0;
+  const show=i=>{cur=(i+all.length)%all.length;const z=all[cur];im.src=z.src;im.alt=z.alt;cap.textContent=z.closest('figure')?.querySelector('figcaption')?.textContent||''};
+  const open=z=>{show(all.indexOf(z));d.showModal();navOpen('lb',()=>d.open&&d.close())};
+  /* листание: стрелки на экране, ← → на клавиатуре, свайп на телефоне */
+  d.querySelector('.lb-prev').addEventListener('click',()=>show(cur-1));
+  d.querySelector('.lb-next').addEventListener('click',()=>show(cur+1));
+  d.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();show(cur-1)}else if(e.key==='ArrowRight'){e.preventDefault();show(cur+1)}});
+  let sx=null;d.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+  d.addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1))},{passive:true});
   d.addEventListener('close',()=>navClose('lb'));
   document.querySelectorAll('.zoom').forEach(z=>{z.addEventListener('click',()=>open(z));z.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(z)}})});
   d.querySelector('.lb-x').addEventListener('click',()=>d.close());
