@@ -187,7 +187,7 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 
 /* ── пасхалки: летучие мыши сидят на рамке обложки и вспархивают, прилетают и садятся на блоки; создаются только в момент события ── */
 .egg-bat{position:fixed;left:0;top:0;width:46px;height:auto;z-index:70;pointer-events:none;overflow:visible}
-.egg-bat .w{transform-box:fill-box;animation:egg-flap .16s ease-in-out infinite alternate}
+.egg-bat .w{transform-box:fill-box;animation:egg-flap .32s ease-in-out infinite alternate}
 .egg-bat .l{transform-origin:100% 40%}.egg-bat .r{transform-origin:0 40%}
 .egg-bat.perch{position:absolute;pointer-events:auto;cursor:pointer;z-index:3}
 .egg-bat.sit .w{animation:none;transform:scaleX(.72) scaleY(.88)}
@@ -615,20 +615,25 @@ function onView(el,fn,threshold=0){if(!el)return;if(!('IntersectionObserver' in 
   const BAT='<svg class="egg-bat" viewBox="0 0 64 34" aria-hidden="true"><g fill="#5E4A6B" stroke="#26171D" stroke-width="1.6" stroke-linejoin="round"><path class="w l" d="M30 15C24 7 13 5 2 9c5 2 6 6 5 10 4-3 8-2 10 2 3-4 8-4 13-2z"/><path class="w r" d="M34 15c6-8 17-10 28-6-5 2-6 6-5 10-4-3-8-2-10 2-3-4-8-4-13-2z"/><path d="M28 10l1.5-5 2.5 4 2.5-4 1.5 5c1 2 1 8-4 11-5-3-5-9-4-11z"/></g><circle cx="30.3" cy="12" r="1" fill="#F2C14E"/><circle cx="33.7" cy="12" r="1" fill="#F2C14E"/></svg>';
   const make=()=>{const t=document.createElement('template');t.innerHTML=BAT;return t.content.firstChild};
   const rnd=(a,b)=>a+Math.random()*(b-a);
+  /* полёт без исчезновения: мышь неторопливо уходит за край экрана по волнистой дуге (или прилетает из-за него) */
+  const offscreen=(b,dir)=>{const r=b.getBoundingClientRect();return [dir>0?innerWidth-r.left+60:-(r.right+60),-(r.bottom+80)]};
+  const wave=(dx,dy)=>{const k=[];for(let i=0;i<=6;i++){const t=i/6,e=t*t*(3-2*t),bob=Math.sin(t*Math.PI*3)*18*(1-t);
+    k.push({transform:`translate(${dx*e}px,${dy*e+bob}px) rotate(${Math.sign(dx)*6*Math.sin(t*Math.PI)}deg)`})}return k};
   const away=b=>{if(!b.isConnected||b.dataset.gone)return;b.dataset.gone=1;b.classList.remove('sit');b.style.pointerEvents='none';
-    const dir=Math.random()<.5?-1:1;
-    b.animate([{transform:'none'},{transform:`translate(${dir*rnd(60,120)}px,${-rnd(40,80)}px) scale(1.05)`,offset:.25},{transform:`translate(${dir*rnd(420,700)}px,${-rnd(320,520)}px) scale(.5)`,opacity:0}],{duration:rnd(1000,1400),easing:'cubic-bezier(.4,0,.6,1)'}).onfinish=()=>b.remove()};
-  /* сесть на верхний край блока: сразу (sit) или прилететь издалека */
+    const br=b.getBoundingClientRect(),dir=br.left+br.width/2<innerWidth/2?-1:1,[dx,dy]=offscreen(b,dir);
+    b.animate(wave(dx,dy),{duration:3200,easing:'linear'}).onfinish=()=>b.remove()};
+  /* сесть на верхний край блока: сразу (sit) или прилететь из-за края экрана */
   const perch=(el,at,{fly=true,w=104,top=0}={})=>{const b=make();b.classList.add('perch');b.style.cssText=`left:${at}%;top:${top-w*.42}px;width:${w}px`;el.append(b);
-    if(fly){const from=Math.random()<.5?-1:1;b.animate([{transform:`translate(${from*rnd(380,620)}px,${-rnd(260,420)}px) scale(.5)`,opacity:0},{opacity:1,offset:.2},{transform:'translate(0,-16px) scale(1)',offset:.85},{transform:'none'}],{duration:1700,easing:'cubic-bezier(.3,.6,.4,1)'}).onfinish=()=>b.classList.add('sit')}
+    if(fly){const dir=Math.random()<.5?-1:1,[dx,dy]=offscreen(b,dir),k=wave(dx,dy).reverse();
+      b.animate(k,{duration:3400,easing:'linear'}).onfinish=()=>b.classList.add('sit')}
     else b.classList.add('sit');
     b.addEventListener('pointerenter',()=>away(b));el.addEventListener('pointerenter',()=>b.classList.contains('sit')&&away(b),{once:true});return b};
   /* обложка: трое сидят на рамке и вспархивают, будто их спугнули */
   const cov=document.querySelector('.cover'),fr=cov&&cov.querySelector('.cv-frame');
   if(fr){const top=fr.getBoundingClientRect().top-cov.getBoundingClientRect().top+parseFloat(getComputedStyle(fr).borderTopWidth)+(parseFloat(getComputedStyle(fr,'::before').top)||0);
-    const flock=[18,24,71].map((at,i)=>perch(cov,at,{fly:false,w:[120,96,108][i],top}));setTimeout(()=>flock.forEach((b,i)=>setTimeout(()=>away(b),i*160)),1100)}
+    const flock=[18,24,71].map((at,i)=>perch(cov,at,{fly:false,w:[120,96,108][i],top}));setTimeout(()=>flock.forEach((b,i)=>setTimeout(()=>away(b),i*450)),1400)}
   /* по ходу страницы: прилетают, когда блок показался */
-  [['.rules li:nth-child(2)',58],['.castle .frame',70],['.sky li:nth-child(4) .wrap',82],['.gcard.est-VAMPIRE',64]].forEach(([sel,at])=>{const el=document.querySelector(sel);if(!el)return;
+  [['.castle .frame',70],['.gcard.est-VAMPIRE',64]].forEach(([sel,at])=>{const el=document.querySelector(sel);if(!el)return;
     const io=new IntersectionObserver(es=>{if(es.some(x=>x.isIntersecting)){io.disconnect();setTimeout(()=>perch(el,at),600)}},{threshold:.6});io.observe(el)});
 })();
 
