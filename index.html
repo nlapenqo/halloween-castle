@@ -551,19 +551,19 @@ footer small{font-size:var(--fs-small);opacity:.7}
       </div>
       <div class="gate-clans">
         <article class="gcard est-VAMPIRE">
-          <figure class="frame" style="rotate:-1.2deg"><img src="art/clan-vampire-b-720.webp" alt="" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-vampire-b-720.webp" alt="" width="900" height="1205" loading="lazy"></figure>
           <h3>Вампиры</h3>
           <p class="small">Древняя кровь, бархат и безупречные манеры. Вампиры не спешат: у них впереди вечность и целая ночь.</p>
           <a class="btn btn-main" href="participate.html?clan=VAMPIRE">Присоединиться</a>
         </article>
         <article class="gcard est-WEREWOLF">
-          <figure class="frame" style="rotate:1deg"><img src="art/clan-werewolf-c-720.webp" alt="" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame tilt3d" style="--rz:1deg"><img src="art/clan-werewolf-c-720.webp" alt="" width="900" height="1205" loading="lazy"></figure>
           <h3>Оборотни</h3>
           <p class="small">Сила, чутьё и стая за спиной. Оборотни берут азартом, особенно когда взойдёт луна.</p>
           <a class="btn btn-main" href="participate.html?clan=WEREWOLF">Присоединиться</a>
         </article>
         <article class="gcard est-DARK_ELF">
-          <figure class="frame" style="rotate:-1.2deg"><img src="art/clan-darkelf-k-720.webp" alt="" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-darkelf-k-720.webp" alt="" width="900" height="1205" loading="lazy"></figure>
           <h3>Тёмные эльфы</h3>
           <p class="small">Тайные знаки, древняя магия и холодный расчёт. Тёмные эльфы видят то, что другие пропускают.</p>
           <a class="btn btn-main" href="participate.html?clan=DARK_ELF">Присоединиться</a>
@@ -638,7 +638,7 @@ function onView(el,fn,threshold=0){if(!el)return;if(!('IntersectionObserver' in 
 /* Карточки кланов наклоняются за курсором: только мышь и без reduced-motion */
 (()=>{if(RM||!matchMedia('(hover: hover) and (pointer: fine)').matches)return;
   document.querySelectorAll('.tilt3d').forEach(c=>{let raf=0,ev=null;
-    const set=()=>{raf=0;const p=c.parentElement.getBoundingClientRect(),x=Math.min(1,Math.max(0,(ev.clientX-p.left)/c.offsetWidth)),y=Math.min(1,Math.max(0,(ev.clientY-p.top)/c.offsetHeight));
+    const set=()=>{raf=0;const o=c.offsetParent.getBoundingClientRect(),x=Math.min(1,Math.max(0,(ev.clientX-o.left-c.offsetLeft)/c.offsetWidth)),y=Math.min(1,Math.max(0,(ev.clientY-o.top-c.offsetTop)/c.offsetHeight));
       c.style.setProperty('--ry',((x-.5)*16).toFixed(2)+'deg');c.style.setProperty('--rx',((.5-y)*14).toFixed(2)+'deg');
       c.style.setProperty('--mx',(x*100).toFixed(1)+'%');c.style.setProperty('--my',(y*100).toFixed(1)+'%')};
     c.addEventListener('pointerenter',()=>{c.classList.add('on');c.style.setProperty('--sc','1.03')});
