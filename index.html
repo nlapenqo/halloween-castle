@@ -161,8 +161,10 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 @media (max-width:880px){.night-intro .grid{grid-template-columns:minmax(0,1fr)}}
 .facts{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px}
 .rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;list-style:none;margin:0;padding:0}
-.rules li{--frw:clamp(8px,1vw,14px);display:grid;gap:10px;align-content:start;padding:calc(clamp(24px,2.6vw,34px) + var(--frw) - var(--line)) calc(clamp(16px,1.8vw,26px) + var(--frw) - var(--line));min-height:clamp(170px,16vw,210px)}
+.rules li{--frw:clamp(5px,.5vw,7px);display:grid;gap:10px;align-content:start;padding:calc(clamp(24px,2.6vw,34px) + var(--frw) - var(--line)) calc(clamp(16px,1.8vw,26px) + var(--frw) - var(--line));min-height:clamp(170px,16vw,210px)}
 .rules li::before{border-width:var(--frw);border-color:var(--night)}
+/* наведение: плашка выпрямляется и чуть подпрыгивает, без тени */
+@media (hover:hover) and (prefers-reduced-motion:no-preference){.rules li{transition:translate .45s cubic-bezier(.2,.9,.25,1.35),rotate .45s cubic-bezier(.2,.9,.25,1.35),scale .45s cubic-bezier(.2,.9,.25,1.35)}.rules li.plate:hover{translate:0 -8px;rotate:0deg;scale:1.04}}
 .rules h3{font-size:var(--fs-lead);text-transform:uppercase;letter-spacing:.03em;filter:url(#ink)}
 .rules li:nth-child(1){--pl-bg:var(--rose)}
 .rules li:nth-child(2){--pl-bg:var(--ochre)}
