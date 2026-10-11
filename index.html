@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://nlapenqo.github.io/halloween-castle/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1C111B">
-<link rel="icon" href="art/s-pumpkin1.webp" type="image/webp">
+<link rel="icon" href="art/s-pumpkin-64.webp" type="image/webp">
 <title>Halloween · Lost Castle</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -117,7 +117,7 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 .cv-frame::before,.cv-frame::after{content:"";position:absolute;border:2px solid var(--gold);border-radius:6px 10px 5px 9px/9px 5px 10px 6px;filter:url(#rough)}
 .cv-frame::before{inset:-.55cqw}
 .cv-frame::after{inset:.35cqw;border-width:1px;opacity:.6}
-.cv-frame svg{position:absolute;width:3.2cqw;height:auto;fill:var(--gold);filter:url(#rough-sm)}
+.cv-frame svg{position:absolute;width:3.2cqw;height:auto;fill:var(--gold)}
 .cv-frame svg:nth-child(1){left:0;top:0;translate:calc(-50% - .55cqw) calc(-50% - .55cqw)}
 .cv-frame svg:nth-child(2){right:0;top:0;translate:calc(50% + .55cqw) calc(-50% - .55cqw)}
 .cv-frame svg:nth-child(3){left:0;bottom:0;translate:calc(-50% - .55cqw) calc(50% + .55cqw)}
@@ -396,6 +396,7 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 
 footer{padding-block:clamp(48px,6vw,72px);text-align:center;display:grid;gap:10px;justify-items:center}
 footer .star{width:40px}
+footer .ft-map{display:inline-block;padding:12px 6px;margin:-12px -6px}
 footer p{font:400 var(--fs-lead)/1.3 var(--f-display)}
 footer small{font-size:var(--fs-small);opacity:.7}
 </style>
@@ -411,11 +412,11 @@ footer small{font-size:var(--fs-small);opacity:.7}
 
 <main>
   <section class="cover" aria-labelledby="t">
-    <h1 class="sr-only" id="t">Halloween · Lost Castle. 31 октября, с 14:00, Bale Tudor, Убуд</h1>
+    <h1 class="sr-only" id="t">Halloween, Lost Castle. 31 октября, с 14:00, Bale Tudor, Убуд</h1>
     <div class="stage">
       <picture>
-        <source media="(max-width:700px)" srcset="art/cover-m-wolves.jpg" width="1125" height="1398">
-        <img src="art/cover-wolves.jpg" alt="Обложка: скелет коня в лентах, две волчьи головы, тёмный эльф с картами и фонарём, тыквы" width="1678" height="937">
+        <source media="(max-width:700px), (max-aspect-ratio:1/1)" srcset="art/cover-m-wolves.webp" width="1125" height="1398">
+        <img src="art/cover-wolves.webp" fetchpriority="high" alt="Обложка: скелет коня в лентах, две волчьи головы, тёмный эльф с картами и фонарём, тыквы" width="1678" height="937">
       </picture>
       <div class="cv-frame" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg><svg viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></svg></div>
       <div class="ov" aria-hidden="true"><img class="ov-logo" src="art/logo.svg" alt="" width="602" height="171"></div>
@@ -437,7 +438,7 @@ footer small{font-size:var(--fs-small);opacity:.7}
       </ul>
     </div>
     <div class="parade" role="img" aria-label="Процессия жителей замка: вампир с кубком, оборотень с фонарём, тёмный эльф с картами, конь-скелет, дама-мотылёк, ворон-бард, ребёнок с головой-репой, скелет-жонглёр, заяц-барабанщик, соломенное чучело">
-      <div class="track"><img src="art/procession-clans.webp" alt=""><img src="art/procession-clans.webp" alt=""><img src="art/procession-clans.webp" alt=""><img src="art/procession-clans.webp" alt=""></div>
+      <div class="track"><img src="art/procession-clans-2400.webp" width="2400" height="375" loading="lazy" alt=""><img src="art/procession-clans-2400.webp" width="2400" height="375" loading="lazy" alt=""><img src="art/procession-clans-2400.webp" width="2400" height="375" loading="lazy" alt=""><img src="art/procession-clans-2400.webp" width="2400" height="375" loading="lazy" alt=""></div>
     </div>
   </section>
 
@@ -451,32 +452,32 @@ footer small{font-size:var(--fs-small);opacity:.7}
       </div>
       <div class="estates">
         <article class="estate est-VAMPIRE" data-clan="VAMPIRE">
-          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-vampire-b.jpg" alt="Вампиры с черепами летучих мышей: кавалер в полосатом плаще с кубком и дама в чёрном платье с брыжами среди роз" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-vampire-b-720.webp" alt="Вампиры с черепами летучих мышей: кавалер в полосатом плаще с кубком и дама в чёрном платье с брыжами среди роз" width="900" height="1205" loading="lazy"></figure>
           <h3>Вампиры</h3>
           <p class="small">Древняя кровь, бархат и безупречные манеры. Вампиры не спешат: у них впереди вечность и целая ночь.</p>
-          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=VAMPIRE">Присоединиться</a></div></div>
+          <div class="est-more"><div><a class="btn btn-main est-join" href="participate.html?clan=VAMPIRE">Присоединиться</a></div></div>
         </article>
         <article class="estate est-WEREWOLF" data-clan="WEREWOLF">
-          <figure class="frame tilt3d" style="--rz:1deg"><img src="art/clan-werewolf-c.jpg" alt="Оборотни в разгар превращения: он пригнулся перед прыжком, она на камне воет на полную луну" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame tilt3d" style="--rz:1deg"><img src="art/clan-werewolf-c-720.webp" alt="Оборотни в разгар превращения: он пригнулся перед прыжком, она на камне воет на полную луну" width="900" height="1205" loading="lazy"></figure>
           <h3>Оборотни</h3>
           <p class="small">Сила, чутьё и стая за спиной. Оборотни берут азартом, особенно когда взойдёт луна.</p>
-          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=WEREWOLF">Присоединиться</a></div></div>
+          <div class="est-more"><div><a class="btn btn-main est-join" href="participate.html?clan=WEREWOLF">Присоединиться</a></div></div>
         </article>
         <article class="estate est-DARK_ELF" data-clan="DARK_ELF">
-          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-darkelf-k.jpg" alt="Тёмные эльфы играют в карты за столом-мухомором при свече и луне" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame tilt3d" style="--rz:-1.2deg"><img src="art/clan-darkelf-k-720.webp" alt="Тёмные эльфы играют в карты за столом-мухомором при свече и луне" width="900" height="1205" loading="lazy"></figure>
           <h3>Тёмные эльфы</h3>
           <p class="small">Тайные знаки, древняя магия и холодный расчёт. Тёмные эльфы видят то, что другие пропускают.</p>
-          <div class="est-more"><div><a class="btn btn-main est-join" href="lab-p2-v5.html?clan=DARK_ELF">Присоединиться</a></div></div>
+          <div class="est-more"><div><a class="btn btn-main est-join" href="participate.html?clan=DARK_ELF">Присоединиться</a></div></div>
         </article>
       </div>
-      <div class="clan-cta"><a class="btn btn-main btn-lg est-open" href="lab-p2-v5.html">Вступить в клан</a><button class="est-back" type="button" hidden>Вернуться к истории</button><p class="small">В каждом клане до 20 мест. Кланы держим в равновесии, чтобы игра была честной.</p></div>
+      <div class="clan-cta"><a class="btn btn-main btn-lg est-open" href="participate.html">Вступить в клан</a><button class="est-back" type="button" hidden>Вернуться к истории</button><p class="small">В каждом клане до 20 мест. Кланы держим в равновесии, чтобы игра была честной.</p></div>
     </div>
   </section>
 
   <section class="castle-sec">
     <div class="wrap">
       <div class="castle">
-        <figure class="frame tilt-r"><img src="art/castle.jpg" alt="Иллюстрация замка Bale Tudor: фахверковый дом с крутыми крышами на склоне в джунглях, тыквы вдоль тропы, летучие мыши" width="1200" height="1490" loading="lazy"></figure>
+        <figure class="frame tilt-r"><img src="art/castle.webp" alt="Иллюстрация замка Bale Tudor: фахверковый дом с крутыми крышами на склоне в джунглях, тыквы вдоль тропы, летучие мыши" width="1200" height="1490" loading="lazy"></figure>
         <div class="text">
           <h2>Замок в <em class="acc">джунглях</em></h2>
           <p class="lead">Bale Tudor — фэнтезийный парк над рекой Аюнг в Бонгкасе, рядом с Убудом. Фахверковые дома с крутыми крышами, резные залы, каменные лестницы, качели над рекой и домик на дереве.</p>
@@ -498,46 +499,46 @@ footer small{font-size:var(--fs-small);opacity:.7}
       <div class="places">
         <div class="head"><h2>Где добывают <em class="acc">монеты</em></h2></div>
         <div class="vgrid">
-          <article class="vig"><img src="art/v-bar.webp" alt="Чёрный заяц за стойкой таверны" loading="lazy"><h3>Таверна</h3><p class="small">Сердце игры. Здесь берут задания с доски, сдают находки и получают монеты.</p></article>
-          <article class="vig"><img src="art/v-archery.webp" alt="Ворон-бард стреляет из лука в тыкву-мишень" loading="lazy"><h3>Стрельбище</h3><p class="small">Пять стрел за попытку. Каждое попадание приносит монету клану.</p></article>
-          <article class="vig"><img src="art/v-hideouts.webp" alt="Кривой домик на дереве с глазами в окнах, свиток и ключ в дупле" loading="lazy"><h3>Тайники</h3><p class="small">По замку спрятаны предметы, загадки и карты сокровищ. Кто внимательнее, тот богаче.</p></article>
-          <article class="vig"><img src="art/v-pumpkins.webp" alt="Житель замка вырезает тыкву, рядом готовые тыквы с номерами" loading="lazy"><h3>Тыквенная мастерская</h3><p class="small">Вырежи свою тыкву и поставь номер. Лучшую выберут голосованием гостей.</p></article>
-          <article class="vig"><img src="art/v-arena.webp" alt="Двое сражаются мягкими палками на деревянном помосте" loading="lazy"><h3>Арена</h3><p class="small">Турнир на мягких палках. Бойцы от каждого клана, победитель забирает пять монет.</p></article>
-          <article class="vig"><img src="art/v-apples.webp" alt="Житель замка ловит зубами яблоко в бочке с водой" loading="lazy"><h3>Яблоки</h3><p class="small">Достань яблоко зубами, без рук. Мокро, смешно и за монету.</p></article>
+          <article class="vig"><img src="art/v-bar.webp" width="678" height="725" alt="Чёрный заяц за стойкой таверны" loading="lazy"><h3>Таверна</h3><p class="small">Сердце игры. Здесь берут задания с доски, сдают находки и получают монеты.</p></article>
+          <article class="vig"><img src="art/v-archery.webp" width="820" height="762" alt="Ворон-бард стреляет из лука в тыкву-мишень" loading="lazy"><h3>Стрельбище</h3><p class="small">Пять стрел за попытку. Каждое попадание приносит монету клану.</p></article>
+          <article class="vig"><img src="art/v-hideouts.webp" width="771" height="862" alt="Кривой домик на дереве с глазами в окнах, свиток и ключ в дупле" loading="lazy"><h3>Тайники</h3><p class="small">По замку спрятаны предметы, загадки и карты сокровищ. Кто внимательнее, тот богаче.</p></article>
+          <article class="vig"><img src="art/v-pumpkins.webp" width="820" height="798" alt="Житель замка вырезает тыкву, рядом готовые тыквы с номерами" loading="lazy"><h3>Тыквенная мастерская</h3><p class="small">Вырежи свою тыкву и поставь номер. Лучшую выберут голосованием гостей.</p></article>
+          <article class="vig"><img src="art/v-arena.webp" width="820" height="800" alt="Двое сражаются мягкими палками на деревянном помосте" loading="lazy"><h3>Арена</h3><p class="small">Турнир на мягких палках. Бойцы от каждого клана, победитель забирает пять монет.</p></article>
+          <article class="vig"><img src="art/v-apples.webp" width="820" height="812" alt="Житель замка ловит зубами яблоко в бочке с водой" loading="lazy"><h3>Яблоки</h3><p class="small">Достань яблоко зубами, без рук. Мокро, смешно и за монету.</p></article>
         </div>
       </div>
     </div>
 
     <div class="feast">
       <div class="wrap inner"><h2>Королевская <em class="acc">трапеза</em></h2></div>
-      <div class="pan"><img src="art/feast-clans.jpg" alt="Пир: жители замка и три клана, вампир, оборотень и тёмный эльф, за одним длинным столом с тыквами, свечами и кубками" width="1925" height="817" loading="lazy"></div>
+      <div class="pan"><img src="art/feast-clans.webp" alt="Пир: жители замка и три клана, вампир, оборотень и тёмный эльф, за одним длинным столом с тыквами, свечами и кубками" width="1925" height="817" loading="lazy"></div>
       <input class="pan-range" type="range" min="0" max="1000" value="500" aria-label="Прокрутить стол" hidden>
-      <div class="wrap inner"><p class="small">Совместный ужин во дворе замка, когда игра закончится. Одна скатерть, все кланы, итоги дня и тосты. Трапеза по желанию: её отмечают при вступлении в клан.</p><p class="cta-row"><a class="btn btn-main" href="lab-p2-v5.html#dinner">Занять место за столом</a></p></div>
+      <div class="wrap inner"><p class="small">Совместный ужин во дворе замка, когда игра закончится. Одна скатерть, все кланы, итоги дня и тосты. Трапеза по желанию: её отмечают при вступлении в клан.</p><p class="cta-row"><a class="btn btn-main" href="participate.html#dinner">Занять место за столом</a></p></div>
     </div>
 
     <div class="wrap bonfire">
       <div class="head"><h2>Вечер у <em class="acc">костра</em></h2></div>
-      <figure class="frame bf-frame"><video class="bf-v" autoplay muted loop playsinline preload="metadata" poster="art/bonfire.jpg" width="1280" height="712" aria-label="Костёр в джунглях: вампиры, тёмные эльфы, оборотни и чёрный заяц с гитарой жарят маршмеллоу"><source src="art/bonfire.webm" type="video/webm"><source src="art/bonfire.mp4" type="video/mp4"></video></figure>
+      <figure class="frame bf-frame"><video class="bf-v" muted loop playsinline preload="none" poster="art/bonfire.webp" width="1280" height="712" aria-label="Костёр в джунглях: вампиры, тёмные эльфы, оборотни и чёрный заяц с гитарой жарят маршмеллоу"><source src="art/bonfire.webm" type="video/webm"><source src="art/bonfire.mp4" type="video/mp4"></video></figure>
       <p class="small bf-t">После заката разводим большой костёр и жарим маршмеллоу. Игра закончилась, начинается тёплый вечер, как в старых американских фильмах.</p>
     </div>
   </section>
 
   <section class="day-sec">
     <div class="wrap">
-      <img class="ornament" src="art/ornament.webp" alt="" loading="lazy">
+      <img class="ornament" src="art/ornament-1100.webp" width="1100" height="267" alt="" loading="lazy">
       <div class="head">
         <h2>От солнца до <em class="acc">луны</em></h2>
         <p class="lead">Время ориентировочное. Начинаем при свете, игру заканчиваем к закату, а вечер встречаем у огня.</p>
       </div>
     </div>
     <ol class="sky">
-      <li class="day"><div class="wrap row"><time>14:00</time><svg class="ic ic-gate" viewBox="0 0 314 320" aria-hidden="true"><defs><clipPath id="icc-torch"><ellipse cx="52" cy="140" rx="18" ry="26"/><ellipse cx="268" cy="146" rx="18" ry="28"/></clipPath></defs><image id="ici-gate" href="art/i-gate.webp" width="314" height="320"/><g class="flame"><use href="#ici-gate" clip-path="url(#icc-torch)"/></g><g transform="translate(140 210)"><use class="fx spk" href="#ic-spk" style="--dx:-28px;--d:0s"/></g><g transform="translate(178 190)"><use class="fx spk" href="#ic-spk" style="--dx:24px;--d:0.5s"/></g><g transform="translate(160 236)"><use class="fx spk" href="#ic-spk" style="--dx:8px;--d:1s"/></g></svg><div><h3>Ворота открываются</h3><p>Встреча гостей: ленты кланов, карточки игроков, карта замка и первые подозрения.</p></div></div></li>
-      <li class="day2"><div class="wrap row"><time>15:00</time><svg class="ic ic-map" viewBox="0 0 320 294" aria-hidden="true"><defs><clipPath id="icc-x"><rect x="172" y="147" width="66" height="16" transform="rotate(43 205 155)"/><rect x="172" y="147" width="66" height="16" transform="rotate(-43 205 155)"/></clipPath><clipPath id="icc-coin"><ellipse cx="245" cy="224" rx="35" ry="26"/></clipPath></defs><image id="ici-map" href="art/i-map.webp" width="320" height="294"/><g class="xpulse" style="transform-origin:205px 155px"><use href="#ici-map" clip-path="url(#icc-x)"/></g><g clip-path="url(#icc-coin)"><g transform="rotate(28 245 224)"><rect class="fx glint" x="238" y="180" width="12" height="90" fill="#FFF8E0"/></g></g><g transform="translate(238 128)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.2s"/></g><g transform="translate(176 186)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.7s"/></g></svg><div><h3>Игра</h3><p>Таверна, стрельбище, тайники и мастерская работают одновременно. Каждый выбирает свой путь к монетам.</p></div></div></li>
-      <li class="sand"><div class="wrap row"><time>16:00</time><svg class="ic ic-tourney" viewBox="0 0 294 320" aria-hidden="true"><g class="clash" style="transform-origin:147px 300px"><image href="art/i-tourney.webp" width="294" height="320"/></g><g transform="translate(147 150) scale(2.3)"><use class="fx bang" href="#ic-bang"/></g></svg><div><h3>Турнир</h3><p>Бойцы кланов сходятся на арене. Мягкие палки, жёсткие ставки.</p></div></div></li>
-      <li class="peach"><div class="wrap row"><time>16:30</time><svg class="ic ic-apples" viewBox="0 0 320 274" aria-hidden="true"><g class="bob" style="transform-origin:160px 250px"><image href="art/i-apples.webp" width="320" height="274"/></g><ellipse class="fx ripple" cx="152" cy="134" rx="62" ry="10" fill="none" stroke="#F4FBFF" stroke-width="7" style="transform-origin:152px 134px"/><circle class="fx drop" cx="152" cy="126" r="14.4" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:-94px;--h:-69px;--d:0s"/><circle class="fx drop" cx="152" cy="126" r="12" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:-54px;--h:-93px;--d:0.15s"/><circle class="fx drop" cx="152" cy="126" r="10.8" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:62px;--h:-87px;--d:0.08s"/><circle class="fx drop" cx="152" cy="126" r="14.4" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:99px;--h:-60px;--d:0.22s"/><circle class="fx drop" cx="152" cy="126" r="9.6" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:13px;--h:-105px;--d:0.3s"/></svg><div><h3>Яблоки</h3><p>Конкурс без рук. Полотенца выдадим.</p></div></div></li>
-      <li class="dusk"><div class="wrap row"><time>17:40</time><svg class="ic ic-results" viewBox="0 0 320 255" aria-hidden="true"><defs><clipPath id="icc-seal"><circle cx="201" cy="105" r="31"/></clipPath><clipPath id="icc-rcoin"><ellipse cx="83" cy="201" rx="28" ry="12"/><ellipse cx="140" cy="150" rx="30" ry="12"/></clipPath></defs><image id="ici-results" href="art/i-results.webp" width="320" height="255"/><g class="stamp" style="transform-origin:201px 105px"><use href="#ici-results" clip-path="url(#icc-seal)"/></g><g clip-path="url(#icc-rcoin)"><g transform="rotate(25 110 175)"><rect class="fx glint" x="104" y="110" width="12" height="130" fill="#FFF8E0"/></g></g><g transform="translate(60 160)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0s"/></g><g transform="translate(178 192)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.6s"/></g></svg><div><h3>Итоги</h3><p>Считаем монеты кланов, называем лучший костюм и лучшую тыкву. Победителям грамоты и игристое.</p></div></div></li>
-      <li class="dusk2"><div class="wrap row"><time>18:00</time><svg class="ic ic-feast" viewBox="0 0 320 318" aria-hidden="true"><defs><clipPath id="icc-cup"><path d="M36 30H146L138 100Q90 150 44 100Z"/></clipPath></defs><g class="cheer" style="transform-origin:90px 300px"><image href="art/i-feast.webp" width="320" height="318"/><g clip-path="url(#icc-cup)"><g transform="rotate(22 90 80)"><rect class="fx glint" x="84" y="0" width="14" height="170" fill="#FFF8E0"/></g></g></g><path class="fx steam" d="M182 150c-14-16 14-28 0-44s14-28 0-44" fill="none" stroke="#FFF3DC" stroke-width="12" stroke-linecap="round" style="--d:0s"/><path class="fx steam" d="M208 150c-14-16 14-28 0-44s14-28 0-44" fill="none" stroke="#FFF3DC" stroke-width="12" stroke-linecap="round" style="--d:0.45s"/><path class="fx steam" d="M234 150c-14-16 14-28 0-44s14-28 0-44" fill="none" stroke="#FFF3DC" stroke-width="12" stroke-linecap="round" style="--d:0.9s"/><g transform="translate(140 30)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.3s"/></g></svg><div><h3>Трапеза</h3><p>Солнце уходит за джунгли, все садятся за один длинный стол во дворе замка.</p></div></div></li>
-      <li class="eve"><div class="wrap row"><time>19:30</time><svg class="ic ic-bonfire" viewBox="0 0 316 320" aria-hidden="true"><defs><clipPath id="icc-fire"><ellipse cx="150" cy="138" rx="84" ry="90"/></clipPath></defs><image id="ici-bonfire" href="art/i-bonfire.webp" width="316" height="320"/><g class="flame"><use href="#ici-bonfire" clip-path="url(#icc-fire)"/></g><g transform="translate(120 80)"><circle class="fx spark" r="10" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:-32px;--d:0s"/></g><g transform="translate(150 60)"><circle class="fx spark" r="8.75" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:16px;--d:0.35s"/></g><g transform="translate(176 84)"><circle class="fx spark" r="10" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:36px;--d:0.7s"/></g><g transform="translate(136 100)"><circle class="fx spark" r="7.5" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:-12px;--d:1.05s"/></g><g transform="translate(166 104)"><circle class="fx spark" r="7.5" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:20px;--d:0.5s"/></g></svg><div><h3>Костёр</h3><p>Огонь, музыка и маршмеллоу на шампурах. Свободный вечер под звёздами.</p></div></div></li>
+      <li class="day"><div class="wrap row"><time>14:00</time><svg class="ic ic-gate" viewBox="0 0 314 320" aria-hidden="true"><defs><clipPath id="icc-torch"><ellipse cx="52" cy="140" rx="18" ry="26"/><ellipse cx="268" cy="146" rx="18" ry="28"/></clipPath></defs><image id="ici-gate" href="art/i-gate-160.webp" width="314" height="320"/><g class="flame"><use href="#ici-gate" clip-path="url(#icc-torch)"/></g><g transform="translate(140 210)"><use class="fx spk" href="#ic-spk" style="--dx:-28px;--d:0s"/></g><g transform="translate(178 190)"><use class="fx spk" href="#ic-spk" style="--dx:24px;--d:0.5s"/></g><g transform="translate(160 236)"><use class="fx spk" href="#ic-spk" style="--dx:8px;--d:1s"/></g></svg><div><h3>Ворота открываются</h3><p>Встреча гостей: ленты кланов, карточки игроков, карта замка и первые подозрения.</p></div></div></li>
+      <li class="day2"><div class="wrap row"><time>15:00</time><svg class="ic ic-map" viewBox="0 0 320 294" aria-hidden="true"><defs><clipPath id="icc-x"><rect x="172" y="147" width="66" height="16" transform="rotate(43 205 155)"/><rect x="172" y="147" width="66" height="16" transform="rotate(-43 205 155)"/></clipPath><clipPath id="icc-coin"><ellipse cx="245" cy="224" rx="35" ry="26"/></clipPath></defs><image id="ici-map" href="art/i-map-160.webp" width="320" height="294"/><g class="xpulse" style="transform-origin:205px 155px"><use href="#ici-map" clip-path="url(#icc-x)"/></g><g clip-path="url(#icc-coin)"><g transform="rotate(28 245 224)"><rect class="fx glint" x="238" y="180" width="12" height="90" fill="#FFF8E0"/></g></g><g transform="translate(238 128)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.2s"/></g><g transform="translate(176 186)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.7s"/></g></svg><div><h3>Игра</h3><p>Таверна, стрельбище, тайники и мастерская работают одновременно. Каждый выбирает свой путь к монетам.</p></div></div></li>
+      <li class="sand"><div class="wrap row"><time>16:00</time><svg class="ic ic-tourney" viewBox="0 0 294 320" aria-hidden="true"><g class="clash" style="transform-origin:147px 300px"><image href="art/i-tourney-160.webp" width="294" height="320"/></g><g transform="translate(147 150) scale(2.3)"><use class="fx bang" href="#ic-bang"/></g></svg><div><h3>Турнир</h3><p>Бойцы кланов сходятся на арене. Мягкие палки, жёсткие ставки.</p></div></div></li>
+      <li class="peach"><div class="wrap row"><time>16:30</time><svg class="ic ic-apples" viewBox="0 0 320 274" aria-hidden="true"><g class="bob" style="transform-origin:160px 250px"><image href="art/i-apples-160.webp" width="320" height="274"/></g><ellipse class="fx ripple" cx="152" cy="134" rx="62" ry="10" fill="none" stroke="#F4FBFF" stroke-width="7" style="transform-origin:152px 134px"/><circle class="fx drop" cx="152" cy="126" r="14.4" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:-94px;--h:-69px;--d:0s"/><circle class="fx drop" cx="152" cy="126" r="12" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:-54px;--h:-93px;--d:0.15s"/><circle class="fx drop" cx="152" cy="126" r="10.8" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:62px;--h:-87px;--d:0.08s"/><circle class="fx drop" cx="152" cy="126" r="14.4" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:99px;--h:-60px;--d:0.22s"/><circle class="fx drop" cx="152" cy="126" r="9.6" fill="#9AD8EA" stroke="#2F5D6E" stroke-width="3.5" style="--dx:13px;--h:-105px;--d:0.3s"/></svg><div><h3>Яблоки</h3><p>Конкурс без рук. Полотенца выдадим.</p></div></div></li>
+      <li class="dusk"><div class="wrap row"><time>17:40</time><svg class="ic ic-results" viewBox="0 0 320 255" aria-hidden="true"><defs><clipPath id="icc-seal"><circle cx="201" cy="105" r="31"/></clipPath><clipPath id="icc-rcoin"><ellipse cx="83" cy="201" rx="28" ry="12"/><ellipse cx="140" cy="150" rx="30" ry="12"/></clipPath></defs><image id="ici-results" href="art/i-results-160.webp" width="320" height="255"/><g class="stamp" style="transform-origin:201px 105px"><use href="#ici-results" clip-path="url(#icc-seal)"/></g><g clip-path="url(#icc-rcoin)"><g transform="rotate(25 110 175)"><rect class="fx glint" x="104" y="110" width="12" height="130" fill="#FFF8E0"/></g></g><g transform="translate(60 160)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0s"/></g><g transform="translate(178 192)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.6s"/></g></svg><div><h3>Итоги</h3><p>Считаем монеты кланов, называем лучший костюм и лучшую тыкву. Победителям грамоты и игристое.</p></div></div></li>
+      <li class="dusk2"><div class="wrap row"><time>18:00</time><svg class="ic ic-feast" viewBox="0 0 320 318" aria-hidden="true"><defs><clipPath id="icc-cup"><path d="M36 30H146L138 100Q90 150 44 100Z"/></clipPath></defs><g class="cheer" style="transform-origin:90px 300px"><image href="art/i-feast-160.webp" width="320" height="318"/><g clip-path="url(#icc-cup)"><g transform="rotate(22 90 80)"><rect class="fx glint" x="84" y="0" width="14" height="170" fill="#FFF8E0"/></g></g></g><path class="fx steam" d="M182 150c-14-16 14-28 0-44s14-28 0-44" fill="none" stroke="#FFF3DC" stroke-width="12" stroke-linecap="round" style="--d:0s"/><path class="fx steam" d="M208 150c-14-16 14-28 0-44s14-28 0-44" fill="none" stroke="#FFF3DC" stroke-width="12" stroke-linecap="round" style="--d:0.45s"/><path class="fx steam" d="M234 150c-14-16 14-28 0-44s14-28 0-44" fill="none" stroke="#FFF3DC" stroke-width="12" stroke-linecap="round" style="--d:0.9s"/><g transform="translate(140 30)"><use class="fx tw" href="#ic-spk" style="--dx:0px;--d:0.3s"/></g></svg><div><h3>Трапеза</h3><p>Солнце уходит за джунгли, все садятся за один длинный стол во дворе замка.</p></div></div></li>
+      <li class="eve"><div class="wrap row"><time>19:30</time><svg class="ic ic-bonfire" viewBox="0 0 316 320" aria-hidden="true"><defs><clipPath id="icc-fire"><ellipse cx="150" cy="138" rx="84" ry="90"/></clipPath></defs><image id="ici-bonfire" href="art/i-bonfire-160.webp" width="316" height="320"/><g class="flame"><use href="#ici-bonfire" clip-path="url(#icc-fire)"/></g><g transform="translate(120 80)"><circle class="fx spark" r="10" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:-32px;--d:0s"/></g><g transform="translate(150 60)"><circle class="fx spark" r="8.75" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:16px;--d:0.35s"/></g><g transform="translate(176 84)"><circle class="fx spark" r="10" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:36px;--d:0.7s"/></g><g transform="translate(136 100)"><circle class="fx spark" r="7.5" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:-12px;--d:1.05s"/></g><g transform="translate(166 104)"><circle class="fx spark" r="7.5" fill="#FFC24A" stroke="#8A3B12" stroke-width="3" style="--dx:20px;--d:0.5s"/></g></svg><div><h3>Костёр</h3><p>Огонь, музыка и маршмеллоу на шампурах. Свободный вечер под звёздами.</p></div></div></li>
     </ol>
   </section>
 
@@ -550,22 +551,22 @@ footer small{font-size:var(--fs-small);opacity:.7}
       </div>
       <div class="gate-clans">
         <article class="gcard est-VAMPIRE">
-          <figure class="frame" style="rotate:-1.2deg"><img src="art/clan-vampire-b.jpg" alt="" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame" style="rotate:-1.2deg"><img src="art/clan-vampire-b-720.webp" alt="" width="900" height="1205" loading="lazy"></figure>
           <h3>Вампиры</h3>
           <p class="small">Древняя кровь, бархат и безупречные манеры. Вампиры не спешат: у них впереди вечность и целая ночь.</p>
-          <a class="btn btn-main" href="lab-p2-v5.html?clan=VAMPIRE">Присоединиться</a>
+          <a class="btn btn-main" href="participate.html?clan=VAMPIRE">Присоединиться</a>
         </article>
         <article class="gcard est-WEREWOLF">
-          <figure class="frame" style="rotate:1deg"><img src="art/clan-werewolf-c.jpg" alt="" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame" style="rotate:1deg"><img src="art/clan-werewolf-c-720.webp" alt="" width="900" height="1205" loading="lazy"></figure>
           <h3>Оборотни</h3>
           <p class="small">Сила, чутьё и стая за спиной. Оборотни берут азартом, особенно когда взойдёт луна.</p>
-          <a class="btn btn-main" href="lab-p2-v5.html?clan=WEREWOLF">Присоединиться</a>
+          <a class="btn btn-main" href="participate.html?clan=WEREWOLF">Присоединиться</a>
         </article>
         <article class="gcard est-DARK_ELF">
-          <figure class="frame" style="rotate:-1.2deg"><img src="art/clan-darkelf-k.jpg" alt="" width="900" height="1205" loading="lazy"></figure>
+          <figure class="frame" style="rotate:-1.2deg"><img src="art/clan-darkelf-k-720.webp" alt="" width="900" height="1205" loading="lazy"></figure>
           <h3>Тёмные эльфы</h3>
           <p class="small">Тайные знаки, древняя магия и холодный расчёт. Тёмные эльфы видят то, что другие пропускают.</p>
-          <a class="btn btn-main" href="lab-p2-v5.html?clan=DARK_ELF">Присоединиться</a>
+          <a class="btn btn-main" href="participate.html?clan=DARK_ELF">Присоединиться</a>
         </article>
       </div>
       <p class="small gate-note">В каждом клане по 20 мест. Кланы растут вровень.</p>
@@ -574,9 +575,9 @@ footer small{font-size:var(--fs-small);opacity:.7}
 </main>
 
 <footer>
-  <img class="star" src="art/s-star.webp" alt="">
+  <img class="star" src="art/s-star-96.webp" alt="">
   <p>31 октября, с 14:00</p>
-  <small>Bale Tudor, Jl. Dewi Tilotama, Bongkasa Pertiwi, Bali, <a href="https://maps.app.goo.gl/QkY5Y5VHLDEFLeCC8" target="_blank" rel="noopener">карта</a></small>
+  <small>Bale Tudor, Jl. Dewi Tilotama, Bongkasa Pertiwi, Bali, <a href="https://maps.app.goo.gl/QkY5Y5VHLDEFLeCC8" target="_blank" rel="noopener" class="ft-map">карта</a></small>
 </footer>
 <dialog class="lb" aria-label="Фото замка"><figure><img alt=""><button class="icon-btn lb-x" type="button" aria-label="Закрыть">×</button><button class="icon-btn lb-nav lb-prev" type="button" aria-label="Предыдущее фото">←</button><button class="icon-btn lb-nav lb-next" type="button" aria-label="Следующее фото">→</button><figcaption></figcaption></figure></dialog>
 <script>
@@ -609,8 +610,8 @@ function onView(el,fn,threshold=0){if(!el)return;if(!('IntersectionObserver' in 
   d.addEventListener('click',e=>{if(e.target===d)d.close()});})();
 
 /* Пасхалки: летучие мыши. Без картинок и библиотек — маленький SVG, элементы живут только пока на экране.
-   При заходе на главную несколько мышей сидят на рамке обложки и вспархивают; по ходу страницы мыши прилетают
-   и садятся на край блоков; наведёшь курсор — улетают */
+   При заходе на главную три мыши сидят на рамке обложки и вспархивают; потом мыши прилетают на постер замка
+   и карточку вампиров в финале; наведёшь курсор — улетают */
 (()=>{if(RM||!Element.prototype.animate)return;
   const BAT='<svg class="egg-bat" viewBox="0 0 64 34" aria-hidden="true"><g fill="#5E4A6B" stroke="#26171D" stroke-width="1.6" stroke-linejoin="round"><path class="w l" d="M30 15C24 7 13 5 2 9c5 2 6 6 5 10 4-3 8-2 10 2 3-4 8-4 13-2z"/><path class="w r" d="M34 15c6-8 17-10 28-6-5 2-6 6-5 10-4-3-8-2-10 2-3-4-8-4-13-2z"/><path d="M28 10l1.5-5 2.5 4 2.5-4 1.5 5c1 2 1 8-4 11-5-3-5-9-4-11z"/></g><circle cx="30.3" cy="12" r="1" fill="#F2C14E"/><circle cx="33.7" cy="12" r="1" fill="#F2C14E"/></svg>';
   const make=()=>{const t=document.createElement('template');t.innerHTML=BAT;return t.content.firstChild};
@@ -743,7 +744,7 @@ document.querySelectorAll('.gcard').forEach(c=>c.addEventListener('click',e=>{if
 
 /* Костёр: видео играет только на экране; при reduced-motion — стоп-кадр */
 (()=>{const v=document.querySelector('.bf-v');if(!v)return;
-  if(RM){v.removeAttribute('autoplay');v.pause();v.poster='art/bonfire-still.jpg';return}
+  if(RM){v.removeAttribute('autoplay');v.pause();v.poster='art/bonfire-still.webp';return}
   onView(v,on=>on?v.play().catch(()=>{}):v.pause(),.15)})();
 
 /* Светлячки на обложке: свечение нарисовано один раз в спрайт, кадры идут только пока обложка видна и вкладка открыта */
