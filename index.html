@@ -619,15 +619,17 @@ function onView(el,fn,threshold=0){if(!el)return;if(!('IntersectionObserver' in 
   const offscreen=(b,dir)=>{const r=b.getBoundingClientRect();return [dir>0?innerWidth-r.left+60:-(r.right+60),-(r.bottom+80)]};
   const wave=(dx,dy)=>{const k=[];for(let i=0;i<=6;i++){const t=i/6,e=t*t*(3-2*t),bob=Math.sin(t*Math.PI*3)*18*(1-t);
     k.push({transform:`translate(${dx*e}px,${dy*e+bob}px) rotate(${Math.sign(dx)*6*Math.sin(t*Math.PI)}deg)`})}return k};
-  const away=b=>{if(!b.isConnected||b.dataset.gone)return;b.dataset.gone=1;b.classList.remove('sit');b.style.pointerEvents='none';
-    const br=b.getBoundingClientRect(),dir=br.left+br.width/2<innerWidth/2?-1:1,[dx,dy]=offscreen(b,dir);
+  /* в полёте мышь фиксирована относительно экрана: за краем не создаёт прокрутку и не зависит от скролла */
+  const toFixed=b=>{const r=b.getBoundingClientRect();b.classList.remove('perch','sit');Object.assign(b.style,{position:'fixed',left:r.left+'px',top:r.top+'px',width:r.width+'px'});document.body.append(b);return r};
+  const away=b=>{if(!b.isConnected||b.dataset.gone)return;b.dataset.gone=1;b.style.pointerEvents='none';
+    const br=toFixed(b),dir=br.left+br.width/2<innerWidth/2?-1:1,[dx,dy]=offscreen(b,dir);
     b.animate(wave(dx,dy),{duration:3200,easing:'linear'}).onfinish=()=>b.remove()};
   /* сесть на верхний край блока: сразу (sit) или прилететь из-за края экрана */
   const perch=(el,at,{fly=true,w=104,top=0}={})=>{const b=make();b.classList.add('perch');b.style.cssText=`left:${at}%;top:${top-w*.42}px;width:${w}px`;el.append(b);
-    if(fly){const dir=Math.random()<.5?-1:1,[dx,dy]=offscreen(b,dir),k=wave(dx,dy).reverse();
-      b.animate(k,{duration:3400,easing:'linear'}).onfinish=()=>b.classList.add('sit')}
-    else b.classList.add('sit');
-    b.addEventListener('pointerenter',()=>away(b));el.addEventListener('pointerenter',()=>b.classList.contains('sit')&&away(b),{once:true});return b};
+    const sit=()=>{b.classList.add('sit');b.addEventListener('pointerenter',()=>away(b));el.addEventListener('pointerenter',()=>b.classList.contains('sit')&&away(b),{once:true})};
+    if(!fly){sit();return b}
+    const host=b.style.cssText,dir=Math.random()<.5?-1:1;toFixed(b);const [dx,dy]=offscreen(b,dir);
+    b.animate(wave(dx,dy).reverse(),{duration:3400,easing:'linear'}).onfinish=()=>{b.style.cssText=host;b.classList.add('perch');el.append(b);sit()};return b};
   /* обложка: трое сидят на рамке и вспархивают, будто их спугнули */
   const cov=document.querySelector('.cover'),fr=cov&&cov.querySelector('.cv-frame');
   if(fr){const top=fr.getBoundingClientRect().top-cov.getBoundingClientRect().top+parseFloat(getComputedStyle(fr).borderTopWidth)+(parseFloat(getComputedStyle(fr,'::before').top)||0);
