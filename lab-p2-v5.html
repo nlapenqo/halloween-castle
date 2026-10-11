@@ -551,7 +551,8 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .pro-foot{display:flex;justify-content:center;--ring:var(--vermilion-soft)}
 .pro-foot .linkbtn{color:var(--paper)}
 .greet{max-width:600px}
-.greet .star-big{width:58px}
+.greet .greet-face{width:120px;height:120px;object-fit:contain}
+.greet .lead{text-align:center}
 
 /* звёзды на углах рамок медленно вращаются вокруг своей оси и чуть дышат (±15%), каждая в своём темпе */
 @keyframes fr-spin{to{rotate:360deg}}
@@ -773,7 +774,7 @@ footer a{display:inline-block;padding-block:11px}
       <div class="book-under" aria-hidden="true"></div>
       <div class="plate book" id="greet-book" aria-live="polite">
         <div class="book-fr" aria-hidden="true"><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg></div>
-        <img class="star-big" src="art/s-star.webp" alt="">
+        <img class="greet-face" id="greet-face" src="art/face-vampire.webp" alt="" width="240" height="240">
         <span class="label" id="greet-l"></span>
         <h2 id="greet-t" tabindex="-1"></h2>
         <p class="lead" id="greet-p"></p>
@@ -1283,9 +1284,9 @@ function turnToClans(){
 }
 function showGreet(code){
   const c=CLANS[code];greetCode=code;
-  $('#greet-l').textContent=c.gl;$('#greet-t').innerHTML=`${esc(ty(c.gt[0]))} <em class="acc">${esc(c.gt[1])}</em>`;$('#greet-p').textContent=c.gp;
+  $('#greet-l').textContent=c.gl;$('#greet-t').innerHTML=`${esc(ty(c.gt[0]))} <em class="acc">${esc(c.gt[1])}</em>`;$('#greet-p').textContent=c.gp;$('#greet-face').src=`art/face-${code.toLowerCase().replace('_','')}.webp`;
   pro.setAttribute('aria-labelledby','greet-t');showStage('greet');$('#greet-t').focus({preventScroll:true});
-  if(G){G.fromTo('#greet-book',{scale:.92,autoAlpha:0,rotation:-1.5},{scale:1,autoAlpha:1,rotation:0,duration:.8,ease:'back.out(1.6)'});G.fromTo('.greet .star-big',{rotation:-120,scale:.4},{rotation:0,scale:1,duration:1.1,ease:'elastic.out(1,.6)'})}
+  if(G){G.fromTo('#greet-book',{scale:.92,autoAlpha:0,rotation:-1.5},{scale:1,autoAlpha:1,rotation:0,duration:.8,ease:'back.out(1.6)'});G.fromTo('#greet-face',{y:16,scale:.6},{y:0,scale:1,duration:1.1,ease:'elastic.out(1,.6)'})}
 }
 /* приветствие показали до того, как пришла статистика, а клан закрыт балансом или местами — возвращаем к выбору клана */
 function checkGreet(){

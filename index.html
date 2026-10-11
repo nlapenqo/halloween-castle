@@ -290,6 +290,14 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 .feast .pan::-webkit-scrollbar{display:none}
 .feast img{width:100%;max-width:none;min-width:720px;-webkit-mask-image:linear-gradient(to bottom,#000 86%,transparent);mask-image:linear-gradient(to bottom,#000 86%,transparent)}
 .feast p{max-width:52ch;color:var(--paper-dim)}
+@media (max-width:1100px){.feast img{min-width:1240px}}
+@media (max-width:700px){.feast img{min-width:1060px}}
+/* ползунок под столом, когда картинка шире экрана: тянешь — стол едет */
+.pan-range{-webkit-appearance:none;appearance:none;justify-self:center;width:min(70%,420px);height:28px;margin:0;background:none;cursor:pointer}
+.pan-range::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:color-mix(in srgb,var(--paper) 25%,transparent)}
+.pan-range::-moz-range-track{height:4px;border-radius:2px;background:color-mix(in srgb,var(--paper) 25%,transparent)}
+.pan-range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-11px;border-radius:50%;background:var(--gold);border:var(--line) solid var(--night)}
+.pan-range::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--gold);border:var(--line) solid var(--night)}
 .bonfire{display:grid;justify-items:center;text-align:center;gap:clamp(18px,2.4vw,28px);margin-top:clamp(20px,3vw,40px)}
 .bonfire .head{margin-bottom:0}
 .bf-frame{width:min(100%,1100px)}
@@ -491,6 +499,7 @@ footer small{font-size:var(--fs-small);opacity:.7}
     <div class="feast">
       <div class="wrap inner"><h2>Королевская <em class="acc">трапеза</em></h2></div>
       <div class="pan"><img src="art/feast-clans.jpg" alt="Пир: жители замка и три клана, вампир, оборотень и тёмный эльф, за одним длинным столом с тыквами, свечами и кубками" width="1925" height="817" loading="lazy"></div>
+      <input class="pan-range" type="range" min="0" max="1000" value="500" aria-label="Прокрутить стол" hidden>
       <div class="wrap inner"><p class="small">Совместный ужин во дворе замка, когда игра закончится. Одна скатерть, все кланы, итоги дня и тосты. Трапеза по желанию: её отмечают при вступлении в клан.</p><p class="cta-row"><a class="btn btn-main" href="lab-p2-v5.html#dinner">Занять место за столом</a></p></div>
     </div>
 
@@ -680,7 +689,14 @@ document.querySelectorAll('.gcard').forEach(c=>c.addEventListener('click',e=>{if
 })();
 
 /* Трапеза на телефоне шире экрана и листается вбок: начинаем с середины стола */
-(()=>{const p=document.querySelector('.feast .pan');if(p&&p.scrollWidth>p.clientWidth)p.scrollLeft=(p.scrollWidth-p.clientWidth)/2})();
+/* трапеза: стол по центру; если картинка шире экрана — ползунок под ней прокручивает стол и сам следует за свайпом */
+(()=>{const p=document.querySelector('.feast .pan'),r=document.querySelector('.feast .pan-range');if(!p||!r)return;
+  const max=()=>p.scrollWidth-p.clientWidth;
+  const fit=()=>{const m=max();r.hidden=m<=4;if(m>4){p.scrollLeft=m*r.value/1000}};
+  r.addEventListener('input',()=>{p.scrollLeft=max()*r.value/1000});
+  p.addEventListener('scroll',()=>{const m=max();if(m>0)r.value=Math.round(p.scrollLeft/m*1000)},{passive:true});
+  const img=p.querySelector('img');img.complete?fit():img.addEventListener('load',fit,{once:true});
+  addEventListener('resize',fit)})();
 
 /* Костёр: видео играет только на экране; при reduced-motion — стоп-кадр */
 (()=>{const v=document.querySelector('.bf-v');if(!v)return;
