@@ -194,6 +194,9 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 .tilt3d{transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) rotate(var(--rz,0deg)) scale(var(--sc,1));transform-style:preserve-3d;transition:transform .6s var(--ease);will-change:transform}
 .tilt3d.on{transition:transform .12s ease-out}
 .tilt3d img{transform:translateZ(28px)}
+/* объёмный блик за курсором и светлый кант по краю — только пока карточку наклоняют */
+.tilt3d::after{content:"";position:absolute;inset:clamp(8px,1vw,14px);border-radius:var(--r-img);background:radial-gradient(circle at var(--mx,50%) var(--my,30%),rgba(255,244,220,.45),transparent 58%);box-shadow:inset 0 0 0 2px rgba(255,244,220,.55),inset 0 0 30px 4px rgba(255,244,220,.22);mix-blend-mode:soft-light;opacity:0;transition:opacity .5s;pointer-events:none;transform:translateZ(29px)}
+.tilt3d.on::after{opacity:1}
 @media (prefers-reduced-motion:reduce){.tilt3d,.tilt3d.on{transition:none}}
 .clan-cta{display:grid;gap:14px;justify-items:center;text-align:center;margin-top:clamp(44px,6vw,72px)}
 .clan-cta .small{max-width:46ch;opacity:.85}
