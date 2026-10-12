@@ -843,7 +843,7 @@ const CLANS={
 for(const c of Object.values(CLANS))for(const k of ['desc','gp'])c[k]=ty(c[k]);
 const CLAN_GEN={VAMPIRE:'вампиров',WEREWOLF:'оборотней',DARK_ELF:'тёмных эльфов'};
 const TARIFF_NAME={BRONZE:'Bronze',SILVER:'Silver',GOLD:'Gold'};
-const FALLBACK={target_idr:13600000,venue_cost_idr:8600000,operations_cost_idr:3500000,tea_cost_idr:1500000,collected_idr:0,tariffs:{bronze_idr:150000,silver_idr:300000,gold_min_idr:500000,dinner_idr:250000}};
+const FALLBACK={target_idr:12100000,venue_cost_idr:8600000,operations_cost_idr:3500000,tea_cost_idr:0,collected_idr:0,tariffs:{bronze_idr:150000,silver_idr:300000,gold_min_idr:500000,dinner_idr:250000}};
 
 /* ── хранилище ── */
 const LS={get:k=>{try{return localStorage.getItem(k)}catch{return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{}},del:k=>{try{localStorage.removeItem(k)}catch{}}};
@@ -875,7 +875,7 @@ async function req(path,body){
 
 /* тестовый режим ?mock=1: те же правила, что у сервера. ?seed=10,7,8 — столько подтверждённых оплат (сумма чисел), ?fresh=1 — сбросить браузер, ?mockfail=net — первая отправка падает по сети */
 function mockApi(){
-  const K='hc_mock_db',P={bronze:150000,silver:300000,gold:500000,dinner:250000,venue:8600000,ops:3500000,tea:1500000};
+  const K='hc_mock_db',P={bronze:150000,silver:300000,gold:500000,dinner:250000,venue:8600000,ops:3500000,tea:0};
   let db=null;try{db=JSON.parse(localStorage.getItem(K))}catch{}
   if(!db||!Array.isArray(db.apps))db={apps:[],seed:null};
   const save=()=>{try{localStorage.setItem(K,JSON.stringify(db))}catch{}};

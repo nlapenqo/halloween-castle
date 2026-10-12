@@ -296,6 +296,8 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 .bf-frame{width:min(100%,1100px)}
 .bf-v{display:block;width:100%;height:auto;aspect-ratio:1280/712;object-fit:cover;border-radius:var(--r-img);background:var(--night)}
 .bf-t{max-width:52ch}
+/* бал: свёрстан как костёр, идёт следом за ним */
+.ball{margin-top:clamp(60px,8vw,110px)}
 
 /* ── ход дня: полосы темнеют от солнца к луне ── */
 .day-sec{padding-top:clamp(32px,4vw,48px)}
@@ -472,6 +474,11 @@ footer small{font-size:var(--fs-small);opacity:.7}
       <div class="head"><h2>Вечер у <em class="acc">костра</em></h2></div>
       <figure class="frame bf-frame"><video class="bf-v" muted loop playsinline preload="none" data-poster="art/bonfire.webp" width="1280" height="712" aria-label="Костёр в джунглях: вампиры, тёмные эльфы, оборотни и чёрный заяц с гитарой жарят маршмеллоу"><source src="art/bonfire.webm" type="video/webm"><source src="art/bonfire.mp4" type="video/mp4"></video></figure>
       <p class="small bf-t">После заката разводим большой костёр и жарим маршмеллоу. Игра закончилась, начинается тёплый вечер, как в старых американских фильмах.</p>
+    </div>
+
+    <div class="wrap bonfire ball">
+      <div class="head"><h2>Бал полуночной <em class="acc">нечисти</em></h2></div>
+      <figure class="frame bf-frame"><picture class="av"><source type="image/avif" data-srcset="art/ball-1200.avif 1200w, art/ball-2000.avif 2000w" sizes="(max-width:1140px) 100vw, 1100px"><img data-src="art/ball-2000.webp" data-srcset="art/ball-1200.webp 1200w, art/ball-2000.webp 2000w" sizes="(max-width:1140px) 100vw, 1100px" alt="Ночью на круглой площадке у замка: вампир-DJ за резным пультом с черепами и свечами, вокруг костра танцуют оборотень, дама в маске, чёрный заяц, скелет-арлекин, гоблин и конь-скелет в лентах" width="2000" height="1116" loading="lazy"></picture></figure>
     </div>
   </section>
 
