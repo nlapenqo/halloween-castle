@@ -313,6 +313,9 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .mine-badge::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:var(--bw-sm) solid var(--ink);border-radius:var(--r-pill);filter:url(#rough-sm)}
 /* выбор клана — портретная картинка в раме, текст по центру, золотая кнопка, золотая рамка при наведении */
 .clans-pro .clan .frame img{aspect-ratio:900/1205;object-position:50% 50%}
+/* ноутбуки с низким окном (13", 1366×768): картинка ниже, кадрируется по центру, чтобы «Присоединиться» влезало в экран без прокрутки */
+@media (min-width:881px){.clans-pro .clan .frame img{max-height:max(200px,calc(100svh - 440px));object-position:50% 12%}}
+@media (min-width:881px) and (max-height:820px){[data-stage="clans"].pro-stage{padding-block:20px}.pro-clans{gap:20px}}
 .clans-pro .clan-body{align-items:center;text-align:center}
 .clans-pro .clan-d{max-width:34ch}
 .clans-pro .join{--btn-bg:var(--gold);padding-inline:30px}
