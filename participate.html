@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<!-- проверка скорости в Safari: ?fx=0 отключает «нарисованные» SVG-фильтры (неровные края плашек и рамок) -->
+<script>if(/[?&]fx=0\b/.test(location.search))document.documentElement.classList.add('nofx')</script>
+<style>.nofx *,.nofx *::before,.nofx *::after{filter:none!important}</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
