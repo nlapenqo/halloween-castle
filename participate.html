@@ -81,6 +81,11 @@ picture.av{display:contents}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 html.lock,html:has(dialog[open]){overflow:hidden}
+/* iOS Safari с полупрозрачными панелями: окно (100dvh) не заходит под панель адреса и нижнюю панель, и там просвечивала страница.
+   Пока открыто окно или выбор клана, страница под ними скрыта, а фон body того же цвета, что окно */
+html:has(dialog.sheet[open]) body>:not(dialog):not(svg){visibility:hidden}
+html.lock body{background:var(--night)}
+html.lock body>:not(.pro):not(dialog):not(svg){visibility:hidden}
 body{background:var(--paper);color:var(--ink);font:400 var(--fs-body)/1.55 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit}
