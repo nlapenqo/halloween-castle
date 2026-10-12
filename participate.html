@@ -801,7 +801,7 @@ footer a{display:inline-block;padding-block:11px}
       <h2 class="sheet-t" id="done-t" tabindex="-1"></h2>
       <p id="done-sum"></p>
       <p class="small" id="done-p"></p>
-      <button class="btn btn-main" type="button" data-close>В&nbsp;замок</button>
+      <a class="btn btn-main" id="done-bot" href="https://t.me/HalloweenCastleBaliBot" target="_blank" rel="noopener">Перейти в&nbsp;Telegram-бот</a>
     </div>
   </div>
 </dialog>
@@ -1173,7 +1173,7 @@ function openCheckout(tf){
 /* выбор клана для Gold: готовые карточки кланов → приветствие → обратно в форму */
 function pickClan(back){backTf=dlg.open&&TARIFF_NAME[back]&&back!=='GOLD'?back:null;if(dlg.open)dlg.close();reopenCo=true;openPro('clans',true)}
 function setPayState(busy){const b=$('#co-pay');b.disabled=busy;b.setAttribute('aria-busy',String(busy));b.textContent=busy?'Отправляем…':'Оплатить'}
-/* «Оплатить»: заявка сохраняется на сервере. Оплата — в Telegram-боте замка: переход в бота с id заявки подключим вместе с ботом.
+/* «Оплатить»: заявка сохраняется на сервере. Оплата — в Telegram-боте замка: «Перейти в Telegram-бот» открывает ссылку этой заявки (bot_url со start-токеном), новую заявку не создаёт.
    Казна растёт только после подтверждения оплаты, не по нажатию */
 async function submitApp(d){
   if(co.busy||applied)return;
@@ -1186,7 +1186,7 @@ async function submitApp(d){
   co.busy=false;setPayState(false);
   if(res&&res.stats)applyStats(res.stats);
   if(res&&res.ok){
-    applied={application_id:res.application_id,clan_code:res.clan_code||null,tariff_code:res.tariff_code||d.tariff,ticket_amount_idr:res.ticket_amount_idr,dinner_amount_idr:res.dinner_amount_idr,total_due_idr:res.total_due_idr,display_name:d.name};
+    applied={application_id:res.application_id,clan_code:res.clan_code||null,tariff_code:res.tariff_code||d.tariff,ticket_amount_idr:res.ticket_amount_idr,dinner_amount_idr:res.dinner_amount_idr,total_due_idr:res.total_due_idr,display_name:d.name,bot_url:res.bot_url||null};
     LS.set('hc_applied',JSON.stringify(applied));try{sessionStorage.removeItem(DRAFT)}catch{}LS.del('hc_req');LS.del('hc_gold_clan');myClan=null;
     renderAll();showDone();return;
   }
@@ -1201,6 +1201,7 @@ function showDone(){
   $('#done-t').innerHTML=a.clan_code?tyh(`Заявка принята, ты в клане <em class="acc">${esc(CLAN_GEN[a.clan_code])}</em>`):tyh(`Заявка <em class="acc">принята</em>`);
   $('#done-sum').textContent=ty(`Путь ${TARIFF_NAME[a.tariff_code]}: ${idr(a.ticket_amount_idr)}`+(a.dinner_amount_idr?` + трапеза ${idr(a.dinner_amount_idr)}`:'')+`. Итого: ${idr(a.total_due_idr)}.`);
   $('#done-p').textContent=ty('Оплата проходит в Telegram-боте замка. Взнос попадёт в казну, когда оплата будет подтверждена.');
+  $('#done-bot').href=/^https:\/\/t\.me\//.test(a.bot_url||'')?a.bot_url:'https://t.me/HalloweenCastleBaliBot';
   showStep('done');$('#done-t').focus();
   if(G)G.fromTo('.done img',{rotation:-140,scale:.3},{rotation:0,scale:1,duration:1.1,ease:'elastic.out(1,.6)'});
 }
