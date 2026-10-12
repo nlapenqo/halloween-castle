@@ -184,6 +184,11 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .bar-parts i{font-style:normal;opacity:.75;align-self:start}
 @media (max-width:520px){.bar-parts{font-size:var(--fs-micro)}.bar-parts>span{padding-inline:2px}}
 .stale{font-size:var(--fs-small);color:var(--vermilion);text-align:center}
+/* выбранный клан над карточками путей; без клана не показываем */
+.path-clan{display:flex;justify-content:center;margin:calc(-1 * clamp(12px,2vw,24px)) 0 clamp(30px,3.4vw,40px)}
+.path-clan p{position:relative;isolation:isolate;padding:10px 20px 9px;font:400 var(--fs-body)/1.2 var(--f-display)}
+.path-clan p::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:var(--bw-sm) solid var(--ink);border-radius:var(--r-pill);filter:url(#rough-sm)}
+.path-clan b{font-weight:400;color:var(--vermilion)}
 
 /* три карточки одинаковой высоты; клик по карточке = кнопка */
 .tcards{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.14fr) minmax(0,1fr);gap:clamp(18px,2.4vw,32px);align-items:stretch;max-width:1180px;margin-inline:auto;padding-top:14px}
@@ -391,10 +396,12 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .co-gold .err{color:var(--vermilion-soft)}
 .co-gold .perk-list{margin:0}
 .presets{display:flex;flex-wrap:wrap;gap:8px}
-/* сколько билетов в заявке: − / + (1–7), появляется после выбора пути */
+/* сколько билетов в заявке: − / + (1–10), появляется после выбора пути */
 .co-qty{--pl-bg:var(--paper-deep);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px}
 .co-qty .flabel{font:400 var(--fs-lead)/1.2 var(--f-display)}
 .co-qty .hint{flex-basis:100%;margin:0}
+.qty-full{flex-basis:100%;margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;font-size:var(--fs-small);line-height:1.45;color:var(--vermilion)}
+.qty-full[hidden]{display:none}
 .qty{display:flex;align-items:center;gap:10px}
 .qty-b{position:relative;isolation:isolate;width:48px;height:48px;padding:0;border:0;background:none;cursor:pointer;font:400 var(--fs-lead)/1 var(--f-display);color:var(--ink)}
 .qty-b::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:var(--bw-sm) solid var(--ink);border-radius:50%;filter:url(#rough-sm)}
@@ -583,6 +590,7 @@ footer a{display:inline-block;padding-block:11px}
         <div class="bar-parts" aria-hidden="true"><span>Аренда площадки<i data-k="venue-s">8&nbsp;600&nbsp;000&nbsp;IDR</i></span><span>Операционные расходы<i data-k="ops-s">5&nbsp;000&nbsp;000&nbsp;IDR</i></span></div>
         <p class="stale" data-stale hidden>Не&nbsp;удалось обновить данные</p>
       </div>
+      <div class="path-clan" id="path-clan" hidden><p>Клан: <b id="path-clan-n"></b></p></div>
       <div class="tcards">
         <div class="tw" data-rv><article class="plate tcard t-bronze tilt3d" data-tf="BRONZE" aria-labelledby="t-b">
           <span class="t-glow" aria-hidden="true"></span>
@@ -743,7 +751,8 @@ footer a{display:inline-block;padding-block:11px}
           <output id="qty-v" aria-live="polite">1</output>
           <button class="qty-b" type="button" data-qty="1" aria-label="Больше билетов">+</button>
         </div>
-        <p class="hint" id="qty-h">Одна заявка&nbsp;— одна общая оплата: ты и&nbsp;твои гости, все в&nbsp;одном клане, до&nbsp;7&nbsp;билетов</p>
+        <p class="qty-full" id="qty-full" role="status" hidden><span>Этот клан временно переполнен. Выберите другой клан.</span><button class="linkbtn" type="button" data-act="co-clan">Сменить клан</button></p>
+        <p class="hint" id="qty-h">Одна заявка&nbsp;— одна общая оплата: ты и&nbsp;твои гости, все в&nbsp;одном клане</p>
       </div>
       <div class="dn-wrap">
       <label class="dn-tog" id="dn-tog">
@@ -838,7 +847,7 @@ const FINE=matchMedia('(hover: hover) and (pointer: fine)').matches;
 let G=null,ST=null;
 
 /* ── данные кланов: клан выбирает каждый; равновесие решает сервер — после заявки разница между самым большим и самым маленьким кланом не больше 7 билетов ── */
-const IMB='Этот клан временно переполнен. Выберите другой клан, чтобы сохранить баланс сил в замке';
+const IMB='Этот клан временно переполнен. Выберите другой клан.';
 const CLAN_ORDER=['VAMPIRE','WEREWOLF','DARK_ELF'];
 const CLAN_ART={VAMPIRE:'art/clan-vampire-b-720.webp',WEREWOLF:'art/clan-werewolf-c-720.webp',DARK_ELF:'art/clan-darkelf-k-720.webp'};
 const CLAN_ART_FALLBACK={VAMPIRE:'art/nobles.jpg',WEREWOLF:'art/commoners.jpg',DARK_ELF:'art/crown.jpg'};
@@ -882,7 +891,7 @@ async function req(path,body){
 
 /* тестовый режим ?mock=1: те же правила, что у сервера. ?seed=10,7,8 — столько подтверждённых оплат (сумма чисел), ?fresh=1 — сбросить браузер, ?mockfail=net — первая отправка падает по сети */
 function mockApi(){
-  const K='hc_mock_db',P={bronze:150000,silver:300000,gold:500000,dinner:250000,venue:8600000,ops:3500000,tea:0,dinnerTarget:13600000},GAP=7,MAXQ=7;
+  const K='hc_mock_db',P={bronze:150000,silver:300000,gold:500000,dinner:250000,venue:8600000,ops:3500000,tea:0,dinnerTarget:13600000},GAP=7,MAXQ=10;
   let db=null;try{db=JSON.parse(localStorage.getItem(K))}catch{}
   if(!db||!Array.isArray(db.apps))db={apps:[],seed:null};
   const save=()=>{try{localStorage.setItem(K,JSON.stringify(db))}catch{}};
@@ -897,7 +906,7 @@ function mockApi(){
   const room=()=>{const n=counts(),r={};CLAN_ORDER.forEach(k=>{let q=0;while(q<MAXQ&&fits(n,k,q+1))q++;r[k]=q});return r};
   const stats=()=>{const target=P.venue+P.ops+P.tea,ok=db.apps.filter(a=>a.payment_status==='CONFIRMED'),c=ok.reduce((s,a)=>s+a.ticket_amount_idr,0),r=room();
     return {target_idr:target,venue_cost_idr:P.venue,operations_cost_idr:P.ops,tea_cost_idr:P.tea,collected_idr:c,remaining_to_target_idr:Math.max(0,target-c),over_target_idr:Math.max(0,c-target),progress_percent:Math.min(100,c/target*100),refund_deadline:'2026-10-20',
-      closed_clans:CLAN_ORDER.filter(k=>r[k]===0),clan_room:r,max_tickets:MAXQ,dinner_target_idr:P.dinnerTarget,dinner_collected_idr:ok.reduce((s,a)=>s+(a.dinner_amount_idr||0),0),
+      closed_clans:CLAN_ORDER.filter(k=>r[k]===0),clan_room:r,max_tickets:MAXQ,clan_confirmed:Object.fromEntries(CLAN_ORDER.map(k=>[k,ok.filter(a=>a.clan_code===k).reduce((x,a)=>x+(a.ticket_quantity||1),0)])),dinner_target_idr:P.dinnerTarget,dinner_collected_idr:ok.reduce((s,a)=>s+(a.dinner_amount_idr||0),0),
       tariffs:{bronze_idr:P.bronze,silver_idr:P.silver,gold_min_idr:P.gold,dinner_idr:P.dinner}}};
   const pub=a=>({application_id:a.application_id,clan_code:a.clan_code,tariff_code:a.tariff_code,ticket_quantity:a.ticket_quantity,ticket_unit_price_idr:a.ticket_unit_price_idr,ticket_amount_idr:a.ticket_amount_idr,
     dinner_selected:a.dinner_selected,dinner_quantity:a.dinner_quantity,dinner_unit_price_idr:a.dinner_unit_price_idr,dinner_amount_idr:a.dinner_amount_idr,total_due_idr:a.total_due_idr});
@@ -970,8 +979,8 @@ $$('[data-clans]').forEach(box=>CLAN_ORDER.forEach(c=>box.append(buildClan(c))))
 
 /* закрытые кланы приходят с сервера в /api/stats (без счётчиков) */
 const isClosed=code=>!!code&&(S().closed_clans||[]).includes(code);
-/* сколько билетов одной заявкой сейчас можно взять в клан (сервер считает по равновесию; без сервера — 7) */
-const MAXQ=()=>S().max_tickets||7;
+/* сколько билетов одной заявкой сейчас можно взять в клан (сервер считает по равновесию; без сервера — 10) */
+const MAXQ=()=>S().max_tickets||10;
 const roomOf=code=>{const r=S().clan_room;return r&&code&&r[code]!=null?Math.min(r[code],MAXQ()):MAXQ()};
 const shutMsg=()=>IMB;
 function renderClans(){
@@ -981,6 +990,7 @@ function renderClans(){
     f('mine').hidden=!mine;f('join').hidden=mine||shut;f('shut').hidden=!shut;
   });
   $('#pro-keep').hidden=!myClan;
+  $('#path-clan').hidden=!myClan;$('#path-clan-n').textContent=myClan?CLANS[myClan].name:'';
 }
 
 
@@ -1022,7 +1032,6 @@ const plural=(n,a,b,c)=>{const m=n%100,k=n%10;return m>10&&m<20?c:k===1?a:k>1&&k
 const tickets=n=>`${n}${NB}${plural(n,'билет','билета','билетов')}`;
 const guests=n=>`${n}${NB}${plural(n,'гость','гостя','гостей')}`;
 /* после «до», «не больше»: 1 билета, 3 билетов */
-const ticketsGen=n=>`${n}${NB}${plural(n,'билета','билетов','билетов')}`;
 const goldInp=$('#gold-amt');
 /* одно правило для всех процентов: округление до 0,1; не показываем 0% при ненулевой сумме и 100% до цели */
 const pct1=x=>{let v=Math.round(x*10)/10;if(x>0&&v===0)return '<0,1%';if(x<100&&v>=100)v=99.9;return String(v).replace('.',',')+'%'};
@@ -1044,15 +1053,15 @@ function renderGhost(){
 const DRAFT='hc_draft';
 function saveDraft(){try{sessionStorage.setItem(DRAFT,JSON.stringify({tariff:sel.tariff,dinner:sel.dinner,qty:sel.qty,gold:el.f_gold.value,name:el.f_name.value,tg:el.f_tg.value}))}catch{}}
 function loadDraft(){let d=null;try{d=JSON.parse(sessionStorage.getItem(DRAFT)||'null')}catch{}if(!d)return;
-  if(TARIFF_NAME[d.tariff])sel.tariff=d.tariff;sel.dinner=!!d.dinner;if(Number.isInteger(d.qty)&&d.qty>=1&&d.qty<=7)sel.qty=d.qty;['gold','name','tg'].forEach(k=>{if(typeof d[k]==='string')el['f_'+k].value=d[k]});if(d.gold)el.f_gold.dataset.touched='1'}
+  if(TARIFF_NAME[d.tariff])sel.tariff=d.tariff;sel.dinner=!!d.dinner;if(Number.isInteger(d.qty)&&d.qty>=1&&d.qty<=10)sel.qty=d.qty;['gold','name','tg'].forEach(k=>{if(typeof d[k]==='string')el['f_'+k].value=d[k]});if(d.gold)el.f_gold.dataset.touched='1'}
 function renderCo(){
-  /* сколько билетов: 1…7, но не больше, чем сейчас примет клан (равновесие); счётчик — после выбора пути */
+  /* сколько билетов: 1…10, но не больше, чем сейчас примет клан (равновесие); упёрлись в равновесие — «клан временно переполнен», без чисел */
   const room=myClan&&!isClosed(myClan)?roomOf(myClan):MAXQ();
   if(sel.qty>room)sel.qty=Math.max(1,room);
   const s=S(),t=s.tariffs,tf=sel.tariff,din=sel.dinner,qty=sel.qty,unit=ticketFor(tf),ticket=unit!=null?unit*qty:null,tgt=s.target_idr||1;
   $('#co-qty').hidden=!tf;$('#qty-v').textContent=qty;
   $('[data-qty="-1"]',form).disabled=qty<=1;$('[data-qty="1"]',form).disabled=qty>=room;
-  $('#qty-h').textContent=ty(room<MAXQ()&&myClan?`Одна заявка — одна общая оплата. В клан «${CLANS[myClan].name}» сейчас можно взять не больше ${ticketsGen(room)}: кланы держим в равновесии`:`Одна заявка — одна общая оплата: ты и твои гости, все в одном клане, до ${ticketsGen(MAXQ())}`);
+  $('#qty-full').hidden=!(myClan&&room>0&&room<MAXQ()&&qty>=room);
   $$('input[name="tariff"]',form).forEach(i=>i.checked=i.value===tf);
   $('#co-pick').hidden=!!tf;
   $$('[data-inc]',form).forEach(x=>{const on=x.dataset.inc===tf;if(on&&x.hidden&&!RM){x.classList.remove('fade');void x.offsetWidth;x.classList.add('fade')}x.hidden=!on});
@@ -1160,7 +1169,7 @@ pro.addEventListener('keydown',e=>{if(e.key==='Escape'&&proDismiss&&!pro.hidden)
 function greetShut(){
   if(!greetCode||pro.hidden||applied||!isClosed(greetCode))return;
   const code=greetCode;greetCode=null;myClan=null;LS.del('hc_clan');renderAll();
-  const n=$('#pro-note');n.textContent=ty(`Клан «${CLANS[code].name}» временно переполнен. Выберите другой клан, чтобы сохранить баланс сил в замке`);n.hidden=false;
+  const n=$('#pro-note');n.textContent=ty(`Клан «${CLANS[code].name}» временно переполнен. Выберите другой клан.`);n.hidden=false;
   pro.setAttribute('aria-labelledby','pro-t2');showStage('clans');$('#pro-t2').focus({preventScroll:true});
 }
 
@@ -1291,7 +1300,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.join){chooseClan(t.dataset.join);return}
   if(t.dataset.pick){openCheckout(t.dataset.pick);return}
   if(t.id==='join-go'){openCheckout(null);return}
-  if(t.dataset.qty){sel.qty=Math.min(7,Math.max(1,sel.qty+Number(t.dataset.qty)));renderCo();return}
+  if(t.dataset.qty){sel.qty=Math.min(MAXQ(),Math.max(1,sel.qty+Number(t.dataset.qty)));renderCo();return}
   if(t.classList.contains('preset')){goldInp.value=fmt(Number(t.dataset.amt));goldInp.dataset.touched='1';setErr('gold','');checkGold();renderCo();return}
   if('close' in t.dataset){dlg.close();return}
   if(t.dataset.act==='co-clan'){pickClan();return}
