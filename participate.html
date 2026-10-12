@@ -10,8 +10,6 @@
 <link rel="icon" href="art/s-pumpkin-64.webp" type="image/webp">
 <style>body{margin:0}[hidden]{display:none!important}</style>
 <title>Вступить в игру, Halloween · Lost Castle</title>
-<!-- большую картинку пролога увидит только новый гость: ему начинаем грузить её сразу, остальным она не нужна (у img loading="lazy") -->
-<script>try{if(!localStorage.getItem('hc_seen')&&!localStorage.getItem('hc_applied')){const m=matchMedia('(max-width:880px), (max-aspect-ratio:1/1)').matches,l=document.createElement('link');l.rel='preload';l.as='image';l.type='image/avif';l.fetchPriority='high';l.href='art/prologue'+(m?'-m':'')+'.avif';document.head.append(l)}}catch{}</script>
 <!-- шрифты со своего сервера: только кириллица и латиница, без лишних соединений -->
 <link rel="preload" href="fonts/kurale-cyr.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/alice-cyr.woff2" as="font" type="font/woff2" crossorigin>
@@ -26,7 +24,7 @@
 picture.av{display:contents}
 </style>
 <style>
-/* Страница участия: пролог и выбор клана → «ты в клане, а теперь вклад» → казна, одна шкала и три пути → трапеза → большая кнопка с гарантией → кланы. Окно оформления на весь экран */
+/* Страница участия: казна, одна шкала и три пути → трапеза → большая кнопка с гарантией. Gold: выбор клана → приветствие → окно оформления на весь экран */
 :root{
   /* цвета */
   --paper:#F2E0C0;
@@ -108,7 +106,6 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .small{font-size:var(--fs-small);line-height:1.5}
 .head{display:grid;gap:16px;justify-items:center;text-align:center;margin-bottom:clamp(20px,2.6vw,32px)}
 .head .lead{opacity:.85;text-wrap:balance}
-.drop::first-letter{float:left;font:400 4.2em/.82 var(--f-display);color:var(--vermilion);padding:.08em .1em 0 0}
 
 /* ── неровные плашки, рамки, кнопки ── */
 .plate{position:relative;isolation:isolate;padding:clamp(20px,2.4vw,28px)}
@@ -123,7 +120,7 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .btn-big{min-height:68px;padding:18px clamp(34px,4vw,52px);font-size:var(--fs-h3)}
 .btn[disabled]{cursor:not-allowed;opacity:.5}
 .btn.is-blocked{opacity:.6}
-/* круглый крестик окна и пролога */
+/* круглый крестик окна и выбора клана */
 .sheet-x,.pro-x{position:fixed;z-index:3;top:max(12px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right));width:50px;height:50px;display:grid;place-items:center;border:0;background:none;cursor:pointer;font:400 var(--fs-h3)/1 var(--f-display);color:var(--ink);isolation:isolate}
 .sheet-x::before,.pro-x::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:var(--bw) solid var(--ink);border-radius:var(--r-round);filter:url(#rough)}
 /* единый отклик «живых» кнопок: лёгкий поворот и рост, только мышью */
@@ -181,11 +178,15 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .stale{font-size:var(--fs-small);color:var(--vermilion);text-align:center}
 
 /* три карточки одинаковой высоты; клик по карточке = кнопка */
-.tcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,32px);align-items:stretch;max-width:1180px;margin-inline:auto;padding-top:14px}
+.tcards{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.14fr) minmax(0,1fr);gap:clamp(18px,2.4vw,32px);align-items:stretch;max-width:1180px;margin-inline:auto;padding-top:14px}
 .tw{display:grid;min-width:0}
 .tcard{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:clamp(26px,2.8vw,36px) clamp(20px,2.4vw,30px) clamp(24px,2.6vw,32px);cursor:pointer;color:var(--ink)}
 .t-bronze{--pl-bg:var(--paper)}
 .t-silver::before{border-radius:34px 24px 38px 22px/24px 36px 22px 34px}
+/* Silver — основной путь: колонка шире, карточка выступает над соседями сверху и снизу, иконка и цена крупнее */
+.t-silver{margin-block:-20px}
+.t-silver .t-ic{width:clamp(104px,9.6vw,136px)}
+.t-silver .t-price{font-size:calc(var(--fs-h3) * 1.5)}
 .t-ic{width:clamp(92px,8.4vw,118px);height:auto;margin-top:-4px}
 .t-name{line-height:1.1}
 .t-price{font:400 calc(var(--fs-h3) * 1.3)/1 var(--f-display);white-space:nowrap;font-variant-numeric:lining-nums}
@@ -244,6 +245,7 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 @media (max-width:880px){
   .tcards{grid-template-columns:minmax(0,1fr);max-width:520px;gap:22px}
   .t-gold{--ty0:0px;margin-block:6px}
+  .t-silver{margin-block:0}
   .t-txt,.perks{max-width:40ch}
 }
 
@@ -404,6 +406,9 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .dn-tog-t{display:grid;gap:4px}
 .dn-tog-t b{font:400 var(--fs-lead)/1.25 var(--f-display);font-variant-numeric:lining-nums}
 .dn-tog-t>span{font-size:var(--fs-small);line-height:1.4;opacity:.85}
+/* подсказка про меню: пока трапеза не отмечена */
+.dn-tog-t>.dn-hint{color:var(--vermilion);opacity:1}
+.dn-tog:has(input:checked) .dn-hint{display:none}
 .dn-mark{position:relative;width:34px;height:34px;display:grid;place-items:center;isolation:isolate}
 .dn-mark::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:var(--bw-sm) solid var(--ink);border-radius:8px 6px 9px 5px/6px 9px 5px 8px;filter:url(#rough-sm)}
 .dn-mark::after{content:"";width:9px;height:16px;border:solid var(--paper);border-width:0 3px 3px 0;transform:translateY(-2px) rotate(45deg);opacity:0}
@@ -458,51 +463,10 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .done .sheet-t{padding-right:0}
 .done p{max-width:44ch}
 
-/* ── пролог и выбор клана ── */
+/* ── выбор клана для Gold ── */
 .pro{position:fixed;inset:0;z-index:50;overflow-y:auto;overscroll-behavior:contain;background:var(--night) var(--stars);background-size:420px;color:var(--paper)}
 .pro-sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
-/* без картинки пролога: бумажная страница-плашка; с картинкой: текст прямо на страницах разворота */
-.spread{position:relative;display:grid;place-items:center;width:100%}
-.spread-img{display:none}
-.pg{display:grid;gap:clamp(18px,2.4vw,26px);justify-items:center}
-.pro.has-bg .spread-img{display:block}
-.pro.has-bg .spread .book-under,.pro.has-bg .spread .book-fr,.pro.has-bg .orn,.pro.has-bg .pro-deco{display:none}
-.pro.has-bg .spread .book{background:none;padding:0}
-.pro.has-bg .spread .book::before{display:none}
-/* размеры текста на развороте привязаны к ширине картинки (cqw): текст должен лечь на страницы книги */
-@media (min-width:881px) and (min-aspect-ratio:1/1){
-  .pro.has-bg [data-stage="intro"]{padding:clamp(16px,4svh,40px) clamp(16px,2vw,32px)}
-  .pro.has-bg .spread{width:min(100%,2200px,calc((100svh - 2 * clamp(16px,4svh,40px)) * 2200 / 1228));container-type:inline-size;display:block}
-  .pro.has-bg .spread-img img{width:100%;border-radius:6px}
-  .pro.has-bg .spread .book-wrap{position:absolute;inset:0;width:auto;perspective:none}
-  .pro.has-bg .spread .book{position:absolute;inset:0;display:block}
-  .pro.has-bg .pg{position:absolute;top:13%;height:58%;align-content:center;gap:2.2cqw}
-  .pro.has-bg .pg-l{left:19.5%;width:27.5%}
-  .pro.has-bg .pg-r{left:53.5%;width:29%;justify-items:start}
-  .pro.has-bg .spread .book h2{font-size:clamp(26px,3.25cqw,58px)}
-  .pro.has-bg .spread .book .lead{font-size:clamp(15px,1.42cqw,24px);line-height:1.5;max-width:none}
-}
-@media (max-width:880px),(max-aspect-ratio:1/1){
-  .pro.has-bg .spread-img{position:fixed;inset:0;z-index:-1}
-  .pro.has-bg .spread-img img{width:100%;height:100%;object-fit:cover}
-  .pro.has-bg .spread{position:static;z-index:0}
-  .pro.has-bg [data-stage="intro"]{isolation:isolate}
-  /* пустое поле страницы смещено вправо от центра: слева замок, справа папоротник */
-  .pro.has-bg .spread .book-wrap{width:min(calc(max(100vw, 75svh) * .4), calc(100vw - 40px));transform:translateX(min(calc(max(100vw, 75svh) * .045), 30px));margin-top:-1svh}
-  .pro.has-bg .spread .book{gap:16px;padding:26px 22px 24px}
-  .pro.has-bg .spread .book h2{font-size:clamp(25px,7vw,38px)}
-  .pro.has-bg .spread .book .lead{font-size:clamp(16px,4.3vw,19px);line-height:1.48}
-  .pro.has-bg .pg{gap:16px}
-  /* на телефоне текст лежит на бумажной плашке, чтобы не спорить с иллюстрацией */
-  .pro.has-bg .spread .book::before{display:block;--pl-bg:var(--paper);--pl-line:var(--gold)}
-}
 .pro-stage{position:relative;z-index:1;min-height:100svh;display:grid;place-items:center;padding:clamp(28px,6vh,72px) var(--gutter)}
-.pro-deco{position:absolute;pointer-events:none;width:clamp(60px,8vw,120px)}
-.pro-deco.k1{left:6%;top:10%}
-.pro-deco.k2{right:7%;top:16%;width:clamp(70px,9vw,140px)}
-.pro-deco.k3{left:9%;bottom:9%;width:clamp(50px,6vw,90px)}
-.pro-deco.k4{right:10%;bottom:8%;width:clamp(50px,6vw,90px)}
-@media (max-width:700px){.pro-deco.k1{left:4%;top:3%;width:52px}.pro-deco.k2{right:4%;top:2%;width:60px}.pro-deco.k3,.pro-deco.k4{display:none}}
 .book-wrap{position:relative;width:min(100%,660px);perspective:1800px}
 .book-under{position:absolute;inset:12px -10px -12px 10px;background:var(--paper-deep);border:var(--bw) solid var(--ink);border-radius:var(--r-plate);filter:url(#rough);transform:rotate(2.2deg)}
 .book{--pl-bg:var(--paper);color:var(--ink);text-align:center;display:grid;gap:clamp(18px,2.4vw,26px);justify-items:center;padding:clamp(52px,7vw,84px) clamp(30px,6vw,72px) clamp(44px,6vw,68px);transform-origin:0 50%}
@@ -609,7 +573,7 @@ footer a{display:inline-block;padding-block:11px}
           <i class="bar-split" aria-hidden="true"></i>
           <img class="bar-star" src="art/star.png" alt="">
         </div>
-        <div class="bar-parts" aria-hidden="true"><span>Аренда площадки<i data-k="venue-s">8&nbsp;600&nbsp;000&nbsp;IDR</i></span><span>Операционные расходы<i data-k="ops-s">3&nbsp;500&nbsp;000&nbsp;IDR</i></span></div>
+        <div class="bar-parts" aria-hidden="true"><span>Аренда площадки<i data-k="venue-s">8&nbsp;600&nbsp;000&nbsp;IDR</i></span><span>Операционные расходы<i data-k="ops-s">5&nbsp;000&nbsp;000&nbsp;IDR</i></span></div>
         <p class="stale" data-stale hidden>Не&nbsp;удалось обновить данные</p>
       </div>
       <div class="tcards">
@@ -679,8 +643,7 @@ footer a{display:inline-block;padding-block:11px}
         <summary>Куда идут монеты</summary>
         <dl class="lines">
           <div><dt>Аренда площадки</dt><i aria-hidden="true"></i><dd data-k="venue">8&nbsp;600&nbsp;000&nbsp;IDR</dd></div>
-          <div><dt>Операционные расходы</dt><i aria-hidden="true"></i><dd data-k="ops">3&nbsp;500&nbsp;000&nbsp;IDR</dd></div>
-          <div><dt>Чайная церемония и&nbsp;закупка чая</dt><i aria-hidden="true"></i><dd data-k="tea">1&nbsp;500&nbsp;000&nbsp;IDR</dd></div>
+          <div><dt>Операционные расходы</dt><i aria-hidden="true"></i><dd data-k="ops">5&nbsp;000&nbsp;000&nbsp;IDR</dd></div>
           <div class="sum"><dt>Цель казны</dt><i aria-hidden="true"></i><dd data-k="target">13&nbsp;600&nbsp;000&nbsp;IDR</dd></div>
         </dl>
       </details>
@@ -694,37 +657,10 @@ footer a{display:inline-block;padding-block:11px}
   <small>Bale Tudor, Bongkasa Pertiwi, Bali, <a href="./">к&nbsp;истории замка</a></small>
 </footer>
 
-<!-- пролог; выбор клана и приветствие клана — только для Gold -->
-<div class="pro" id="pro" role="dialog" aria-modal="true" aria-labelledby="pro-t" hidden>
+<!-- выбор клана и приветствие клана — только для Gold -->
+<div class="pro" id="pro" role="dialog" aria-modal="true" aria-labelledby="pro-t2" hidden>
   <canvas class="pro-sky" aria-hidden="true"></canvas>
   <button class="pro-x" type="button" data-act="pro-close" aria-label="Закрыть" hidden>×</button>
-
-  <div class="pro-stage" data-stage="intro" hidden>
-    <img loading="lazy" class="pro-deco k1 float" data-src="art/s-crow.webp" alt="">
-    <img class="pro-deco k2 float" src="art/s-pumpkin-64.webp" alt="">
-    <img loading="lazy" class="pro-deco k3 float" data-src="art/s-candle.webp" alt="">
-    <img loading="lazy" class="pro-deco k4 float" data-src="art/s-star.webp" alt="">
-    <div class="spread" id="spread">
-      <picture class="spread-img" id="pro-bg">
-        <source type="image/avif" media="(max-width:880px), (max-aspect-ratio:1/1)" srcset="art/prologue-m.avif" width="1200" height="1600"><source media="(max-width:880px), (max-aspect-ratio:1/1)" srcset="art/prologue-m.webp" width="1200" height="1600">
-        <source type="image/avif" srcset="art/prologue.avif"><img src="art/prologue.webp" alt="" id="pro-bg-img" width="2200" height="1228" fetchpriority="high" loading="lazy">
-      </picture>
-      <div class="book-wrap">
-        <div class="book-under" aria-hidden="true"></div>
-        <div class="plate book" id="book">
-          <div class="book-fr" aria-hidden="true"><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg><svg><use href="#st"/></svg></div>
-          <div class="pg pg-l">
-            <picture class="av"><source type="image/avif" data-srcset="art/ornament-1100.avif"><img class="orn" loading="lazy" data-src="art/ornament-1100.webp" alt="" width="1100" height="267"></picture>
-            <h2 id="pro-t" tabindex="-1">Странник, замок зовёт тебя в&nbsp;<em class="acc">игру</em></h2>
-          </div>
-          <div class="pg pg-r">
-            <p class="lead drop">Впереди ночь испытаний, тайн и&nbsp;великих союзов. Но&nbsp;прежде, чем переступить порог, выбери свой путь.</p>
-            <button class="btn btn-main" type="button" data-act="pro-next">Вступить в&nbsp;игру</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="pro-stage on-dark" data-stage="clans" hidden>
     <div class="pro-clans">
@@ -799,7 +735,7 @@ footer a{display:inline-block;padding-block:11px}
       <label class="dn-tog" id="dn-tog">
         <input type="checkbox" id="f-dinner" name="f_dinner">
         <span class="dn-ic" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><filter id="dn-stk" x="-20%" y="-20%" width="140%" height="140%"><feMorphology in="SourceAlpha" operator="dilate" radius="3.2" result="d"/><feFlood flood-color="#FBF4E6"/><feComposite in2="d" operator="in" result="w"/><feMerge><feMergeNode in="w"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g filter="url(#dn-stk)" stroke="#1E111B" stroke-width="2.4" stroke-linejoin="round"><g class="dn-fork"><rect x="46" y="46" width="8" height="46" rx="4" fill="#7A3E2A"/><rect x="45.3" y="49" width="9.4" height="5" rx="2" fill="#D9AE52"/><rect x="47.6" y="36" width="4.8" height="12" fill="#E4DED2"/><path d="M39.5 22h21v5c0 7-4.5 10.5-10.5 10.5S39.5 34 39.5 27Z" fill="#E4DED2"/><rect x="39.5" y="6" width="3.6" height="19" rx="1.8" fill="#E4DED2"/><rect x="45.3" y="6" width="3.6" height="19" rx="1.8" fill="#E4DED2"/><rect x="51.1" y="6" width="3.6" height="19" rx="1.8" fill="#E4DED2"/><rect x="56.9" y="6" width="3.6" height="19" rx="1.8" fill="#E4DED2"/></g><g class="dn-spoon"><rect x="46" y="46" width="8" height="46" rx="4" fill="#7A3E2A"/><rect x="45.3" y="49" width="9.4" height="5" rx="2" fill="#D9AE52"/><rect x="47.6" y="33" width="4.8" height="15" fill="#E4DED2"/><ellipse cx="50" cy="21" rx="10.5" ry="14" fill="#E4DED2"/><ellipse cx="46.3" cy="17" rx="3" ry="6" fill="#fff" stroke="none" opacity=".75"/></g></g><path class="dn-spark" d="M50 40 51.6 48.4 58 46 53.6 50 58 54 51.6 51.6 50 60 48.4 51.6 42 54 46.4 50 42 46 48.4 48.4Z" fill="#D9AE52" stroke="#1E111B" stroke-width="1.2" stroke-linejoin="round"/></svg></span>
-        <span class="dn-tog-t"><b>Добавить королевскую трапезу, <span data-price="dinner">250&nbsp;000</span>&nbsp;IDR</b><span>18:30, двор замка: все кланы за&nbsp;одним длинным столом</span></span>
+        <span class="dn-tog-t"><b>Добавить королевскую трапезу, <span data-price="dinner">250&nbsp;000</span>&nbsp;IDR</b><span>18:30, двор замка: все кланы за&nbsp;одним длинным столом</span><span class="dn-hint">Нажми на&nbsp;галочку, чтобы увидеть меню</span></span>
         <span class="dn-mark" aria-hidden="true"></span>
       </label>
       <div class="dn-slot" id="dn-slot"><div class="dn-slot-in">
@@ -962,10 +898,9 @@ function mockApi(){
   return {stats:async()=>{await wait(150);return JSON.parse(JSON.stringify(stats()))},
     apply:async p=>{await wait(650);if(netFail){netFail=false;throw new TypeError('Failed to fetch')}return JSON.parse(JSON.stringify(apply(p)))}};
 }
-if((MOCK||LOCAL)&&qs.get('fresh')==='1'){['hc_gold_clan','hc_applied','hc_req','hc_req_key','hc_seen','hc_mock_db'].forEach(LS.del);try{sessionStorage.removeItem('hc_draft')}catch{}qs.delete('fresh');history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:'')+location.hash)}
+if((MOCK||LOCAL)&&qs.get('fresh')==='1'){['hc_gold_clan','hc_applied','hc_req','hc_req_key','hc_mock_db'].forEach(LS.del);try{sessionStorage.removeItem('hc_draft')}catch{}qs.delete('fresh');history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:'')+location.hash)}
 /* старые ссылки с главной (?clan=CODE) — клан больше не выбирают заранее, просто убираем параметр */
 if(qs.has('clan')){qs.delete('clan');history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:'')+location.hash)}
-if(MOCK&&qs.get('demo'))LS.set('hc_seen','1');
 const api=MOCK?mockApi():{stats:()=>req('/api/stats'),apply:b=>req('/api/apply',b)};
 if(MOCK){const b=document.createElement('div');b.className='mockbadge';b.textContent=ty('Демо: заявки пока не сохраняются');document.body.append(b)}
 
@@ -1029,8 +964,10 @@ const MOODS=[[100,'Казна наполнена!'],[75,'Ещё немного �
 function renderTreasury(){
   const s=S(),tgt=s.target_idr,k=n=>$$(`[data-k="${n}"]`);
   const put=(n,v)=>k(n).forEach(e=>e.textContent=idr(v));
-  put('venue',s.venue_cost_idr);put('ops',s.operations_cost_idr);put('tea',s.tea_cost_idr);put('target',tgt);
-  put('venue-s',s.venue_cost_idr);put('ops-s',s.operations_cost_idr);put('target-of',tgt);
+  /* на сайте чайная церемония входит в операционные расходы; в админке это две настройки */
+  const ops=s.operations_cost_idr+(s.tea_cost_idr||0);
+  put('venue',s.venue_cost_idr);put('ops',ops);put('target',tgt);
+  put('venue-s',s.venue_cost_idr);put('ops-s',ops);put('target-of',tgt);
   if(tgt>0)$('.purse').style.setProperty('--split',(s.venue_cost_idr/tgt*100).toFixed(2));
   const d=s.collected_idr||0;
   if(!stats||!meterSeen){renderGhost();return}
@@ -1102,7 +1039,7 @@ async function refresh(){
   catch(e){setStale(true)}
 }
 
-/* ── пролог (книга) и выбор клана для Gold ── */
+/* ── выбор клана для Gold ── */
 const pro=$('#pro');let proDismiss=false,motionReady=false,greetCode=null;
 const outside=()=>[$('main'),$('header.top'),$('footer')];
 function showStage(name){$$('.pro-stage',pro).forEach(s=>s.hidden=s.dataset.stage!==name);pro.scrollTop=0}
@@ -1135,21 +1072,21 @@ function openPro(stage,dismissable){
   pro.hidden=false;document.documentElement.classList.add('lock');outside().forEach(e=>e.inert=true);
   if(!proSky)proSky=starSky($('.pro-sky'));proSky.start();
   showStage(stage);renderClans();if(proDismiss)navOpen('pro',()=>{if(!pro.hidden)closePro()});
-  pro.setAttribute('aria-labelledby',stage==='intro'?'pro-t':'pro-t2');
-  if(G){G.fromTo(pro,{autoAlpha:0},{autoAlpha:1,duration:.5});floats(true)
+  pro.setAttribute('aria-labelledby','pro-t2');
+  if(G){G.fromTo(pro,{autoAlpha:0},{autoAlpha:1,duration:.5})
     if(stage==='clans'){G.from('.pro-clans .head',{y:24,autoAlpha:0,duration:.6,ease:'power2.out'});G.from('.clans-pro .cw',{y:46,autoAlpha:0,rotation:(i)=>[-2,1.5,-1][i],duration:.8,stagger:.12,ease:'power3.out',delay:.15})}}
   /* фокус на заголовок, а не на кнопку: на телефоне не вспыхивает рамка фокуса при входе */
-  requestAnimationFrame(()=>$(stage==='intro'?'#pro-t':'#pro-t2').focus({preventScroll:true}));
+  requestAnimationFrame(()=>$('#pro-t2').focus({preventScroll:true}));
 }
 function closePro(){
   greetCode=null;navClose('pro');
-  const done=()=>{pro.hidden=true;proSky&&proSky.stop();floats(false);document.documentElement.classList.remove('lock');outside().forEach(e=>e.inert=false);initMotion();
+  const done=()=>{pro.hidden=true;proSky&&proSky.stop();document.documentElement.classList.remove('lock');outside().forEach(e=>e.inert=false);initMotion();
     /* Gold: клан выбран — возвращаемся в форму */
     if(reopenCo){reopenCo=false;const b=backTf;backTf=null;
       if(myClan){requestAnimationFrame(()=>openCheckout('GOLD'));return}
       /* закрыли выбор клана, не выбрав, — форма возвращается с прежним путём */
       if(b){requestAnimationFrame(()=>openCheckout(b));return}}
-    /* пришли по якорю (#dinner с главной) — после пролога едем к нему; иначе фокус туда, откуда открыли, или на заголовок */
+    /* фокус на якорь из адреса, туда, откуда открыли, или на заголовок */
     const h=location.hash&&document.getElementById(location.hash.slice(1));
     const back=proOpener&&proOpener!==document.body&&proOpener.isConnected&&proOpener.getClientRects().length&&!pro.contains(proOpener)?proOpener:null;
     const t=h||back||$('#pt-t');if(t===h)h.setAttribute('tabindex','-1');t.focus({preventScroll:true});
@@ -1167,10 +1104,6 @@ function showGreet(code){
   pro.setAttribute('aria-labelledby','greet-t');showStage('greet');$('#greet-t').focus({preventScroll:true});
   if(G){G.fromTo('#greet-book',{scale:.92,autoAlpha:0,rotation:-1.5},{scale:1,autoAlpha:1,rotation:0,duration:.8,ease:'back.out(1.6)'});G.fromTo('#greet-face',{y:16,scale:.6},{y:0,scale:1,duration:1.1,ease:'elastic.out(1,.6)'})}
 }
-const bgImg=$('#pro-bg-img');
-bgImg.addEventListener('load',()=>pro.classList.add('has-bg'));
-bgImg.addEventListener('error',()=>$('#pro-bg').remove());
-if(bgImg.complete&&bgImg.naturalWidth)pro.classList.add('has-bg');
 pro.addEventListener('keydown',e=>{if(e.key==='Escape'&&proDismiss&&!pro.hidden){e.preventDefault();closePro()}});
 
 function chooseClan(code){
@@ -1298,8 +1231,6 @@ document.addEventListener('click',e=>{
   if('close' in t.dataset){dlg.close();return}
   if(t.dataset.act==='co-clan'){pickClan();return}
   switch(t.dataset.act){
-    /* книга пролога: «Вступить в игру» — к выбору пути */
-    case 'pro-next':LS.set('hc_seen','1');closePro();break;
     case 'pro-close':closePro();break;
     case 'pro-enter':closePro();break;
   }
@@ -1316,10 +1247,6 @@ function initTilt(){
     c.addEventListener('pointermove',e=>{ev=e;if(!raf)raf=requestAnimationFrame(set)});
     c.addEventListener('pointerleave',()=>{c.classList.remove('on');['--rx','--ry','--sc'].forEach(p=>c.style.removeProperty(p))});});
 }
-/* парящие виньетки пролога (видны, только если картинка разворота не загрузилась): качаются, пока пролог открыт */
-function floats(on){if(!G)return;$$('.float',pro).forEach((f,i)=>{
-  if(!f._fl&&on&&f.getClientRects().length)f._fl=G.to(f,{y:(i%2?-1:1)*(8+i%3*4),rotation:(i%2?-1:1)*(3+i%2*2),duration:3.2+i%3*.9,ease:'sine.inOut',yoyo:true,repeat:-1,delay:i*.25});
-  if(f._fl)f._fl.paused(!on||!f.getClientRects().length)})}
 let pageMotion=false;
 function initMotion(){
   if(motionReady)return;motionReady=true;
@@ -1344,7 +1271,7 @@ function loadMotion(){
   if(RM)return;
   const add=(src,ok,fail)=>{const sc=document.createElement('script');sc.src=src;sc.async=true;sc.onload=ok;sc.onerror=fail;document.head.append(sc)};
   const ready=()=>{if(!window.gsap)return;G=window.gsap;if(window.ScrollTrigger){ST=window.ScrollTrigger;G.registerPlugin(ST)}
-    if(!pro.hidden)floats(true);if(motionReady)startPageMotion()};
+    if(motionReady)startPageMotion()};
   add('vendor/gsap.min.js',()=>add('vendor/ScrollTrigger.min.js',ready,ready),()=>{});
 }
 
@@ -1363,9 +1290,7 @@ function toHash(){
 loadDraft();form.addEventListener('input',saveDraft);
 if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('off',!e.isIntersecting)));$$('.bar,.dn-frame,.tcards').forEach(el=>io.observe(el))}
 renderAll();initTilt();
-/* новый гость видит книгу-пролог; дальше — сразу страница */
-if(applied||LS.get('hc_seen'))initMotion();
-else openPro('intro',false);
+initMotion();
 /* перезагрузка с открытым окном: шаг истории уже есть — открываем окно снова и берём шаг себе, чтобы «Назад» его закрыл, а не стоял впустую */
 const navOnLoad=pro.hidden&&history.state&&history.state.nav;
 if(navOnLoad==='sheet'){navAdopt('sheet',()=>dlg.open&&dlg.close());openCheckout()}
@@ -1385,8 +1310,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
   document.querySelectorAll('[data-src]').forEach(e=>{e.src=e.dataset.src;e.removeAttribute('data-src')});
   document.querySelectorAll('[data-href]').forEach(e=>{e.setAttribute('href',e.dataset.href);e.removeAttribute('data-href')});
   document.querySelectorAll('video[data-poster]').forEach(e=>{e.poster=e.dataset.poster;e.removeAttribute('data-poster')})};
-  const first=(!document.getElementById('pro').hidden&&document.querySelector('.pro-stage[data-stage="intro"]:not([hidden])')&&document.getElementById('pro-bg-img'));
-  if(first&&!first.complete){first.addEventListener('load',go,{once:true});first.addEventListener('error',go,{once:true});setTimeout(go,5000)}else go()})();
+  go()})();
 </script>
 </body>
 </html>

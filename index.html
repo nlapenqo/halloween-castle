@@ -218,8 +218,11 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 .tilt3d::after{content:"";position:absolute;inset:clamp(8px,1vw,14px);border-radius:var(--r-img);background:radial-gradient(circle at var(--mx,50%) var(--my,30%),rgba(255,244,220,.45),transparent 58%);box-shadow:inset 0 0 0 2px rgba(255,244,220,.55),inset 0 0 30px 4px rgba(255,244,220,.22);mix-blend-mode:soft-light;opacity:0;transition:opacity .5s;pointer-events:none;transform:translateZ(29px)}
 .tilt3d.on::after{opacity:1}
 @media (prefers-reduced-motion:reduce){.tilt3d,.tilt3d.on{transition:none}}
-.clan-cta{display:grid;gap:14px;justify-items:center;text-align:center;margin-top:clamp(44px,6vw,72px)}
-.clan-cta p{max-width:52ch;text-wrap:pretty}
+/* пояснение про кланы — одна широкая плашка: текст слева, «Вступить в игру» справа; на телефоне кнопка под текстом */
+.clan-cta{display:flex;align-items:center;justify-content:space-between;gap:clamp(20px,3vw,44px);max-width:1040px;margin:clamp(44px,6vw,72px) auto 0;padding:clamp(22px,2.6vw,32px) clamp(24px,3.2vw,44px)}
+.clan-cta p{max-width:60ch;margin:0;text-wrap:pretty}
+.clan-cta .btn{flex:none}
+@media (max-width:700px){.clan-cta{flex-direction:column;text-align:center}}
 
 /* ── замок, фото, места ── */
 .castle-sec{padding-bottom:clamp(48px,6vw,80px)}
@@ -393,7 +396,7 @@ footer small{font-size:var(--fs-small);opacity:.7}
     <div class="wrap">
       <div class="head">
         <h2>Три силы одного <em class="acc">замка</em></h2>
-        <p class="lead">С кем ты войдёшь в ворота</p>
+        <p class="lead">С кем ты войдёшь в ворота?</p>
       </div>
       <div class="estates">
         <article class="estate est-VAMPIRE" data-clan="VAMPIRE">
@@ -412,7 +415,7 @@ footer small{font-size:var(--fs-small);opacity:.7}
           <p class="small">Тайные знаки, древняя магия и холодный расчёт. Тёмные эльфы видят то, что другие пропускают.</p>
         </article>
       </div>
-      <div class="clan-cta"><p>Распределение по кланам происходит случайным образом непосредственно в замке. Обладатели Gold получают возможность выбрать свой клан заранее.</p><a class="btn btn-main btn-lg" href="participate.html">Вступить в игру</a></div>
+      <div class="clan-cta plate"><p>Распределение по кланам происходит случайным образом непосредственно в замке. Обладатели Gold получают возможность выбрать свой клан заранее.</p><a class="btn btn-main btn-lg" href="participate.html">Вступить в игру</a></div>
     </div>
   </section>
 
