@@ -757,6 +757,18 @@ function starSky(cv,{density=6500,max=240}={}){
 (()=>{const meta=(document.querySelector('meta[name="api-base"]')?.content||'').trim(),local=/^(127\.0\.0\.1|localhost)$/.test(location.hostname),
     q=new URLSearchParams(location.search).get('api')||'',base=meta||(local?(/^http:\/\/127\.0\.0\.1:\d{2,5}$/.test(q)?q:'http://127.0.0.1:8787'):'');
   if(!base)return;
+  /* воронка: отмечаем шаги (каждый раз за загрузку — один), ответа не ждём, любые ошибки глушим — сайт от счётчика не зависит.
+     ?nt=1 — не считать этот браузер (свои визиты), ?nt=0 — снова считать */
+  try{
+    const ls=localStorage,nt=new URLSearchParams(location.search).get('nt');if(nt==='1')ls.setItem('hc_nt','1');if(nt==='0')ls.removeItem('hc_nt');
+    if(ls.getItem('hc_nt')!=='1'){
+      let v=ls.getItem('hc_visitor');if(!v){v=crypto.randomUUID?crypto.randomUUID():'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,12);ls.setItem('hc_visitor',v)}
+      const sent=new Set(),ev=s=>{try{if(sent.has(s))return;sent.add(s);fetch(base.replace(/\/+$/,'')+'/api/ev',{method:'POST',mode:'no-cors',keepalive:true,body:JSON.stringify({v,s})}).catch(()=>{})}catch{}};
+      ev('promo');
+      if('IntersectionObserver' in window)[['#clans','promo_clans'],['#join','promo_end']].forEach(([sel,s])=>{const el=document.querySelector(sel);if(!el)return;
+        const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){ev(s);io.disconnect()}},{threshold:.25});io.observe(el)});
+    }
+  }catch{}
   fetch(base.replace(/\/+$/,'')+'/api/stats',{cache:'no-store'}).then(r=>r.json()).then(st=>{const shut=Array.isArray(st&&st.closed_clans)?st.closed_clans:[];
     document.querySelectorAll('.estate[data-clan],.gcard[data-clan]').forEach(c=>c.classList.toggle('shut',shut.includes(c.dataset.clan)))}).catch(()=>{});
 })();

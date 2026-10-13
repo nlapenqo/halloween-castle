@@ -889,6 +889,12 @@ const MOCK=qs.get('mock')==='1'||(!META_BASE&&!LOCAL);
 /* локально ?api=http://127.0.0.1:PORT — другой порт сервера (для тестов) */
 const LOCAL_API=LOCAL&&/^http:\/\/127\.0\.0\.1:\d{2,5}$/.test(qs.get('api')||'')?qs.get('api'):'http://127.0.0.1:8787';
 const BASE=(META_BASE||LOCAL_API).replace(/\/+$/,'');
+/* воронка: отмечаем шаги (каждый — один раз за загрузку), ответа не ждём, ошибки глушим: сайт от счётчика не зависит.
+   В демо не считаем; ?nt=1 — не считать этот браузер (свои визиты), ?nt=0 — снова считать */
+if(qs.get('nt')==='1')LS.set('hc_nt','1');if(qs.get('nt')==='0')LS.del('hc_nt');
+const evSent=new Set();
+function track(s){try{if(MOCK||evSent.has(s)||LS.get('hc_nt')==='1')return;evSent.add(s);
+  fetch(BASE+'/api/ev',{method:'POST',mode:'no-cors',keepalive:true,body:JSON.stringify({v:visitorId(),s})}).catch(()=>{})}catch{}}
 async function req(path,body){
   const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),15000);
   try{
@@ -1075,7 +1081,7 @@ function renderCo(){
   $('[data-qty="-1"]',form).disabled=qty<=1;$('[data-qty="1"]',form).disabled=shut||qty>=room;
   if(qty<room)qtyCut=false;
   const qf=$('#qty-full'),qmsg=shut?IMB:qtyCut?ROOM_CUT:myClan&&room<MAXQ()&&qty>=room?ROOM_MAX:'';
-  qf.hidden=!qmsg;qf.classList.toggle('shut',shut);if($('#qty-full-t').textContent!==ty(qmsg))$('#qty-full-t').textContent=ty(qmsg);
+  qf.hidden=!qmsg;if(qmsg===ROOM_MAX&&tf)track('qty_max');qf.classList.toggle('shut',shut);if($('#qty-full-t').textContent!==ty(qmsg))$('#qty-full-t').textContent=ty(qmsg);
   $$('input[name="tariff"]',form).forEach(i=>i.checked=i.value===tf);
   $('#co-pick').hidden=!!tf;
   $$('[data-inc]',form).forEach(x=>{const on=x.dataset.inc===tf;if(on&&x.hidden&&!RM){x.classList.remove('fade');void x.offsetWidth;x.classList.add('fade')}x.hidden=!on});
@@ -1189,7 +1195,7 @@ function greetShut(){
 
 function chooseClan(code){
   if(applied||!CLANS[code]||isClosed(code))return;
-  myClan=code;LS.set('hc_clan',code);$('#pro-note').hidden=true;reopenCo=!stayOnPath;stayOnPath=false;renderAll();setErr('clan','');showGreet(code);
+  myClan=code;LS.set('hc_clan',code);track('clan');$('#pro-note').hidden=true;reopenCo=!stayOnPath;stayOnPath=false;renderAll();setErr('clan','');showGreet(code);
 }
 
 /* ── оформление ── */
@@ -1240,7 +1246,7 @@ function openCheckout(tf){
   if(TARIFF_NAME[tf])sel.tariff=tf;
   if(!myClan){pickClan();return}
   showStep('form');renderCo();['form','tariff','gold','clan'].forEach(k=>setErr(k,''));
-  showDlg();
+  showDlg();track('form');if(sel.tariff)track('path');
   requestAnimationFrame(()=>$('#co-t').focus({preventScroll:true}));
 }
 /* выбор клана: карточки кланов → приветствие → обратно в форму */
@@ -1255,17 +1261,17 @@ async function submitApp(d){
   if(d.tariff==='GOLD')body.gold_amount_idr=d.gold;
   let res;
   try{res=await api.apply(body)}
-  catch(e){co.busy=false;setPayState(false);setErr('form',ty('Не удалось связаться с замком. Данные сохранены — нажми «Перейти к оплате» ещё раз.'));return}
+  catch(e){co.busy=false;setPayState(false);track('err_net');setErr('form',ty('Не удалось связаться с замком. Данные сохранены — нажми «Перейти к оплате» ещё раз.'));return}
   co.busy=false;setPayState(false);
   if(res&&res.stats)applyStats(res.stats);
   if(res&&res.ok){
     applied={application_id:res.application_id,clan_code:res.clan_code||null,tariff_code:res.tariff_code||d.tariff,ticket_quantity:res.ticket_quantity||1,ticket_unit_price_idr:res.ticket_unit_price_idr||res.ticket_amount_idr,ticket_amount_idr:res.ticket_amount_idr,
       dinner_quantity:res.dinner_quantity||0,dinner_unit_price_idr:res.dinner_unit_price_idr||0,dinner_amount_idr:res.dinner_amount_idr,total_due_idr:res.total_due_idr,display_name:d.name,bot_url:res.bot_url||null,application_no:res.application_no||null};
     LS.set('hc_applied',JSON.stringify(applied));try{sessionStorage.removeItem(DRAFT)}catch{}LS.del('hc_req');LS.del('hc_clan');myClan=null;
-    renderAll();showDone();return;
+    track('done');renderAll();showDone();return;
   }
   /* клан закрылся между открытием формы и отправкой: остальные данные на месте, предлагаем сменить клан */
-  if(res&&res.error==='CLAN_IMBALANCED'){setErr('clan',ty(res.message||IMB));renderCo();focusFirstErr();return}
+  if(res&&res.error==='CLAN_IMBALANCED'){track('err_clan_full');setErr('clan',ty(res.message||IMB));renderCo();focusFirstErr();return}
   if(res&&res.error==='VALIDATION'){
     const k={display_name:'name',telegram_username:'tg',clan_code:'clan',tariff_code:'tariff',gold_amount_idr:'gold'}[res.field];
     if(k){setErr(k,ty(res.message||'Проверь это поле'));focusFirstErr();return}
@@ -1286,12 +1292,13 @@ function showDone(){
 }
 
 form.addEventListener('submit',e=>{e.preventDefault();if(co.busy)return;$$('input',form).forEach(i=>i.dataset.touched='1');const {e:errs,data}=validate();renderCo();
-  if(Object.keys(errs).length){focusFirstErr();return}
+  track('pay');
+  if(Object.keys(errs).length){Object.keys(errs).forEach(k=>track('err_'+k));focusFirstErr();return}
   submitApp(data)});
 /* галочки и переключатель пути — по change; в текстовых полях снимаем ошибку, как только человек начал править */
 form.addEventListener('change',e=>{const t=e.target;
   if(t.id==='f-dinner'){sel.dinner=t.checked;noteAnim=true}
-  else if(t.name==='tariff'){sel.tariff=t.value;setErr('tariff','');checkGold()}
+  else if(t.name==='tariff'){sel.tariff=t.value;setErr('tariff','');checkGold();track('path')}
   else return;
   renderCo()});
 form.addEventListener('input',e=>{const t=e.target;if((t.id==='f-name'||t.id==='f-tg')&&t.dataset.touched)setErr(t.id==='f-name'?'name':'tg','')});
@@ -1393,6 +1400,8 @@ else if(CLANS[fromPromo]&&myClan===fromPromo&&!applied&&!location.hash){openPro(
 else if(toHash()){let moved=false;['wheel','touchstart','keydown','pointerdown'].forEach(t=>addEventListener(t,()=>{moved=true},{once:true,passive:true}));
   const again=()=>{if(!moved)toHash()};document.fonts&&document.fonts.ready.then(again);addEventListener('load',again,{once:true})}
 refresh();loadMotion();
+track('p2');if(myClan&&!applied)track('clan');
+$('#done-bot').addEventListener('click',()=>track('bot_click'));
 setInterval(()=>{if(document.visibilityState==='visible')refresh()},12000);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refresh()});
 })();
