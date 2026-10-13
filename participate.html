@@ -825,6 +825,7 @@ footer a{display:inline-block;padding-block:11px}
       <p id="done-sum"></p>
       <p class="small" id="done-p"></p>
       <a class="btn btn-main" id="done-bot" href="https://t.me/HalloweenCastleBaliBot" target="_blank" rel="noopener">Перейти в&nbsp;Telegram-бот</a>
+      <button class="linkbtn" type="button" data-act="again">Оформить ещё одну заявку</button>
     </div>
   </div>
 </dialog>
@@ -1329,6 +1330,8 @@ document.addEventListener('click',e=>{
   if(t.classList.contains('preset')){goldInp.value=fmt(Number(t.dataset.amt));goldInp.dataset.touched='1';setErr('gold','');checkGold();renderCo();return}
   if('close' in t.dataset){dlg.close();return}
   if(t.dataset.act==='co-clan'){pickClan();return}
+  /* ещё одна заявка: забываем только сохранённую в браузере (в базе прежняя остаётся как есть); новое оформление получит новый request_id, а с ним новую заявку и bot_url */
+  if(t.dataset.act==='again'){applied=null;LS.del('hc_applied');LS.del('hc_req');LS.del('hc_req_key');renderAll();openCheckout(sel.tariff);return}
   if(t.dataset.act==='path-clan'){stayOnPath=true;reopenCo=false;openPro('clans',true);return}
   switch(t.dataset.act){
     case 'pro-close':proBack();break;
