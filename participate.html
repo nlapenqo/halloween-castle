@@ -38,6 +38,7 @@ picture.av{display:contents}
   --cobalt-deep:#2C4A8E;
   --vermilion:#DC5530;
   --vermilion-soft:#F08A66;
+  --vermilion-ink:#A33618; /* мелкий текст на бумаге: контраст 5,2:1 (на тёмной бумаге 4,6:1) */
   --rose:#DA9391;
   --ochre:#CD9236;
   --gold:#D9AE52;
@@ -46,10 +47,11 @@ picture.av{display:contents}
   --white:#fff;
   --line:rgb(38 23 29 / .35);
   --line-dark:rgb(242 224 192 / .38);
-  --shadow:0 10px 22px -12px rgb(28 17 27 / .28);
-  --shadow-up:0 24px 40px -14px rgb(28 17 27 / .42);
-  --shadow-gold:0 0 30px 6px rgb(217 174 82 / .32),0 22px 40px -8px rgb(28 17 27 / .45);
-  --shadow-gold-up:0 0 40px 10px rgb(217 174 82 / .42),0 34px 50px -12px rgb(28 17 27 / .55);
+  /* тени плоские: сдвиг без размытия */
+  --shadow:5px 7px 0 rgb(28 17 27 / .14);
+  --shadow-up:8px 12px 0 rgb(28 17 27 / .2);
+  --shadow-gold:6px 9px 0 rgb(217 174 82 / .55);
+  --shadow-gold-up:9px 14px 0 rgb(217 174 82 / .65);
   --ring:var(--vermilion);
   /* шрифты: только Alice и Kurale; шесть ступеней размера */
   --f-display:"Alice","Kurale",Georgia,serif;
@@ -96,6 +98,7 @@ p{margin:0;text-wrap:pretty}
 /* одно кольцо фокуса на всё; на тёмных плашках — светлее */
 :where(a,button,summary,input):focus-visible{outline:2px dashed var(--ring);outline-offset:4px;border-radius:8px}
 [tabindex="-1"]:focus{outline:none}
+.nw{white-space:nowrap}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .wrap{max-width:1240px;margin-inline:auto;padding-inline:var(--gutter)}
 section{position:relative;overflow-x:clip}
@@ -109,7 +112,7 @@ h1,h2{font-size:var(--fs-display);line-height:1.05;text-transform:uppercase;lett
 h3{font-size:var(--fs-h3);line-height:1.15}
 .acc{font-style:normal;color:var(--vermilion)}
 .on-dark .acc{color:var(--gold)}
-.label{font-size:var(--fs-small);line-height:1.3;color:var(--vermilion)}
+.label{font-size:var(--fs-small);line-height:1.3;color:var(--vermilion-ink)}
 .lead{font-size:var(--fs-lead);max-width:58ch}
 .small{font-size:var(--fs-small);line-height:1.5}
 .head{display:grid;gap:16px;justify-items:center;text-align:center;margin-bottom:clamp(20px,2.6vw,32px)}
@@ -183,12 +186,13 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .bar-parts>span{display:grid;grid-row:span 2;grid-template-rows:subgrid;align-items:end;padding-inline:6px}
 .bar-parts i{font-style:normal;opacity:.75;align-self:start}
 @media (max-width:520px){.bar-parts{font-size:var(--fs-micro)}.bar-parts>span{padding-inline:2px}}
-.stale{font-size:var(--fs-small);color:var(--vermilion);text-align:center}
+.stale{font-size:var(--fs-small);color:var(--vermilion-ink);text-align:center}
 /* выбранный клан над карточками путей; без клана не показываем */
 .path-clan{display:flex;justify-content:center;margin:calc(-1 * clamp(12px,2vw,24px)) 0 clamp(30px,3.4vw,40px)}
 .path-clan p{position:relative;isolation:isolate;padding:10px 20px 9px;font:400 var(--fs-body)/1.2 var(--f-display)}
 .path-clan p::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:var(--bw-sm) solid var(--ink);border-radius:var(--r-pill);filter:url(#rough-sm)}
-.path-clan b{font-weight:400;color:var(--vermilion)}
+.path-clan b{font-weight:400;color:var(--vermilion-ink)}
+.path-clan .linkbtn{margin-left:10px;font-size:var(--fs-small)}
 
 /* три карточки одинаковой высоты; клик по карточке = кнопка */
 .tcards{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.14fr) minmax(0,1fr);gap:clamp(18px,2.4vw,32px);align-items:stretch;max-width:1180px;margin-inline:auto;padding-top:14px}
@@ -338,7 +342,7 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .inp:has(input:focus-visible){outline:2px dashed var(--ring);outline-offset:4px;border-radius:22px}
 .inp.bad::before{border-color:var(--vermilion);background:var(--bad-bg)}
 .hint{font-size:var(--fs-small);line-height:1.45;opacity:.8}
-.err{font-size:var(--fs-small);line-height:1.45;color:var(--vermilion)}
+.err{font-size:var(--fs-small);line-height:1.45;color:var(--vermilion-ink)}
 .err:empty{display:none}
 /* ошибка заменяет подсказку под полем, а не повторяет её */
 .field:has(.err:not(:empty)) .hint{display:none}
@@ -351,6 +355,7 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .sheet-in{height:100%;overflow-y:auto;overscroll-behavior:contain;padding:clamp(22px,3.4vw,44px) var(--gutter) calc(48px + env(safe-area-inset-bottom))}
 .sheet-in>.step{max-width:700px;margin-inline:auto}
 .sheet-t{font-size:calc(var(--fs-display) * .75);padding-right:56px}
+.sheet-t{width:fit-content;background:var(--paper);box-shadow:0 0 0 10px var(--paper)}
 /* узкий экран: крестик в своей полосе над прокруткой — не наезжает на карточки и галочку трапезы */
 @media (max-width:880px){
   .sheet[open]{display:flex;flex-direction:column}
@@ -381,7 +386,7 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .seg label:has(input:focus-visible){outline:2px dashed var(--ring);outline-offset:4px;border-radius:26px}
 .seg.bad label:not(.g)::before{border-color:var(--vermilion)}
 @media (hover:hover) and (pointer:fine){.seg label:hover,.seg label:has(input:focus-visible){transform:translateY(-8px)}}
-@media (max-width:520px){.seg label{padding:10px 4px 12px}.seg small{font-size:var(--fs-micro)}}
+@media (max-width:520px){.seg label{padding:10px 4px 12px}.seg small{font-size:var(--fs-micro)}.seg label.g small{padding-inline:6px;text-wrap:balance}}
 .co-pick{text-align:center;opacity:.85}
 /* что входит в выбранный путь; при смене — короткое проявление */
 .co-inc-p{--pl-bg:var(--paper-deep)}
@@ -400,7 +405,8 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .co-qty{--pl-bg:var(--paper-deep);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px}
 .co-qty .flabel{font:400 var(--fs-lead)/1.2 var(--f-display)}
 .co-qty .hint{flex-basis:100%;margin:0}
-.qty-full{flex-basis:100%;margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;font-size:var(--fs-small);line-height:1.45;color:var(--vermilion)}
+.qty-full{flex-basis:100%;margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;font-size:var(--fs-small);line-height:1.45}
+.qty-full.shut{color:var(--vermilion-ink)}
 .qty-full[hidden]{display:none}
 .qty{display:flex;align-items:center;gap:10px}
 .qty-b{position:relative;isolation:isolate;width:48px;height:48px;padding:0;border:0;background:none;cursor:pointer;font:400 var(--fs-lead)/1 var(--f-display);color:var(--ink)}
@@ -421,7 +427,7 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .dn-tog-t b{font:400 var(--fs-lead)/1.25 var(--f-display);font-variant-numeric:lining-nums}
 .dn-tog-t>span{font-size:var(--fs-small);line-height:1.4;opacity:.85}
 /* подсказка про меню: пока трапеза не отмечена */
-.dn-tog-t>.dn-hint{color:var(--vermilion);opacity:1}
+.dn-tog-t>.dn-hint{color:var(--vermilion-ink);opacity:1}
 .dn-tog:has(input:checked) .dn-hint{display:none}
 .dn-mark{position:relative;width:34px;height:34px;display:grid;place-items:center;isolation:isolate}
 .dn-mark::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:var(--bw-sm) solid var(--ink);border-radius:8px 6px 9px 5px/6px 9px 5px 8px;filter:url(#rough-sm)}
@@ -445,7 +451,7 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .dn-note{position:relative;isolation:isolate;width:min(100%,340px);margin:42px auto 18px;padding:22px 22px 18px;rotate:-2.5deg}
 .dn-note::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:var(--bw-sm) solid var(--ink);border-radius:4px 7px 3px 6px/6px 3px 7px 4px;box-shadow:var(--shadow);filter:url(#rough-sm)}
 .dn-note-t{font:400 var(--fs-lead)/1.2 var(--f-display);margin:0 0 8px}
-.dn-note-h{font-size:var(--fs-small);margin:10px 0 2px;color:var(--vermilion)}
+.dn-note-h{font-size:var(--fs-small);margin:10px 0 2px;color:var(--vermilion-ink)}
 .dn-note ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
 .dn-note li{font-size:var(--fs-small);line-height:1.35;padding-left:14px;position:relative}
 .dn-note li::before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--ink)}
@@ -590,7 +596,7 @@ footer a{display:inline-block;padding-block:11px}
         <div class="bar-parts" aria-hidden="true"><span>Аренда площадки<i data-k="venue-s">8&nbsp;600&nbsp;000&nbsp;IDR</i></span><span>Операционные расходы<i data-k="ops-s">5&nbsp;000&nbsp;000&nbsp;IDR</i></span></div>
         <p class="stale" data-stale hidden>Не&nbsp;удалось обновить данные</p>
       </div>
-      <div class="path-clan" id="path-clan" hidden><p>Клан: <b id="path-clan-n"></b></p></div>
+      <div class="path-clan" id="path-clan" hidden><p>Клан: <b id="path-clan-n"></b> <button class="linkbtn" type="button" data-act="path-clan">Сменить</button></p></div>
       <div class="tcards">
         <div class="tw" data-rv><article class="plate tcard t-bronze tilt3d" data-tf="BRONZE" aria-labelledby="t-b">
           <span class="t-glow" aria-hidden="true"></span>
@@ -617,7 +623,7 @@ footer a{display:inline-block;padding-block:11px}
           <img class="t-ic" data-src="art/t-gold-240.webp" alt="" width="600" height="564" loading="lazy" onerror="this.remove()">
           <h3 class="t-name" id="t-g">Gold</h3>
           <p class="t-price">от&nbsp;<span data-price="gold">500&nbsp;000</span>&nbsp;<small>IDR</small></p>
-          <p class="t-txt">Стань одним из&nbsp;тех, благодаря кому замок оживёт по-настоящему</p>
+          <p class="t-txt">Стань одним из&nbsp;тех, благодаря кому замок оживёт <span class="nw">по-настоящему</span></p>
                     <details class="perks">
             <summary>Все усиления</summary>
             <ul class="perk-list">
@@ -713,7 +719,7 @@ footer a{display:inline-block;padding-block:11px}
         <div class="seg-row">
           <label><input type="radio" name="tariff" value="BRONZE"><img loading="lazy" data-src="art/t-bronze-240.webp" alt="" width="600" height="581"><span class="seg-n">Bronze</span><small><span data-price="bronze">150&nbsp;000</span>&nbsp;IDR</small></label>
           <label><input type="radio" name="tariff" value="SILVER"><img loading="lazy" data-src="art/t-silver-240.webp" alt="" width="600" height="530"><span class="seg-n">Silver</span><small><span data-price="silver">300&nbsp;000</span>&nbsp;IDR</small></label>
-          <label class="g"><input type="radio" name="tariff" value="GOLD"><img loading="lazy" data-src="art/t-gold-240.webp" alt="" width="600" height="564"><span class="seg-n">Gold</span><small>от&nbsp;<span data-price="gold">500&nbsp;000</span>&nbsp;IDR</small></label>
+          <label class="g"><input type="radio" name="tariff" value="GOLD"><img loading="lazy" data-src="art/t-gold-240.webp" alt="" width="600" height="564"><span class="seg-n">Gold</span><small>от <span data-price="gold">500&nbsp;000</span>&nbsp;IDR</small></label>
         </div>
         <p class="err" id="f-tariff-e" data-err="tariff" role="alert"></p>
       </fieldset>
@@ -748,10 +754,10 @@ footer a{display:inline-block;padding-block:11px}
         <span class="flabel" id="qty-l">Сколько билетов</span>
         <div class="qty" role="group" aria-labelledby="qty-l">
           <button class="qty-b" type="button" data-qty="-1" aria-label="Меньше билетов">−</button>
-          <output id="qty-v" aria-live="polite">1</output>
+          <output id="qty-v" aria-hidden="true">1</output><span class="sr-only" id="qty-sr" aria-live="polite">1 билет</span>
           <button class="qty-b" type="button" data-qty="1" aria-label="Больше билетов">+</button>
         </div>
-        <p class="qty-full" id="qty-full" role="status" hidden><span>Этот клан временно переполнен. Выберите другой клан.</span><button class="linkbtn" type="button" data-act="co-clan">Сменить клан</button></p>
+        <p class="qty-full" id="qty-full" role="status" hidden><span id="qty-full-t"></span><button class="linkbtn" type="button" data-act="co-clan">Сменить клан</button></p>
         <p class="hint" id="qty-h">Одна заявка&nbsp;— одна общая оплата: ты и&nbsp;твои гости, все в&nbsp;одном клане</p>
       </div>
       <div class="dn-wrap">
@@ -808,12 +814,13 @@ footer a{display:inline-block;padding-block:11px}
         <p class="err" id="f-tg-e" data-err="tg"></p>
       </div>
       <p class="err" data-err="form" role="alert"></p>
-      <div class="form-actions"><button class="btn btn-main" type="submit" id="co-pay">Оплатить</button></div>
+      <div class="form-actions"><button class="btn btn-main" type="submit" id="co-pay">Перейти к&nbsp;оплате</button></div>
     </form>
 
     <div class="step done" data-step="done" hidden>
       <img data-src="art/s-star.webp" alt="" loading="lazy">
       <h2 class="sheet-t" id="done-t" tabindex="-1"></h2>
+      <p id="done-no" hidden></p>
       <p id="done-sum"></p>
       <p class="small" id="done-p"></p>
       <a class="btn btn-main" id="done-bot" href="https://t.me/HalloweenCastleBaliBot" target="_blank" rel="noopener">Перейти в&nbsp;Telegram-бот</a>
@@ -847,7 +854,10 @@ const FINE=matchMedia('(hover: hover) and (pointer: fine)').matches;
 let G=null,ST=null;
 
 /* ── данные кланов: клан выбирает каждый; равновесие решает сервер — после заявки разница между самым большим и самым маленьким кланом не больше 7 билетов ── */
-const IMB='Этот клан временно переполнен. Выберите другой клан.';
+const IMB='Этот клан временно переполнен. Выбери другой клан.';
+/* счётчик упёрся в равновесие: клан не закрыт, просто больше гостей в него сейчас не добавить */
+const ROOM_MAX='Больше гостей в этот клан сейчас не добавить. Остальные могут оформить заявку в другом клане.';
+const ROOM_CUT='В этот клан сейчас помещается меньше гостей, поэтому билетов стало меньше. Остальные могут оформить заявку в другом клане.';
 const CLAN_ORDER=['VAMPIRE','WEREWOLF','DARK_ELF'];
 const CLAN_ART={VAMPIRE:'art/clan-vampire-b-720.webp',WEREWOLF:'art/clan-werewolf-c-720.webp',DARK_ELF:'art/clan-darkelf-k-720.webp'};
 const CLAN_ART_FALLBACK={VAMPIRE:'art/nobles.jpg',WEREWOLF:'art/commoners.jpg',DARK_ELF:'art/crown.jpg'};
@@ -908,7 +918,7 @@ function mockApi(){
     return {target_idr:target,venue_cost_idr:P.venue,operations_cost_idr:P.ops,tea_cost_idr:P.tea,collected_idr:c,remaining_to_target_idr:Math.max(0,target-c),over_target_idr:Math.max(0,c-target),progress_percent:Math.min(100,c/target*100),refund_deadline:'2026-10-20',
       closed_clans:CLAN_ORDER.filter(k=>r[k]===0),clan_room:r,max_tickets:MAXQ,clan_confirmed:Object.fromEntries(CLAN_ORDER.map(k=>[k,ok.filter(a=>a.clan_code===k).reduce((x,a)=>x+(a.ticket_quantity||1),0)])),dinner_target_idr:P.dinnerTarget,dinner_collected_idr:ok.reduce((s,a)=>s+(a.dinner_amount_idr||0),0),
       tariffs:{bronze_idr:P.bronze,silver_idr:P.silver,gold_min_idr:P.gold,dinner_idr:P.dinner}}};
-  const pub=a=>({application_id:a.application_id,clan_code:a.clan_code,tariff_code:a.tariff_code,ticket_quantity:a.ticket_quantity,ticket_unit_price_idr:a.ticket_unit_price_idr,ticket_amount_idr:a.ticket_amount_idr,
+  const pub=a=>({application_id:a.application_id,application_no:a.application_no,clan_code:a.clan_code,tariff_code:a.tariff_code,ticket_quantity:a.ticket_quantity,ticket_unit_price_idr:a.ticket_unit_price_idr,ticket_amount_idr:a.ticket_amount_idr,
     dinner_selected:a.dinner_selected,dinner_quantity:a.dinner_quantity,dinner_unit_price_idr:a.dinner_unit_price_idr,dinner_amount_idr:a.dinner_amount_idr,total_due_idr:a.total_due_idr});
   const fail=(error,x)=>({ok:false,error,stats:stats(),...x});
   const apply=p=>{
@@ -922,7 +932,7 @@ function mockApi(){
     if(!Number.isSafeInteger(q)||q<1||q>MAXQ)return fail('VALIDATION',{field:'ticket_quantity',message:'Количество билетов — от 1 до 7'});
     const t=p.tariff_code==='BRONZE'?P.bronze:p.tariff_code==='SILVER'?P.silver:p.gold_amount_idr;
     if(p.tariff_code==='GOLD'&&(!Number.isSafeInteger(t)||t<P.gold))return fail('VALIDATION',{field:'gold_amount_idr',message:'Укажите целую сумму не меньше 500 000 IDR'});
-    const dq=p.dinner_selected?q:0,a={application_id:'mock-'+(db.apps.length+1),request_id:p.request_id,visitor_id:p.visitor_id,display_name:name,telegram_username:'@'+tg,clan_code:clan,tariff_code:p.tariff_code,
+    const dq=p.dinner_selected?q:0,a={application_id:'mock-'+(db.apps.length+1),application_no:db.apps.length+1,request_id:p.request_id,visitor_id:p.visitor_id,display_name:name,telegram_username:'@'+tg,clan_code:clan,tariff_code:p.tariff_code,
       ticket_quantity:q,ticket_unit_price_idr:t,ticket_amount_idr:q*t,dinner_selected:!!p.dinner_selected,dinner_quantity:dq,dinner_unit_price_idr:P.dinner,dinner_amount_idr:dq*P.dinner,total_due_idr:q*t+dq*P.dinner,payment_status:'PENDING'};
     if(!fits(counts(),clan,q))return fail('CLAN_IMBALANCED',{field:'clan_code',message:IMB});
     db.apps.push(a);save();return {ok:true,...pub(a),stats:stats()};
@@ -1026,7 +1036,7 @@ function renderTreasury(){
 
 /* ── выбор пути: карточки открывают окно, всё остальное — в окне ── */
 const TARIFFS=['BRONZE','SILVER','GOLD'];
-let sel={tariff:null,dinner:false,qty:1},hoverTf=null;
+let sel={tariff:null,dinner:false,qty:1},hoverTf=null,qtyCut=false;
 /* русские окончания: 1 билет, 2 билета, 5 билетов */
 const plural=(n,a,b,c)=>{const m=n%100,k=n%10;return m>10&&m<20?c:k===1?a:k>1&&k<5?b:c};
 const tickets=n=>`${n}${NB}${plural(n,'билет','билета','билетов')}`;
@@ -1056,12 +1066,15 @@ function loadDraft(){let d=null;try{d=JSON.parse(sessionStorage.getItem(DRAFT)||
   if(TARIFF_NAME[d.tariff])sel.tariff=d.tariff;sel.dinner=!!d.dinner;if(Number.isInteger(d.qty)&&d.qty>=1&&d.qty<=10)sel.qty=d.qty;['gold','name','tg'].forEach(k=>{if(typeof d[k]==='string')el['f_'+k].value=d[k]});if(d.gold)el.f_gold.dataset.touched='1'}
 function renderCo(){
   /* сколько билетов: 1…10, но не больше, чем сейчас примет клан (равновесие); упёрлись в равновесие — «клан временно переполнен», без чисел */
-  const room=myClan&&!isClosed(myClan)?roomOf(myClan):MAXQ();
-  if(sel.qty>room)sel.qty=Math.max(1,room);
+  const shut=!!myClan&&isClosed(myClan),room=myClan&&!shut?roomOf(myClan):MAXQ();
+  /* после смены клана в него может поместиться меньше: уменьшаем и говорим об этом (без чисел) */
+  if(sel.qty>room){sel.qty=Math.max(1,room);qtyCut=true}
   const s=S(),t=s.tariffs,tf=sel.tariff,din=sel.dinner,qty=sel.qty,unit=ticketFor(tf),ticket=unit!=null?unit*qty:null,tgt=s.target_idr||1;
-  $('#co-qty').hidden=!tf;$('#qty-v').textContent=qty;
-  $('[data-qty="-1"]',form).disabled=qty<=1;$('[data-qty="1"]',form).disabled=qty>=room;
-  $('#qty-full').hidden=!(myClan&&room>0&&room<MAXQ()&&qty>=room);
+  $('#co-qty').hidden=!tf;$('#qty-v').textContent=qty;$('#qty-sr').textContent=tickets(qty);
+  $('[data-qty="-1"]',form).disabled=qty<=1;$('[data-qty="1"]',form).disabled=shut||qty>=room;
+  if(qty<room)qtyCut=false;
+  const qf=$('#qty-full'),qmsg=shut?IMB:qtyCut?ROOM_CUT:myClan&&room<MAXQ()&&qty>=room?ROOM_MAX:'';
+  qf.hidden=!qmsg;qf.classList.toggle('shut',shut);if($('#qty-full-t').textContent!==ty(qmsg))$('#qty-full-t').textContent=ty(qmsg);
   $$('input[name="tariff"]',form).forEach(i=>i.checked=i.value===tf);
   $('#co-pick').hidden=!!tf;
   $$('[data-inc]',form).forEach(x=>{const on=x.dataset.inc===tf;if(on&&x.hidden&&!RM){x.classList.remove('fade');void x.offsetWidth;x.classList.add('fade')}x.hidden=!on});
@@ -1169,19 +1182,19 @@ pro.addEventListener('keydown',e=>{if(e.key==='Escape'&&proDismiss&&!pro.hidden)
 function greetShut(){
   if(!greetCode||pro.hidden||applied||!isClosed(greetCode))return;
   const code=greetCode;greetCode=null;myClan=null;LS.del('hc_clan');renderAll();
-  const n=$('#pro-note');n.textContent=ty(`Клан «${CLANS[code].name}» временно переполнен. Выберите другой клан.`);n.hidden=false;
+  const n=$('#pro-note');n.textContent=ty(`Клан «${CLANS[code].name}» временно переполнен. Выбери другой клан.`);n.hidden=false;
   pro.setAttribute('aria-labelledby','pro-t2');showStage('clans');$('#pro-t2').focus({preventScroll:true});
 }
 
 function chooseClan(code){
   if(applied||!CLANS[code]||isClosed(code))return;
-  myClan=code;LS.set('hc_clan',code);$('#pro-note').hidden=true;reopenCo=true;renderAll();setErr('clan','');showGreet(code);
+  myClan=code;LS.set('hc_clan',code);$('#pro-note').hidden=true;reopenCo=!stayOnPath;stayOnPath=false;renderAll();setErr('clan','');showGreet(code);
 }
 
 /* ── оформление ── */
 const dlg=$('#checkout'),form=$('#co-form'),el=form.elements;
 let co={step:'form',busy:false};
-let reopenCo=false;
+let reopenCo=false,stayOnPath=false;
 const GOLD_MAX=100000000;
 function goldState(raw,min){const g=parseAmount(raw);if(!String(raw||'').trim())return {g:null,err:ty(`Укажи сумму вклада — от ${idr(min)}`)};if(g===null)return {g:null,err:ty('Только целое число, без букв и копеек')};if(g>GOLD_MAX)return {g:null,err:ty(`Сумма больше ${idr(GOLD_MAX)} — напиши организатору`)};if(g<min)return {g,err:ty(`Минимальный взнос — ${idr(min)}. Сейчас указано ${idr(g)}`)};return {g,err:''}}
 /* записка с меню: нож прибивает её при отметке трапезы и выдёргивает при снятии */
@@ -1231,7 +1244,7 @@ function openCheckout(tf){
 }
 /* выбор клана: карточки кланов → приветствие → обратно в форму */
 function pickClan(){if(dlg.open)dlg.close();reopenCo=true;openPro('clans',true)}
-function setPayState(busy){const b=$('#co-pay');b.disabled=busy;b.setAttribute('aria-busy',String(busy));b.textContent=busy?'Отправляем…':'Оплатить'}
+function setPayState(busy){const b=$('#co-pay');b.disabled=busy;b.setAttribute('aria-busy',String(busy));b.innerHTML=busy?'Отправляем…':'Перейти к&nbsp;оплате'}
 /* «Оплатить»: заявка сохраняется на сервере. Оплата — в Telegram-боте замка: «Перейти в Telegram-бот» открывает ссылку этой заявки (bot_url со start-токеном), новую заявку не создаёт.
    Казна растёт только после подтверждения оплаты, не по нажатию */
 async function submitApp(d){
@@ -1241,12 +1254,12 @@ async function submitApp(d){
   if(d.tariff==='GOLD')body.gold_amount_idr=d.gold;
   let res;
   try{res=await api.apply(body)}
-  catch(e){co.busy=false;setPayState(false);setErr('form',ty('Не удалось связаться с замком. Данные сохранены — нажми «Оплатить» ещё раз.'));return}
+  catch(e){co.busy=false;setPayState(false);setErr('form',ty('Не удалось связаться с замком. Данные сохранены — нажми «Перейти к оплате» ещё раз.'));return}
   co.busy=false;setPayState(false);
   if(res&&res.stats)applyStats(res.stats);
   if(res&&res.ok){
     applied={application_id:res.application_id,clan_code:res.clan_code||null,tariff_code:res.tariff_code||d.tariff,ticket_quantity:res.ticket_quantity||1,ticket_unit_price_idr:res.ticket_unit_price_idr||res.ticket_amount_idr,ticket_amount_idr:res.ticket_amount_idr,
-      dinner_quantity:res.dinner_quantity||0,dinner_unit_price_idr:res.dinner_unit_price_idr||0,dinner_amount_idr:res.dinner_amount_idr,total_due_idr:res.total_due_idr,display_name:d.name,bot_url:res.bot_url||null};
+      dinner_quantity:res.dinner_quantity||0,dinner_unit_price_idr:res.dinner_unit_price_idr||0,dinner_amount_idr:res.dinner_amount_idr,total_due_idr:res.total_due_idr,display_name:d.name,bot_url:res.bot_url||null,application_no:res.application_no||null};
     LS.set('hc_applied',JSON.stringify(applied));try{sessionStorage.removeItem(DRAFT)}catch{}LS.del('hc_req');LS.del('hc_clan');myClan=null;
     renderAll();showDone();return;
   }
@@ -1262,6 +1275,7 @@ function showDone(){
   const a=applied;
   $('#done-t').innerHTML=a.clan_code?tyh(`Заявка принята, ты в клане <em class="acc">${esc(CLAN_GEN[a.clan_code])}</em>`):tyh(`Заявка <em class="acc">принята</em>`);
   const q=a.ticket_quantity||1;
+  $('#done-no').hidden=!a.application_no;$('#done-no').textContent=a.application_no?`Номер заявки: ${a.application_no}`:'';
   $('#done-sum').textContent=ty(`Путь ${TARIFF_NAME[a.tariff_code]}: `+(q>1?`${tickets(q)} × ${fmt(a.ticket_unit_price_idr)} = `:'')+idr(a.ticket_amount_idr)+
     (a.dinner_amount_idr?` + трапеза ${q>1?`${guests(a.dinner_quantity)} × ${fmt(a.dinner_unit_price_idr)} = `:''}${idr(a.dinner_amount_idr)}`:'')+`. Итого: ${idr(a.total_due_idr)}.`);
   $('#done-p').textContent=ty('Оплата проходит в Telegram-боте замка. Взнос попадёт в казну, когда оплата будет подтверждена.');
@@ -1304,6 +1318,7 @@ document.addEventListener('click',e=>{
   if(t.classList.contains('preset')){goldInp.value=fmt(Number(t.dataset.amt));goldInp.dataset.touched='1';setErr('gold','');checkGold();renderCo();return}
   if('close' in t.dataset){dlg.close();return}
   if(t.dataset.act==='co-clan'){pickClan();return}
+  if(t.dataset.act==='path-clan'){stayOnPath=true;reopenCo=false;openPro('clans',true);return}
   switch(t.dataset.act){
     case 'pro-close':proBack();break;
     case 'pro-enter':closePro();break;
