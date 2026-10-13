@@ -289,6 +289,26 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .guar .guar-p{margin:0;font-size:var(--fs-lead);line-height:1.5;text-wrap:pretty}
 @media (max-width:480px){.guar{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}}
 .coins{width:min(100%,520px)}
+/* «Кто уже в замке»: заполненность кланов внизу страницы, без имён */
+.seats-sec{padding-block:0 var(--sec-y)}
+.seats-sec .lead{max-width:52ch;text-wrap:pretty}
+.seats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.4vw,32px);max-width:1040px;margin-inline:auto}
+.seat{--pl-bg:var(--rose);display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"ava name" "ava cnt";column-gap:14px;row-gap:6px;align-items:center;color:var(--ink);padding:16px 20px 18px 14px}
+.seat-WEREWOLF{--pl-bg:var(--ochre)}
+.seat-DARK_ELF{--pl-bg:var(--cobalt);color:var(--paper)}
+.seat h3{grid-area:name;margin:0}
+.seat-ava{grid-area:ava;width:76px;height:76px}
+.seat-ava img{width:100%;height:100%;object-fit:contain}
+.seat .cnt{grid-area:cnt;display:flex;align-items:center;gap:12px;min-width:0}
+.cnt-n{display:inline-flex;align-items:center;gap:6px;font:400 var(--fs-body)/1 var(--f-display);font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
+.cnt-n b{font-weight:400;font-size:var(--fs-h3)}
+.clan-cnt b{font-weight:400}
+.cbar{flex:1;min-width:40px;height:14px;position:relative;isolation:isolate}
+.cbar::before{content:"";position:absolute;inset:0;z-index:-1;border:var(--bw-sm) solid currentColor;border-radius:10px 7px 11px 6px/7px 11px 6px 10px;filter:url(#rough-sm);opacity:.7}
+.cbar i{position:absolute;left:3px;top:3px;bottom:3px;width:calc(100% - 6px);background:currentColor;border-radius:6px 4px 7px 3px;transform:scaleX(var(--k,0));transform-origin:0 50%;transition:transform 1.4s var(--ease)}
+.seats-note{max-width:52ch;margin:clamp(20px,2.4vw,28px) auto 0;text-align:center;opacity:.85}
+@media (max-width:880px){.seats{grid-template-columns:minmax(0,1fr);max-width:460px}}
+@media (max-width:480px){.seat-ava{width:62px;height:62px}.seat{padding:14px 16px 16px 12px}}
 .coins summary{list-style:none;font-size:var(--fs-lead);font-family:var(--f-display)}
 .coins .lines{margin-top:12px;text-align:left}
 .lines{margin:0;display:grid;gap:8px}
@@ -315,6 +335,12 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 .mine-badge::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:var(--bw-sm) solid var(--ink);border-radius:var(--r-pill);filter:url(#rough-sm)}
 /* клан временно закрыт (обогнал самый маленький): картинка приглушена, вместо кнопки пояснение */
 .clan.is-closed .fw{opacity:.55}
+/* счётчик мест: человечек и «7/20» (оплаченные билеты из лимита клана); на карточке — в правом верхнем углу картинки */
+.pp-i{width:1.05em;height:1.05em;flex:none;fill:currentColor}
+.fw{position:relative}
+.clan-cnt{position:absolute;top:clamp(14px,1.6vw,20px);right:clamp(14px,1.6vw,20px);z-index:2;isolation:isolate;display:inline-flex;align-items:center;gap:5px;margin:0;padding:5px 11px 5px 9px;font:400 var(--fs-small)/1.1 var(--f-display);font-variant-numeric:lining-nums tabular-nums;color:var(--ink);white-space:nowrap}
+.clan-cnt::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);border:var(--bw-sm) solid var(--ink);border-radius:var(--r-pill);filter:url(#rough-sm)}
+.clan.is-closed .clan-cnt{opacity:.9}
 .clan-shut{max-width:30ch;font:400 var(--fs-body)/1.3 var(--f-display)}
 /* выбор клана — портретная картинка в раме, текст по центру, золотая кнопка, золотая рамка при наведении */
 .clans-pro .clan .frame img{aspect-ratio:900/1205;object-position:50% 50%}
@@ -558,7 +584,7 @@ footer a{display:inline-block;padding-block:11px}
 @media (hover:hover) and (prefers-reduced-motion:no-preference) and (min-width:1280px){.dn-note:hover{rotate:1.2deg}}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .btn,.preset,.sheet-x,.pro-x,.tilt3d,.tilt3d.on,.tcard.tilt3d,.tcard.tilt3d.on,.t-glow::after,.seg label,.bar,.perks summary::after,.coins summary::after{transition:none}
+  .btn,.preset,.sheet-x,.pro-x,.tilt3d,.tilt3d.on,.tcard.tilt3d,.tcard.tilt3d.on,.t-glow::after,.seg label,.bar,.cbar i,.perks summary::after,.coins summary::after{transition:none}
   .ghost,.sheet[open],.co-inc>.fade{animation:none}
   .t-shine{display:none}
   .tcard:hover,.tcard:focus-within{--ty:var(--ty0,0px)}
@@ -572,6 +598,7 @@ footer a{display:inline-block;padding-block:11px}
   <filter id="rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G"/></filter>
   <filter id="rough-sm" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter>
   <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="1" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <symbol id="pp" viewBox="0 0 24 24"><circle cx="12" cy="7" r="4.4"/><path d="M3.6 22c.3-5.2 3.9-8.6 8.4-8.6s8.1 3.4 8.4 8.6z"/></symbol>
   <symbol id="st" viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></symbol>
 </svg>
 
@@ -667,6 +694,18 @@ footer a{display:inline-block;padding-block:11px}
           <div class="sum"><dt>Цель казны</dt><i aria-hidden="true"></i><dd data-k="target">13&nbsp;600&nbsp;000&nbsp;IDR</dd></div>
         </dl>
       </details>
+    </div>
+  </section>
+
+  <section class="seats-sec" id="seats" aria-labelledby="st-t">
+    <div class="wrap">
+      <div class="head" data-rv>
+        <h2 id="st-t">Кто уже в&nbsp;<em class="acc">замке</em></h2>
+        <p class="lead">В&nbsp;каждом клане по&nbsp;<span data-f="clan-max">20</span>&nbsp;мест. Если желающих окажется больше, добавим мест во&nbsp;все кланы поровну.</p>
+        <p class="stale" data-stale hidden>Не&nbsp;удалось обновить данные</p>
+      </div>
+      <div class="seats" data-seats></div>
+      <p class="small seats-note">Считаем тех, кто уже оплатил билет.</p>
     </div>
   </section>
 
@@ -857,6 +896,7 @@ let G=null,ST=null;
 
 /* ── данные кланов: клан выбирает каждый; равновесие решает сервер — после заявки разница между самым большим и самым маленьким кланом не больше 7 билетов ── */
 const IMB='Этот клан временно переполнен. Выбери другой клан.';
+const FULL='Места в этом клане закончились. Выбери другой клан.';
 /* счётчик упёрся в равновесие: клан не закрыт, просто больше гостей в него сейчас не добавить */
 const ROOM_MAX='Больше гостей в этот клан сейчас не добавить. Остальные могут оформить заявку в другом клане.';
 const ROOM_CUT='В этот клан сейчас помещается меньше гостей, поэтому билетов стало меньше. Остальные могут оформить заявку в другом клане.';
@@ -909,7 +949,7 @@ async function req(path,body){
 
 /* тестовый режим ?mock=1: те же правила, что у сервера. ?seed=10,7,8 — столько подтверждённых оплат (сумма чисел), ?fresh=1 — сбросить браузер, ?mockfail=net — первая отправка падает по сети */
 function mockApi(){
-  const K='hc_mock_db',P={bronze:150000,silver:300000,gold:500000,dinner:250000,venue:8600000,ops:3500000,tea:0,dinnerTarget:13600000},GAP=7,MAXQ=10;
+  const K='hc_mock_db',P={bronze:150000,silver:300000,gold:500000,dinner:250000,venue:8600000,ops:3500000,tea:0,dinnerTarget:13600000},GAP=7,MAXQ=10,MAXC=20;
   let db=null;try{db=JSON.parse(localStorage.getItem(K))}catch{}
   if(!db||!Array.isArray(db.apps))db={apps:[],seed:null};
   const save=()=>{try{localStorage.setItem(K,JSON.stringify(db))}catch{}};
@@ -917,14 +957,14 @@ function mockApi(){
     for(let k=1;k<=n;k++){const tf=['SILVER','BRONZE','GOLD'][k%3],t=tf==='GOLD'?P.gold:tf==='BRONZE'?P.bronze:P.silver;
       db.apps.push({application_id:'seed-'+k,request_id:'seed-'+k,visitor_id:'',display_name:'Тестовый гость '+k,telegram_username:'@test_guest',clan_code:CLAN_ORDER[k%3],tariff_code:tf,ticket_quantity:1,ticket_unit_price_idr:t,ticket_amount_idr:t,dinner_selected:false,dinner_quantity:0,dinner_unit_price_idr:P.dinner,dinner_amount_idr:0,total_due_idr:t,payment_status:'CONFIRMED'})}save()};
   if(qs.has('seed')&&db.seed!==qs.get('seed'))seed(qs.get('seed'));
-  /* равновесие как на сервере: численность — билеты PENDING и CONFIRMED; после заявки max − min ≤ 7 (или разрыв не растёт) */
+  /* равновесие как на сервере: численность — билеты PENDING и CONFIRMED; в клане не больше 20 мест, после заявки max − min ≤ 7 (или разрыв не растёт) */
   const counts=()=>{const n={};CLAN_ORDER.forEach(k=>n[k]=db.apps.filter(a=>a.clan_code===k&&a.payment_status!=='CANCELLED').reduce((x,a)=>x+(a.ticket_quantity||1),0));return n};
   const gap=n=>Math.max(...CLAN_ORDER.map(k=>n[k]))-Math.min(...CLAN_ORDER.map(k=>n[k]));
-  const fits=(n,k,q)=>{const m={...n,[k]:n[k]+q};return gap(m)<=GAP||gap(m)<=gap(n)};
+  const fits=(n,k,q)=>{if(n[k]+q>MAXC)return false;const m={...n,[k]:n[k]+q};return gap(m)<=GAP||gap(m)<=gap(n)};
   const room=()=>{const n=counts(),r={};CLAN_ORDER.forEach(k=>{let q=0;while(q<MAXQ&&fits(n,k,q+1))q++;r[k]=q});return r};
-  const stats=()=>{const target=P.venue+P.ops+P.tea,ok=db.apps.filter(a=>a.payment_status==='CONFIRMED'),c=ok.reduce((s,a)=>s+a.ticket_amount_idr,0),r=room();
+  const stats=()=>{const target=P.venue+P.ops+P.tea,ok=db.apps.filter(a=>a.payment_status==='CONFIRMED'),c=ok.reduce((s,a)=>s+a.ticket_amount_idr,0),r=room(),n=counts();
     return {target_idr:target,venue_cost_idr:P.venue,operations_cost_idr:P.ops,tea_cost_idr:P.tea,collected_idr:c,remaining_to_target_idr:Math.max(0,target-c),over_target_idr:Math.max(0,c-target),progress_percent:Math.min(100,c/target*100),refund_deadline:'2026-10-20',
-      closed_clans:CLAN_ORDER.filter(k=>r[k]===0),clan_room:r,max_tickets:MAXQ,clan_confirmed:Object.fromEntries(CLAN_ORDER.map(k=>[k,ok.filter(a=>a.clan_code===k).reduce((x,a)=>x+(a.ticket_quantity||1),0)])),dinner_target_idr:P.dinnerTarget,dinner_collected_idr:ok.reduce((s,a)=>s+(a.dinner_amount_idr||0),0),
+      closed_clans:CLAN_ORDER.filter(k=>r[k]===0),clan_full:CLAN_ORDER.filter(k=>n[k]>=MAXC),clan_max:MAXC,clan_room:r,max_tickets:MAXQ,clan_confirmed:Object.fromEntries(CLAN_ORDER.map(k=>[k,ok.filter(a=>a.clan_code===k).reduce((x,a)=>x+(a.ticket_quantity||1),0)])),dinner_target_idr:P.dinnerTarget,dinner_collected_idr:ok.reduce((s,a)=>s+(a.dinner_amount_idr||0),0),
       tariffs:{bronze_idr:P.bronze,silver_idr:P.silver,gold_min_idr:P.gold,dinner_idr:P.dinner}}};
   const pub=a=>({application_id:a.application_id,application_no:a.application_no,clan_code:a.clan_code,tariff_code:a.tariff_code,ticket_quantity:a.ticket_quantity,ticket_unit_price_idr:a.ticket_unit_price_idr,ticket_amount_idr:a.ticket_amount_idr,
     dinner_selected:a.dinner_selected,dinner_quantity:a.dinner_quantity,dinner_unit_price_idr:a.dinner_unit_price_idr,dinner_amount_idr:a.dinner_amount_idr,total_due_idr:a.total_due_idr});
@@ -942,7 +982,7 @@ function mockApi(){
     if(p.tariff_code==='GOLD'&&(!Number.isSafeInteger(t)||t<P.gold))return fail('VALIDATION',{field:'gold_amount_idr',message:'Укажите целую сумму не меньше 500 000 IDR'});
     const dq=p.dinner_selected?q:0,a={application_id:'mock-'+(db.apps.length+1),application_no:db.apps.length+1,request_id:p.request_id,visitor_id:p.visitor_id,display_name:name,telegram_username:'@'+tg,clan_code:clan,tariff_code:p.tariff_code,
       ticket_quantity:q,ticket_unit_price_idr:t,ticket_amount_idr:q*t,dinner_selected:!!p.dinner_selected,dinner_quantity:dq,dinner_unit_price_idr:P.dinner,dinner_amount_idr:dq*P.dinner,total_due_idr:q*t+dq*P.dinner,payment_status:'PENDING'};
-    if(!fits(counts(),clan,q))return fail('CLAN_IMBALANCED',{field:'clan_code',message:IMB});
+    if(!fits(counts(),clan,q)){const full=counts()[clan]+q>MAXC;return fail(full?'CLAN_FULL':'CLAN_IMBALANCED',{field:'clan_code',message:full?FULL:IMB})}
     db.apps.push(a);save();return {ok:true,...pub(a),stats:stats()};
   };
   let netFail=qs.get('mockfail')==='net';
@@ -981,32 +1021,47 @@ function buildClan(code){
   const c=CLANS[code],i=CLAN_ORDER.indexOf(code),w=document.createElement('div');
   w.className='cw';
   w.innerHTML=`<article class="plate clan clan-${code}" data-clan="${code}" aria-labelledby="cl-pro-${code}">
-    <div class="fw"><figure class="frame tilt3d" style="--rz:${[-1.2,1,-1][i]}deg"><img data-src="${CLAN_ART[code]}" alt="Иллюстрация клана «${c.name}»" width="900" height="1205" loading="lazy"></figure></div>
+    <div class="fw"><figure class="frame tilt3d" style="--rz:${[-1.2,1,-1][i]}deg"><img data-src="${CLAN_ART[code]}" alt="Иллюстрация клана «${c.name}»" width="900" height="1205" loading="lazy"></figure><p class="clan-cnt" data-cnt="${code}" hidden><svg class="pp-i" aria-hidden="true"><use href="#pp"/></svg><span data-f="cnt-t"></span></p></div>
     <div class="clan-body">
       <h3 id="cl-pro-${code}">${c.name}</h3>
       <p class="small clan-d">${c.desc}</p>
       <button class="btn join" type="button" data-f="join" data-join="${code}" aria-label="Присоединиться к клану «${c.name}»">Присоединиться</button>
       <p class="mine-badge" data-f="mine" hidden><span class="star-i" aria-hidden="true"></span>Твой клан</p>
-      <p class="clan-shut" data-f="shut" hidden>${ty('Ряды переполнены. Клан откроется, когда остальные его догонят')}</p>
+      <p class="clan-shut" data-f="shut" hidden></p>
     </div></article>`;
   const img=w.querySelector('img');
   img.addEventListener('error',()=>{if(!img.dataset.fb){img.dataset.fb='1';img.src=CLAN_ART_FALLBACK[code]}else img.closest('.fw').hidden=true});
   return w;
 }
 $$('[data-clans]').forEach(box=>CLAN_ORDER.forEach(c=>box.append(buildClan(c))));
+/* «Кто уже в замке» внизу страницы: лицо клана, «7 из 20» и полоска */
+function buildSeat(code){
+  const c=CLANS[code],w=document.createElement('article');
+  w.className=`plate seat seat-${code}`;w.dataset.rv='';w.setAttribute('aria-labelledby',`st-${code}`);
+  w.innerHTML=`<span class="seat-ava"><img data-src="art/face-${code.toLowerCase().replace('_','')}.webp" alt="" width="240" height="240" loading="lazy"></span>
+    <h3 id="st-${code}">${c.name}</h3>
+    <div class="cnt" data-cnt="${code}"><span class="cnt-n"><svg class="pp-i" aria-hidden="true"><use href="#pp"/></svg><span data-f="cnt-t">—</span></span><span class="cbar" aria-hidden="true"><i data-f="cfill"></i></span></div>`;
+  const img=w.querySelector('img');img.addEventListener('error',()=>img.remove());
+  return w;
+}
+$$('[data-seats]').forEach(box=>CLAN_ORDER.forEach(c=>box.append(buildSeat(c))));
 
 /* закрытые кланы приходят с сервера в /api/stats (без счётчиков) */
 const isClosed=code=>!!code&&(S().closed_clans||[]).includes(code);
 /* сколько билетов одной заявкой сейчас можно взять в клан (сервер считает по равновесию; без сервера — 10) */
 const MAXQ=()=>S().max_tickets||10;
 const roomOf=code=>{const r=S().clan_room;return r&&code&&r[code]!=null?Math.min(r[code],MAXQ()):MAXQ()};
-const shutMsg=()=>IMB;
+/* клан закрыт, потому что кончились места (clan_full), или ненадолго — ради равновесия */
+const isFull=code=>!!code&&(S().clan_full||[]).includes(code);
+const shutMsg=code=>ty(isFull(code)?FULL:IMB);
 function renderClans(){
   $$('.clan').forEach(card=>{
     const code=card.dataset.clan,mine=myClan===code,shut=isClosed(code),f=k=>card.querySelector(`[data-f="${k}"]`);
     card.classList.toggle('is-mine',mine);card.classList.toggle('is-closed',shut);
     f('mine').hidden=!mine;f('join').hidden=mine||shut;f('shut').hidden=!shut;
+    f('shut').textContent=ty(isFull(code)?'Места в клане закончились':'Ряды переполнены. Клан откроется, когда остальные его догонят');
   });
+  renderSeats();
   $('#pro-keep').hidden=!myClan;
   $('#path-clan').hidden=!myClan;$('#path-clan-n').textContent=myClan?CLANS[myClan].name:'';
 }
@@ -1081,7 +1136,7 @@ function renderCo(){
   $('#co-qty').hidden=!tf;$('#qty-v').textContent=qty;$('#qty-sr').textContent=tickets(qty);
   $('[data-qty="-1"]',form).disabled=qty<=1;$('[data-qty="1"]',form).disabled=shut||qty>=room;
   if(qty<room)qtyCut=false;
-  const qf=$('#qty-full'),qmsg=shut?IMB:qtyCut?ROOM_CUT:myClan&&room<MAXQ()&&qty>=room?ROOM_MAX:'';
+  const qf=$('#qty-full'),qmsg=shut?shutMsg(myClan):qtyCut?ROOM_CUT:myClan&&room<MAXQ()&&qty>=room?ROOM_MAX:'';
   qf.hidden=!qmsg;if(qmsg===ROOM_MAX&&tf)track('qty_max');qf.classList.toggle('shut',shut);if($('#qty-full-t').textContent!==ty(qmsg))$('#qty-full-t').textContent=ty(qmsg);
   $$('input[name="tariff"]',form).forEach(i=>i.checked=i.value===tf);
   $('#co-pick').hidden=!!tf;
@@ -1110,6 +1165,20 @@ function renderCo(){
 function renderJoin(){const b=$('#join-go'),tx=applied?'Моя заявка':'Вступить в'+NB+'игру';if(b.textContent!==tx)b.textContent=tx}
 function checkGold(){const {err}=goldState(goldInp.value,S().tariffs.gold_min_idr),show=goldInp.dataset.touched==='1'&&sel.tariff==='GOLD'?err:'';
   $('#gold-amt-e').textContent=show;$('#gold-amt-inp').classList.toggle('bad',!!show);goldInp.setAttribute('aria-invalid',String(!!show))}
+
+/* счётчики мест: оплаченные билеты клана (clan_confirmed) из лимита clan_max; пока сервер не ответил — на карточках их нет */
+function renderSeats(){
+  const s=S(),max=s.clan_max,cf=s.clan_confirmed,on=max>0&&!!cf;
+  $$('[data-f="clan-max"]').forEach(e=>{if(max>0)e.textContent=max});
+  $$('[data-cnt]').forEach(el=>{
+    const code=el.dataset.cnt,n=on?Math.max(0,cf[code]||0):0,t=el.querySelector('[data-f="cnt-t"]'),bar=el.querySelector('[data-f="cfill"]');
+    if(el.classList.contains('clan-cnt'))el.hidden=!on;
+    if(!on)return;
+    t.innerHTML=`<b>${n}</b>/${max}`;
+    el.setAttribute('aria-label',`Оплачено мест: ${n} из ${max}`);
+    if(bar)bar.style.setProperty('--k',Math.min(1,n/max).toFixed(3));
+  });
+}
 
 function setStale(v){$$('[data-stale]').forEach(e=>e.hidden=!v)}
 function applyStats(s){if(!s||typeof s!=='object'||!(s.target_idr>=0))return;stats=s;renderAll();greetShut()}
@@ -1190,7 +1259,7 @@ pro.addEventListener('keydown',e=>{if(e.key==='Escape'&&proDismiss&&!pro.hidden)
 function greetShut(){
   if(!greetCode||pro.hidden||applied||!isClosed(greetCode))return;
   const code=greetCode;greetCode=null;myClan=null;LS.del('hc_clan');renderAll();
-  const n=$('#pro-note');n.textContent=ty(`Клан «${CLANS[code].name}» временно переполнен. Выбери другой клан.`);n.hidden=false;
+  const n=$('#pro-note');n.textContent=ty(isFull(code)?`В клане «${CLANS[code].name}» закончились места. Выбери другой клан.`:`Клан «${CLANS[code].name}» временно переполнен. Выбери другой клан.`);n.hidden=false;
   pro.setAttribute('aria-labelledby','pro-t2');showStage('clans');$('#pro-t2').focus({preventScroll:true});
 }
 
@@ -1272,7 +1341,7 @@ async function submitApp(d){
     track('done');renderAll();showDone();return;
   }
   /* клан закрылся между открытием формы и отправкой: остальные данные на месте, предлагаем сменить клан */
-  if(res&&res.error==='CLAN_IMBALANCED'){track('err_clan_full');setErr('clan',ty(res.message||IMB));renderCo();focusFirstErr();return}
+  if(res&&(res.error==='CLAN_IMBALANCED'||res.error==='CLAN_FULL')){track('err_clan_full');setErr('clan',ty(res.message||shutMsg(myClan)));renderCo();focusFirstErr();return}
   if(res&&res.error==='VALIDATION'){
     const k={display_name:'name',telegram_username:'tg',clan_code:'clan',tariff_code:'tariff',gold_amount_idr:'gold'}[res.field];
     if(k){setErr(k,ty(res.message||'Проверь это поле'));focusFirstErr();return}
