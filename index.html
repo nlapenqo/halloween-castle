@@ -3,6 +3,11 @@
 <head>
 <!-- проверка скорости в Safari: ?fx=0 отключает «нарисованные» SVG-фильтры (неровные края плашек и рамок) -->
 <script>if(/[?&]fx=0\b/.test(location.search))document.documentElement.classList.add('nofx')</script>
+<script>/* персональное приглашение: <сайт>/i/<токен> ведёт сюда с #i=<токен>. Токен храним в браузере, пока гость оформляет заявки;
+   без него на главной нет пути к покупке (класс .inv открывает кнопки) */
+(()=>{try{const m=location.hash.match(/^#i=([A-Za-z0-9_-]{32})$/);if(m){localStorage.setItem('hc_invite',m[1]);history.replaceState(history.state,'',location.pathname+location.search)}
+addEventListener('hashchange',()=>{if(/^#i=[A-Za-z0-9_-]{32}$/.test(location.hash))location.reload()});
+if(localStorage.getItem('hc_invite'))document.documentElement.classList.add('inv')}catch{}})()</script>
 <style>.nofx *,.nofx *::before,.nofx *::after{filter:none!important}</style>
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow, noarchive">
@@ -232,6 +237,9 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 /* тач-экраны: карточки неподвижны, только лёгкий постоянный наклон --rz; без 3D-слоёв */
 @media (hover:none),(pointer:coarse){.tilt3d{transform:rotate(var(--rz,0deg));transform-style:flat;transition:none;will-change:auto}.tilt3d img{transform:none}.tilt3d::after{display:none}}
 /* пояснение про кланы — одна широкая плашка: текст слева, «Выбрать клан» (ночью «Вернуться к истории») справа; на телефоне кнопка под текстом */
+/* без приглашения: история видна, а кнопок вступления, выбора клана и счётчиков мест нет */
+html:not(.inv) :is(.clan-cta,.est-join,.est-shut,.est-cnt,.gcard .btn,.gate-note){display:none!important}
+html:not(.inv) :is(.estate,.gcard){cursor:auto}
 .clan-cta{display:flex;align-items:center;justify-content:space-between;gap:clamp(20px,3vw,44px);max-width:1040px;margin:clamp(44px,6vw,72px) auto 0;padding:clamp(22px,2.6vw,32px) clamp(24px,3.2vw,44px)}
 .clan-cta p{max-width:60ch;margin:0;text-wrap:pretty}
 .clan-cta .btn{flex:none}
@@ -421,7 +429,7 @@ h2 .acc{font:inherit;color:var(--acc,var(--vermilion))}
 .gcard .frame{width:100%;margin-bottom:8px}
 .gcard p{max-width:34ch}
 .gcard .btn{margin-top:6px}
-@media (hover:hover){.gcard:not(.shut):hover{translate:0 -10px}.gcard:not(.shut):hover::after{opacity:1}}
+@media (hover:hover){.inv .gcard:not(.shut):hover{translate:0 -10px}.inv .gcard:not(.shut):hover::after{opacity:1}}
 .gcard:focus-within::after{opacity:1}
 .gate-note{opacity:.75}
 @media (max-width:880px){.gate-clans{grid-template-columns:minmax(0,1fr);max-width:460px}}
@@ -727,11 +735,13 @@ function starSky(cv,{density=6500,max=240}={}){
   let isNight=false,inView=false;
   const tick=()=>{isNight&&inView?sky.start():sky.stop()};
   onView(sec,v=>{inView=v;tick()});
+  const inv=()=>document.documentElement.classList.contains('inv');
   const join=c=>c.querySelector('.est-join'),center=el=>{const b=el.getBoundingClientRect();return[b.left+b.width/2,b.top+b.height/2]};
   /* дневные карточки — кнопки «Выбрать клан»; ночью это плашки со ссылкой внутри */
   const asButton=(c,on)=>{if(on){c.setAttribute('role','button');c.tabIndex=0;c.setAttribute('aria-label','Выбрать клан «'+c.querySelector('h3').textContent+'»')}
     else['role','tabindex','aria-label'].forEach(a=>c.removeAttribute(a))};
   function setNight(on,x,y,picked,quiet){
+    if(on&&!inv())return; /* без приглашения выбора клана нет */
     if(x!=null){const r=sec.getBoundingClientRect(),cx=x-r.left,cy=y-r.top;sec.style.setProperty('--cx',cx+'px');sec.style.setProperty('--cy',cy+'px');
       sec.style.setProperty('--cr',Math.ceil(Math.hypot(Math.max(cx,r.width-cx),Math.max(cy,r.height-cy))+40)+'px')}
     isNight=on;sec.classList.toggle('night',on);back.hidden=!on;xb.hidden=!on;
@@ -739,15 +749,15 @@ function starSky(cv,{density=6500,max=240}={}){
     if(!on)navClose('clans');else if(!quiet)navOpen('clans',()=>setNight(false));else if(history.state&&history.state.nav==='clans')navAdopt('clans',()=>setNight(false));
     if(on&&!quiet){sec.classList.add('opening');setTimeout(()=>sec.classList.remove('opening'),1100)}
     swaps.forEach(w=>{w.querySelector('.sw-day').setAttribute('aria-hidden',String(on));w.querySelector('.sw-night').setAttribute('aria-hidden',String(!on))});
-    cards.forEach(c=>{c.classList.toggle('picked',on&&c===picked);asButton(c,!on)});
+    cards.forEach(c=>{c.classList.toggle('picked',on&&c===picked);asButton(c,!on&&inv())});
     tick();
     if(quiet)return;
     if(on&&picked)setTimeout(()=>{const b=picked.getBoundingClientRect();if(b.top<0||b.bottom>innerHeight)picked.scrollIntoView({behavior:RM?'auto':'smooth',block:'center'});join(picked).focus({preventScroll:true})},950);
     if(on&&!picked)setTimeout(()=>join(cards[0]).focus({preventScroll:true}),950);
     if(!on)setTimeout(()=>open.focus({preventScroll:true}),50);
   }
-  cards.forEach(c=>{asButton(c,true);
-    c.addEventListener('click',e=>{if(isNight){if(!e.target.closest('.est-join,.est-shut'))cards.forEach(x=>x.classList.toggle('picked',x===c));return}e.preventDefault();setNight(true,e.clientX,e.clientY,c)});
+  cards.forEach(c=>{asButton(c,inv());
+    c.addEventListener('click',e=>{if(!inv())return;if(isNight){if(!e.target.closest('.est-join,.est-shut'))cards.forEach(x=>x.classList.toggle('picked',x===c));return}e.preventDefault();setNight(true,e.clientX,e.clientY,c)});
     c.addEventListener('keydown',e=>{if(isNight||(e.key!=='Enter'&&e.key!==' '))return;e.preventDefault();setNight(true,...center(c),c)})});
   open.addEventListener('click',e=>{e.preventDefault();setNight(true,...center(open),null)});
   /* «Занять место за столом» у трапезы: на страницу участия попадают уже с кланом — едем к кланам и открываем выбор */
@@ -758,6 +768,8 @@ function starSky(cv,{density=6500,max=240}={}){
   xb.addEventListener('click',()=>setNight(false,...center(xb)));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&isNight&&!document.querySelector('dialog[open]'))setNight(false)});
   window.estRestore=code=>{sec.classList.add('no-tr');setNight(true,null,null,cards.find(c=>c.dataset.clan===code)||null,true);requestAnimationFrame(()=>requestAnimationFrame(()=>sec.classList.remove('no-tr')))};
+  /* приглашение оказалось недействительным — карточки перестают быть кнопками, ночь закрывается */
+  window.estNoInvite=()=>{if(isNight)setNight(false);cards.forEach(c=>asButton(c,false))};
   window.estState=()=>({night:isNight,picked:(cards.find(c=>c.classList.contains('picked'))||{dataset:{}}).dataset.clan||null});
 })();
 
@@ -778,6 +790,9 @@ function starSky(cv,{density=6500,max=240}={}){
         const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){ev(s);io.disconnect()}},{threshold:.25});io.observe(el)});
     }
   }catch{}
+  /* приглашение: отключённое или выдуманное забываем и прячем путь к покупке. Сеть недоступна — оставляем как есть, заявку всё равно проверит сервер */
+  try{const tok=localStorage.getItem('hc_invite');if(tok)fetch(base.replace(/\/+$/,'')+'/api/invite/'+encodeURIComponent(tok),{cache:'no-store'}).then(r=>{
+    if(r.status===404||r.status===410){localStorage.removeItem('hc_invite');document.documentElement.classList.remove('inv');window.estNoInvite&&window.estNoInvite()}}).catch(()=>{})}catch{}
   /* закрытые кланы и счётчик мест: оплаченные билеты клана (clan_confirmed) из лимита clan_max */
   fetch(base.replace(/\/+$/,'')+'/api/stats',{cache:'no-store'}).then(r=>r.json()).then(st=>{const arr=k=>Array.isArray(st&&st[k])?st[k]:[],shut=arr('closed_clans'),full=arr('clan_full');
     const max=st&&st.clan_max>0?st.clan_max:0,cf=st&&st.clan_confirmed;
@@ -791,7 +806,7 @@ function starSky(cv,{density=6500,max=240}={}){
 })();
 
 /* Финал: клик по карточке — как по её кнопке (закрытый клан не ведёт никуда); то же звёздное небо, мерцает только пока блок на экране */
-document.querySelectorAll('.gcard').forEach(c=>c.addEventListener('click',e=>{if(!e.target.closest('a')&&!c.classList.contains('shut'))c.querySelector('a').click()}));
+document.querySelectorAll('.gcard').forEach(c=>c.addEventListener('click',e=>{if(!e.target.closest('a')&&!c.classList.contains('shut')&&document.documentElement.classList.contains('inv'))c.querySelector('a').click()}));
 (()=>{const g=document.querySelector('.gate'),cv=g&&g.querySelector('.sky-cv');if(!cv||!cv.getContext)return;
   const sky=starSky(cv);g.classList.add('has-sky');onView(g,v=>v?sky.start():sky.stop())})();
 

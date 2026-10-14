@@ -3,6 +3,11 @@
 <head>
 <!-- проверка скорости в Safari: ?fx=0 отключает «нарисованные» SVG-фильтры (неровные края плашек и рамок) -->
 <script>if(/[?&]fx=0\b/.test(location.search))document.documentElement.classList.add('nofx')</script>
+<script>/* персональное приглашение: <сайт>/i/<токен> ведёт на главную с #i=<токен>, сюда тоже можно. Токен храним в браузере
+   для всех заявок этого гостя; без него вместо пути к покупке — «Ворота замка…» (класс .inv открывает путь). ?mock=1 — демо без приглашения */
+(()=>{try{const m=location.hash.match(/^#i=([A-Za-z0-9_-]{32})$/);if(m){localStorage.setItem('hc_invite',m[1]);history.replaceState(history.state,'',location.pathname+location.search)}
+addEventListener('hashchange',()=>{if(/^#i=[A-Za-z0-9_-]{32}$/.test(location.hash))location.reload()});
+if(localStorage.getItem('hc_invite')||/[?&]mock=1\b/.test(location.search))document.documentElement.classList.add('inv')}catch{}})()</script>
 <style>.nofx *,.nofx *::before,.nofx *::after{filter:none!important}</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -165,6 +170,13 @@ h3{font-size:var(--fs-h3);line-height:1.15}
 
 /* ── «Выбери свой путь»: строка казны, одна шкала и три карточки ── */
 .path-sec{padding-block:var(--sec-y-s) 0}
+/* без приглашения: только «Ворота замка…» (и своя заявка, если она уже есть в этом браузере) */
+html:not(.inv) :is(#path,#dinner,#join,#seats){display:none}
+.inv .gate-sec{display:none}
+.gate-sec{display:grid;align-items:center;min-height:min(70vh,640px);padding-block:var(--sec-y-s) var(--sec-y)}
+.gate-sec .head{margin-bottom:0}
+.gate-sec .lead{max-width:46ch;text-wrap:pretty}
+.gate-acts{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
 .purse{--split:63.24;max-width:780px;margin:0 auto clamp(36px,4.4vw,56px)}
 .purse-l{text-align:center;font:400 var(--fs-lead)/1.3 var(--f-display);font-variant-numeric:lining-nums}
 .purse-l b{font-weight:400;font-size:var(--fs-h3);color:var(--vermilion)}
@@ -607,6 +619,20 @@ footer a{display:inline-block;padding-block:11px}
 </header>
 
 <main>
+  <section class="gate-sec" id="gate" aria-labelledby="gt-t">
+    <div class="wrap">
+      <div class="head">
+        <img class="star" src="art/s-star-96.webp" alt="" width="96" height="96" style="width:44px">
+        <h2 id="gt-t" tabindex="-1">Ворота замка открываются по&nbsp;личному <em class="acc">приглашению</em></h2>
+        <p class="lead">Halloween Castle&nbsp;— закрытое событие для&nbsp;друзей и&nbsp;друзей друзей. Попроси персональную ссылку у&nbsp;человека, который тебя пригласил.</p>
+        <div class="gate-acts">
+          <button class="btn" type="button" id="gate-mine" hidden>Моя заявка</button>
+          <a class="btn btn-main" href="./">Понятно</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="path-sec" id="path" aria-labelledby="pt-t">
     <div class="wrap">
       <div class="head" data-rv>
@@ -1310,9 +1336,22 @@ function focusFirstErr(){const k=['tariff','gold','clan','name','tg','form'].fin
 
 function showStep(step){co.step=step;$$('.step',dlg).forEach(s=>s.hidden=s.dataset.step!==step);$('.sheet-in',dlg).scrollTop=0}
 function showDlg(){if(!dlg.open){dlg.showModal();navOpen('sheet',()=>dlg.open&&dlg.close())}}
+/* приглашение: без действующей ссылки новую заявку не оформить. Своя прежняя заявка («Моя заявка», бот) остаётся доступна */
+function invited(){return document.documentElement.classList.contains('inv')}
+function renderGate(){$('#gate-mine').hidden=!applied}
+function noInvite(){
+  LS.del('hc_invite');if(MOCK&&qs.get('mock')==='1')return; /* демо: приглашения нет, путь открыт */
+  document.documentElement.classList.remove('inv');renderGate();
+  if(dlg.open)dlg.close();if(!pro.hidden)closePro();
+  scrollTo(0,0);$('#gt-t').focus({preventScroll:true});
+}
+/* сохранённое приглашение отключили или его не было — забываем. Сеть недоступна — не мешаем: заявку всё равно проверит сервер */
+function checkInvite(){const tok=LS.get('hc_invite');if(MOCK||!tok)return;
+  fetch(BASE+'/api/invite/'+encodeURIComponent(tok),{cache:'no-store'}).then(r=>{if(r.status===404||r.status===410)noInvite()}).catch(()=>{})}
 /* окно открывается с карточки (путь выбран) или с нижней кнопки (путь как был). Без клана — сначала выбор клана */
 function openCheckout(tf){
   if(applied){showDone();showDlg();return}
+  if(!invited()){noInvite();return}
   if(TARIFF_NAME[tf])sel.tariff=tf;
   if(!myClan){pickClan();return}
   showStep('form');renderCo();['form','tariff','gold','clan'].forEach(k=>setErr(k,''));
@@ -1329,6 +1368,7 @@ async function submitApp(d){
   co.busy=true;setPayState(true);
   const body={request_id:requestId(JSON.stringify([d.name,d.tg,d.clan,d.tariff,d.gold,d.qty,!!d.dinner])),visitor_id:visitorId(),display_name:d.name,telegram_username:'@'+d.tg,clan_code:d.clan,tariff_code:d.tariff,ticket_quantity:d.qty,dinner_selected:!!d.dinner,news_opt_in:false};
   if(d.tariff==='GOLD')body.gold_amount_idr=d.gold;
+  body.invite_token=LS.get('hc_invite')||'';
   let res;
   try{res=await api.apply(body)}
   catch(e){co.busy=false;setPayState(false);track('err_net');setErr('form',ty('Не удалось связаться с замком. Данные сохранены — нажми «Перейти к оплате» ещё раз.'));return}
@@ -1340,6 +1380,8 @@ async function submitApp(d){
     LS.set('hc_applied',JSON.stringify(applied));try{sessionStorage.removeItem(DRAFT)}catch{}LS.del('hc_req');LS.del('hc_clan');myClan=null;
     track('done');renderAll();showDone();return;
   }
+  /* ссылку отключили, пока гость оформлял: новую заявку не создать — закрываем оформление, показываем «Ворота замка…» */
+  if(res&&(res.error==='INVITE_REQUIRED'||res.error==='INVITE_DISABLED')){noInvite();return}
   /* клан закрылся между открытием формы и отправкой: остальные данные на месте, предлагаем сменить клан */
   if(res&&(res.error==='CLAN_IMBALANCED'||res.error==='CLAN_FULL')){track('err_clan_full');setErr('clan',ty(res.message||shutMsg(myClan)));renderCo();focusFirstErr();return}
   if(res&&res.error==='VALIDATION'){
@@ -1357,6 +1399,7 @@ function showDone(){
     (a.dinner_amount_idr?` + трапеза ${q>1?`${guests(a.dinner_quantity)} × ${fmt(a.dinner_unit_price_idr)} = `:''}${idr(a.dinner_amount_idr)}`:'')+`. Итого: ${idr(a.total_due_idr)}.`);
   $('#done-p').textContent=ty('Оплата проходит в Telegram-боте замка. Взнос попадёт в казну, когда оплата будет подтверждена.');
   $('#done-bot').href=/^https:\/\/t\.me\//.test(a.bot_url||'')?a.bot_url:'https://t.me/HalloweenCastleBaliBot';
+  $('[data-act="again"]',dlg).hidden=!invited();
   showStep('done');$('#done-t').focus();
   if(G)G.fromTo('.done img',{rotation:-140,scale:.3},{rotation:0,scale:1,duration:1.1,ease:'elastic.out(1,.6)'});
 }
@@ -1394,13 +1437,13 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('button,[data-act]');if(!t)return;
   if(t.dataset.join){chooseClan(t.dataset.join);return}
   if(t.dataset.pick){openCheckout(t.dataset.pick);return}
-  if(t.id==='join-go'){openCheckout(null);return}
+  if(t.id==='join-go'||t.id==='gate-mine'){openCheckout(null);return}
   if(t.dataset.qty){sel.qty=Math.min(MAXQ(),Math.max(1,sel.qty+Number(t.dataset.qty)));renderCo();return}
   if(t.classList.contains('preset')){goldInp.value=fmt(Number(t.dataset.amt));goldInp.dataset.touched='1';setErr('gold','');checkGold();renderCo();return}
   if('close' in t.dataset){dlg.close();return}
   if(t.dataset.act==='co-clan'){pickClan();return}
   /* ещё одна заявка: забываем только сохранённую в браузере (в базе прежняя остаётся как есть); новое оформление получит новый request_id, а с ним новую заявку и bot_url */
-  if(t.dataset.act==='again'){applied=null;LS.del('hc_applied');LS.del('hc_req');LS.del('hc_req_key');renderAll();openCheckout(sel.tariff);return}
+  if(t.dataset.act==='again'){if(!invited()){noInvite();return}applied=null;LS.del('hc_applied');LS.del('hc_req');LS.del('hc_req_key');renderAll();openCheckout(sel.tariff);return}
   if(t.dataset.act==='path-clan'){stayOnPath=true;reopenCo=false;openPro('clans',true);return}
   switch(t.dataset.act){
     case 'pro-close':proBack();break;
@@ -1466,12 +1509,12 @@ initMotion();
 /* перезагрузка с открытым окном: шаг истории уже есть — открываем окно снова и берём шаг себе, чтобы «Назад» его закрыл, а не стоял впустую */
 const navOnLoad=pro.hidden&&history.state&&history.state.nav;
 if(navOnLoad==='sheet'){navAdopt('sheet',()=>dlg.open&&dlg.close());openCheckout()}
-else if(navOnLoad==='pro'&&!applied){navAdopt('pro',()=>{if(!pro.hidden)closePro()});reopenCo=true;openPro('clans',true)}
+else if(navOnLoad==='pro'&&!applied&&invited()){navAdopt('pro',()=>{if(!pro.hidden)closePro()});reopenCo=true;openPro('clans',true)}
 /* пришли с главной с выбранным кланом — приветствие клана; «Продолжить» оставляет на странице, × и Esc — назад на главную */
-else if(CLANS[fromPromo]&&myClan===fromPromo&&!applied&&!location.hash){openPro('greet',true,true);showGreet(fromPromo)}
+else if(CLANS[fromPromo]&&myClan===fromPromo&&!applied&&!location.hash&&invited()){openPro('greet',true,true);showGreet(fromPromo)}
 else if(toHash()){let moved=false;['wheel','touchstart','keydown','pointerdown'].forEach(t=>addEventListener(t,()=>{moved=true},{once:true,passive:true}));
   const again=()=>{if(!moved)toHash()};document.fonts&&document.fonts.ready.then(again);addEventListener('load',again,{once:true})}
-refresh();loadMotion();
+refresh();loadMotion();checkInvite();renderGate();
 track('p2');if(myClan&&!applied)track('clan');
 $('#done-bot').addEventListener('click',()=>track('bot_click'));
 setInterval(()=>{if(document.visibilityState==='visible')refresh()},12000);

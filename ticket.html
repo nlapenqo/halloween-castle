@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Билет — Halloween · Lost Castle</title>
+<!-- Билет гостя: ticket.html#<токен>. Токен приходит в ссылке из Telegram-бота после оплаты, клан и тариф страница берёт
+     с /api/ticket/<токен>. api-base пустой: локально — сервер 127.0.0.1:8787 (?api= — другой порт), иначе вписывает deploy.sh.
+     Образец без сервера: ticket.html?demo&clan=vampire|werewolf|darkelf&tier=guest|gold (его снимает tickets/render.sh) -->
+<meta name="api-base" content="">
+<link rel="preload" href="fonts/alice-cyr.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/kurale-cyr.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Alice';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/alice-cyr.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Alice';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/alice-lat.woff2) format('woff2');unicode-range:U+0000-00FF, U+2000-206F}
+@font-face{font-family:'Kurale';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/kurale-cyr.woff2) format('woff2');unicode-range:U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116}
+@font-face{font-family:'Kurale';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/kurale-lat.woff2) format('woff2');unicode-range:U+0000-00FF, U+2000-206F}
+:root{
+  --paper:#F2E0C0;
+  --ink:#26171D;
+  --night:#1C111B;
+  --vermilion:#DC5530;
+  --gold:#D9AE52;
+  --clan:#C73F25;
+  --line:var(--paper);
+  --star:var(--vermilion);
+  --f-display:"Alice",Georgia,serif;
+  --f-body:"Kurale",Georgia,serif;
+  --r-frame:30px 40px 26px 44px/40px 26px 44px 30px;
+  --r-img:20px 28px 16px 30px/28px 16px 30px 20px;
+  --r-plate:26px 34px 22px 38px/34px 22px 38px 26px;
+  --r-pill:40px 28px 44px 30px/30px 44px 28px 40px;
+}
+[data-clan=vampire]:not([data-tier=gold]){--star:var(--paper)}
+[data-clan=werewolf]{--clan:#42644A}
+[data-clan=darkelf]{--clan:#2A1F30}
+[data-clan=none]{--clan:var(--night)}
+[data-tier=gold]{--line:var(--gold);--clan:var(--gold)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--clan);color:var(--paper);font-family:var(--f-display);overflow:hidden;-webkit-tap-highlight-color:transparent}
+/* билет свёрстан в 1080×1920 и целиком вписан в экран: так его удобно показать на входе и снять скриншотом */
+.stage{position:absolute;left:50%;top:50%;width:1080px;height:1920px;transform:translate(-50%,-50%) scale(var(--k,.3));transform-origin:50% 50%}
+.stage[hidden]{display:none}
+/* .t начинается на 36 px, рамка (::before) на 54 px */
+.t{position:absolute;inset:36px;display:flex;flex-direction:column;align-items:center;padding:101px 70px 0;z-index:0}
+.bg{position:absolute;inset:0;background:var(--night);border-radius:var(--r-frame);filter:url(#rough);z-index:-1}
+.t>*:not(.bg){position:relative}
+.t::before,.t::after{content:"";position:absolute;border:3px solid var(--line);border-radius:var(--r-frame);pointer-events:none}
+.t::before{inset:18px}
+.t::after{inset:28px;border-width:1.5px}
+.st{position:absolute!important;width:76px;height:76px;fill:var(--star)}
+.st.a{left:-15px;top:-15px}.st.b{right:-15px;top:-15px}.st.c{left:-15px;bottom:-15px}.st.d{right:-15px;bottom:-15px}
+.logo{width:520px;height:auto;display:block}
+.art{margin-top:70px;width:690px;height:924px;flex:none}
+.art .im{width:100%;height:100%;border-radius:var(--r-img);border:7px solid var(--ink);outline:3px solid var(--line);outline-offset:6px;overflow:hidden;background:var(--ink)}
+.art picture{display:contents}
+.art img{width:100%;height:100%;object-fit:cover;display:block}
+.gold{display:none}
+[data-tier=gold] .gold{display:block;position:absolute;left:50%;bottom:0;transform:translate(-50%,50%);
+  background:var(--gold);color:var(--night);border:5px solid var(--night);outline:3px solid var(--gold);
+  border-radius:var(--r-pill);padding:16px 64px 14px;font:400 60px/1 var(--f-display);text-transform:uppercase;letter-spacing:.08em}
+.clan{margin-top:74px;font:400 74px/1 var(--f-display);text-transform:uppercase;text-align:center;white-space:nowrap}
+[data-clan=darkelf] .clan{font-size:66px}
+/* QR: тёмные модули на бумаге с полем в 4 модуля внутри svg — так его читает любая камера */
+.qr{margin-top:44px;width:340px;height:340px;flex:none;border:3px solid var(--line);outline:1.5px solid var(--line);outline-offset:7px;border-radius:var(--r-plate);overflow:hidden;cursor:zoom-in;background:var(--paper)}
+.qr svg{display:block;width:100%;height:100%}
+/* увеличенный QR поверх билета: одна кнопка в истории, закрывается тапом, ×, Esc и «Назад» */
+.big{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px 16px;background:var(--paper);color:var(--night);font:400 20px/1.35 var(--f-body);text-align:center;cursor:zoom-out;z-index:2}
+.big[hidden]{display:none}
+.big svg{width:min(88vw,62vh);height:auto;display:block}
+.big button{position:absolute;top:max(12px,env(safe-area-inset-top));right:12px;width:48px;height:48px;border:0;background:none;color:var(--night);font:400 40px/1 var(--f-display);cursor:pointer}
+/* сообщения вместо билета: ждём оплату, отменён, не найден, нет связи */
+.msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.msg[hidden]{display:none}
+.msg .box{max-width:420px;width:100%;background:var(--night);border:3px solid var(--line);border-radius:var(--r-frame);padding:32px 24px;text-align:center}
+.msg img{width:220px;max-width:70%;height:auto;margin:0 auto 20px;display:block}
+.msg h1{font:400 26px/1.2 var(--f-display);text-transform:uppercase;margin-bottom:12px}
+.msg p{font:400 18px/1.45 var(--f-body)}
+</style>
+</head>
+<body data-clan="none">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <symbol id="star" viewBox="0 0 40 40"><path d="M20 0 22.6 15.2 34.1 5.9 24.8 17.4 40 20 24.8 22.6 34.1 34.1 22.6 24.8 20 40 17.4 24.8 5.9 34.1 15.2 22.6 0 20 15.2 17.4 5.9 5.9 17.4 15.2Z"/></symbol>
+</svg>
+<div class="stage" id="stage" hidden>
+<main class="t">
+  <div class="bg"></div>
+  <svg class="st a"><use href="#star"/></svg><svg class="st b"><use href="#star"/></svg><svg class="st c"><use href="#star"/></svg><svg class="st d"><use href="#star"/></svg>
+  <img class="logo" src="art/logo.svg" alt="Halloween, Lost Castle" width="602" height="171">
+  <div class="art"><div class="im"><picture><source id="art-avif" type="image/avif"><img id="art" alt="" width="720" height="964"></picture></div><span class="gold">Gold</span></div>
+  <h1 class="clan" id="clan"></h1>
+  <div class="qr" id="qr" role="button" tabindex="0" aria-label="Увеличить QR-код"></div>
+</main>
+</div>
+<div class="big" id="big" hidden>
+  <button type="button" aria-label="Закрыть">×</button>
+  <div id="big-qr"></div>
+  <p>Покажи этот код на&nbsp;входе в&nbsp;замок</p>
+</div>
+<div class="msg" id="msg" hidden><div class="box"><img src="art/logo.svg" alt="Halloween, Lost Castle" width="602" height="171"><h1 id="msg-h"></h1><p id="msg-p"></p></div></div>
+<script src="vendor/qrcode.min.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var qs = new URLSearchParams(location.search);
+  var CLANS = {
+    VAMPIRE: { key: 'vampire', name: 'Вампиров', art: 'clan-vampire-b-720' },
+    WEREWOLF: { key: 'werewolf', name: 'Оборотней', art: 'clan-werewolf-c-720' },
+    DARK_ELF: { key: 'darkelf', name: 'Тёмных эльфов', art: 'clan-darkelf-k-720' }
+  };
+
+  function fit() {
+    var k = Math.min(innerWidth / 1080, innerHeight / 1920);
+    $('stage').style.setProperty('--k', String(k));
+  }
+  addEventListener('resize', fit);
+
+  function show(h, p) {
+    $('stage').hidden = true;
+    $('msg-h').textContent = h; $('msg-p').textContent = p; $('msg').hidden = false;
+  }
+
+  // QR — ссылка на этот же билет: обычная камера телефона откроет его, сканер в админке возьмёт токен после #
+  function qrSvg(text) {
+    var q = qrcode(0, 'M'); q.addData(text); q.make();
+    var n = q.getModuleCount(), d = '';
+    for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (q.isDark(r, c)) d += 'M' + c + ' ' + r + 'h1v1h-1z';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 ' + (n + 8) + ' ' + (n + 8) + '" shape-rendering="crispEdges" aria-hidden="true">' +
+      '<rect x="-4" y="-4" width="' + (n + 8) + '" height="' + (n + 8) + '" fill="#F2E0C0"/><path fill="#1C111B" d="' + d + '"/></svg>';
+  }
+
+  function render(t, link) {
+    var c = CLANS[t.clan_code];
+    document.body.dataset.clan = c ? c.key : 'none';
+    document.body.dataset.tier = t.tariff_code === 'GOLD' ? 'gold' : 'guest';
+    var art = c ? c.art : 'feast-clans';
+    $('art-avif').srcset = 'art/' + art + '.avif';
+    $('art').src = 'art/' + art + '.webp';
+    $('clan').textContent = c ? 'Клан ' + c.name : 'Гость замка';
+    var svg = qrSvg(link);
+    $('qr').innerHTML = svg; $('big-qr').innerHTML = svg;
+    $('msg').hidden = true; $('stage').hidden = false; fit();
+  }
+
+  // увеличенный QR — шаг истории
+  function openBig() { if (!$('big').hidden) return; $('big').hidden = false; history.pushState({ big: 1 }, ''); }
+  function closeBig() { if ($('big').hidden) return; if (history.state && history.state.big) history.back(); else $('big').hidden = true; }
+  addEventListener('popstate', function () { $('big').hidden = true; });
+  $('qr').addEventListener('click', openBig);
+  $('qr').addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBig(); } });
+  $('big').addEventListener('click', closeBig);
+  addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBig(); });
+
+  // образец для tickets/render.sh: без сервера, QR с ненастоящим токеном
+  if (qs.has('demo')) {
+    var DEMO = { vampire: 'VAMPIRE', werewolf: 'WEREWOLF', darkelf: 'DARK_ELF' };
+    render({ clan_code: DEMO[qs.get('clan')] || 'VAMPIRE', tariff_code: qs.get('tier') === 'gold' ? 'GOLD' : 'BRONZE' },
+      'https://lostcastle.nlapenqo.com/ticket.html#DEMO-not-a-real-ticket');
+    return;
+  }
+
+  var token = location.hash.slice(1);
+  if (!/^[A-Za-z0-9_-]{22}$/.test(token)) return show('Билет не найден', 'Проверь ссылку из\u00a0Telegram-бота: её нужно открыть целиком.');
+  var link = location.origin + location.pathname + '#' + token;
+
+  var META = (document.querySelector('meta[name="api-base"]').content || '').trim();
+  var LOCAL = /^(127\.0\.0\.1|localhost)$/.test(location.hostname);
+  var API = META || (LOCAL ? (/^http:\/\/127\.0\.0\.1:\d{2,5}$/.test(qs.get('api') || '') ? qs.get('api') : 'http://127.0.0.1:8787') : '');
+
+  // оплаченный билет запоминаем: в джунглях у ворот связь бывает плохой, а билет должен открыться
+  var KEY = 'hc_ticket_' + token;
+  function cached() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } }
+  function remember(t) { try { if (t.payment_status === 'CONFIRMED') localStorage.setItem(KEY, JSON.stringify(t)); else localStorage.removeItem(KEY); } catch (e) {} }
+
+  var c0 = cached();
+  if (c0) render(c0, link);
+  if (!API) { if (!c0) show('Нет связи с\u00a0замком', 'Попробуй открыть ссылку ещё раз чуть позже.'); return; }
+  fetch(API + '/api/ticket/' + token, { cache: 'no-store' }).then(function (r) {
+    return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, j: j }; });
+  }).then(function (x) {
+    if (x.status === 404) { remember({}); return show('Билет не найден', 'Проверь ссылку из\u00a0Telegram-бота: её нужно открыть целиком.'); }
+    if (!x.j.ticket) throw new Error('bad');
+    var t = x.j.ticket; remember(t);
+    if (t.payment_status === 'CONFIRMED') return render(t, link);
+    if (t.payment_status === 'CANCELLED') return show('Заявка отменена', 'Если это ошибка, напиши организатору в\u00a0Telegram.');
+    show('Ждём оплату', 'Билет появится здесь, как только казначей замка подтвердит оплату. Ссылка останется той же.');
+  }).catch(function () {
+    if (!c0) show('Нет связи с\u00a0замком', 'Проверь интернет и\u00a0обнови страницу.');
+  });
+})();
+</script>
+</body>
+</html>
