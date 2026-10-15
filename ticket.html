@@ -8,7 +8,7 @@
 <title>Билет — Halloween · Lost Castle</title>
 <!-- Билет гостя: ticket.html#<токен>. Токен приходит в ссылке из Telegram-бота после оплаты, клан и тариф страница берёт
      с /api/ticket/<токен>. api-base пустой: локально — сервер 127.0.0.1:8787 (?api= — другой порт), иначе вписывает deploy.sh.
-     Образец без сервера: ticket.html?demo&clan=vampire|werewolf|darkelf&tier=guest|gold (его снимает tickets/render.sh) -->
+     Образец без сервера: ticket.html?demo&clan=vampire|werewolf|darkelf&tier=guest|gold&guests=7 (его снимает tickets/render.sh) -->
 <meta name="api-base" content="">
 <link rel="preload" href="fonts/alice-cyr.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/kurale-cyr.woff2" as="font" type="font/woff2" crossorigin>
@@ -64,6 +64,11 @@ body{background:var(--clan);color:var(--paper);font-family:var(--f-display);over
   border-radius:var(--r-pill);padding:16px 64px 14px;font:400 60px/1 var(--f-display);text-transform:uppercase;letter-spacing:.08em}
 .clan{margin-top:74px;font:400 74px/1 var(--f-display);text-transform:uppercase;text-align:center;white-space:nowrap}
 [data-clan=darkelf] .clan{font-size:66px}
+/* сколько гостей проходит по этому QR (у заявки на несколько билетов) */
+.guests{margin-top:12px;font:400 44px/1.1 var(--f-body);text-align:center;opacity:.9}
+.guests[hidden]{display:none}
+/* со строкой гостей QR чуть ближе, чтобы билет Gold на группу помещался в рамку */
+.guests:not([hidden])+.qr{margin-top:26px}
 /* QR: тёмные модули на бумаге с полем в 4 модуля внутри svg — так его читает любая камера */
 .qr{margin-top:44px;width:340px;height:340px;flex:none;border:3px solid var(--line);outline:1.5px solid var(--line);outline-offset:7px;border-radius:var(--r-plate);overflow:hidden;cursor:zoom-in;background:var(--paper)}
 .qr svg{display:block;width:100%;height:100%}
@@ -93,13 +98,14 @@ body{background:var(--clan);color:var(--paper);font-family:var(--f-display);over
   <img class="logo" src="art/logo.svg" alt="Halloween, Lost Castle" width="602" height="171">
   <div class="art"><div class="im"><picture><source id="art-avif" type="image/avif"><img id="art" alt="" width="720" height="964"></picture></div><span class="gold">Gold</span></div>
   <h1 class="clan" id="clan"></h1>
+  <p class="guests" id="guests" hidden></p>
   <div class="qr" id="qr" role="button" tabindex="0" aria-label="Увеличить QR-код"></div>
 </main>
 </div>
 <div class="big" id="big" hidden>
   <button type="button" aria-label="Закрыть">×</button>
   <div id="big-qr"></div>
-  <p>Покажи этот код на&nbsp;входе в&nbsp;замок</p>
+  <p>Покажи этот код на&nbsp;входе в&nbsp;замок<span id="big-n"></span></p>
 </div>
 <div class="msg" id="msg" hidden><div class="box"><img src="art/logo.svg" alt="Halloween, Lost Castle" width="602" height="171"><h1 id="msg-h"></h1><p id="msg-p"></p></div></div>
 <script src="vendor/qrcode.min.js"></script>
@@ -141,6 +147,10 @@ body{background:var(--clan);color:var(--paper);font-family:var(--f-display);over
     $('art-avif').srcset = 'art/' + art + '.avif';
     $('art').src = 'art/' + art + '.webp';
     $('clan').textContent = c ? 'Клан ' + c.name : 'Гость замка';
+    // один QR на всю группу: «Вход для 7 гостей» (у одного билета строки нет)
+    var n = Number(t.ticket_quantity) || 1;
+    $('guests').hidden = n < 2; $('guests').textContent = n > 1 ? 'Вход для\u00a0' + n + '\u00a0гостей' : '';
+    $('big-n').textContent = n > 1 ? '. Код один на\u00a0всех ' + n + '\u00a0гостей' : '';
     var svg = qrSvg(link);
     $('qr').innerHTML = svg; $('big-qr').innerHTML = svg;
     $('msg').hidden = true; $('stage').hidden = false; fit();
@@ -158,7 +168,7 @@ body{background:var(--clan);color:var(--paper);font-family:var(--f-display);over
   // образец для tickets/render.sh: без сервера, QR с ненастоящим токеном
   if (qs.has('demo')) {
     var DEMO = { vampire: 'VAMPIRE', werewolf: 'WEREWOLF', darkelf: 'DARK_ELF' };
-    render({ clan_code: DEMO[qs.get('clan')] || 'VAMPIRE', tariff_code: qs.get('tier') === 'gold' ? 'GOLD' : 'BRONZE' },
+    render({ clan_code: DEMO[qs.get('clan')] || 'VAMPIRE', tariff_code: qs.get('tier') === 'gold' ? 'GOLD' : 'BRONZE', ticket_quantity: Number(qs.get('guests')) || 1 },
       'https://lostcastle.nlapenqo.com/ticket.html#DEMO-not-a-real-ticket');
     return;
   }
