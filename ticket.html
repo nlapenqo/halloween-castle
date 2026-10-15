@@ -73,7 +73,7 @@ body{background:var(--clan);color:var(--paper);font-family:var(--f-display);over
 /* со строкой гостей QR чуть ближе, чтобы билет Gold на группу помещался в рамку */
 .guests:not([hidden])+.qr{margin-top:26px}
 /* QR: тёмные модули на бумаге с полем в 4 модуля внутри svg — так его читает любая камера */
-.qr{margin-top:44px;width:340px;height:340px;flex:none;border:3px solid var(--line);outline:1.5px solid var(--line);outline-offset:7px;border-radius:var(--r-plate);overflow:hidden;cursor:zoom-in;background:var(--paper)}
+.qr{margin-top:44px;width:300px;height:300px;flex:none;border:3px solid var(--line);outline:1.5px solid var(--line);outline-offset:7px;border-radius:var(--r-plate);overflow:hidden;cursor:zoom-in;background:var(--paper)}
 .qr svg{display:block;width:100%;height:100%}
 /* увеличенный QR поверх билета: одна кнопка в истории, закрывается тапом, ×, Esc и «Назад» */
 .big{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px 16px;background:var(--paper);color:var(--night);font:400 20px/1.35 var(--f-body);text-align:center;cursor:zoom-out;z-index:2}
