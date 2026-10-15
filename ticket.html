@@ -47,6 +47,9 @@ body{background:var(--clan);color:var(--paper);font-family:var(--f-display);over
 /* .t начинается на 36 px, рамка (::before) на 54 px */
 .t{position:absolute;inset:36px;display:flex;flex-direction:column;align-items:center;padding:101px 70px 0;z-index:0}
 .bg{position:absolute;inset:0;background:var(--night);border-radius:var(--r-frame);filter:url(#rough);z-index:-1}
+/* подложка без фильтра под .bg: iOS Safari не рисует #rough на слое такого размера, и вместо плашки виден фон клана.
+   36 px как у .t плюс 6 px — больше сдвига фильтра (scale 10 = ±5 px), поэтому там, где фильтр работает, подложку не видно */
+.stage::before{content:"";position:absolute;inset:42px;background:var(--night);border-radius:var(--r-frame)}
 .t>*:not(.bg){position:relative}
 .t::before,.t::after{content:"";position:absolute;border:3px solid var(--line);border-radius:var(--r-frame);pointer-events:none}
 .t::before{inset:18px}
