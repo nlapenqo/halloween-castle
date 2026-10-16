@@ -177,7 +177,7 @@ html:not(.inv) :is(#path,#dinner,#join,#seats){display:none}
 .gate-sec .head{margin-bottom:0}
 .gate-sec .lead{max-width:46ch;text-wrap:pretty}
 .gate-acts{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
-.purse{--split:63.24;max-width:780px;margin:0 auto clamp(36px,4.4vw,56px)}
+.purse{--split:55.66;--split2:78.32;max-width:780px;margin:0 auto clamp(36px,4.4vw,56px)}
 .purse-l{text-align:center;font:400 var(--fs-lead)/1.3 var(--f-display);font-variant-numeric:lining-nums}
 .purse-l b{font-weight:400;font-size:var(--fs-h3);color:var(--vermilion)}
 .bar{--p:0;--g:0;position:relative;height:38px;margin-top:16px;isolation:isolate;transition:--p 1.8s var(--ease),--g .5s var(--ease)}
@@ -192,12 +192,14 @@ html:not(.inv) :is(#path,#dinner,#join,#seats){display:none}
 .bar-star{position:absolute;top:50%;left:clamp(20px,calc(6px + (100% - 12px) * var(--p) / 100),calc(100% - 20px));width:36px;height:36px;margin:-18px 0 0 -18px;pointer-events:none}
 .bar[data-g="1"] .bar-star{left:clamp(20px,calc(6px + (100% - 12px) * var(--p) / 100 + max(12px,(100% - 12px) * var(--g) / 100)),calc(100% - 20px));margin-left:-3px}
 @keyframes spin{to{rotate:360deg}}
-/* шкала поделена пропорционально бюджету: аренда площадки | операционные расходы (чайная церемония — только в «Куда идут монеты»); суммы — на одной линии */
+/* шкала поделена пропорционально бюджету: аренда площадки | операционные расходы (с чайной церемонией) | аренда звука; суммы — на одной линии */
 .bar-split{position:absolute;top:-5px;bottom:-5px;left:calc(6px + (100% - 12px) * var(--split) / 100);border-left:var(--bw) dashed var(--ink);z-index:1;pointer-events:none}
-.bar-parts{display:grid;grid-template-columns:calc(var(--split) * 1%) minmax(0,1fr);grid-template-rows:auto auto;margin-top:10px;font-size:var(--fs-small);line-height:1.3;text-align:center;font-variant-numeric:lining-nums}
+.bar-split2{left:calc(6px + (100% - 12px) * var(--split2) / 100)}
+.bar-parts{display:grid;grid-template-columns:calc(var(--split) * 1%) calc((var(--split2) - var(--split)) * 1%) minmax(0,1fr);grid-template-rows:auto auto;margin-top:10px;font-size:var(--fs-small);line-height:1.3;text-align:center;font-variant-numeric:lining-nums}
 .bar-parts>span{display:grid;grid-row:span 2;grid-template-rows:subgrid;align-items:end;padding-inline:6px}
 .bar-parts i{font-style:normal;opacity:.75;align-self:start}
-@media (max-width:520px){.bar-parts{font-size:var(--fs-micro)}.bar-parts>span{padding-inline:2px}}
+/* на телефоне узкие отрезки не вмещают подписи: колонки по содержимому, без IDR (он есть в «Собрано … из … IDR») */
+@media (max-width:520px){.bar-parts{font-size:var(--fs-micro);grid-template-columns:minmax(0,1fr) min-content min-content;column-gap:10px}.bar-parts>span{padding-inline:0}.bar-parts>span:last-child{text-align:end}.bar-parts .cur{display:none}}
 .stale{font-size:var(--fs-small);color:var(--vermilion-ink);text-align:center}
 /* выбранный клан над карточками путей; без клана не показываем */
 .path-clan{display:flex;justify-content:center;margin:calc(-1 * clamp(12px,2vw,24px)) 0 clamp(30px,3.4vw,40px)}
@@ -639,15 +641,16 @@ footer a{display:inline-block;padding-block:11px}
         <h2 id="pt-t" tabindex="-1">Выбери свой <em class="acc">путь</em></h2>
       </div>
       <div class="purse" data-rv>
-        <p class="purse-l">Собрано <b data-k="collected">—</b>&nbsp;из&nbsp;<span data-k="target-of">13&nbsp;600&nbsp;000&nbsp;IDR</span></p>
+        <p class="purse-l">Собрано <b data-k="collected">—</b>&nbsp;из&nbsp;<span data-k="target-of">15&nbsp;450&nbsp;000&nbsp;IDR</span></p>
         <div class="bar" id="bar" data-g="0" role="progressbar" aria-label="Собрано в казну" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
           <div class="fill"></div>
           <div class="ghost"></div>
           <span class="ghost-tag" id="ghost-tag" aria-hidden="true"></span>
           <i class="bar-split" aria-hidden="true"></i>
+          <i class="bar-split bar-split2" data-part="sound" aria-hidden="true"></i>
           <img class="bar-star" src="art/star.png" alt="">
         </div>
-        <div class="bar-parts" aria-hidden="true"><span>Аренда площадки<i data-k="venue-s">8&nbsp;600&nbsp;000&nbsp;IDR</i></span><span>Операционные расходы<i data-k="ops-s">5&nbsp;000&nbsp;000&nbsp;IDR</i></span></div>
+        <div class="bar-parts" aria-hidden="true"><span>Аренда площадки<i data-k="venue-s">8&nbsp;600&nbsp;000<span class="cur">&nbsp;IDR</span></i></span><span>Операционные расходы<i data-k="ops-s">3&nbsp;500&nbsp;000<span class="cur">&nbsp;IDR</span></i></span><span data-part="sound">Аренда звука<i data-k="sound-s">3&nbsp;350&nbsp;000<span class="cur">&nbsp;IDR</span></i></span></div>
         <p class="stale" data-stale hidden>Не&nbsp;удалось обновить данные</p>
       </div>
       <div class="path-clan" id="path-clan" hidden><p>Клан: <b id="path-clan-n"></b> <button class="linkbtn" type="button" data-act="path-clan">Сменить</button></p></div>
@@ -716,8 +719,9 @@ footer a{display:inline-block;padding-block:11px}
         <summary>Куда идут монеты</summary>
         <dl class="lines">
           <div><dt>Аренда площадки</dt><i aria-hidden="true"></i><dd data-k="venue">8&nbsp;600&nbsp;000&nbsp;IDR</dd></div>
-          <div><dt>Операционные расходы</dt><i aria-hidden="true"></i><dd data-k="ops">5&nbsp;000&nbsp;000&nbsp;IDR</dd></div>
-          <div class="sum"><dt>Цель казны</dt><i aria-hidden="true"></i><dd data-k="target">13&nbsp;600&nbsp;000&nbsp;IDR</dd></div>
+          <div><dt>Операционные расходы</dt><i aria-hidden="true"></i><dd data-k="ops">3&nbsp;500&nbsp;000&nbsp;IDR</dd></div>
+          <div data-part="sound"><dt>Аренда звука</dt><i aria-hidden="true"></i><dd data-k="sound">3&nbsp;350&nbsp;000&nbsp;IDR</dd></div>
+          <div class="sum"><dt>Цель казны</dt><i aria-hidden="true"></i><dd data-k="target">15&nbsp;450&nbsp;000&nbsp;IDR</dd></div>
         </dl>
       </details>
     </div>
@@ -727,7 +731,7 @@ footer a{display:inline-block;padding-block:11px}
     <div class="wrap">
       <div class="head" data-rv>
         <h2 id="st-t">Кто уже в&nbsp;<em class="acc">замке</em></h2>
-        <p class="lead">В&nbsp;каждом клане по&nbsp;<span data-f="clan-max">20</span>&nbsp;мест. Если желающих окажется больше, добавим мест во&nbsp;все кланы поровну.</p>
+        <p class="lead">В&nbsp;каждом клане по&nbsp;<span data-f="clan-max">20</span>&nbsp;мест. Если желающих окажется больше, добавим места во&nbsp;все кланы поровну.</p>
         <p class="stale" data-stale hidden>Не&nbsp;удалось обновить данные</p>
       </div>
       <div class="seats" data-seats></div>
@@ -937,7 +941,7 @@ const CLANS={
 for(const c of Object.values(CLANS))for(const k of ['desc','gp'])c[k]=ty(c[k]);
 const CLAN_GEN={VAMPIRE:'вампиров',WEREWOLF:'оборотней',DARK_ELF:'тёмных эльфов'};
 const TARIFF_NAME={BRONZE:'Bronze',SILVER:'Silver',GOLD:'Gold'};
-const FALLBACK={target_idr:12100000,venue_cost_idr:8600000,operations_cost_idr:3500000,tea_cost_idr:0,collected_idr:0,tariffs:{bronze_idr:150000,silver_idr:300000,gold_min_idr:500000,dinner_idr:250000}};
+const FALLBACK={target_idr:15450000,venue_cost_idr:8600000,operations_cost_idr:3500000,tea_cost_idr:0,sound_cost_idr:3350000,collected_idr:0,tariffs:{bronze_idr:150000,silver_idr:300000,gold_min_idr:500000,dinner_idr:250000}};
 
 /* ── хранилище ── */
 const LS={get:k=>{try{return localStorage.getItem(k)}catch{return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{}},del:k=>{try{localStorage.removeItem(k)}catch{}}};
@@ -975,7 +979,7 @@ async function req(path,body){
 
 /* тестовый режим ?mock=1: те же правила, что у сервера. ?seed=10,7,8 — столько подтверждённых оплат (сумма чисел), ?fresh=1 — сбросить браузер, ?mockfail=net — первая отправка падает по сети */
 function mockApi(){
-  const K='hc_mock_db',P={bronze:150000,silver:300000,gold:500000,dinner:250000,venue:8600000,ops:3500000,tea:0,dinnerTarget:13600000},GAP=7,MAXQ=10,MAXC=20;
+  const K='hc_mock_db',P={bronze:150000,silver:300000,gold:500000,dinner:250000,venue:8600000,ops:3500000,tea:0,sound:3350000,dinnerTarget:13600000},GAP=7,MAXQ=10,MAXC=20;
   let db=null;try{db=JSON.parse(localStorage.getItem(K))}catch{}
   if(!db||!Array.isArray(db.apps))db={apps:[],seed:null};
   const save=()=>{try{localStorage.setItem(K,JSON.stringify(db))}catch{}};
@@ -988,8 +992,8 @@ function mockApi(){
   const gap=n=>Math.max(...CLAN_ORDER.map(k=>n[k]))-Math.min(...CLAN_ORDER.map(k=>n[k]));
   const fits=(n,k,q)=>{if(n[k]+q>MAXC)return false;const m={...n,[k]:n[k]+q};return gap(m)<=GAP||gap(m)<=gap(n)};
   const room=()=>{const n=counts(),r={};CLAN_ORDER.forEach(k=>{let q=0;while(q<MAXQ&&fits(n,k,q+1))q++;r[k]=q});return r};
-  const stats=()=>{const target=P.venue+P.ops+P.tea,ok=db.apps.filter(a=>a.payment_status==='CONFIRMED'),c=ok.reduce((s,a)=>s+a.ticket_amount_idr,0),r=room(),n=counts();
-    return {target_idr:target,venue_cost_idr:P.venue,operations_cost_idr:P.ops,tea_cost_idr:P.tea,collected_idr:c,remaining_to_target_idr:Math.max(0,target-c),over_target_idr:Math.max(0,c-target),progress_percent:Math.min(100,c/target*100),refund_deadline:'2026-10-20',
+  const stats=()=>{const target=P.venue+P.ops+P.tea+P.sound,ok=db.apps.filter(a=>a.payment_status==='CONFIRMED'),c=ok.reduce((s,a)=>s+a.ticket_amount_idr,0),r=room(),n=counts();
+    return {target_idr:target,venue_cost_idr:P.venue,operations_cost_idr:P.ops,tea_cost_idr:P.tea,sound_cost_idr:P.sound,collected_idr:c,remaining_to_target_idr:Math.max(0,target-c),over_target_idr:Math.max(0,c-target),progress_percent:Math.min(100,c/target*100),refund_deadline:'2026-10-20',
       closed_clans:CLAN_ORDER.filter(k=>r[k]===0),clan_full:CLAN_ORDER.filter(k=>n[k]>=MAXC),clan_max:MAXC,clan_room:r,max_tickets:MAXQ,clan_confirmed:Object.fromEntries(CLAN_ORDER.map(k=>[k,ok.filter(a=>a.clan_code===k).reduce((x,a)=>x+(a.ticket_quantity||1),0)])),dinner_target_idr:P.dinnerTarget,dinner_collected_idr:ok.reduce((s,a)=>s+(a.dinner_amount_idr||0),0),
       tariffs:{bronze_idr:P.bronze,silver_idr:P.silver,gold_min_idr:P.gold,dinner_idr:P.dinner}}};
   const pub=a=>({application_id:a.application_id,application_no:a.application_no,clan_code:a.clan_code,tariff_code:a.tariff_code,ticket_quantity:a.ticket_quantity,ticket_unit_price_idr:a.ticket_unit_price_idr,ticket_amount_idr:a.ticket_amount_idr,
@@ -1104,7 +1108,7 @@ function renderPrices(){
   if(goldInp.dataset.touched!=='1')goldInp.value=fmt(t.gold_min_idr);
 }
 
-/* казна: цель = три статьи расходов; на шкале аренда | остальное, чай — только в «Куда идут монеты»; «собрано» — только подтверждённые оплаты, ужин в казну не входит */
+/* казна: цель = статьи расходов; на шкале аренда | операционные (с чаем) | звук; «собрано» — только подтверждённые оплаты, ужин в казну не входит */
 const MOODS=[[100,'Казна наполнена!'],[75,'Ещё немного — и замок проснётся'],[50,'Мы прошли половину пути'],[25,'В замке зажглись первые огни'],[0,'Первые монеты уже в казне']];
 function renderTreasury(){
   const s=S(),tgt=s.target_idr,k=n=>$$(`[data-k="${n}"]`);
@@ -1112,8 +1116,11 @@ function renderTreasury(){
   /* на сайте чайная церемония входит в операционные расходы; в админке это две настройки */
   const ops=s.operations_cost_idr+(s.tea_cost_idr||0);
   put('venue',s.venue_cost_idr);put('ops',ops);put('target',tgt);
-  put('venue-s',s.venue_cost_idr);put('ops-s',ops);put('target-of',tgt);
-  if(tgt>0)$('.purse').style.setProperty('--split',(s.venue_cost_idr/tgt*100).toFixed(2));
+  /* под шкалой IDR отдельным span: на телефоне его прячем */
+  const putS=(n,v)=>k(n).forEach(e=>e.innerHTML=fmt(v)+'<span class="cur">&nbsp;IDR</span>');
+  const snd=s.sound_cost_idr||0;put('sound',snd);putS('sound-s',snd);$$('[data-part="sound"]').forEach(e=>e.hidden=!snd);
+  putS('venue-s',s.venue_cost_idr);putS('ops-s',ops);put('target-of',tgt);
+  if(tgt>0){$('.purse').style.setProperty('--split',(s.venue_cost_idr/tgt*100).toFixed(2));$('.purse').style.setProperty('--split2',((s.venue_cost_idr+ops)/tgt*100).toFixed(2))}
   const d=s.collected_idr||0;
   if(!stats||!meterSeen){renderGhost();return}
   const pct=Math.min(100,tgt>0?d/tgt*100:100);
