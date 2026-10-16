@@ -196,10 +196,11 @@ html:not(.inv) :is(#path,#dinner,#join,#seats){display:none}
 .bar-split{position:absolute;top:-5px;bottom:-5px;left:calc(6px + (100% - 12px) * var(--split) / 100);border-left:var(--bw) dashed var(--ink);z-index:1;pointer-events:none}
 .bar-split2{left:calc(6px + (100% - 12px) * var(--split2) / 100)}
 .bar-parts{display:grid;grid-template-columns:calc(var(--split) * 1%) calc((var(--split2) - var(--split)) * 1%) minmax(0,1fr);grid-template-rows:auto auto;margin-top:10px;font-size:var(--fs-small);line-height:1.3;text-align:center;font-variant-numeric:lining-nums}
-.bar-parts>span{display:grid;grid-row:span 2;grid-template-rows:subgrid;align-items:end;padding-inline:6px}
-.bar-parts i{font-style:normal;opacity:.75;align-self:start}
-/* на телефоне узкие отрезки не вмещают подписи: колонки по содержимому, без IDR (он есть в «Собрано … из … IDR») */
-@media (max-width:520px){.bar-parts{font-size:var(--fs-micro);grid-template-columns:minmax(0,1fr) min-content min-content;column-gap:10px}.bar-parts>span{padding-inline:0}.bar-parts>span:last-child{text-align:end}.bar-parts .cur{display:none}}
+/* подпись по центру своего отрезка; шире отрезка — выходит в обе стороны, налезания на соседей убирает layoutParts() */
+.bar-parts>span{display:grid;grid-row:span 2;grid-template-rows:subgrid;align-items:end;justify-self:center;padding-inline:4px}
+.bar-parts i{font-style:normal;opacity:.75;align-self:start;white-space:nowrap}
+/* на телефоне без IDR (он есть в «Собрано … из … IDR») */
+@media (max-width:520px){.bar-parts{font-size:var(--fs-micro)}.bar-parts>span{padding-inline:2px}.bar-parts .cur{display:none}}
 .stale{font-size:var(--fs-small);color:var(--vermilion-ink);text-align:center}
 /* выбранный клан над карточками путей; без клана не показываем */
 .path-clan{display:flex;justify-content:center;margin:calc(-1 * clamp(12px,2vw,24px)) 0 clamp(30px,3.4vw,40px)}
@@ -650,7 +651,7 @@ footer a{display:inline-block;padding-block:11px}
           <i class="bar-split bar-split2" data-part="sound" aria-hidden="true"></i>
           <img class="bar-star" src="art/star.png" alt="">
         </div>
-        <div class="bar-parts" aria-hidden="true"><span>Аренда площадки<i data-k="venue-s">8&nbsp;600&nbsp;000<span class="cur">&nbsp;IDR</span></i></span><span>Операционные расходы<i data-k="ops-s">3&nbsp;500&nbsp;000<span class="cur">&nbsp;IDR</span></i></span><span data-part="sound">Аренда звука<i data-k="sound-s">3&nbsp;350&nbsp;000<span class="cur">&nbsp;IDR</span></i></span></div>
+        <div class="bar-parts" aria-hidden="true"><span><span>Аренда<br>площадки</span><i data-k="venue-s">8,6&nbsp;млн<span class="cur">&nbsp;IDR</span></i></span><span><span>Операционные<br>расходы</span><i data-k="ops-s">3,5&nbsp;млн<span class="cur">&nbsp;IDR</span></i></span><span data-part="sound"><span>Аренда<br>звука</span><i data-k="sound-s">3,35&nbsp;млн<span class="cur">&nbsp;IDR</span></i></span></div>
         <p class="stale" data-stale hidden>Не&nbsp;удалось обновить данные</p>
       </div>
       <div class="path-clan" id="path-clan" hidden><p>Клан: <b id="path-clan-n"></b> <button class="linkbtn" type="button" data-act="path-clan">Сменить</button></p></div>
@@ -1116,11 +1117,12 @@ function renderTreasury(){
   /* на сайте чайная церемония входит в операционные расходы; в админке это две настройки */
   const ops=s.operations_cost_idr+(s.tea_cost_idr||0);
   put('venue',s.venue_cost_idr);put('ops',ops);put('target',tgt);
-  /* под шкалой IDR отдельным span: на телефоне его прячем */
-  const putS=(n,v)=>k(n).forEach(e=>e.innerHTML=fmt(v)+'<span class="cur">&nbsp;IDR</span>');
+  /* под шкалой суммы в миллионах (3,35 млн), IDR отдельным span: на телефоне его прячем */
+  const putS=(n,v)=>k(n).forEach(e=>e.innerHTML=String(Math.round(v/1e4)/100).replace('.',',')+'&nbsp;млн<span class="cur">&nbsp;IDR</span>');
   const snd=s.sound_cost_idr||0;put('sound',snd);putS('sound-s',snd);$$('[data-part="sound"]').forEach(e=>e.hidden=!snd);
   putS('venue-s',s.venue_cost_idr);putS('ops-s',ops);put('target-of',tgt);
   if(tgt>0){$('.purse').style.setProperty('--split',(s.venue_cost_idr/tgt*100).toFixed(2));$('.purse').style.setProperty('--split2',((s.venue_cost_idr+ops)/tgt*100).toFixed(2))}
+  layoutParts();
   const d=s.collected_idr||0;
   if(!stats||!meterSeen){renderGhost();return}
   const pct=Math.min(100,tgt>0?d/tgt*100:100);
@@ -1129,6 +1131,20 @@ function renderTreasury(){
   bar.setAttribute('aria-valuenow',String(Math.round(pct)));bar.setAttribute('aria-valuetext',ty(`Собрано ${idr(d)} из ${idr(tgt)}`));
   renderGhost();
 }
+
+/* подписи под шкалой: центр подписи — центр её отрезка; если соседние налезают (узкий экран), раздвигаем ровно настолько, чтобы не налезали, и держим в пределах шкалы */
+function layoutParts(){
+  const bar=$('#bar'),ps=$$('.bar-parts>span').filter(e=>!e.hidden);if(!bar.offsetWidth)return;
+  ps.forEach(e=>e.style.transform='');
+  const b=bar.getBoundingClientRect(),cs=getComputedStyle($('.purse')),a=parseFloat(cs.getPropertyValue('--split')),c=parseFloat(cs.getPropertyValue('--split2'));
+  const edges=[0,a,ps.length>2?c:100,100],GAP=8,inner=b.width-12;
+  const box=ps.map((e,i)=>{const r=e.getBoundingClientRect(),mid=b.left+6+inner*(edges[i]+edges[i+1])/200;return {e,cur:r.left,w:r.width,x:mid-r.width/2}});
+  box.forEach(o=>o.x=Math.min(Math.max(o.x,b.left),b.right-o.w));
+  for(let i=1;i<box.length;i++)box[i].x=Math.max(box[i].x,box[i-1].x+box[i-1].w+GAP);
+  for(let i=box.length-1;i>=0;i--){box[i].x=Math.min(box[i].x,(i<box.length-1?box[i+1].x-GAP:b.right)-box[i].w)}
+  box.forEach(o=>o.e.style.transform=`translateX(${(o.x-o.cur).toFixed(1)}px)`);
+}
+addEventListener('resize',()=>requestAnimationFrame(layoutParts));document.fonts&&document.fonts.ready.then(()=>layoutParts());
 
 /* ── выбор пути: карточки открывают окно, всё остальное — в окне ── */
 const TARIFFS=['BRONZE','SILVER','GOLD'];
